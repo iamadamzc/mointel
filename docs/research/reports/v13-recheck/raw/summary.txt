@@ -1,0 +1,48 @@
+store A:/mointel/data/market-prod-2026-10-07.db: 5512986624 bytes, mtime 2026-10-07T15:13:47.202Z
+store A:/mointel/data/slim-2026-10-14.db: 89141248 bytes, mtime 2026-10-15T00:55:08.346Z
+clock fixed at 2026-10-15T01:50:22.979Z; range $1-$20; inputs 2026-10-02 INTO_RTH x3, 2026-10-02 INTO_POWER_HOUR x3, 2026-10-06 INTO_POWER_HOUR x3, 2026-10-14 INTO_RTH x1, 2026-10-14 INTO_POWER_HOUR x1, 2026-10-14 AFTER_HOURS x1, 2026-10-06 INTO_RTH x1, 2026-10-05 INTO_RTH x1, 2026-10-06 AFTER_HOURS x1
+prompt v7 version 13, checker prompt V6 17, writer gpt-5.6-luna; checker claude-opus-5-5 (Tests-TMI key, no fallback); every raw reply kept
+stop $4: a report launches only if spend + its worst case ($0.8116) fits
+every measure on the PUBLISHED report, the draft beside it
+
+2026-10-02-INTO_RTH-v7.13-run1: PUBLISHED; Summary published; other names draft [] PUBLISHED []; count yes; first-ranked AMOD yes; pipeline words: draft texts 0, PUBLISHED 0; disclosure lines 11 (company filings only 0); name lines struck 2 of 12; $0.1792
+2026-10-02-INTO_RTH-v7.13-run2: PUBLISHED; Summary published; other names draft [] PUBLISHED []; count yes; first-ranked AMOD yes; pipeline words: draft texts 0, PUBLISHED 0; disclosure lines 11 (company filings only 0); name lines struck 2 of 12; $0.1775
+2026-10-02-INTO_RTH-v7.13-run3: PUBLISHED; Summary published; other names draft [] PUBLISHED []; count yes; first-ranked AMOD yes; pipeline words: draft texts 0, PUBLISHED 0; disclosure lines 11 (company filings only 0); name lines struck 3 of 12; $0.1758
+2026-10-02-INTO_POWER_HOUR-v7.13-run1: PUBLISHED; Summary published; other names draft [] PUBLISHED []; count yes; first-ranked ZNB yes; pipeline words: draft texts 0, PUBLISHED 0; disclosure lines 7 (company filings only 0); name lines struck 0 of 12; $0.1343
+2026-10-02-INTO_POWER_HOUR-v7.13-run2: PUBLISHED; Summary published; other names draft [] PUBLISHED []; count yes; first-ranked ZNB yes; pipeline words: draft texts 0, PUBLISHED 0; disclosure lines 7 (company filings only 0); name lines struck 0 of 12; $0.1308
+2026-10-02-INTO_POWER_HOUR-v7.13-run3: PUBLISHED; Summary published; other names draft [] PUBLISHED []; count yes; first-ranked ZNB yes; pipeline words: draft texts 0, PUBLISHED 0; disclosure lines 7 (company filings only 0); name lines struck 0 of 12; $0.1362
+2026-10-06-INTO_POWER_HOUR-v7.13-run1: PUBLISHED; Summary published; other names draft [] PUBLISHED []; count yes; first-ranked XHG yes; pipeline words: draft texts 0, PUBLISHED 0; disclosure lines 8 (company filings only 0); name lines struck 0 of 12; $0.1490
+2026-10-06-INTO_POWER_HOUR-v7.13-run2: PUBLISHED; Summary published; other names draft [] PUBLISHED []; count yes; first-ranked XHG yes; pipeline words: draft texts 1, PUBLISHED 1; disclosure lines 8 (company filings only 0); name lines struck 2 of 12; $0.1501
+2026-10-06-INTO_POWER_HOUR-v7.13-run3: PUBLISHED; Summary published; other names draft [] PUBLISHED []; count yes; first-ranked XHG yes; pipeline words: draft texts 1, PUBLISHED 1; disclosure lines 8 (company filings only 0); name lines struck 1 of 12; $0.1605
+2026-10-14-INTO_RTH-v7.13-run1: PUBLISHED; Summary published; other names draft [] PUBLISHED []; count yes; first-ranked GENK yes; pipeline words: draft texts 0, PUBLISHED 0; disclosure lines 7 (company filings only 0); name lines struck 0 of 12; $0.1318
+2026-10-14-INTO_POWER_HOUR-v7.13-run1: PUBLISHED; Summary published; other names draft [] PUBLISHED []; count yes; first-ranked TC yes; pipeline words: draft texts 3, PUBLISHED 3; disclosure lines 8 (company filings only 0); name lines struck 0 of 12; $0.1264
+2026-10-14-AFTER_HOURS-v7.13-run1: PUBLISHED; Summary STRUCK (UNSUPPORTED/model); other names draft [] PUBLISHED []; count NO; first-ranked TC NO; pipeline words: draft texts 1, PUBLISHED 1; disclosure lines 8 (company filings only 0); name lines struck 1 of 12; $0.1702
+2026-10-06-INTO_RTH-v7.13-run1: PUBLISHED; Summary published; other names draft [] PUBLISHED []; count yes; first-ranked XHG yes; pipeline words: draft texts 0, PUBLISHED 0; disclosure lines 10 (company filings only 0); name lines struck 1 of 12; $0.1474
+2026-10-05-INTO_RTH-v7.13-run1: PUBLISHED; Summary published; other names draft [] PUBLISHED []; count yes; first-ranked MI yes; pipeline words: draft texts 3, PUBLISHED 2; disclosure lines 8 (company filings only 0); name lines struck 3 of 12; $0.2005
+2026-10-06-AFTER_HOURS-v7.13-run1: PUBLISHED; Summary published; other names draft [] PUBLISHED []; count yes; first-ranked XHG yes; pipeline words: draft texts 0, PUBLISHED 0; disclosure lines 8 (company filings only 0); name lines struck 2 of 12; $0.1664
+
+STRUCK IN v11 (10-02 INTO_RTH, 10-02 INTO_POWER_HOUR, 10-06 INTO_POWER_HOUR; x3): run 9; published 9; failed 0
+  Summary STRUCK 0 of 9; strike reasons none
+  Summaries naming a board name the facts do not: drafts 0, PUBLISHED 0
+  UNFRAMED_PERCENT Summary strikes 0; labels in drafts 0; PUBLISHED note+when 0; PUBLISHED causal join 1
+  count sentence PUBLISHED 9 of 9; first-ranked PUBLISHED 9 of 9
+  pipeline words: PUBLISHED lines 2 of 117 (Summaries included); draft texts 2; "our evidence" (allowed, counted apart) 0
+  disclosure lines (research unknowns carry such words) 78; of them FILINGS-ONLY (rule 5, each read by hand) 3, saying "company filings only" 0; any line saying it 0
+  checker calls that threw 0; name lines struck 10
+OTHERS (x1): run 6; published 6; failed 0
+  Summary STRUCK 1 of 6; strike reasons UNSUPPORTED/model 1
+  Summaries naming a board name the facts do not: drafts 0, PUBLISHED 0
+  UNFRAMED_PERCENT Summary strikes 0; labels in drafts 0; PUBLISHED note+when 0; PUBLISHED causal join 0
+  count sentence PUBLISHED 5 of 6; first-ranked PUBLISHED 5 of 6
+  pipeline words: PUBLISHED lines 6 of 78 (Summaries included); draft texts 7; "our evidence" (allowed, counted apart) 0
+  disclosure lines (research unknowns carry such words) 49; of them FILINGS-ONLY (rule 5, each read by hand) 8, saying "company filings only" 0; any line saying it 0
+  checker calls that threw 0; name lines struck 7
+ALL: run 15; published 15; failed 0
+  Summary STRUCK 1 of 15; strike reasons UNSUPPORTED/model 1
+  Summaries naming a board name the facts do not: drafts 0, PUBLISHED 0
+  UNFRAMED_PERCENT Summary strikes 0; labels in drafts 0; PUBLISHED note+when 0; PUBLISHED causal join 1
+  count sentence PUBLISHED 14 of 15; first-ranked PUBLISHED 14 of 15
+  pipeline words: PUBLISHED lines 8 of 195 (Summaries included); draft texts 9; "our evidence" (allowed, counted apart) 0
+  disclosure lines (research unknowns carry such words) 127; of them FILINGS-ONLY (rule 5, each read by hand) 11, saying "company filings only" 0; any line saying it 0
+  checker calls that threw 0; name lines struck 17
+TOTAL reports run 15 of 15; spend $2.3362

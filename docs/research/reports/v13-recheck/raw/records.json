@@ -1,0 +1,2136 @@
+[
+  {
+    "tag": "2026-10-02-INTO_RTH-v7.13-run1",
+    "store": "market-prod-2026-10-07.db",
+    "kind": "INTO_RTH",
+    "day": "2026-10-02",
+    "run": 1,
+    "struckInV11": true,
+    "status": "PUBLISHED",
+    "error": null,
+    "narrativeStruck": false,
+    "summaryStrikes": [],
+    "nameLinesStruck": 2,
+    "lines": 13,
+    "draftSummary": "AMOD ranked first in this range, up 200 percent from the prior close, with fresh news in our sources: on October 1, Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30, which was previously described as adding 3,170 Bitcoin valued above $200 million alongside 51,621,560 newly issued Class A PIPE shares. Since the previous checkpoint, AMOD was up 76.3% and printed a new high of day. AIXI was up 39 percent from the prior close, with fresh news in our sources: its October 2026 semi-annual filing reported that first-half 2026 revenue fell about 99.12% year over year after it discontinued low-margin cloud-platform resale activities, while financing including convertible notes may dilute shareholders upon conversion and the period included a substantial shareholder loss. Since the previous checkpoint, AIXI was up 17.2% and printed a new high of day. SDEV was up 38 percent from the prior close, with no catalyst found in our sources. Of the 12 names the desk covers, 7 had fresh news in our sources.",
+    "narrative": "AMOD ranked first in this range, up 200 percent from the prior close, with fresh news in our sources: on October 1, Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30, which was previously described as adding 3,170 Bitcoin valued above $200 million alongside 51,621,560 newly issued Class A PIPE shares. Since the previous checkpoint, AMOD was up 76.3% and printed a new high of day. AIXI was up 39 percent from the prior close, with fresh news in our sources: its October 2026 semi-annual filing reported that first-half 2026 revenue fell about 99.12% year over year after it discontinued low-margin cloud-platform resale activities, while financing including convertible notes may dilute shareholders upon conversion and the period included a substantial shareholder loss. Of the 12 names the desk covers, 7 had fresh news in our sources.",
+    "otherNamesInDraft": [],
+    "otherNamesPublished": [],
+    "countPublished": true,
+    "firstRanked": "AMOD",
+    "firstRankedPublished": true,
+    "labelInDraft": false,
+    "noteWhenPublished": false,
+    "causalJoinPublished": false,
+    "pipelinePublished": [],
+    "pipelineInDraft": 0,
+    "ourEvidencePublished": 0,
+    "disclosureLines": [
+      {
+        "ticker": "AMOD",
+        "text": "On October 1, Alpha Modus reported that it had completed its bitcoin-backed PIPE transaction on September 30. The transaction had previously been described as adding 3,170 Bitcoin, then valued above $200 million, while the related purchase agreement contemplated 51,621,560 newly issued Class A PIPE shares.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide the complete September 30 closing capitalization table.",
+          "The excerpts do not establish the resale-registration eligibility or actual resale activity of the PIPE shares.",
+          "The evidence does not quantify the transaction's final per-share consideration or all associated warrant terms."
+        ]
+      },
+      {
+        "ticker": "AIXI",
+        "text": "On October 1, the October 2026 semi-annual filing reported that first-half 2026 revenue fell about 99.12% year over year after the company discontinued low-margin cloud-platform resale activities. The filing also said the company relied on financing including convertible notes, which may dilute shareholders upon conversion, and reported a substantial shareholder loss for the period.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The evidence does not link the current session's price move to the semi-annual filing.",
+          "No primary-source evidence in the bundle identifies a fresh favourable company-specific event that explains the move."
+        ]
+      },
+      {
+        "ticker": "AMIX",
+        "text": "A secondary news source reported on October 2 that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The underlying company announcement or patent document is absent.",
+          "The bundle does not quantify the patent's addressable market, licensing value, or expected revenue contribution.",
+          "Causation between the headline and elevated trading activity is not established."
+        ]
+      },
+      {
+        "ticker": "CYCU",
+        "text": "Secondary coverage reported on October 2 that Cycurion regained Nasdaq compliance. A September 28 company release also referred to an ongoing Nasdaq listing process.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "No Nasdaq exchange notice confirming regained compliance is included.",
+          "The bundle does not establish the specific prior deficiency, compliance deadline, or conditions of compliance."
+        ]
+      },
+      {
+        "ticker": "TNMG",
+        "text": "On October 2, TNL Mediagene announced a definitive agreement dated September 30 to sell its Japanese business, including its wholly owned Japan holding company and the Mediagene and Infobahn subsidiaries, to a CEO-led acquisition vehicle for aggregate consideration of $5.5 million. The transaction followed a special-committee process and fairness opinion.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not state when or whether the transaction will close.",
+          "The bundle does not state the use of the $5.5 million consideration.",
+          "The bundle does not provide pro forma revenue, earnings, cash, or continuing-operations effects.",
+          "The market-state snapshot has no explicit timestamp, so precise timing relative to the announcement is unknown."
+        ]
+      },
+      {
+        "ticker": "SORA",
+        "text": "On October 1, AsiaStrategy announced a non-binding memorandum of understanding with Plume to explore forming an Asia-focused joint venture for structuring, issuing and distributing tokenized financial products.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide financial terms, ownership terms, a launch date, expected revenue or a definitive joint-venture agreement.",
+          "The MOU is expressly non-binding, so consummation remains uncertain."
+        ]
+      },
+      {
+        "ticker": "SSM",
+        "text": "On October 1, a Schedule 13D was filed, and secondary coverage reported that Alpine Fox Capital disclosed a roughly 21.5% stake in Sono Group.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The primary Schedule 13D source in the bundle has no substantive excerpt, so the exact share count, acquisition dates, purchase price, and stated purpose are not established here.",
+          "It is not established whether the reported stake reflects recent market buying versus securities acquired earlier.",
+          "The Schedule 13D disclosure does not establish that Alpine Fox will buy additional shares or seek a transaction."
+        ]
+      },
+      {
+        "ticker": "GOW",
+        "text": "",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The evidence does not establish whether the September 25 closing directly caused the observed price move.",
+          "The number of PIPE preferred shares and warrants issued is not provided in the available excerpts.",
+          "No current company-specific operating, contract, approval, or financial-results catalyst was provided after the business-combination closing."
+        ]
+      },
+      {
+        "ticker": "SMX",
+        "text": "",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide the full text or material terms of the October 1 promotional communications.",
+          "No primary-source material transaction, approval, financial result or similar event is supplied for October 1 or October 2."
+        ]
+      },
+      {
+        "ticker": "SGRX",
+        "text": "no catalyst found in our sources",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide a primary-source company event after September 15, 2026.",
+          "The bundle does not establish the specific cause of the current trading-session move."
+        ]
+      },
+      {
+        "ticker": "SDEV",
+        "text": "no catalyst found in our sources",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The evidence does not establish what caused the unusual trading activity.",
+          "The bundle does not provide sufficient objective live-demand evidence to classify the move as FLOW_DOMINANT."
+        ]
+      }
+    ],
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "costUsd": 0.1791712,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5922,
+        "outputTokens": 1679,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 904,
+        "durationMs": 15033,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 31988,
+        "outputTokens": 2401,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 21966,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-INTO_RTH-v7.13-run2",
+    "store": "market-prod-2026-10-07.db",
+    "kind": "INTO_RTH",
+    "day": "2026-10-02",
+    "run": 2,
+    "struckInV11": true,
+    "status": "PUBLISHED",
+    "error": null,
+    "narrativeStruck": false,
+    "summaryStrikes": [],
+    "nameLinesStruck": 2,
+    "lines": 13,
+    "draftSummary": "AMOD ranked first in this range, up 200 percent from the prior close, with fresh news in our sources: on October 1, Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30, adding 3,170 Bitcoin previously valued above $200 million, while the related agreement contemplated 51,621,560 newly issued Class A PIPE shares. Since the previous checkpoint, AMOD was up 76.3 percent and printed a new high of day. AIXI was up 39 percent from the prior close, with fresh news in our sources: its October 2026 semi-annual filing reported first-half revenue down about 99.12 percent year over year, reliance on financing including convertible notes that may dilute shareholders upon conversion, and a substantial shareholder loss. Since the previous checkpoint, AIXI was up 17.2 percent and printed a new high of day. SDEV was up 38 percent from the prior close, with no catalyst found in our sources. Seven of the 12 names the desk covers had fresh news in our sources.",
+    "narrative": "AMOD ranked first in this range, up 200 percent from the prior close, with fresh news in our sources: on October 1, Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30, adding 3,170 Bitcoin previously valued above $200 million, while the related agreement contemplated 51,621,560 newly issued Class A PIPE shares. Since the previous checkpoint, AMOD was up 76.3 percent and printed a new high of day. AIXI was up 39 percent from the prior close, with fresh news in our sources: its October 2026 semi-annual filing reported first-half revenue down about 99.12 percent year over year, reliance on financing including convertible notes that may dilute shareholders upon conversion, and a substantial shareholder loss. Seven of the 12 names the desk covers had fresh news in our sources.",
+    "otherNamesInDraft": [],
+    "otherNamesPublished": [],
+    "countPublished": true,
+    "firstRanked": "AMOD",
+    "firstRankedPublished": true,
+    "labelInDraft": false,
+    "noteWhenPublished": false,
+    "causalJoinPublished": false,
+    "pipelinePublished": [],
+    "pipelineInDraft": 0,
+    "ourEvidencePublished": 0,
+    "disclosureLines": [
+      {
+        "ticker": "AMOD",
+        "text": "On October 1, 2026, Alpha Modus reported that its bitcoin-backed PIPE transaction had been completed on September 30. The transaction had been described as adding 3,170 Bitcoin, previously valued above $200 million, while the related purchase agreement contemplated 51,621,560 newly issued Class A PIPE shares.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide the complete September 30 closing capitalization table.",
+          "The excerpts do not establish the resale-registration eligibility or actual resale activity of the PIPE shares.",
+          "The evidence does not quantify the transaction's final per-share consideration or all associated warrant terms."
+        ]
+      },
+      {
+        "ticker": "AIXI",
+        "text": "On October 1, 2026, AIXI's October 2026 semi-annual filing reported that first-half revenue fell about 99.12 percent year over year after the company discontinued low-margin cloud-platform resale activities. The filing also said the company relied on financing including convertible notes that may dilute shareholders upon conversion, and reported a substantial shareholder loss for the period.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The evidence does not link the current session's price move to the semi-annual filing.",
+          "No primary-source evidence in the bundle identifies a fresh favourable company-specific event that explains the move."
+        ]
+      },
+      {
+        "ticker": "AMIX",
+        "text": "On October 2, 2026, secondary coverage reported that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The underlying company announcement or patent document is absent.",
+          "The bundle does not quantify the patent's addressable market, licensing value, or expected revenue contribution.",
+          "Causation between the headline and elevated trading activity is not established."
+        ]
+      },
+      {
+        "ticker": "CYCU",
+        "text": "On October 2, 2026, secondary coverage reported that Cycurion regained Nasdaq compliance.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "No Nasdaq exchange notice confirming regained compliance is included.",
+          "The bundle does not establish the specific prior deficiency, compliance deadline, or conditions of compliance."
+        ]
+      },
+      {
+        "ticker": "TNMG",
+        "text": "On October 2, 2026, TNL Mediagene announced a definitive agreement dated September 30 to sell its Japanese business, including its wholly owned Japan holding company and the Mediagene and Infobahn subsidiaries, to a CEO-led acquisition vehicle for aggregate consideration of $5.5 million. The announcement said the transaction followed a special-committee process and fairness opinion.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not state when or whether the transaction will close.",
+          "The bundle does not state the use of the $5.5 million consideration.",
+          "The bundle does not provide pro forma revenue, earnings, cash, or continuing-operations effects.",
+          "The market-state snapshot has no explicit timestamp, so precise timing relative to the announcement is unknown."
+        ]
+      },
+      {
+        "ticker": "SORA",
+        "text": "On October 1, 2026, AsiaStrategy announced a non-binding memorandum of understanding with Plume to explore forming an Asia-focused joint venture for structuring, issuing and distributing tokenized financial products.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide financial terms, ownership terms, a launch date, expected revenue or a definitive joint-venture agreement.",
+          "The MOU is expressly non-binding, so consummation remains uncertain."
+        ]
+      },
+      {
+        "ticker": "SSM",
+        "text": "On October 1, 2026, a Schedule 13D was filed, and secondary coverage reported that Alpine Fox Capital disclosed a roughly 21.5 percent stake in Sono Group.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The primary Schedule 13D source in the bundle has no substantive excerpt, so the exact share count, acquisition dates, purchase price, and stated purpose are not established here.",
+          "It is not established whether the reported stake reflects recent market buying versus securities acquired earlier.",
+          "The Schedule 13D disclosure does not establish that Alpine Fox will buy additional shares or seek a transaction."
+        ]
+      },
+      {
+        "ticker": "GOW",
+        "text": "",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The evidence does not establish whether the September 25 closing directly caused the observed price move.",
+          "The number of PIPE preferred shares and warrants issued is not provided in the available excerpts.",
+          "No current company-specific operating, contract, approval, or financial-results catalyst was provided after the business-combination closing."
+        ]
+      },
+      {
+        "ticker": "SMX",
+        "text": "",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide the full text or material terms of the October 1 promotional communications.",
+          "No primary-source material transaction, approval, financial result or similar event is supplied for October 1 or October 2."
+        ]
+      },
+      {
+        "ticker": "SGRX",
+        "text": "no catalyst found in our sources",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide a primary-source company event after September 15, 2026.",
+          "The bundle does not establish the specific cause of the current trading-session move."
+        ]
+      },
+      {
+        "ticker": "SDEV",
+        "text": "no catalyst found in our sources",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The evidence does not establish what caused the unusual trading activity.",
+          "The bundle does not provide sufficient objective live-demand evidence to classify the move as FLOW_DOMINANT."
+        ]
+      }
+    ],
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "costUsd": 0.17754479999999997,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5922,
+        "outputTokens": 1297,
+        "cachedInputTokens": 5919,
+        "reasoningTokens": 516,
+        "durationMs": 11400,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 31986,
+        "outputTokens": 2343,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 20281,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-INTO_RTH-v7.13-run3",
+    "store": "market-prod-2026-10-07.db",
+    "kind": "INTO_RTH",
+    "day": "2026-10-02",
+    "run": 3,
+    "struckInV11": true,
+    "status": "PUBLISHED",
+    "error": null,
+    "narrativeStruck": false,
+    "summaryStrikes": [],
+    "nameLinesStruck": 3,
+    "lines": 13,
+    "draftSummary": "AMOD ranked first in this range, up 200 percent from the prior close, with fresh news in our sources: Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30, previously described as adding 3,170 Bitcoin valued above $200 million, alongside an agreement for 51,621,560 newly issued Class A PIPE shares. AMOD was up 76.3% since the previous checkpoint and printed a new high of day. AIXI was up 39 percent from the prior close, with fresh news in our sources: its October 2026 semi-annual filing reported first-half 2026 revenue down about 99.12% year over year after discontinuing low-margin cloud-platform resale activities, reliance on financing including convertible notes that may dilute shareholders upon conversion, and a substantial shareholder loss. AIXI was up 17.2% since the previous checkpoint and printed a new high of day. SDEV was up 38 percent from the prior close, with no catalyst found in our sources. Of the 12 names the desk covers, 7 had fresh news in our sources.",
+    "narrative": "AMOD ranked first in this range, up 200 percent from the prior close, with fresh news in our sources: Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30, previously described as adding 3,170 Bitcoin valued above $200 million, alongside an agreement for 51,621,560 newly issued Class A PIPE shares. AMOD was up 76.3% since the previous checkpoint and printed a new high of day. AIXI was up 39 percent from the prior close, with fresh news in our sources: its October 2026 semi-annual filing reported first-half 2026 revenue down about 99.12% year over year after discontinuing low-margin cloud-platform resale activities, reliance on financing including convertible notes that may dilute shareholders upon conversion, and a substantial shareholder loss. Of the 12 names the desk covers, 7 had fresh news in our sources.",
+    "otherNamesInDraft": [],
+    "otherNamesPublished": [],
+    "countPublished": true,
+    "firstRanked": "AMOD",
+    "firstRankedPublished": true,
+    "labelInDraft": false,
+    "noteWhenPublished": false,
+    "causalJoinPublished": false,
+    "pipelinePublished": [],
+    "pipelineInDraft": 0,
+    "ourEvidencePublished": 0,
+    "disclosureLines": [
+      {
+        "ticker": "AMOD",
+        "text": "On October 1, Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30. The transaction had previously been described as adding 3,170 Bitcoin, then valued above $200 million, while the related purchase agreement contemplated 51,621,560 newly issued Class A PIPE shares.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide the complete September 30 closing capitalization table.",
+          "The excerpts do not establish the resale-registration eligibility or actual resale activity of the PIPE shares.",
+          "The evidence does not quantify the transaction's final per-share consideration or all associated warrant terms."
+        ]
+      },
+      {
+        "ticker": "AIXI",
+        "text": "On October 1, AIXI's semi-annual filing reported that first-half 2026 revenue fell about 99.12% year over year after the company discontinued low-margin cloud-platform resale activities. The filing also said the company relied on financing including convertible notes, which may dilute shareholders upon conversion, and reported a substantial shareholder loss for the period.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The evidence does not link the current session's price move to the semi-annual filing.",
+          "No primary-source evidence in the bundle identifies a fresh favourable company-specific event that explains the move."
+        ]
+      },
+      {
+        "ticker": "AMIX",
+        "text": "On October 2, secondary coverage reported that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The underlying company announcement or patent document is absent.",
+          "The bundle does not quantify the patent's addressable market, licensing value, or expected revenue contribution.",
+          "Causation between the headline and elevated trading activity is not established."
+        ]
+      },
+      {
+        "ticker": "CYCU",
+        "text": "On October 2, secondary coverage reported that Cycurion regained Nasdaq compliance. A September company release also referred to an ongoing Nasdaq listing process.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "No Nasdaq exchange notice confirming regained compliance is included.",
+          "The bundle does not establish the specific prior deficiency, compliance deadline, or conditions of compliance."
+        ]
+      },
+      {
+        "ticker": "TNMG",
+        "text": "On October 2, TNL Mediagene announced a definitive agreement dated September 30 to sell its Japanese business, including its wholly owned Japan holding company and the Mediagene and Infobahn subsidiaries, to a CEO-led acquisition vehicle for aggregate consideration of $5.5 million. The company said the transaction followed a special-committee process and fairness opinion.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not state when or whether the transaction will close.",
+          "The bundle does not state the use of the $5.5 million consideration.",
+          "The bundle does not provide pro forma revenue, earnings, cash, or continuing-operations effects.",
+          "The market-state snapshot has no explicit timestamp, so precise timing relative to the announcement is unknown."
+        ]
+      },
+      {
+        "ticker": "SORA",
+        "text": "On October 1, AsiaStrategy announced a non-binding memorandum of understanding with Plume to explore forming an Asia-focused joint venture for structuring, issuing and distributing tokenized financial products. The announcement did not establish that a joint venture or product launch had occurred.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide financial terms, ownership terms, a launch date, expected revenue or a definitive joint-venture agreement.",
+          "The MOU is expressly non-binding, so consummation remains uncertain."
+        ]
+      },
+      {
+        "ticker": "SSM",
+        "text": "On October 1, a Schedule 13D was filed, and secondary coverage reported that Alpine Fox Capital disclosed a roughly 21.5% stake in Sono Group.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The primary Schedule 13D source in the bundle has no substantive excerpt, so the exact share count, acquisition dates, purchase price, and stated purpose are not established here.",
+          "It is not established whether the reported stake reflects recent market buying versus securities acquired earlier.",
+          "The Schedule 13D disclosure does not establish that Alpine Fox will buy additional shares or seek a transaction."
+        ]
+      },
+      {
+        "ticker": "GOW",
+        "text": "On September 25, GOWell disclosed that it had closed its business combination and completed a previously announced $50 million closing PIPE of preferred shares and warrants. The company began Nasdaq trading as GOW on September 28, while an earlier private placement contributed approximately $20 million, for stated PIPE gross proceeds of $70 million before fees and expenses.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The evidence does not establish whether the September 25 closing directly caused the observed price move.",
+          "The number of PIPE preferred shares and warrants issued is not provided in the available excerpts.",
+          "No current company-specific operating, contract, approval, or financial-results catalyst was provided after the business-combination closing."
+        ]
+      },
+      {
+        "ticker": "SMX",
+        "text": "",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide the full text or material terms of the October 1 promotional communications.",
+          "No primary-source material transaction, approval, financial result or similar event is supplied for October 1 or October 2."
+        ]
+      },
+      {
+        "ticker": "SGRX",
+        "text": "",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide a primary-source company event after September 15, 2026.",
+          "The bundle does not establish the specific cause of the current trading-session move."
+        ]
+      },
+      {
+        "ticker": "SDEV",
+        "text": "",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The evidence does not establish what caused the unusual trading activity.",
+          "The bundle does not provide sufficient objective live-demand evidence to classify the move as FLOW_DOMINANT."
+        ]
+      }
+    ],
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "costUsd": 0.1757892,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5922,
+        "outputTokens": 1304,
+        "cachedInputTokens": 5919,
+        "reasoningTokens": 516,
+        "durationMs": 11815,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 32015,
+        "outputTokens": 2249,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 30336,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-INTO_POWER_HOUR-v7.13-run1",
+    "store": "market-prod-2026-10-07.db",
+    "kind": "INTO_POWER_HOUR",
+    "day": "2026-10-02",
+    "run": 1,
+    "struckInV11": true,
+    "status": "PUBLISHED",
+    "error": null,
+    "narrativeStruck": false,
+    "summaryStrikes": [],
+    "nameLinesStruck": 0,
+    "lines": 13,
+    "draftSummary": "ZNB ranked first in this range, up 29 percent from the prior close, with only older or secondary news in our sources. AMOD was up 181 percent from the prior close, with fresh news in our sources: Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million, while secondary coverage reported 51.6 million common shares and matching warrants were issued. AIXI was up 56 percent from the prior close, with fresh news in our sources: the company furnished its semi-annual report after the October 1 session, reporting a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and financing through convertible notes that may dilute existing holders upon conversion. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "narrative": "ZNB ranked first in this range, up 29 percent from the prior close, with only older or secondary news in our sources. AMOD was up 181 percent from the prior close, with fresh news in our sources: Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million, while secondary coverage reported 51.6 million common shares and matching warrants were issued. AIXI was up 56 percent from the prior close, with fresh news in our sources: the company furnished its semi-annual report after the October 1 session, reporting a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and financing through convertible notes that may dilute existing holders upon conversion. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "otherNamesInDraft": [],
+    "otherNamesPublished": [],
+    "countPublished": true,
+    "firstRanked": "ZNB",
+    "firstRankedPublished": true,
+    "labelInDraft": false,
+    "noteWhenPublished": false,
+    "causalJoinPublished": true,
+    "pipelinePublished": [],
+    "pipelineInDraft": 0,
+    "ourEvidencePublished": 0,
+    "disclosureLines": [
+      {
+        "ticker": "AMOD",
+        "text": "On October 1, 2026, Alpha Modus reported completing a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million. Secondary coverage reported that the financing issued 51.6 million common shares and matching warrants, and an SEC current report concerned the completed transaction.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The SEC filing excerpt supplied does not state the exact number of PIPE shares, warrant exercise terms, resale restrictions, or registration effectiveness.",
+          "The 51.6 million share and matching-warrant terms are drawn from secondary coverage, rather than a complete primary-source excerpt in the bundle."
+        ]
+      },
+      {
+        "ticker": "AIXI",
+        "text": "On October 1, 2026, the company furnished its semi-annual report after the October 1 session. The filing reported a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and described financing through convertible notes that may dilute existing holders upon conversion.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not establish whether the October 1 after-hours filing caused the observed intraday move.",
+          "The bundle does not establish how much of any convertible-note balance has converted or been sold."
+        ]
+      },
+      {
+        "ticker": "QTEX",
+        "text": "On October 1, 2026, the company reported that a leading quantum-computing company independently tested its interconnect at 20 mK and found channel isolation above 100 dB across the 4 to 8 GHz qubit band. The company also said it was finalizing a binding definitive agreement with the testing company, with its identity and the agreement terms to be disclosed within weeks.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The testing company's identity, the definitive agreement's terms, contract value and execution status were not disclosed in the cited release.",
+          "No evidence in the bundle confirms revenue, purchase commitments or deliveries arising from the prospective agreement."
+        ]
+      },
+      {
+        "ticker": "AMIX",
+        "text": "On October 2, 2026, a secondary news source reported that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology. The underlying company announcement or patent document was not in our sources.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The underlying company announcement or patent document is absent.",
+          "The bundle does not quantify the patent's addressable market, licensing value, or expected revenue contribution.",
+          "Causation between the headline and elevated trading activity is not established."
+        ]
+      },
+      {
+        "ticker": "ZNB",
+        "text": "ZNB's latest company event in our sources was the August 17, 2026 closing of a $10.0 million private placement of 3,412,970 units at $2.93 per unit, each containing one ordinary share and a warrant exercisable at $4.40. Our sources found only older or secondary news, and nothing tied the move to that financing.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The October 2 secondary mover item has no excerpt identifying a company-specific reason for the move.",
+          "The supplied evidence does not establish whether any new company announcement occurred after the August financing."
+        ]
+      },
+      {
+        "ticker": "FACT",
+        "text": "On July 21, 2026, FACT II announced termination of its proposed business combination with Precision Aerospace & Defense Group, and the parties later requested withdrawal of the related S-4 registration statement.",
+        "filingsOnly": true,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "Catalyst coverage is incomplete, with no non-SEC catalyst source in the bundle.",
+          "The bundle does not establish whether another more recent company-specific event exists."
+        ]
+      },
+      {
+        "ticker": "SMX",
+        "text": "no catalyst found in our sources",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide full text or commercial terms for the October 1 company releases.",
+          "The secondary report does not identify the specific update to which investors allegedly reacted."
+        ]
+      }
+    ],
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "costUsd": 0.1343384,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5086,
+        "outputTokens": 1221,
+        "cachedInputTokens": 2250,
+        "reasoningTokens": 432,
+        "durationMs": 10587,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 23959,
+        "outputTokens": 1801,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 16194,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-INTO_POWER_HOUR-v7.13-run2",
+    "store": "market-prod-2026-10-07.db",
+    "kind": "INTO_POWER_HOUR",
+    "day": "2026-10-02",
+    "run": 2,
+    "struckInV11": true,
+    "status": "PUBLISHED",
+    "error": null,
+    "narrativeStruck": false,
+    "summaryStrikes": [],
+    "nameLinesStruck": 0,
+    "lines": 13,
+    "draftSummary": "ZNB ranked first in this range, up 29 percent from the prior close, with only older or secondary news in our sources. AMOD was up 181 percent from the prior close, with fresh news that Alpha Modus completed a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million; secondary coverage reported 51.6 million common shares and matching warrants were issued. AIXI was up 56 percent from the prior close, with fresh news that the company furnished its semi-annual report, which reported a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and described convertible-note financing that may dilute existing holders upon conversion. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "narrative": "ZNB ranked first in this range, up 29 percent from the prior close, with only older or secondary news in our sources. AMOD was up 181 percent from the prior close, with fresh news that Alpha Modus completed a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million; secondary coverage reported 51.6 million common shares and matching warrants were issued. AIXI was up 56 percent from the prior close, with fresh news that the company furnished its semi-annual report, which reported a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and described convertible-note financing that may dilute existing holders upon conversion. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "otherNamesInDraft": [],
+    "otherNamesPublished": [],
+    "countPublished": true,
+    "firstRanked": "ZNB",
+    "firstRankedPublished": true,
+    "labelInDraft": false,
+    "noteWhenPublished": false,
+    "causalJoinPublished": false,
+    "pipelinePublished": [],
+    "pipelineInDraft": 0,
+    "ourEvidencePublished": 0,
+    "disclosureLines": [
+      {
+        "ticker": "AMOD",
+        "text": "AMOD. On October 1, 2026, Alpha Modus reported completing a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million. Secondary coverage reported that the financing issued 51.6 million common shares and matching warrants, and the SEC filed a current report concerning the completed transaction.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The SEC filing excerpt supplied does not state the exact number of PIPE shares, warrant exercise terms, resale restrictions, or registration effectiveness.",
+          "The 51.6 million share and matching-warrant terms are drawn from secondary coverage, rather than a complete primary-source excerpt in the bundle."
+        ]
+      },
+      {
+        "ticker": "AIXI",
+        "text": "AIXI. On October 1, 2026, the company furnished its semi-annual report, which reported a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and described financing through convertible notes that may dilute existing holders upon conversion.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not establish whether the October 1 after-hours filing caused the observed intraday move.",
+          "The bundle does not establish how much of any convertible-note balance has converted or been sold."
+        ]
+      },
+      {
+        "ticker": "QTEX",
+        "text": "QTEX. On October 1, 2026, QTREX reported that a leading quantum-computing company independently tested its interconnect at 20 mK and found channel isolation above 100 dB across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader. QTREX also said it was finalizing a binding definitive agreement with the testing company, with its identity and terms to be disclosed within weeks.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The testing company's identity, the definitive agreement's terms, contract value and execution status were not disclosed in the cited release.",
+          "No evidence in the bundle confirms revenue, purchase commitments or deliveries arising from the prospective agreement."
+        ]
+      },
+      {
+        "ticker": "AMIX",
+        "text": "AMIX. On October 2, 2026, a secondary news source reported that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology. The underlying company announcement or patent document was not in our sources.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The underlying company announcement or patent document is absent.",
+          "The bundle does not quantify the patent's addressable market, licensing value, or expected revenue contribution.",
+          "Causation between the headline and elevated trading activity is not established."
+        ]
+      },
+      {
+        "ticker": "ZNB",
+        "text": "ZNB. Our sources found only older or secondary news, not a fresh catalyst. On August 17, 2026, the company closed a $10.0 million private placement of 3,412,970 units at $2.93 per unit, with each unit containing one ordinary share and a warrant exercisable at $4.40. Nothing in our sources tied the move to that financing.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The October 2 secondary mover item has no excerpt identifying a company-specific reason for the move.",
+          "The supplied evidence does not establish whether any new company announcement occurred after the August financing."
+        ]
+      },
+      {
+        "ticker": "FACT",
+        "text": "FACT. On July 21, 2026, FACT II announced termination of its proposed business combination with Precision Aerospace & Defense Group, and the parties later requested withdrawal of the related S-4 registration statement.",
+        "filingsOnly": true,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "Catalyst coverage is incomplete, with no non-SEC catalyst source in the bundle.",
+          "The bundle does not establish whether another more recent company-specific event exists."
+        ]
+      },
+      {
+        "ticker": "SMX",
+        "text": "SMX. no catalyst found in our sources",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide full text or commercial terms for the October 1 company releases.",
+          "The secondary report does not identify the specific update to which investors allegedly reacted."
+        ]
+      }
+    ],
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "costUsd": 0.130834,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5086,
+        "outputTokens": 1334,
+        "cachedInputTokens": 5083,
+        "reasoningTokens": 516,
+        "durationMs": 10936,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 24009,
+        "outputTokens": 1609,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 14613,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-INTO_POWER_HOUR-v7.13-run3",
+    "store": "market-prod-2026-10-07.db",
+    "kind": "INTO_POWER_HOUR",
+    "day": "2026-10-02",
+    "run": 3,
+    "struckInV11": true,
+    "status": "PUBLISHED",
+    "error": null,
+    "narrativeStruck": false,
+    "summaryStrikes": [],
+    "nameLinesStruck": 0,
+    "lines": 13,
+    "draftSummary": "ZNB ranked first in this range, up 29 percent from the prior close, with only older or secondary news in our sources. AMOD was up 181 percent from the prior close, with fresh news that Alpha Modus completed a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million; secondary coverage reported 51.6 million common shares and matching warrants were issued. AIXI was up 56 percent from the prior close, with fresh news that the company furnished its semi-annual report, which reported a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and described convertible-note financing that may dilute existing holders upon conversion. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "narrative": "ZNB ranked first in this range, up 29 percent from the prior close, with only older or secondary news in our sources. AMOD was up 181 percent from the prior close, with fresh news that Alpha Modus completed a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million; secondary coverage reported 51.6 million common shares and matching warrants were issued. AIXI was up 56 percent from the prior close, with fresh news that the company furnished its semi-annual report, which reported a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and described convertible-note financing that may dilute existing holders upon conversion. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "otherNamesInDraft": [],
+    "otherNamesPublished": [],
+    "countPublished": true,
+    "firstRanked": "ZNB",
+    "firstRankedPublished": true,
+    "labelInDraft": false,
+    "noteWhenPublished": false,
+    "causalJoinPublished": false,
+    "pipelinePublished": [],
+    "pipelineInDraft": 0,
+    "ourEvidencePublished": 0,
+    "disclosureLines": [
+      {
+        "ticker": "AMOD",
+        "text": "AMOD. On October 1, 2026, Alpha Modus reported completing a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million. Secondary coverage reported that the financing issued 51.6 million common shares and matching warrants, while an SEC current report concerned the completed transaction.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The SEC filing excerpt supplied does not state the exact number of PIPE shares, warrant exercise terms, resale restrictions, or registration effectiveness.",
+          "The 51.6 million share and matching-warrant terms are drawn from secondary coverage, rather than a complete primary-source excerpt in the bundle."
+        ]
+      },
+      {
+        "ticker": "AIXI",
+        "text": "AIXI. On October 1, 2026, the company furnished its semi-annual report, which reported a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and described financing through convertible notes that may dilute existing holders upon conversion.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not establish whether the October 1 after-hours filing caused the observed intraday move.",
+          "The bundle does not establish how much of any convertible-note balance has converted or been sold."
+        ]
+      },
+      {
+        "ticker": "QTEX",
+        "text": "QTEX. On October 1, 2026, QTREX reported that a leading quantum-computing company independently tested its interconnect at 20 mK and found channel isolation above 100 dB across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader. QTREX also said it was finalizing a binding definitive agreement with the testing company, with its identity and terms to be disclosed within weeks.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The testing company's identity, the definitive agreement's terms, contract value and execution status were not disclosed in the cited release.",
+          "No evidence in the bundle confirms revenue, purchase commitments or deliveries arising from the prospective agreement."
+        ]
+      },
+      {
+        "ticker": "AMIX",
+        "text": "AMIX. A secondary news source reported on October 2, 2026, that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The underlying company announcement or patent document is absent.",
+          "The bundle does not quantify the patent's addressable market, licensing value, or expected revenue contribution.",
+          "Causation between the headline and elevated trading activity is not established."
+        ]
+      },
+      {
+        "ticker": "ZNB",
+        "text": "ZNB. Our sources found only older or secondary news. On August 17, 2026, the company closed a $10.0 million private placement of 3,412,970 units at $2.93 per unit, with each unit containing one ordinary share and a warrant exercisable at $4.40. Nothing in our sources tied the move to that financing.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The October 2 secondary mover item has no excerpt identifying a company-specific reason for the move.",
+          "The supplied evidence does not establish whether any new company announcement occurred after the August financing."
+        ]
+      },
+      {
+        "ticker": "FACT",
+        "text": "FACT. On July 21, 2026, FACT II announced termination of its proposed business combination with Precision Aerospace & Defense Group, and the parties subsequently requested withdrawal of the related S-4 registration statement.",
+        "filingsOnly": true,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "Catalyst coverage is incomplete, with no non-SEC catalyst source in the bundle.",
+          "The bundle does not establish whether another more recent company-specific event exists."
+        ]
+      },
+      {
+        "ticker": "SMX",
+        "text": "SMX. no catalyst found in our sources",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide full text or commercial terms for the October 1 company releases.",
+          "The secondary report does not identify the specific update to which investors allegedly reacted."
+        ]
+      }
+    ],
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "costUsd": 0.1361888,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5086,
+        "outputTokens": 1293,
+        "cachedInputTokens": 5083,
+        "reasoningTokens": 495,
+        "durationMs": 10422,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 23980,
+        "outputTokens": 1885,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 18170,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-INTO_POWER_HOUR-v7.13-run1",
+    "store": "market-prod-2026-10-07.db",
+    "kind": "INTO_POWER_HOUR",
+    "day": "2026-10-06",
+    "run": 1,
+    "struckInV11": true,
+    "status": "PUBLISHED",
+    "error": null,
+    "narrativeStruck": false,
+    "summaryStrikes": [],
+    "nameLinesStruck": 0,
+    "lines": 13,
+    "draftSummary": "XHG ranked first in this range, up 5 percent from the prior close, with fresh news in our sources: a proposed U.S. AI-business expansion, a planned reduction of mainland China operations, and an intended $5 million to $10 million U.S. investment. OLOX was up 66 percent from the prior close, with no catalyst found in our sources. IPDN was up 40 percent from the prior close, with fresh news in our sources: on October 5, PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system and agreed to lend money to finance a second, representing approximately $1.177 million of initial capital commitments. Of the 12 names the desk covers, 8 had fresh news in our sources.",
+    "narrative": "XHG ranked first in this range, up 5 percent from the prior close, with fresh news in our sources: a proposed U.S. AI-business expansion, a planned reduction of mainland China operations, and an intended $5 million to $10 million U.S. investment. OLOX was up 66 percent from the prior close, with no catalyst found in our sources. IPDN was up 40 percent from the prior close, with fresh news in our sources: on October 5, PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system and agreed to lend money to finance a second, representing approximately $1.177 million of initial capital commitments. Of the 12 names the desk covers, 8 had fresh news in our sources.",
+    "otherNamesInDraft": [],
+    "otherNamesPublished": [],
+    "countPublished": true,
+    "firstRanked": "XHG",
+    "firstRankedPublished": true,
+    "labelInDraft": false,
+    "noteWhenPublished": false,
+    "causalJoinPublished": false,
+    "pipelinePublished": [],
+    "pipelineInDraft": 0,
+    "ourEvidencePublished": 0,
+    "disclosureLines": [
+      {
+        "ticker": "XHG",
+        "text": "XHG. On October 6, 2026, XChange TEC.INC announced a proposed expansion of its U.S. AI business, a planned reduction of mainland China operations, and an intended $5 million to $10 million U.S. investment.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The primary newswire item has no recorded publication timestamp in the bundle.",
+          "The evidence describes a proposed initiative and planned investment, not a completed investment, contract, or regulatory approval."
+        ]
+      },
+      {
+        "ticker": "KAPA",
+        "text": "KAPA. On October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The provided primary-source excerpt does not state the trial sample size, follow-up duration, or full statistical results."
+        ]
+      },
+      {
+        "ticker": "AIIO",
+        "text": "AIIO. On October 6, 2026, Robo.ai reported September revenue exceeding US$100 million and said it expects approximately US$600 million of full-year 2026 revenue.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not include an audited financial statement validating the September revenue update."
+        ]
+      },
+      {
+        "ticker": "VIVK",
+        "text": "VIVK. On October 6, 2026, secondary reports said Vivakor entered a non-binding indication of interest to acquire 100% of Direct Midstream, with financial terms undisclosed.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "No primary company release or SEC filing for the Direct Midstream indication of interest is included in the bundle.",
+          "Financial terms, definitive-agreement status, closing conditions and timing were not disclosed in the cited reports.",
+          "The bundle does not establish the timing relationship between the report and the session high or trading activity."
+        ]
+      },
+      {
+        "ticker": "SXTP",
+        "text": "SXTP. On October 6, 2026, the company reported that it intended to conclude enrollment at 30 subjects in its severe-babesiosis tafenoquine study, unblind the study, report primary and secondary endpoint results in January 2027, and request a pre-sNDA meeting with the FDA that month. No endpoint results were disclosed in the update.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide the unblinded primary or secondary endpoint results.",
+          "The bundle does not establish an FDA decision, acceptance of an sNDA, or approval outcome."
+        ]
+      },
+      {
+        "ticker": "SMXT",
+        "text": "SMXT. On August 21, 2026, the company received a Nasdaq noncompliance notice over its delayed June 30 Form 10-Q after effecting a one-for-12 reverse split intended to support minimum-bid-price compliance.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle contains no company-specific announcement after the August 21, 2026 noncompliance disclosure that explains the current-session move.",
+          "The bundle does not provide an identified buyer, news trigger, or order-flow attribution for the current demand."
+        ]
+      },
+      {
+        "ticker": "AIFA",
+        "text": "AIFA. On October 4, 2026, AIFA announced product progress at its first annual Las Vegas conference, saying two Teach OS modules were live, four additional modules remained under development, and a formal launch was expected in the near term.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The release does not provide revenue, customer, contract-value, or product-launch-date figures.",
+          "No primary-source evidence in the bundle quantifies the commercial impact of Teach OS."
+        ]
+      },
+      {
+        "ticker": "OLOX",
+        "text": "OLOX. no catalyst found in our sources",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not identify the specific source of the observed live demand."
+        ]
+      }
+    ],
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "costUsd": 0.1490282,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5361,
+        "outputTokens": 1530,
+        "cachedInputTokens": 2250,
+        "reasoningTokens": 635,
+        "durationMs": 13182,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 27785,
+        "outputTokens": 1749,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 16771,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-INTO_POWER_HOUR-v7.13-run2",
+    "store": "market-prod-2026-10-07.db",
+    "kind": "INTO_POWER_HOUR",
+    "day": "2026-10-06",
+    "run": 2,
+    "struckInV11": true,
+    "status": "PUBLISHED",
+    "error": null,
+    "narrativeStruck": false,
+    "summaryStrikes": [],
+    "nameLinesStruck": 2,
+    "lines": 13,
+    "draftSummary": "XHG ranked first in this range, up 5 percent from the prior close, with fresh news in our sources: the company announced a proposed U.S. AI-business expansion, a planned reduction of mainland China operations, and an intended $5 million to $10 million U.S. investment. OLOX was up 66 percent from the prior close, with no catalyst found in our sources. IPDN was up 40 percent from the prior close, with fresh news in our sources: on October 5, PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system, representing approximately $1.177 million of initial capital commitments. Of the 12 names the desk covers, 8 had fresh news in our sources.",
+    "narrative": "XHG ranked first in this range, up 5 percent from the prior close, with fresh news in our sources: the company announced a proposed U.S. AI-business expansion, a planned reduction of mainland China operations, and an intended $5 million to $10 million U.S. investment. OLOX was up 66 percent from the prior close, with no catalyst found in our sources. IPDN was up 40 percent from the prior close, with fresh news in our sources: on October 5, PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system, representing approximately $1.177 million of initial capital commitments. Of the 12 names the desk covers, 8 had fresh news in our sources.",
+    "otherNamesInDraft": [],
+    "otherNamesPublished": [],
+    "countPublished": true,
+    "firstRanked": "XHG",
+    "firstRankedPublished": true,
+    "labelInDraft": false,
+    "noteWhenPublished": false,
+    "causalJoinPublished": false,
+    "pipelinePublished": [
+      {
+        "ticker": "XHG",
+        "text": "XHG. On October 6, 2026, XChange TEC announced a proposed expansion of its U.S. AI business, a planned reduction of mainland China operations, and an intended $5 million to $10 million U.S. investment. The evidence describes a proposed initiative and planned investment, not a completed investment, contract, or regulatory approval.",
+        "matched": [
+          "The evidence"
+        ]
+      }
+    ],
+    "pipelineInDraft": 1,
+    "ourEvidencePublished": 0,
+    "disclosureLines": [
+      {
+        "ticker": "XHG",
+        "text": "XHG. On October 6, 2026, XChange TEC announced a proposed expansion of its U.S. AI business, a planned reduction of mainland China operations, and an intended $5 million to $10 million U.S. investment. The evidence describes a proposed initiative and planned investment, not a completed investment, contract, or regulatory approval.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The primary newswire item has no recorded publication timestamp in the bundle.",
+          "The evidence describes a proposed initiative and planned investment, not a completed investment, contract, or regulatory approval."
+        ]
+      },
+      {
+        "ticker": "KAPA",
+        "text": "KAPA. On October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The provided primary-source excerpt does not state the trial sample size, follow-up duration, or full statistical results."
+        ]
+      },
+      {
+        "ticker": "AIIO",
+        "text": "AIIO. On October 6, 2026, Robo.ai reported September revenue exceeding US$100 million and said it expects approximately US$600 million of full-year 2026 revenue.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not include an audited financial statement validating the September revenue update."
+        ]
+      },
+      {
+        "ticker": "VIVK",
+        "text": "VIVK. On October 6, 2026, secondary reports said Vivakor entered a non-binding indication of interest to acquire 100% of Direct Midstream, with financial terms undisclosed.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "No primary company release or SEC filing for the Direct Midstream indication of interest is included in the bundle.",
+          "Financial terms, definitive-agreement status, closing conditions and timing were not disclosed in the cited reports.",
+          "The bundle does not establish the timing relationship between the report and the session high or trading activity."
+        ]
+      },
+      {
+        "ticker": "SXTP",
+        "text": "SXTP. On October 6, 2026, the company reported that it intends to conclude enrollment at 30 subjects in its severe-babesiosis tafenoquine study, unblind the study, report primary and secondary endpoint results in January 2027, and request a pre-sNDA meeting with the FDA that month. No endpoint results were disclosed in this update.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide the unblinded primary or secondary endpoint results.",
+          "The bundle does not establish an FDA decision, acceptance of an sNDA, or approval outcome."
+        ]
+      },
+      {
+        "ticker": "SMXT",
+        "text": "",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle contains no company-specific announcement after the August 21, 2026 noncompliance disclosure that explains the current-session move.",
+          "The bundle does not provide an identified buyer, news trigger, or order-flow attribution for the current demand."
+        ]
+      },
+      {
+        "ticker": "AIFA",
+        "text": "AIFA. On October 4, 2026, AIFA announced product progress at its first annual Las Vegas conference, saying two Teach OS modules were live, four additional modules remained under development, and a formal launch was expected in the near term.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The release does not provide revenue, customer, contract-value, or product-launch-date figures.",
+          "No primary-source evidence in the bundle quantifies the commercial impact of Teach OS."
+        ]
+      },
+      {
+        "ticker": "OLOX",
+        "text": "OLOX. no catalyst found in our sources",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not identify the specific source of the observed live demand."
+        ]
+      }
+    ],
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "costUsd": 0.1500534,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5361,
+        "outputTokens": 2131,
+        "cachedInputTokens": 5358,
+        "reasoningTokens": 1173,
+        "durationMs": 17067,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 27881,
+        "outputTokens": 1745,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 15260,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-INTO_POWER_HOUR-v7.13-run3",
+    "store": "market-prod-2026-10-07.db",
+    "kind": "INTO_POWER_HOUR",
+    "day": "2026-10-06",
+    "run": 3,
+    "struckInV11": true,
+    "status": "PUBLISHED",
+    "error": null,
+    "narrativeStruck": false,
+    "summaryStrikes": [],
+    "nameLinesStruck": 1,
+    "lines": 13,
+    "draftSummary": "XHG ranked first in this range, up 5 percent from the prior close, with fresh news in our sources about a proposed U.S. AI-business expansion, a planned reduction of mainland China operations, and an intended $5 million to $10 million U.S. investment. OLOX was up 66 percent from the prior close, with no catalyst found in our sources. IPDN was up 40 percent from the prior close, with fresh news in our sources that PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system and agreed to lend $588,849.23 to finance a second system, representing approximately $1.177 million of initial capital commitments. Of the 12 names the desk covers, 8 had fresh news in our sources.",
+    "narrative": "XHG ranked first in this range, up 5 percent from the prior close, with fresh news in our sources about a proposed U.S. AI-business expansion, a planned reduction of mainland China operations, and an intended $5 million to $10 million U.S. investment. OLOX was up 66 percent from the prior close, with no catalyst found in our sources. IPDN was up 40 percent from the prior close, with fresh news in our sources that PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system and agreed to lend $588,849.23 to finance a second system, representing approximately $1.177 million of initial capital commitments. Of the 12 names the desk covers, 8 had fresh news in our sources.",
+    "otherNamesInDraft": [],
+    "otherNamesPublished": [],
+    "countPublished": true,
+    "firstRanked": "XHG",
+    "firstRankedPublished": true,
+    "labelInDraft": false,
+    "noteWhenPublished": false,
+    "causalJoinPublished": false,
+    "pipelinePublished": [
+      {
+        "ticker": "XHG",
+        "text": "XHG. On October 6, 2026, the company announced a proposed U.S. AI-business expansion, a planned reduction of mainland China operations, and an intended $5 million to $10 million investment in the U.S. market. The evidence describes a proposed initiative and planned investment, not a completed investment, contract, or regulatory approval.",
+        "matched": [
+          "The evidence"
+        ]
+      }
+    ],
+    "pipelineInDraft": 1,
+    "ourEvidencePublished": 0,
+    "disclosureLines": [
+      {
+        "ticker": "XHG",
+        "text": "XHG. On October 6, 2026, the company announced a proposed U.S. AI-business expansion, a planned reduction of mainland China operations, and an intended $5 million to $10 million investment in the U.S. market. The evidence describes a proposed initiative and planned investment, not a completed investment, contract, or regulatory approval.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The primary newswire item has no recorded publication timestamp in the bundle.",
+          "The evidence describes a proposed initiative and planned investment, not a completed investment, contract, or regulatory approval."
+        ]
+      },
+      {
+        "ticker": "KAPA",
+        "text": "KAPA. On October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The provided primary-source excerpt does not state the trial sample size, follow-up duration, or full statistical results."
+        ]
+      },
+      {
+        "ticker": "AIIO",
+        "text": "AIIO. On October 6, 2026, Robo.ai reported September revenue exceeding US$100 million and said it expects approximately US$600 million of full-year 2026 revenue.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not include an audited financial statement validating the September revenue update."
+        ]
+      },
+      {
+        "ticker": "VIVK",
+        "text": "VIVK. Secondary reports on October 6, 2026 said Vivakor entered a non-binding indication of interest to acquire 100% of Direct Midstream, with financial terms undisclosed.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "No primary company release or SEC filing for the Direct Midstream indication of interest is included in the bundle.",
+          "Financial terms, definitive-agreement status, closing conditions and timing were not disclosed in the cited reports.",
+          "The bundle does not establish the timing relationship between the report and the session high or trading activity."
+        ]
+      },
+      {
+        "ticker": "SXTP",
+        "text": "SXTP. On October 6, 2026, the company reported that it intends to conclude enrollment at 30 subjects in its severe-babesiosis tafenoquine study, unblind the study, report primary and secondary endpoint results in January 2027, and request a pre-sNDA meeting with the FDA that month. No endpoint results were disclosed in the update.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide the unblinded primary or secondary endpoint results.",
+          "The bundle does not establish an FDA decision, acceptance of an sNDA, or approval outcome."
+        ]
+      },
+      {
+        "ticker": "SMXT",
+        "text": "",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle contains no company-specific announcement after the August 21, 2026 noncompliance disclosure that explains the current-session move.",
+          "The bundle does not provide an identified buyer, news trigger, or order-flow attribution for the current demand."
+        ]
+      },
+      {
+        "ticker": "AIFA",
+        "text": "AIFA. On October 4, 2026, AIFA announced product progress at its first annual Las Vegas conference, reporting that two Teach OS modules were live, four additional modules remained under development, and a formal launch was expected in the near term.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The release does not provide revenue, customer, contract-value, or product-launch-date figures.",
+          "No primary-source evidence in the bundle quantifies the commercial impact of Teach OS."
+        ]
+      },
+      {
+        "ticker": "OLOX",
+        "text": "OLOX. no catalyst found in our sources",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not identify the specific source of the observed live demand."
+        ]
+      }
+    ],
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "costUsd": 0.160523,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5361,
+        "outputTokens": 1689,
+        "cachedInputTokens": 5358,
+        "reasoningTokens": 737,
+        "durationMs": 13372,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 27876,
+        "outputTokens": 2296,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 19769,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-14-INTO_RTH-v7.13-run1",
+    "store": "slim-2026-10-14.db",
+    "kind": "INTO_RTH",
+    "day": "2026-10-14",
+    "run": 1,
+    "struckInV11": false,
+    "status": "PUBLISHED",
+    "error": null,
+    "narrativeStruck": false,
+    "summaryStrikes": [],
+    "nameLinesStruck": 0,
+    "lines": 13,
+    "draftSummary": "GENK ranked first in this range, up 79 percent from the prior close, with a secondary news item reporting a $100 million non-binding letter of intent with Chubby Group to sell operations at 47 U.S. restaurants; the reported transaction remains proposed under a letter of intent. AEHL was the next covered gainer, up 182 percent from the prior close, with only older or secondary news about an October 1 at-the-market issuance sales agreement for offerings of up to $100 million of Class A ordinary shares. GLND was next, up 90 percent from the prior close, with only older or secondary news about completion of its 2026 government-approved environmental baseline field program at Jameson Land; it was up 22.5% since the previous checkpoint and printed a new high of day. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "narrative": "GENK ranked first in this range, up 79 percent from the prior close, with a secondary news item reporting a $100 million non-binding letter of intent with Chubby Group to sell operations at 47 U.S. restaurants; the reported transaction remains proposed under a letter of intent. AEHL was the next covered gainer, up 182 percent from the prior close, with only older or secondary news about an October 1 at-the-market issuance sales agreement for offerings of up to $100 million of Class A ordinary shares. GLND was next, up 90 percent from the prior close, with only older or secondary news about completion of its 2026 government-approved environmental baseline field program at Jameson Land; it was up 22.5% since the previous checkpoint and printed a new high of day. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "otherNamesInDraft": [],
+    "otherNamesPublished": [],
+    "countPublished": true,
+    "firstRanked": "GENK",
+    "firstRankedPublished": true,
+    "labelInDraft": false,
+    "noteWhenPublished": false,
+    "causalJoinPublished": false,
+    "pipelinePublished": [],
+    "pipelineInDraft": 0,
+    "ourEvidencePublished": 0,
+    "disclosureLines": [
+      {
+        "ticker": "GENK",
+        "text": "On October 14, 2026, a secondary news item reported that GEN Restaurant Group entered a $100 million non-binding letter of intent with Chubby Group to sell operations at 47 U.S. restaurants; the reported transaction remains proposed under a letter of intent.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not include a primary-source announcement dated October 14, 2026 that confirms the reported letter of intent or its terms.",
+          "A letter of intent does not establish that definitive agreements will be signed or that a transaction will close."
+        ]
+      },
+      {
+        "ticker": "FFAI",
+        "text": "On October 14, 2026, Faraday Future announced that it and FFR signed definitive agreements on October 12 for FFR to acquire FFAI's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The provided excerpt does not state the closing date, all closing conditions, or the final number of shares to be issued in the transaction."
+        ]
+      },
+      {
+        "ticker": "ALP",
+        "text": "On October 14, 2026, a secondary news item reported an $81.7 million four-year GPU-capacity contract with an unnamed AI compute marketplace, including 25% customer prepayment. Separately, an October 6, 2026 filing reported a September 30 binding ALPHA-02 cluster contract with $24 million of new annual contracted revenue.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle contains no primary company release or filing for the October 14 report's $81.7 million value, four-year term, customer identity or 25% prepayment.",
+          "The bundle does not establish whether the October 14 report and the September 30 ALPHA-02 binding contract are the same agreement."
+        ]
+      },
+      {
+        "ticker": "TCRT",
+        "text": "On October 13, 2026, the 8-K stated that Alaunos completed its acquisition of Velaris Therapeutics and that a concurrent private placement generated approximately $350 million in gross proceeds. The filing stated that Velaris holders received Series B and Series C non-voting convertible preferred stock.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The supplied excerpts do not state the number of Series C preferred shares sold in the $350 million private placement.",
+          "The supplied excerpts do not state the conversion restrictions or timing applicable to all preferred shares issued in the October 13 transactions."
+        ]
+      },
+      {
+        "ticker": "VSTM",
+        "text": "On October 14, 2026, Verastem reported positive initial efficacy and updated safety data from the TARGET-D 101 Phase 1/2 trial, while a secondary news item reported a concurrent underwritten offering of 30.94 million shares priced at $8.00 for $247.5 million in gross proceeds.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The supplied clinical excerpt does not include the numerical efficacy and safety results.",
+          "The bundle lacks the SEC prospectus and closing confirmation for the reported October 14, 2026 offering."
+        ]
+      },
+      {
+        "ticker": "ARBB",
+        "text": "no catalyst found in our sources",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide a timestamped company announcement tied to the observed move.",
+          "The marketing-article publication timestamps are not fully specified in the source metadata."
+        ]
+      },
+      {
+        "ticker": "TC",
+        "text": "our research reached no conclusion",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle's catalyst coverage is incomplete.",
+          "No sufficient current company-specific event is established by the available sources."
+        ]
+      }
+    ],
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "costUsd": 0.13181199999999998,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4902,
+        "outputTokens": 1253,
+        "cachedInputTokens": 2250,
+        "reasoningTokens": 456,
+        "durationMs": 9998,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 23842,
+        "outputTokens": 1698,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 14909,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-14-INTO_POWER_HOUR-v7.13-run1",
+    "store": "slim-2026-10-14.db",
+    "kind": "INTO_POWER_HOUR",
+    "day": "2026-10-14",
+    "run": 1,
+    "struckInV11": false,
+    "status": "PUBLISHED",
+    "error": null,
+    "narrativeStruck": false,
+    "summaryStrikes": [],
+    "nameLinesStruck": 0,
+    "lines": 13,
+    "draftSummary": "TC ranked first in this range, up 7 percent from the prior close, with our research reaching no conclusion. MXCT was up 31 percent from the prior close, with fresh news in our sources: on October 14, 2026, MaxCyte reported preliminary third-quarter 2026 core revenue of about $8.1 million, up 26 percent year over year, and raised full-year 2026 revenue guidance to about $34 million, including a core-business outlook of about $28 million. GENK was up 12 percent from the prior close, with fresh news in our sources: on October 14, 2026, a secondary news item reported that GEN Restaurant Group entered a $100 million non-binding letter of intent with Chubby Group to sell operations at 47 U.S. restaurants, with the reported transaction remaining proposed under a letter of intent. Of the 12 names the desk covers, 3 had fresh news in our sources.",
+    "narrative": "TC ranked first in this range, up 7 percent from the prior close, with our research reaching no conclusion. MXCT was up 31 percent from the prior close, with fresh news in our sources: on October 14, 2026, MaxCyte reported preliminary third-quarter 2026 core revenue of about $8.1 million, up 26 percent year over year, and raised full-year 2026 revenue guidance to about $34 million, including a core-business outlook of about $28 million. GENK was up 12 percent from the prior close, with fresh news in our sources: on October 14, 2026, a secondary news item reported that GEN Restaurant Group entered a $100 million non-binding letter of intent with Chubby Group to sell operations at 47 U.S. restaurants, with the reported transaction remaining proposed under a letter of intent. Of the 12 names the desk covers, 3 had fresh news in our sources.",
+    "otherNamesInDraft": [],
+    "otherNamesPublished": [],
+    "countPublished": true,
+    "firstRanked": "TC",
+    "firstRankedPublished": true,
+    "labelInDraft": false,
+    "noteWhenPublished": false,
+    "causalJoinPublished": false,
+    "pipelinePublished": [
+      {
+        "ticker": "MXCT",
+        "text": "MXCT. On October 14, 2026, MaxCyte reported preliminary third-quarter 2026 core revenue of about $8.1 million, up 26 percent year over year, and raised full-year 2026 revenue guidance to about $34 million, including a core-business revenue outlook of about $28 million. The bundle does not provide final third-quarter financial results or the full guidance assumptions.",
+        "matched": [
+          "The bundle"
+        ]
+      },
+      {
+        "ticker": "DFNS",
+        "text": "DFNS. On October 14, 2026, a secondary news item reported that Positech completed its first shipment of heavy-duty single-axis rotators under a $3.9 million order from an Israeli client. The bundle does not include the underlying company release, contract terms, remaining order value, delivery schedule, or customer identity.",
+        "matched": [
+          "The bundle"
+        ]
+      },
+      {
+        "ticker": "BLRK",
+        "text": "BLRK. On August 3, 2026, Bluerock announced a proposed merger with Yellow.ai, with transaction materials describing an implied pro forma equity value of approximately $550 million, assuming no BLRK shareholder redemptions, and $30 million of committed PIPE financing. The bundle contains no fresh company announcement tied to the observed session.",
+        "matched": [
+          "The bundle"
+        ]
+      }
+    ],
+    "pipelineInDraft": 3,
+    "ourEvidencePublished": 0,
+    "disclosureLines": [
+      {
+        "ticker": "GENK",
+        "text": "GENK. On October 14, 2026, a secondary news item reported that GEN Restaurant Group entered a $100 million non-binding letter of intent with Chubby Group to sell operations at 47 U.S. restaurants. The reported transaction remains proposed under a letter of intent.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not include a primary-source announcement dated October 14, 2026 that confirms the reported letter of intent or its terms.",
+          "A letter of intent does not establish that definitive agreements will be signed or that a transaction will close."
+        ]
+      },
+      {
+        "ticker": "MXCT",
+        "text": "MXCT. On October 14, 2026, MaxCyte reported preliminary third-quarter 2026 core revenue of about $8.1 million, up 26 percent year over year, and raised full-year 2026 revenue guidance to about $34 million, including a core-business revenue outlook of about $28 million. The bundle does not provide final third-quarter financial results or the full guidance assumptions.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide final third-quarter financial results or the full guidance assumptions."
+        ]
+      },
+      {
+        "ticker": "DFNS",
+        "text": "DFNS. On October 14, 2026, a secondary news item reported that Positech completed its first shipment of heavy-duty single-axis rotators under a $3.9 million order from an Israeli client. The bundle does not include the underlying company release, contract terms, remaining order value, delivery schedule, or customer identity.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not include the underlying company release, contract terms, remaining order value, delivery schedule, or customer identity.",
+          "The source says the first shipment was completed, but does not establish that the full order was fulfilled."
+        ]
+      },
+      {
+        "ticker": "BLRK",
+        "text": "BLRK. On August 3, 2026, Bluerock announced a proposed merger with Yellow.ai, with transaction materials describing an implied pro forma equity value of approximately $550 million, assuming no BLRK shareholder redemptions, and $30 million of committed PIPE financing. The bundle contains no fresh company announcement tied to the observed session.",
+        "filingsOnly": true,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle contains no fresh company announcement tied to the observed session.",
+          "Non-SEC catalyst coverage is absent and overall coverage is flagged incomplete, so it cannot support a definitive claim that no fresh catalyst exists.",
+          "Closing timing, shareholder-redemption outcome, final transaction capitalization, and PIPE share terms are not established by the supplied excerpts."
+        ]
+      },
+      {
+        "ticker": "TC",
+        "text": "TC. our research reached no conclusion",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "Coverage is incomplete, including no reported current share count.",
+          "No primary company-specific announcement explaining the October 14 trading move was located in the bundle."
+        ]
+      },
+      {
+        "ticker": "XTER",
+        "text": "XTER. our research reached no conclusion",
+        "filingsOnly": true,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "No company IR, newsroom, newswire, or other non-SEC catalyst source was located.",
+          "An announcement published outside an SEC filing would not have been captured.",
+          "The evidence does not establish a fresh company-specific catalyst as of the bundle date."
+        ]
+      },
+      {
+        "ticker": "IACO",
+        "text": "IACO. our research reached no conclusion",
+        "filingsOnly": true,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "Catalyst coverage is incomplete: no company IR, newsroom, or non-SEC newswire source was located.",
+          "No fresh company-specific announcement is included in the SEC evidence after the August 13, 2026 10-Q.",
+          "The observed elevated relative volume cannot be attributed to a specific catalyst or to demand flow from this bundle."
+        ]
+      },
+      {
+        "ticker": "SOUL",
+        "text": "SOUL. our research reached no conclusion",
+        "filingsOnly": true,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "No company IR, newsroom, or newswire source was available, so an announcement outside SEC filings may not have been captured.",
+          "The supplied evidence does not establish whether the amended transaction closed, the final merger consideration, or the number of possible Pubco shares.",
+          "No sufficient fresh company-specific catalyst can be determined from the incomplete SEC-only coverage."
+        ]
+      }
+    ],
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "costUsd": 0.1264318,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4727,
+        "outputTokens": 1442,
+        "cachedInputTokens": 2250,
+        "reasoningTokens": 749,
+        "durationMs": 12676,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 23819,
+        "outputTokens": 1424,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 17003,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-14-AFTER_HOURS-v7.13-run1",
+    "store": "slim-2026-10-14.db",
+    "kind": "AFTER_HOURS",
+    "day": "2026-10-14",
+    "run": 1,
+    "struckInV11": false,
+    "status": "PUBLISHED",
+    "error": null,
+    "narrativeStruck": true,
+    "summaryStrikes": [
+      {
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The opening claim that none of the counted names ran at least 50 percent above the prior close is not among the narrative facts given. The rest matches the facts and the named names' own research."
+      }
+    ],
+    "nameLinesStruck": 1,
+    "lines": 13,
+    "draftSummary": "None of the counted names ran at least 50 percent above the prior close. TC ranked first in this range, up 2 percent from the prior close, with our research reaching no conclusion. NXGL was up 32 percent from the prior close, with only older or secondary news in our sources: NEXGEL said on October 12, 2026 that its previously approved 1-for-20 reverse stock split had become effective, with split-adjusted Nasdaq trading beginning at the market open. MXCT was up 30 percent from the prior close, with fresh news in our sources: on October 14, 2026, MaxCyte reported preliminary third-quarter 2026 core revenue of about $8.1 million, up 26 percent year over year, and raised full-year 2026 revenue guidance to about $34 million, including a core-business outlook of about $28 million. NXGL was down 23.2% since the previous checkpoint. Of the 12 names the desk covers, 3 had fresh news in our sources.",
+    "narrative": null,
+    "otherNamesInDraft": [],
+    "otherNamesPublished": [],
+    "countPublished": false,
+    "firstRanked": "TC",
+    "firstRankedPublished": false,
+    "labelInDraft": false,
+    "noteWhenPublished": false,
+    "causalJoinPublished": false,
+    "pipelinePublished": [
+      {
+        "ticker": "SOUL",
+        "text": "On August 28, 2026, SEC-only evidence showed that Soulpower, SWB Holdings and SWB entered a second amendment to their proposed transaction, including a contemplated $5.0 million cash contribution and potential issuance of Pubco Class A ordinary shares tied to milestones and earnout targets. The supplied evidence did not establish final economics or closing status. SOUL lost $10.49 support since the previous checkpoint.",
+        "matched": [
+          "SEC-only",
+          "supplied"
+        ]
+      }
+    ],
+    "pipelineInDraft": 1,
+    "ourEvidencePublished": 0,
+    "disclosureLines": [
+      {
+        "ticker": "GENK",
+        "text": "GEN Restaurant Group was reported on October 14, 2026 to have entered a $100 million non-binding letter of intent with Chubby Group to sell operations at 47 U.S. restaurants. The reported transaction remained proposed under the letter of intent.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not include a primary-source announcement dated October 14, 2026 that confirms the reported letter of intent or its terms.",
+          "A letter of intent does not establish that definitive agreements will be signed or that a transaction will close."
+        ]
+      },
+      {
+        "ticker": "MXCT",
+        "text": "On October 14, 2026, MaxCyte reported preliminary third-quarter 2026 core revenue of about $8.1 million, up 26 percent year over year, and raised full-year 2026 revenue guidance to about $34 million, including a core-business revenue outlook of about $28 million. Our sources did not provide final third-quarter results or the full guidance assumptions.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide final third-quarter financial results or the full guidance assumptions."
+        ]
+      },
+      {
+        "ticker": "DFNS",
+        "text": "A secondary news item reported on October 14, 2026 that Positech completed its first shipment of heavy-duty single-axis rotators under a $3.9 million order from an Israeli client. Our sources did not include the underlying company release, contract terms, remaining order value, delivery schedule or customer identity.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not include the underlying company release, contract terms, remaining order value, delivery schedule, or customer identity.",
+          "The source says the first shipment was completed, but does not establish that the full order was fulfilled."
+        ]
+      },
+      {
+        "ticker": "IACQ",
+        "text": "IACQ reported in a September 2, 2026 Form 8-K that it dismissed its certifying accountant. Our sources did not establish whether the change involved a reportable disagreement or another accounting issue.",
+        "filingsOnly": true,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "No company IR, newsroom, newswire, or non-SEC catalyst source was located.",
+          "The bundle does not establish whether the accountant change involved a reportable disagreement or other accounting issue.",
+          "The available catalyst coverage does not establish a fresh event tied to current trading."
+        ]
+      },
+      {
+        "ticker": "BLRK",
+        "text": "On August 3, 2026, Bluerock announced a proposed merger with Yellow.ai. Transaction materials described an implied pro forma equity value of approximately $550 million, assuming no BLRK shareholder redemptions, and $30 million of committed PIPE financing. Our sources had no fresh company announcement tied to the observed session.",
+        "filingsOnly": true,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle contains no fresh company announcement tied to the observed session.",
+          "Non-SEC catalyst coverage is absent and overall coverage is flagged incomplete, so it cannot support a definitive claim that no fresh catalyst exists.",
+          "Closing timing, shareholder-redemption outcome, final transaction capitalization, and PIPE share terms are not established by the supplied excerpts."
+        ]
+      },
+      {
+        "ticker": "RAC",
+        "text": "A January 26, 2026 NYSE notice stated that Rithm Acquisition Corp. was not in compliance with the exchange's minimum public stockholders requirement. Our sources did not establish a later company-specific development outside SEC filings.",
+        "filingsOnly": true,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "Catalyst coverage is incomplete because no company newsroom, investor-relations source, or non-SEC newswire source was located.",
+          "The bundle does not establish whether the company announced a later company-specific development outside SEC filings."
+        ]
+      },
+      {
+        "ticker": "TC",
+        "text": "TC. Our research reached no conclusion.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "Coverage is incomplete, including no reported current share count.",
+          "No primary company-specific announcement explaining the October 14 trading move was located in the bundle."
+        ]
+      },
+      {
+        "ticker": "SOUL",
+        "text": "On August 28, 2026, SEC-only evidence showed that Soulpower, SWB Holdings and SWB entered a second amendment to their proposed transaction, including a contemplated $5.0 million cash contribution and potential issuance of Pubco Class A ordinary shares tied to milestones and earnout targets. The supplied evidence did not establish final economics or closing status. SOUL lost $10.49 support since the previous checkpoint.",
+        "filingsOnly": true,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "No company IR, newsroom, or newswire source was available, so an announcement outside SEC filings may not have been captured.",
+          "The supplied evidence does not establish whether the amended transaction closed, the final merger consideration, or the number of possible Pubco shares.",
+          "No sufficient fresh company-specific catalyst can be determined from the incomplete SEC-only coverage."
+        ]
+      }
+    ],
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "costUsd": 0.1702022,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4905,
+        "outputTokens": 2181,
+        "cachedInputTokens": 2250,
+        "reasoningTokens": 1271,
+        "durationMs": 19938,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 25291,
+        "outputTokens": 3272,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 27572,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-INTO_RTH-v7.13-run1",
+    "store": "market-prod-2026-10-07.db",
+    "kind": "INTO_RTH",
+    "day": "2026-10-06",
+    "run": 1,
+    "struckInV11": false,
+    "status": "PUBLISHED",
+    "error": null,
+    "narrativeStruck": false,
+    "summaryStrikes": [],
+    "nameLinesStruck": 1,
+    "lines": 13,
+    "draftSummary": "XHG ranked first in this range, up 60 percent from the prior close, with fresh news in our sources that XChange TEC intends to reduce mainland China operations, explore expansion of its U.S. AI business and invest between $5 million and $10 million in the U.S. market. AIXI was up 108 percent from the prior close, with older or secondary news in our sources: an October 1 semiannual filing reported a 99.12% year-over-year revenue decline and reliance on financing activities, including convertible notes, to support operations; AIXI was down 14.4% since the previous checkpoint. IPDN was up 107 percent from the prior close, with fresh news in our sources that PDN Intelligence entered agreements on October 5 involving two NVIDIA B300 systems and about $1.2 million of initial commitments. Of the 12 names the desk covers, 6 had fresh news in our sources.",
+    "narrative": "XHG ranked first in this range, up 60 percent from the prior close, with fresh news in our sources that XChange TEC intends to reduce mainland China operations, explore expansion of its U.S. AI business and invest between $5 million and $10 million in the U.S. market. AIXI was up 108 percent from the prior close, with older or secondary news in our sources: an October 1 semiannual filing reported a 99.12% year-over-year revenue decline and reliance on financing activities, including convertible notes, to support operations; AIXI was down 14.4% since the previous checkpoint. IPDN was up 107 percent from the prior close, with fresh news in our sources that PDN Intelligence entered agreements on October 5 involving two NVIDIA B300 systems and about $1.2 million of initial commitments. Of the 12 names the desk covers, 6 had fresh news in our sources.",
+    "otherNamesInDraft": [],
+    "otherNamesPublished": [],
+    "countPublished": true,
+    "firstRanked": "XHG",
+    "firstRankedPublished": true,
+    "labelInDraft": false,
+    "noteWhenPublished": false,
+    "causalJoinPublished": false,
+    "pipelinePublished": [],
+    "pipelineInDraft": 0,
+    "ourEvidencePublished": 0,
+    "disclosureLines": [
+      {
+        "ticker": "XHG",
+        "text": "Secondary coverage dated October 6, 2026, reported that XChange TEC intends to reduce its mainland China operations, explore expansion of its U.S. AI business and invest between $5 million and $10 million in the U.S. market. No primary company release was included in our sources.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle contains secondary coverage only, not the underlying company announcement.",
+          "The timing, funding source, operational scope, and execution milestones for the initiative are not stated."
+        ]
+      },
+      {
+        "ticker": "BRN",
+        "text": "On October 5, 2026, Barnwell entered a definitive agreement to sell its Canadian oil and natural gas business for a C$9 million base purchase price, subject to working-capital and indebtedness adjustments. The consideration includes C$4 million in cash and a 5% gross overriding royalty, with the buyer holding an option after closing to acquire the royalty for C$5 million.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The closing date, final working-capital and indebtedness adjustments, and whether the royalty buyout option will be exercised are not established in the bundle."
+        ]
+      },
+      {
+        "ticker": "AIIO",
+        "text": "On October 6, 2026, Robo.ai reported September revenue exceeding US$100 million and said it expects approximately US$600 million of full-year 2026 revenue. Our sources do not include an audited financial statement validating the September revenue update.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not include an audited financial statement validating the September revenue update."
+        ]
+      },
+      {
+        "ticker": "SXTP",
+        "text": "Secondary coverage on October 6, 2026, focused on SXTP's planned presentation of interim-analysis data from its tafenoquine babesiosis clinical trial. Our sources do not provide the interim-analysis results, the DSMB recommendation or a primary company release reporting the presentation outcome.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide the interim-analysis results, DSMB recommendation, or a company primary release reporting the October 6 presentation outcome."
+        ]
+      },
+      {
+        "ticker": "IPDN",
+        "text": "On October 5, 2026, PDN Intelligence entered agreements to acquire one NVIDIA B300 system for $588.6 thousand for lease to Goodwill Labs and lend Goodwill $588.8 thousand to finance a second system, for about $1.2 million of initial commitments for two systems. Our sources do not establish when either system will be deployed, the economics of the lease and loan or revenue from the arrangements.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not establish when either system will be deployed, the economics of the lease and loan, or revenue generated from the arrangements."
+        ]
+      },
+      {
+        "ticker": "KAPA",
+        "text": "On October 6, 2026, Kairos reported positive, statistically significant interim Phase 2 efficacy data for ENV-105 plus apalutamide in metastatic castration-resistant prostate cancer, including 17.7-month median progression-free survival versus 2 months in the reported comparison. Our sources do not state the interim-analysis sample size or provide the full underlying dataset.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The provided release excerpt does not state the interim-analysis sample size or provide the full underlying dataset.",
+          "The bundle does not establish subsequent regulatory outcomes or final trial results."
+        ]
+      },
+      {
+        "ticker": "LCFY",
+        "text": "",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle contains no primary company release, SEC filing, or transaction agreement confirming the reported acquisition terms.",
+          "The bundle does not establish whether the acquisition has closed."
+        ]
+      },
+      {
+        "ticker": "VIVK",
+        "text": "Secondary coverage reported on October 6, 2026, that Vivakor signed a non-binding indication of interest to acquire 100% of Direct Midstream's membership interests. Financial terms were not disclosed, and no primary company release or SEC filing verifying the reported transaction appears in our sources.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle contains no primary company release or SEC filing verifying the Direct Midstream indication of interest.",
+          "Financial terms, definitive-agreement status, required approvals and closing conditions for the reported Direct Midstream transaction are not disclosed in the available coverage.",
+          "The October 6 report is secondary coverage only."
+        ]
+      },
+      {
+        "ticker": "AIXI",
+        "text": "On October 1, 2026, a semiannual filing reported a 99.12% year-over-year revenue decline and stated that the group relied on financing activities, including convertible notes, to support operations. Our sources do not identify a favourable company-specific event explaining the current session price increase.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The evidence does not identify a favourable company-specific event that explains the current 168.2% session price increase.",
+          "The bundle does not provide intraday timing linking the filing to the current move."
+        ]
+      },
+      {
+        "ticker": "OLOX",
+        "text": "no catalyst found in our sources",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not identify the specific source of the observed live demand."
+        ]
+      }
+    ],
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "costUsd": 0.147443,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5103,
+        "outputTokens": 2102,
+        "cachedInputTokens": 2250,
+        "reasoningTokens": 1165,
+        "durationMs": 18222,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 27110,
+        "outputTokens": 1773,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 15029,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-INTO_RTH-v7.13-run1",
+    "store": "market-prod-2026-10-07.db",
+    "kind": "INTO_RTH",
+    "day": "2026-10-05",
+    "run": 1,
+    "struckInV11": false,
+    "status": "PUBLISHED",
+    "error": null,
+    "narrativeStruck": false,
+    "summaryStrikes": [],
+    "nameLinesStruck": 3,
+    "lines": 13,
+    "draftSummary": "MI ranked first in this range, up 213 percent from the prior close, with only older or secondary news in our sources. SAIQ was up 286 percent from the prior close, with only older or secondary news in our sources. APUS was up 64 percent from the prior close, with fresh news in our sources: MindWave announced an agreement with BlockAssure to build and operate AssureChain, an insurance and reinsurance network. Since the previous checkpoint, MI was up 221.3 percent and printed a new high of day, while SAIQ was down 37.5 percent. Of the 12 names the desk covers, 2 had fresh news in our sources.",
+    "narrative": "MI ranked first in this range, up 213 percent from the prior close, with only older or secondary news in our sources. SAIQ was up 286 percent from the prior close, with only older or secondary news in our sources. APUS was up 64 percent from the prior close, with fresh news in our sources: MindWave announced an agreement with BlockAssure to build and operate AssureChain, an insurance and reinsurance network. Of the 12 names the desk covers, 2 had fresh news in our sources.",
+    "otherNamesInDraft": [],
+    "otherNamesPublished": [],
+    "countPublished": true,
+    "firstRanked": "MI",
+    "firstRankedPublished": true,
+    "labelInDraft": false,
+    "noteWhenPublished": false,
+    "causalJoinPublished": false,
+    "pipelinePublished": [
+      {
+        "ticker": "SAIQ",
+        "text": "SAIQ. On October 1, 2026, WISeSat.Space completed its business combination with Columbus Acquisition Corp., and its ordinary shares began Nasdaq trading as SAIQ on October 2. The primary-source excerpts did not state a transaction value or other material operating result.",
+        "matched": [
+          "excerpts"
+        ]
+      },
+      {
+        "ticker": "VEEA",
+        "text": "VEEA. On October 1, 2026, Veea announced an agreement with TROLLEE Holdings for phased deployment of VeeaONE across 1,000 unattended stores. The supplied evidence did not disclose the contract value, deployment schedule, minimum purchase commitments, exclusivity or expected revenue.",
+        "matched": [
+          "supplied"
+        ]
+      }
+    ],
+    "pipelineInDraft": 3,
+    "ourEvidencePublished": 0,
+    "disclosureLines": [
+      {
+        "ticker": "ALEC",
+        "text": "",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The provided excerpts do not state the collaboration's upfront payment, milestones, royalties, or total transaction value.",
+          "The bundle does not establish whether any specific intraday trading activity was directly caused by the announcement."
+        ]
+      },
+      {
+        "ticker": "APUS",
+        "text": "APUS. On October 5, secondary coverage described MindWave's agreement with BlockAssure to build and operate AssureChain, an end-to-end insurance and reinsurance network. The coverage described a two-year contract under which MindWave is to receive 20% of planned token supply, while fees were not disclosed.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The primary newswire source in the bundle has no usable publication timestamp.",
+          "Contract fees, revenue recognition, token valuation, and token-sale restrictions are not stated in the supplied excerpts.",
+          "The bundle does not establish whether the current move began before or after the BlockAssure announcement."
+        ]
+      },
+      {
+        "ticker": "MI",
+        "text": "MI. On September 30, 2026, NFT Ltd disclosed an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million. The filing describes a private placement subject to closing conditions, not a confirmed completed issuance.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not confirm that the September 30 private placement closed, that the shares were issued, or when any issued shares could be resold into the public market.",
+          "The bundle does not provide a current shares-outstanding figure after the August offering and subsequent September placement agreement."
+        ]
+      },
+      {
+        "ticker": "EZRA",
+        "text": "",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not establish how much of the sale proceeds remains available after debt repayment, transaction costs, holdbacks and other obligations.",
+          "The evidence does not establish whether the favorable news caused the session's negative price move."
+        ]
+      },
+      {
+        "ticker": "SAIQ",
+        "text": "SAIQ. On October 1, 2026, WISeSat.Space completed its business combination with Columbus Acquisition Corp., and its ordinary shares began Nasdaq trading as SAIQ on October 2. The primary-source excerpts did not state a transaction value or other material operating result.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The evidence bundle does not provide a primary-source transaction valuation, redemption outcome, post-closing cash balance, or detailed post-combination capitalization.",
+          "Coverage is marked incomplete, including no reported share count."
+        ]
+      },
+      {
+        "ticker": "RETO",
+        "text": "",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not disclose the substance of the October 1 news-pending halt.",
+          "The bundle does not confirm that the September 17 registered direct offering closed.",
+          "The bundle does not establish whether, or how many, warrants have been exercised."
+        ]
+      },
+      {
+        "ticker": "VEEA",
+        "text": "VEEA. On October 1, 2026, Veea announced an agreement with TROLLEE Holdings for phased deployment of VeeaONE across 1,000 unattended stores. The supplied evidence did not disclose the contract value, deployment schedule, minimum purchase commitments, exclusivity or expected revenue.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The agreement's contract value, deployment schedule, minimum purchase commitments, exclusivity and expected revenue are not disclosed in the supplied evidence.",
+          "A secondary source title reports $1.65 million of related-party loans, but no primary loan document or detailed terms are supplied."
+        ]
+      },
+      {
+        "ticker": "VCIG",
+        "text": "VCIG. On September 30, 2026, VCIG disclosed an equity purchase agreement entered on September 23 that gave it the right, subject to conditions, to direct Hudson Global Ventures to purchase up to $125 million of ordinary shares. The same filing disclosed Dune and FirstFire convertible-note transactions, while a September 29 F-1 sought registration of up to 100,000,000 ELOC purchase shares plus warrant and conversion-related shares.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The evidence does not establish that Hudson has received a put notice or purchased any ELOC shares.",
+          "The evidence does not establish that the September 29 F-1 has become effective.",
+          "The bundle does not establish whether the current price and volume move is primarily a reaction to the financing disclosure or to other order-flow factors."
+        ]
+      }
+    ],
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "costUsd": 0.2004794,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 6143,
+        "outputTokens": 2339,
+        "cachedInputTokens": 2250,
+        "reasoningTokens": 1314,
+        "durationMs": 19969,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30426,
+        "outputTokens": 3737,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 31881,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-AFTER_HOURS-v7.13-run1",
+    "store": "market-prod-2026-10-07.db",
+    "kind": "AFTER_HOURS",
+    "day": "2026-10-06",
+    "run": 1,
+    "struckInV11": false,
+    "status": "PUBLISHED",
+    "error": null,
+    "narrativeStruck": false,
+    "summaryStrikes": [],
+    "nameLinesStruck": 2,
+    "lines": 13,
+    "draftSummary": "XHG ranked first in this range, up 25 percent from the prior close, with fresh news in our sources that the company announced a proposed U.S. AI-business expansion, a planned reduction of mainland China operations and an intended $5 million to $10 million U.S. investment. XHG was up 11.7% since the previous checkpoint. IPDN was up 50 percent from the prior close, with fresh news in our sources that PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system, representing approximately $1.177 million of initial capital commitments. OLOX was up 45 percent from the prior close, with no catalyst found in our sources. OLOX lost $1.31 support. Of the 12 names the desk covers, 8 had fresh news in our sources.",
+    "narrative": "XHG ranked first in this range, up 25 percent from the prior close, with fresh news in our sources that the company announced a proposed U.S. AI-business expansion, a planned reduction of mainland China operations and an intended $5 million to $10 million U.S. investment. XHG was up 11.7% since the previous checkpoint. IPDN was up 50 percent from the prior close, with fresh news in our sources that PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system, representing approximately $1.177 million of initial capital commitments. Of the 12 names the desk covers, 8 had fresh news in our sources.",
+    "otherNamesInDraft": [],
+    "otherNamesPublished": [],
+    "countPublished": true,
+    "firstRanked": "XHG",
+    "firstRankedPublished": true,
+    "labelInDraft": false,
+    "noteWhenPublished": false,
+    "causalJoinPublished": false,
+    "pipelinePublished": [],
+    "pipelineInDraft": 0,
+    "ourEvidencePublished": 0,
+    "disclosureLines": [
+      {
+        "ticker": "XHG",
+        "text": "On October 6, 2026, XChange TEC announced a proposed U.S. AI-business expansion, a planned reduction of its mainland China operations and an intended U.S. investment of between $5 million and $10 million.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The primary newswire item has no recorded publication timestamp in the bundle.",
+          "The evidence describes a proposed initiative and planned investment, not a completed investment, contract, or regulatory approval."
+        ]
+      },
+      {
+        "ticker": "KAPA",
+        "text": "On October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The provided primary-source excerpt does not state the trial sample size, follow-up duration, or full statistical results."
+        ]
+      },
+      {
+        "ticker": "AIIO",
+        "text": "On October 6, 2026, Robo.ai reported September revenue exceeding US$100 million and said it expected approximately US$600 million of full-year 2026 revenue.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not include an audited financial statement validating the September revenue update."
+        ]
+      },
+      {
+        "ticker": "VIVK",
+        "text": "Secondary reports on October 6, 2026 said Vivakor entered a non-binding indication of interest to acquire 100% of Direct Midstream, with financial terms undisclosed.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "No primary company release or SEC filing for the Direct Midstream indication of interest is included in the bundle.",
+          "Financial terms, definitive-agreement status, closing conditions and timing were not disclosed in the cited reports.",
+          "The bundle does not establish the timing relationship between the report and the session high or trading activity."
+        ]
+      },
+      {
+        "ticker": "SXTP",
+        "text": "On October 6, 2026, the company reported that it intended to conclude enrollment at 30 subjects in its severe-babesiosis tafenoquine study, unblind the study, report primary and secondary endpoint results in January 2027 and request a pre-sNDA meeting with the FDA that month. No endpoint results were disclosed in the update.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide the unblinded primary or secondary endpoint results.",
+          "The bundle does not establish an FDA decision, acceptance of an sNDA, or approval outcome."
+        ]
+      },
+      {
+        "ticker": "SMXT",
+        "text": "",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle contains no company-specific announcement after the August 21, 2026 noncompliance disclosure that explains the current-session move.",
+          "The bundle does not provide an identified buyer, news trigger, or order-flow attribution for the current demand."
+        ]
+      },
+      {
+        "ticker": "AIFA",
+        "text": "On October 4, 2026, AIFA announced product progress at its first annual Las Vegas conference, saying two Teach OS modules were live, four additional modules remained under development and a formal launch was expected in the near term.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The release does not provide revenue, customer, contract-value, or product-launch-date figures.",
+          "No primary-source evidence in the bundle quantifies the commercial impact of Teach OS."
+        ]
+      },
+      {
+        "ticker": "OLOX",
+        "text": "no catalyst found in our sources",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not identify the specific source of the observed live demand."
+        ]
+      }
+    ],
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "costUsd": 0.1664068,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5410,
+        "outputTokens": 1674,
+        "cachedInputTokens": 2250,
+        "reasoningTokens": 758,
+        "durationMs": 13857,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 27879,
+        "outputTokens": 2590,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 21597,
+        "role": "checker"
+      }
+    ]
+  }
+]

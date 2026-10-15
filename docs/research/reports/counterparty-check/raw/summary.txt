@@ -1,0 +1,10 @@
+store A:/mointel/data/slim-2026-10-14.db; 2026-10-14 INTO_RTH; covered GENK, TC, FFAI, ALP, MXCT, AEHL, QNRX, VSTM, TCRT, GLND, ARBB, FFR; FFR move 8 percent, rank #12
+v7 version 13; checker prompt V6 17; 5 runs; stop $2
+
+2026-10-14-INTO_RTH-counterparty-run1: PUBLISHED; FFAI draft names FFR yes; PUBLISHED names FFR yes; FFR's own facts in it no; strikes none; $0.1403
+2026-10-14-INTO_RTH-counterparty-run2: PUBLISHED; FFAI draft names FFR yes; PUBLISHED names FFR yes; FFR's own facts in it no; strikes none; $0.1348
+2026-10-14-INTO_RTH-counterparty-run3: PUBLISHED; FFAI draft names FFR yes; PUBLISHED names FFR yes; FFR's own facts in it no; strikes none; $0.1364
+2026-10-14-INTO_RTH-counterparty-run4: PUBLISHED; FFAI draft names FFR yes; PUBLISHED names FFR yes; FFR's own facts in it no; strikes none; $0.1338
+2026-10-14-INTO_RTH-counterparty-run5: PUBLISHED; FFAI draft names FFR yes; PUBLISHED names FFR yes; FFR's own facts in it no; strikes none; $0.1326
+
+TOTAL spend $0.6778

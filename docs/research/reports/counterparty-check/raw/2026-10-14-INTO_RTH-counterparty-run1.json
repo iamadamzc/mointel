@@ -1,0 +1,605 @@
+{
+  "record": {
+    "tag": "2026-10-14-INTO_RTH-counterparty-run1",
+    "status": "PUBLISHED",
+    "draftNamesParty": true,
+    "publishedNamesParty": true,
+    "publishedEmpty": false,
+    "partyFactsInPublished": false,
+    "ffaiStrikes": [],
+    "draftLine": "FFAI. On October 14, 2026, Faraday Future announced that it and FFR signed definitive agreements on October 12 for FFR to acquire FFAI's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share. The provided excerpt did not state the closing date, all closing conditions, or the final number of shares to be issued.",
+    "published": "FFAI. On October 14, 2026, Faraday Future announced that it and FFR signed definitive agreements on October 12 for FFR to acquire FFAI's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share. The provided excerpt did not state the closing date, all closing conditions, or the final number of shares to be issued.",
+    "costUsd": 0.1402748,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4902,
+        "outputTokens": 2442,
+        "cachedInputTokens": 4899,
+        "reasoningTokens": 1386,
+        "durationMs": 20334,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 24241,
+        "outputTokens": 1970,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 17302,
+        "role": "checker"
+      }
+    ]
+  },
+  "draft": {
+    "headline": "",
+    "overall": "GENK ranked first in this range, up 79 percent from the prior close, with fresh news in our sources: a secondary report said GEN Restaurant Group entered a $100 million non-binding letter of intent with Chubby Group to sell operations at 47 U.S. restaurants, with the transaction still proposed under that letter of intent. AEHL was up 182 percent from the prior close with only older or secondary news in our sources: on October 1, 2026, the company entered an at-the-market issuance sales agreement for offerings of up to $100 million of Class A ordinary shares. GLND was up 90 percent from the prior close with only older or secondary news in our sources: an 8-K exhibit reported completion of the 2026 government-approved environmental baseline field program at Jameson Land. Since the previous checkpoint, GLND was up 22.5% and printed a new high of day. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "GENK",
+            "text": "GENK. On October 14, 2026, a secondary news item reported that GEN Restaurant Group entered a $100 million non-binding letter of intent with Chubby Group to sell operations at 47 U.S. restaurants. The transaction was reported as proposed under the letter of intent, and our sources did not include a primary-source announcement confirming it or its terms."
+          },
+          {
+            "ticker": "TC",
+            "text": "TC. Our research reached no conclusion."
+          },
+          {
+            "ticker": "FFAI",
+            "text": "FFAI. On October 14, 2026, Faraday Future announced that it and FFR signed definitive agreements on October 12 for FFR to acquire FFAI's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share. The provided excerpt did not state the closing date, all closing conditions, or the final number of shares to be issued."
+          },
+          {
+            "ticker": "ALP",
+            "text": "ALP. On October 14, 2026, a secondary news item reported an $81.7 million four-year GPU-capacity contract with an unnamed AI compute marketplace, including 25% customer prepayment. An October 6 6-K separately announced a September 30 binding ALPHA-02 cluster contract and stated $24 million of new annual contracted revenue. Our sources did not include a primary company release or filing confirming the October 14 report's value, term, customer identity or prepayment, and did not establish whether the two reports concerned the same agreement."
+          },
+          {
+            "ticker": "MXCT",
+            "text": "MXCT. Not researched at this checkpoint"
+          },
+          {
+            "ticker": "AEHL",
+            "text": "AEHL. On October 1, 2026, the company entered an at-the-market issuance sales agreement with D. Boral Capital for offerings of up to $100 million of Class A ordinary shares and filed the related prospectus supplement. Our sources did not say how many shares had been sold under the program or establish a link between the financing event and the session move."
+          },
+          {
+            "ticker": "QNRX",
+            "text": "QNRX. On October 14, 2026, Quoin announced that the European Medicines Agency granted Orphan Drug Designation to QRX003 for Peeling Skin Syndrome. The filing said the designation provides 10 years of European market exclusivity after European Union marketing authorization, and Quoin intends to begin a formal Peeling Skin Syndrome study before year end. Our sources did not establish a causal relationship between the announcement and the session."
+          },
+          {
+            "ticker": "VSTM",
+            "text": "VSTM. On October 14, 2026, Verastem reported initial efficacy and updated safety data from the TARGET-D 101 Phase 1/2 trial, while a secondary news item reported an underwritten offering of 30.94 million shares priced at $8.00 for $247.5 million in gross proceeds. The supplied clinical excerpt did not include the numerical efficacy and safety results, and our sources lacked the SEC prospectus and closing confirmation for the reported offering."
+          },
+          {
+            "ticker": "TCRT",
+            "text": "TCRT. On October 13, 2026, an 8-K stated that Alaunos completed its acquisition of Velaris Therapeutics and that a concurrent private placement generated approximately $350 million in gross proceeds. The filing stated that Velaris holders received Series B and Series C non-voting convertible preferred stock, but the supplied excerpts did not state the number of Series C shares sold or the conversion restrictions or timing applicable to all preferred shares issued."
+          },
+          {
+            "ticker": "GLND",
+            "text": "GLND. On September 28, 2026, an 8-K exhibit reported completion of Greenland Energy's 2026 government-approved environmental baseline field program at Jameson Land and described it as progress in the permitting process toward exploration drilling. Our sources did not establish final drilling approval or provide a drilling date, reserve estimate, production timeline or project economics."
+          },
+          {
+            "ticker": "ARBB",
+            "text": "ARBB. no catalyst found in our sources"
+          },
+          {
+            "ticker": "FFR",
+            "text": "FFR. Not researched at this checkpoint"
+          }
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "INTO_RTH",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-14",
+      "targetTradingDate": null,
+      "checkpoints": [
+        {
+          "id": 776,
+          "type": "OPEN_SPIKE_ASSESSMENT",
+          "completedAt": "2026-10-14T13:25:07.606Z"
+        }
+      ],
+      "publishedAt": "2026-10-15T01:58:53.820Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "FRESH NEWS FOUND",
+          "lines": [
+            {
+              "ticker": "GENK",
+              "liveFeed": null,
+              "text": "GENK. On October 14, 2026, a secondary news item reported that GEN Restaurant Group entered a $100 million non-binding letter of intent with Chubby Group to sell operations at 47 U.S. restaurants. The transaction was reported as proposed under the letter of intent, and our sources did not include a primary-source announcement confirming it or its terms.",
+              "company": {
+                "name": "GEN Restaurant Group, Inc.",
+                "country": "United States",
+                "business": "GEN Restaurant Group operates restaurants and has a consumer packaged goods division."
+              },
+              "path": {
+                "from": 1.45,
+                "high": 2.73,
+                "now": 2.595,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "51m",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 14, 8:34 AM ET",
+                  "headline": "A secondary news item reported that GEN Restaurant Group entered a $100 million non-binding letter of intent with Chubby Group to sell operations at 47 U.S. restaurants. The reported transaction remains proposed under a letter of intent.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "43.2M sh supply",
+                  "detail": "An effective S-1 resale registration covers up to 15,000,000 shares issuable under the Roth Principal Investments purchase agreement, with up to $25,000,000 aggregate gross proceeds available subject to its terms.",
+                  "tone": "neg",
+                  "full": "An effective S-1 resale registration covers up to 15,000,000 shares issuable under the Roth Principal Investments purchase agreement, with up to $25,000,000 aggregate gross proceeds available subject to its terms."
+                }
+              }
+            },
+            {
+              "ticker": "FFAI",
+              "liveFeed": null,
+              "text": "FFAI. On October 14, 2026, Faraday Future announced that it and FFR signed definitive agreements on October 12 for FFR to acquire FFAI's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share. The provided excerpt did not state the closing date, all closing conditions, or the final number of shares to be issued.",
+              "company": {
+                "name": "FARADAY FUTURE INTELLIGENT ELECTRIC INC.",
+                "country": "United States",
+                "business": "Faraday Future develops motor vehicles and has reported an embodied-AI robotics business."
+              },
+              "path": {
+                "from": 1.11,
+                "high": 1.67,
+                "now": 1.29,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "2h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 14, 7:32 AM ET",
+                  "headline": "Faraday Future announced that it and FFR signed definitive agreements on October 12 for FFR to acquire FFAI's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "The only reported shares-outstanding figure in the bundle is dated August 13, 2021.",
+                  "tone": "warn",
+                  "full": "The only reported shares-outstanding figure in the bundle is dated August 13, 2021."
+                }
+              }
+            },
+            {
+              "ticker": "ALP",
+              "liveFeed": null,
+              "text": "ALP. On October 14, 2026, a secondary news item reported an $81.7 million four-year GPU-capacity contract with an unnamed AI compute marketplace, including 25% customer prepayment. An October 6 6-K separately announced a September 30 binding ALPHA-02 cluster contract and stated $24 million of new annual contracted revenue. Our sources did not include a primary company release or filing confirming the October 14 report's value, term, customer identity or prepayment, and did not establish whether the two reports concerned the same agreement.",
+              "company": {
+                "name": "Alpha Compute Corp",
+                "country": null,
+                "business": "Alpha Compute is a technology company delivering high-performance computing and AI confidential-compute services."
+              },
+              "path": {
+                "from": 4.02,
+                "high": 4.8,
+                "now": 3.83,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "2h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 14, 7:09 AM ET",
+                  "headline": "A secondary news item reported an $81.7 million four-year GPU-capacity contract with an unnamed AI compute marketplace, including 25% customer prepayment. A September 30 binding ALPHA-02 cluster contract was separately announced in an October 6 6-K, but the primary filing excerpt states $24 million of new annual contracted revenue rather than the four-year amount in the later secondary report.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "The only reported shares-outstanding figure is 23,470,877 as of March 31, 2026, rather than a current-date figure.",
+                  "tone": "warn",
+                  "full": "The only reported shares-outstanding figure is 23,470,877 as of March 31, 2026, rather than a current-date figure."
+                }
+              }
+            },
+            {
+              "ticker": "QNRX",
+              "liveFeed": null,
+              "text": "QNRX. On October 14, 2026, Quoin announced that the European Medicines Agency granted Orphan Drug Designation to QRX003 for Peeling Skin Syndrome. The filing said the designation provides 10 years of European market exclusivity after European Union marketing authorization, and Quoin intends to begin a formal Peeling Skin Syndrome study before year end. Our sources did not establish a causal relationship between the announcement and the session.",
+              "company": {
+                "name": "Quoin Pharmaceuticals Ltd.",
+                "country": "United States",
+                "business": "Quoin Pharmaceuticals develops and commercializes therapeutic products for rare and orphan diseases."
+              },
+              "path": {
+                "from": 4.15,
+                "high": 4.7918,
+                "now": 4.01,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "3h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 14, 6:35 AM ET",
+                  "headline": "Quoin announced that the European Medicines Agency granted Orphan Drug Designation to QRX003 for Peeling Skin Syndrome. The filing states that the designation provides 10 years of European market exclusivity after European Union marketing authorization, and that Quoin intends to begin a formal Peeling Skin Syndrome study before year end.",
+                  "explainsMove": null,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "9.37M sh supply",
+                  "detail": "The reported 70,294,615 ordinary shares outstanding were dated August 12, 2026, before the August private placement closed.",
+                  "tone": "neg",
+                  "full": "The reported 70,294,615 ordinary shares outstanding were dated August 12, 2026, before the August private placement closed."
+                }
+              }
+            },
+            {
+              "ticker": "TCRT",
+              "liveFeed": null,
+              "text": "TCRT. On October 13, 2026, an 8-K stated that Alaunos completed its acquisition of Velaris Therapeutics and that a concurrent private placement generated approximately $350 million in gross proceeds. The filing stated that Velaris holders received Series B and Series C non-voting convertible preferred stock, but the supplied excerpts did not state the number of Series C shares sold or the conversion restrictions or timing applicable to all preferred shares issued.",
+              "company": {
+                "name": "Alaunos Therapeutics, Inc.",
+                "country": "United States",
+                "business": "Alaunos Therapeutics is an early-stage biotechnology company developing therapeutic candidates for metabolic and cardiopulmonary conditions."
+              },
+              "path": {
+                "from": 3.03,
+                "high": 4.18,
+                "now": 3.8499,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "24h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 13, 9:28 AM ET",
+                  "headline": "The October 13 8-K states that Alaunos completed its acquisition of Velaris Therapeutics and that a concurrent private placement generated approximately $350 million in gross proceeds. The filing states that Velaris holders received Series B and Series C non-voting convertible preferred stock.",
+                  "explainsMove": true,
+                  "freshness": "RECENT",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is RECENT rather than fresh."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "139.1M sh",
+                  "detail": "The October 13 merger issued Series B and Series C preferred stock convertible into an aggregate 138,340,000 common shares based on the stated 1,000-for-1 conversion ratio.",
+                  "tone": "warn",
+                  "full": "The October 13 merger issued Series B and Series C preferred stock convertible into an aggregate 138,340,000 common shares based on the stated 1,000-for-1 conversion ratio."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "SOURCES CONFLICT",
+          "lines": [
+            {
+              "ticker": "VSTM",
+              "liveFeed": null,
+              "text": "VSTM. On October 14, 2026, Verastem reported initial efficacy and updated safety data from the TARGET-D 101 Phase 1/2 trial, while a secondary news item reported an underwritten offering of 30.94 million shares priced at $8.00 for $247.5 million in gross proceeds. The supplied clinical excerpt did not include the numerical efficacy and safety results, and our sources lacked the SEC prospectus and closing confirmation for the reported offering.",
+              "company": {
+                "name": "Verastem, Inc.",
+                "country": "United States",
+                "business": "Verastem is a biopharmaceutical company that develops and commercializes medicines for patients with RAS/MAPK pathway-driven cancers."
+              },
+              "path": {
+                "from": 7.45,
+                "high": 9.24,
+                "now": 7.98,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "3h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 14, 6:08 AM ET",
+                  "headline": "Verastem reported positive initial efficacy and updated safety data from the TARGET-D 101 Phase 1/2 trial, while a secondary news item reported a concurrent underwritten offering of 30.94 million shares priced at $8.00 for $247.5 million in gross proceeds.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "34.8M sh supply",
+                  "detail": "The reported 90,563,441 shares outstanding are dated August 3, 2026 and predate the reported October offering.",
+                  "tone": "neg",
+                  "full": "The reported 90,563,441 shares outstanding are dated August 3, 2026 and predate the reported October offering."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "OLDER OR SECONDARY NEWS",
+          "lines": [
+            {
+              "ticker": "AEHL",
+              "liveFeed": null,
+              "text": "AEHL. On October 1, 2026, the company entered an at-the-market issuance sales agreement with D. Boral Capital for offerings of up to $100 million of Class A ordinary shares and filed the related prospectus supplement. Our sources did not say how many shares had been sold under the program or establish a link between the financing event and the session move.",
+              "company": {
+                "name": "Antelope Enterprise Holdings Ltd",
+                "country": "United States",
+                "business": "Antelope Enterprise develops energy and data-center infrastructure and operates a livestreaming ecommerce platform."
+              },
+              "path": {
+                "from": 8.55,
+                "high": 29.76,
+                "now": 24.1,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "13d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 8:00 AM ET",
+                  "headline": "No fresh catalyst · latest: Oct 1 · On October 1, 2026, the company entered an at-the-market issuance sales agreement with D. Boral Capital for offerings of up to $100 million of Class A ordinary shares and filed the related prospectus supplement.",
+                  "explainsMove": null,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "42.0M sh supply",
+                  "detail": "An active at-the-market facility permits offerings of up to $100,000,000 of Class A ordinary shares.",
+                  "tone": "neg",
+                  "full": "An active at-the-market facility permits offerings of up to $100,000,000 of Class A ordinary shares."
+                }
+              }
+            },
+            {
+              "ticker": "GLND",
+              "liveFeed": null,
+              "text": "GLND. On September 28, 2026, an 8-K exhibit reported completion of Greenland Energy's 2026 government-approved environmental baseline field program at Jameson Land and described it as progress in the permitting process toward exploration drilling. Our sources did not establish final drilling approval or provide a drilling date, reserve estimate, production timeline or project economics.",
+              "company": {
+                "name": "Greenland Energy Co",
+                "country": "United States",
+                "business": "Greenland Energy is an exploration-stage oil and gas company advancing exploration activities in Greenland."
+              },
+              "path": {
+                "from": 2.21,
+                "high": 4.46,
+                "now": 4.19,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "A",
+                  "age": "16d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 27, 8:00 PM ET",
+                  "headline": "No fresh catalyst · latest: Sep 27 · An 8-K exhibit reported completion of Greenland Energy's 2026 government-approved environmental baseline field program at Jameson Land, described as progress in the permitting process toward exploration drilling.",
+                  "explainsMove": null,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade A: strong, or legitimately positive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "An 8-K exhibit describes warrants with $5.00 and $15.00 strike prices, but the available excerpt does not state the warrant share quantity or registration status.",
+                  "tone": "warn",
+                  "full": "An 8-K exhibit describes warrants with $5.00 and $15.00 strike prices, but the available excerpt does not state the warrant share quantity or registration status."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NO CATALYST FOUND IN OUR SOURCES",
+          "lines": [
+            {
+              "ticker": "ARBB",
+              "liveFeed": null,
+              "text": "ARBB. no catalyst found in our sources",
+              "company": {
+                "name": "ARB IOT Group Ltd",
+                "country": null,
+                "business": "ARB IOT Group provides AI server solutions and IoT-related automation solutions."
+              },
+              "path": {
+                "from": 4.1497,
+                "high": 4.19,
+                "now": 4.19,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NO_FRESH_CATALYST",
+                  "grade": "C",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "No fresh company-specific material event was identified in the available, gap-free coverage. The company newsroom items are general AI-server and AI-infrastructure educational/promotional articles, not announcements of a contract, financing, approval, or operating result.",
+                  "explainsMove": false,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "An effective $100 million universal shelf creates potential future financing capacity, but no share count can be derived from the dollar capacity and the evidence does not show a takedown.",
+                  "tone": "warn",
+                  "full": "An effective $100 million universal shelf creates potential future financing capacity, but no share count can be derived from the dollar capacity and the evidence does not show a takedown."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "RESEARCH COULD NOT TELL",
+          "lines": [
+            {
+              "ticker": "TC",
+              "liveFeed": null,
+              "text": "TC. Our research reached no conclusion.",
+              "company": {
+                "name": "Token Cat Ltd",
+                "country": "China",
+                "business": "Token Cat Ltd provides business services."
+              },
+              "path": {
+                "from": 1.295,
+                "high": 1.58,
+                "now": 1.4294,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Source coverage is incomplete, including no current reported share count, and the bundle does not establish a sufficient current company-specific catalyst.",
+                  "explainsMove": null,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "No catalyst grade established. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "96182.8M sh supply",
+                  "detail": "The bundle does not provide a current reported outstanding-share count.",
+                  "tone": "neg",
+                  "full": "The bundle does not provide a current reported outstanding-share count."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NOT RESEARCHED AT THIS CHECKPOINT",
+          "lines": [
+            {
+              "ticker": "MXCT",
+              "liveFeed": null,
+              "text": "MXCT. Not researched at this checkpoint",
+              "company": null,
+              "path": {
+                "from": 0.9643,
+                "high": 1.23,
+                "now": 1.22,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            },
+            {
+              "ticker": "FFR",
+              "liveFeed": null,
+              "text": "FFR. Not researched at this checkpoint",
+              "company": null,
+              "path": {
+                "from": 1.45,
+                "high": 1.7799,
+                "now": 1.3401,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "watchCount": 12,
+      "narrative": "GENK ranked first in this range, up 79 percent from the prior close, with fresh news in our sources: a secondary report said GEN Restaurant Group entered a $100 million non-binding letter of intent with Chubby Group to sell operations at 47 U.S. restaurants, with the transaction still proposed under that letter of intent. AEHL was up 182 percent from the prior close with only older or secondary news in our sources: on October 1, 2026, the company entered an at-the-market issuance sales agreement for offerings of up to $100 million of Class A ordinary shares. GLND was up 90 percent from the prior close with only older or secondary news in our sources: an 8-K exhibit reported completion of the 2026 government-approved environmental baseline field program at Jameson Land. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+      "narrativeFootnotes": null
+    },
+    "diagnostics": {
+      "lines": 13,
+      "strikes": [],
+      "writerMs": 20335,
+      "checkerMs": 17321
+    }
+  }
+}

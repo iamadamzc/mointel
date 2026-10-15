@@ -1,0 +1,765 @@
+{
+  "record": {
+    "tag": "2026-10-02-INTO_RTH-v7.13-run1",
+    "store": "market-prod-2026-10-07.db",
+    "kind": "INTO_RTH",
+    "day": "2026-10-02",
+    "run": 1,
+    "struckInV11": true,
+    "status": "PUBLISHED",
+    "error": null,
+    "narrativeStruck": false,
+    "summaryStrikes": [],
+    "nameLinesStruck": 2,
+    "lines": 13,
+    "draftSummary": "AMOD ranked first in this range, up 200 percent from the prior close, with fresh news in our sources: on October 1, Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30, which was previously described as adding 3,170 Bitcoin valued above $200 million alongside 51,621,560 newly issued Class A PIPE shares. Since the previous checkpoint, AMOD was up 76.3% and printed a new high of day. AIXI was up 39 percent from the prior close, with fresh news in our sources: its October 2026 semi-annual filing reported that first-half 2026 revenue fell about 99.12% year over year after it discontinued low-margin cloud-platform resale activities, while financing including convertible notes may dilute shareholders upon conversion and the period included a substantial shareholder loss. Since the previous checkpoint, AIXI was up 17.2% and printed a new high of day. SDEV was up 38 percent from the prior close, with no catalyst found in our sources. Of the 12 names the desk covers, 7 had fresh news in our sources.",
+    "narrative": "AMOD ranked first in this range, up 200 percent from the prior close, with fresh news in our sources: on October 1, Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30, which was previously described as adding 3,170 Bitcoin valued above $200 million alongside 51,621,560 newly issued Class A PIPE shares. Since the previous checkpoint, AMOD was up 76.3% and printed a new high of day. AIXI was up 39 percent from the prior close, with fresh news in our sources: its October 2026 semi-annual filing reported that first-half 2026 revenue fell about 99.12% year over year after it discontinued low-margin cloud-platform resale activities, while financing including convertible notes may dilute shareholders upon conversion and the period included a substantial shareholder loss. Of the 12 names the desk covers, 7 had fresh news in our sources.",
+    "otherNamesInDraft": [],
+    "otherNamesPublished": [],
+    "countPublished": true,
+    "firstRanked": "AMOD",
+    "firstRankedPublished": true,
+    "labelInDraft": false,
+    "noteWhenPublished": false,
+    "causalJoinPublished": false,
+    "pipelinePublished": [],
+    "pipelineInDraft": 0,
+    "ourEvidencePublished": 0,
+    "disclosureLines": [
+      {
+        "ticker": "AMOD",
+        "text": "On October 1, Alpha Modus reported that it had completed its bitcoin-backed PIPE transaction on September 30. The transaction had previously been described as adding 3,170 Bitcoin, then valued above $200 million, while the related purchase agreement contemplated 51,621,560 newly issued Class A PIPE shares.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide the complete September 30 closing capitalization table.",
+          "The excerpts do not establish the resale-registration eligibility or actual resale activity of the PIPE shares.",
+          "The evidence does not quantify the transaction's final per-share consideration or all associated warrant terms."
+        ]
+      },
+      {
+        "ticker": "AIXI",
+        "text": "On October 1, the October 2026 semi-annual filing reported that first-half 2026 revenue fell about 99.12% year over year after the company discontinued low-margin cloud-platform resale activities. The filing also said the company relied on financing including convertible notes, which may dilute shareholders upon conversion, and reported a substantial shareholder loss for the period.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The evidence does not link the current session's price move to the semi-annual filing.",
+          "No primary-source evidence in the bundle identifies a fresh favourable company-specific event that explains the move."
+        ]
+      },
+      {
+        "ticker": "AMIX",
+        "text": "A secondary news source reported on October 2 that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The underlying company announcement or patent document is absent.",
+          "The bundle does not quantify the patent's addressable market, licensing value, or expected revenue contribution.",
+          "Causation between the headline and elevated trading activity is not established."
+        ]
+      },
+      {
+        "ticker": "CYCU",
+        "text": "Secondary coverage reported on October 2 that Cycurion regained Nasdaq compliance. A September 28 company release also referred to an ongoing Nasdaq listing process.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "No Nasdaq exchange notice confirming regained compliance is included.",
+          "The bundle does not establish the specific prior deficiency, compliance deadline, or conditions of compliance."
+        ]
+      },
+      {
+        "ticker": "TNMG",
+        "text": "On October 2, TNL Mediagene announced a definitive agreement dated September 30 to sell its Japanese business, including its wholly owned Japan holding company and the Mediagene and Infobahn subsidiaries, to a CEO-led acquisition vehicle for aggregate consideration of $5.5 million. The transaction followed a special-committee process and fairness opinion.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not state when or whether the transaction will close.",
+          "The bundle does not state the use of the $5.5 million consideration.",
+          "The bundle does not provide pro forma revenue, earnings, cash, or continuing-operations effects.",
+          "The market-state snapshot has no explicit timestamp, so precise timing relative to the announcement is unknown."
+        ]
+      },
+      {
+        "ticker": "SORA",
+        "text": "On October 1, AsiaStrategy announced a non-binding memorandum of understanding with Plume to explore forming an Asia-focused joint venture for structuring, issuing and distributing tokenized financial products.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide financial terms, ownership terms, a launch date, expected revenue or a definitive joint-venture agreement.",
+          "The MOU is expressly non-binding, so consummation remains uncertain."
+        ]
+      },
+      {
+        "ticker": "SSM",
+        "text": "On October 1, a Schedule 13D was filed, and secondary coverage reported that Alpine Fox Capital disclosed a roughly 21.5% stake in Sono Group.",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The primary Schedule 13D source in the bundle has no substantive excerpt, so the exact share count, acquisition dates, purchase price, and stated purpose are not established here.",
+          "It is not established whether the reported stake reflects recent market buying versus securities acquired earlier.",
+          "The Schedule 13D disclosure does not establish that Alpine Fox will buy additional shares or seek a transaction."
+        ]
+      },
+      {
+        "ticker": "GOW",
+        "text": "",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The evidence does not establish whether the September 25 closing directly caused the observed price move.",
+          "The number of PIPE preferred shares and warrants issued is not provided in the available excerpts.",
+          "No current company-specific operating, contract, approval, or financial-results catalyst was provided after the business-combination closing."
+        ]
+      },
+      {
+        "ticker": "SMX",
+        "text": "",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide the full text or material terms of the October 1 promotional communications.",
+          "No primary-source material transaction, approval, financial result or similar event is supplied for October 1 or October 2."
+        ]
+      },
+      {
+        "ticker": "SGRX",
+        "text": "no catalyst found in our sources",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The bundle does not provide a primary-source company event after September 15, 2026.",
+          "The bundle does not establish the specific cause of the current trading-session move."
+        ]
+      },
+      {
+        "ticker": "SDEV",
+        "text": "no catalyst found in our sources",
+        "filingsOnly": false,
+        "companyFilingsOnly": false,
+        "unknowns": [
+          "The evidence does not establish what caused the unusual trading activity.",
+          "The bundle does not provide sufficient objective live-demand evidence to classify the move as FLOW_DOMINANT."
+        ]
+      }
+    ],
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "costUsd": 0.1791712,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5922,
+        "outputTokens": 1679,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 904,
+        "durationMs": 15033,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 31988,
+        "outputTokens": 2401,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 21966,
+        "role": "checker"
+      }
+    ]
+  },
+  "sentPrompts": [
+    {
+      "system": "You write a short session report: a Summary of the session and one line per name.\n\nTHE SUMMARY (\"narrative\") must include, in whatever order reads best, in a few sentences, only what the narrative facts give:\n- On the evening recaps: how many counted names ran at least 50 percent above the prior close and how many of them kept at least half of the peak gain (or, if none ran, that none did); the named movers, each called a covered 50 percent mover (never the highest peaks among all movers), each with its own news; the after-hours name and its move, about that move only; and how many of the names the desk covers had fresh news in our sources.\n- Intraday: the name ranked first in this range (it may be down) and the next named gainers, each with its move and its own news; and how many of the names the desk covers had fresh news in our sources.\n- Never use a report label from the facts, such as \"Intraday\", in the Summary, and do not say when the report was written: the report's header says it.\n- A change note is restated once, in the facts' own words, and nothing is added to it: no time, and no 'when' clause.\n- A change note is restated only for a name the Summary names; never add a name or a price level the narrative facts do not carry.\n- Join a move to its news with \"with\" (\"up 20 percent from the prior close, with fresh news in our sources\"), never with a word that says one caused the other.\n- For a name the Summary mentions, you may restate its own news (what happened, with the dates and figures in its own research in the NAMES section). Never put one name's facts on another, and never mention a name the narrative facts do not name.\n- Name only the tickers the narrative facts name. Use the given numbers exactly; every percent carries its frame in the same clause (\"from the prior close\", \"above the prior close\", \"after the close\"). A count goes with \"ran at least 50 percent\" and \"gave the entire move back\" whenever you use those phrases.\n\nUSING THE FACTS:\n- Use only the facts given. Copy every number and date exactly; never compute one. Say a catalyst amount as you would on air, shortened to one decimal at most (\"$46.8 million\"). Restate stored text in your own words; never quote it.\n- The voice below keeps the move out of a name line because the card prints it above the line. Where a name's sheet says no card path is printed, no card sits above that line, so its price and change may be stated, in the past tense.\n- A deal or plan is what was agreed or announced, never \"will\". A deal is a fact: say what the company or a named party agreed, sold, bought or entered into, as the source states it. Keep the status the source gives (proposed, non-binding, agreed, rejected, completed); say a deal closed or was signed only if the source says so. Never a recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words.\n- A named analyst firm's rating change is a fact that our sources report, and you may state it as that firm's view, with the firm named and the rating capitalised ('Wells Fargo raised its rating to Buy'); never as advice, and never from an unnamed source.\n- Restate what the source reports and its terms, never the desk's reading of what it may mean or what traders, investors or the market may think, do or care about.\n- Never call news \"positive\", \"negative\" or any other judgement its source does not state.\n- Never say what kind of catalyst a name's news is (for example \"an operating catalyst\") unless its research says so.\n- The joining words in the voice below are forbidden only where they connect a move to news, and a date's \"on\" is fine (\"On October 5, the company disclosed\"); never join a move and news with \"due to\", \"because of\", \"in response to\", \"in the wake of\" either. Never open a line with \"It's\", \"That name\" either.\n- A name's line may name another covered ticker only as the other party in this name's own story (a buyer, a seller, a partner), and only when this name's own research states that ticker; if the research names only the company, say the company. Say nothing else about it: no price, no move, no rank, no news of its own. This is the one exception to \"never refers to another name\" and \"name no other ticker\".\n- Never \"still\", \"remains\" or \"continues\"; never \"top\"; never a count of names in a name line, \"every name\", \"all the movers\" or \"the real catalyst\".\n- No float number, no share count called float, no halt unless the sheet has one, no engine constant in capitals, no em dash and no spaced hyphen as a dash.\n- Say \"our sources\", never the desk's own words for its material: not \"the bundle\", \"supplied\", \"collected\", \"the evidence\", \"excerpts\" or \"SEC-only coverage\". Where the research says its coverage was filings only, say \"company filings only\"; keep what the desk lacks, in plain words.\n\nREPLY\n- JSON only: {\"narrative\": string | null, \"lines\": [{\"ticker\": string | null, \"text\": string}]}, one line per name. With no names, one line: {\"ticker\": null, \"text\": \"Nothing in our sources for this section.\"}. \"narrative\" is null only when the narrative facts give nothing to say.\n\nYou are a financial news desk reporter on air at a small-cap trading desk. Report what moved and what the news was, the way a person says it to camera: natural, varied, connected, and never robotic. Do not fill in a template name after name; let each story find its own shape and let each name's line and the Summary read as coherent, human speech, not a stack of separate sentences; coherence lives within a line, and a name's line never refers to another name. Do not repeat a stock phrase from name to name, except the ruled state phrases below.\n\nWhat each name's line must include: the name, and the news the desk found, with its date, as the sources state it. A supply fact belongs only when it is itself the news (a placement, an ATM program, a reverse split). Say nothing about the move in a name line: no price, no percent, no up or down, no word about the high (the card prints all of it above the line). The one exception: you may say that nothing in our sources tied the move to the news, and nothing else about the move. The Summary may use the percents it is given. For a name with no news to report, say the ruled state phrase exactly and nothing more: \"Not researched at this checkpoint\", \"no catalyst found in our sources\", \"our research reached no conclusion\"; never invent or pad news for it.\n\nWhat must stay true, whatever the style: attribute what you report (\"the company said\", \"our sources show\", \"secondary coverage reported\") and say \"in our sources\" only where a claim would otherwise read as about the market. Never say what a headline caused, what the stock will do, or what anyone should do. Never address the reader or a viewer (\"you\", \"stay with us\", \"back to you\"), and never say what traders, investors or the market are doing, thinking or feeling. Use no word the facts do not define (\"surging\", \"hot\", \"busy\", \"quiet\"). Say a rank as a rank (\"ranked first in this range\"), never \"led\" or \"biggest\". Speak of the checkpoint in the past tense (\"was up\", \"had fresh news\"), so a report read later does not state a market condition as now; anchor every time to a date, and never write a clock time such as \"2:30 PM\". Make each name's line stand on its own: open it with the company or the news, never with \"It\", \"Its\", \"Also\", \"The same\", \"This name\", \"They\", \"Both\" or \"Either\", and name no other ticker. Never join a move and a news item with after, following, on, as, amid, thanks to, driven by, sparked, triggered or fueled. These are rules for you to follow yourself; write with care, because figures, dates and tickers are checked against the data.\n\nONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (an intraday report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given. A recap's Summary instead follows the counts and the named movers it is given, and names only the tickers its facts list):\n\nSummary. MI ranked first in this range, up 806 percent from the prior close, and the only news in our sources was older or secondary. QTEX was up 44 percent from the prior close with the same kind of news. ALEC, up 20 percent from the prior close, had fresh news in our sources: a license agreement with Genentech for certain GCase candidates. Of the 12 names the desk covers, 2 had fresh news in our sources.\n\nALEC. On October 5, Alector disclosed a September 30 license agreement with Genentech for certain GCase candidates: Genentech leads development and commercialization, Alector keeps its Brain Carrier platform and wholly owned pipeline, and the company said the deal extends its cash runway into 2029. No upfront, milestone or deal-value terms were given.\n\nMI. The news in our sources was older. On September 30, NFT Limited agreed to a private placement of 80,000,000 Class A shares at $0.45, about $36 million, and nothing in our evidence showed it closed. Our evidence had no company event dated October 5.\n\nQTEX. The latest news we found was from October 1: QTREX said an unnamed quantum-computing company had tested its interconnect at 20 mK and measured more than 100 dB channel isolation, and that it was finalizing a binding agreement with that company. None was reported as signed.",
+      "user": "Into the open: the session so far.\n\nNARRATIVE FACTS:\n  ranked first in this range (it may be down): AMOD, up 200 percent from the prior close; news state: fresh: our sources found a fresh catalyst; the fresh catalyst (restate briefly, never quote): Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30. The transaction was previously described as adding 3,170 Bitcoin, then valued above $200 million, while the related purchase agreement contemplated 51,621,560 newly issued Class A PIPE shares. The bitcoin balance-sheet addition is favourable, but the very large equity issuance is a material supply consideration.\n  since the previous checkpoint, AMOD: up 76.3% since the previous checkpoint; printed a new high of day\n  next covered gainer by move: AIXI, up 39 percent from the prior close; news state: fresh: our sources found a fresh catalyst; the fresh catalyst (restate briefly, never quote): The October 2026 semi-annual filing reported that revenue for the first half of 2026 fell about 99.12% year over year following discontinuation of low-margin cloud-platform resale activities. It also said the company relied on financing, including convertible notes, which may dilute shareholders upon conversion. The filing also reports a substantial shareholder loss for the period.\n  since the previous checkpoint, AIXI: up 17.2% since the previous checkpoint; printed a new high of day\n  next covered gainer by move: SDEV, up 38 percent from the prior close; news state: none found: use the ruled phrase for no catalyst\n  names the desk covers that had fresh news in our sources: 7 of 12\n\nNAMES:\nAMOD: ranked #1 in this range\n  the card above your line prints the prices and the move: do not restate them\n  since the previous checkpoint: up 76.3% since the previous checkpoint; printed a new high of day\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30. The transaction was previously described as adding 3,170 Bitcoin, then valued above $200 million, while the related purchase agreement contemplated 51,621,560 newly issued Class A PIPE shares. The bitcoin balance-sheet addition is favourable, but the very large equity issuance is a material supply consideration.\n  event date: October 1, 2026\n  cited source: \"8-K\", October 1, 2026\n  cited source: \"EX-99.1–8-K 2026-08-27\", August 27, 2026\n  cited source: \"EX-10.1–8-K 2026-08-27\", August 27, 2026\n  cited source: \"Alpha Modus Closes Pipe Deal, Receives 3,170 Bitcoin On Sept 30\", October 1, 2026\n  what the desk does not have (repeat none of its numbers): The bundle does not provide the complete September 30 closing capitalization table.; The excerpts do not establish the resale-registration eligibility or actual resale activity of the PIPE shares.; The evidence does not quantify the transaction's final per-share consideration or all associated warrant terms.\n\nAIXI: ranked #2 in this range\n  the card above your line prints the prices and the move: do not restate them\n  since the previous checkpoint: up 17.2% since the previous checkpoint; printed a new high of day\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): The October 2026 semi-annual filing reported that revenue for the first half of 2026 fell about 99.12% year over year following discontinuation of low-margin cloud-platform resale activities. It also said the company relied on financing, including convertible notes, which may dilute shareholders upon conversion. The filing also reports a substantial shareholder loss for the period.\n  event date: October 1, 2026\n  cited source: \"EX-99.1: 6-K 2026-10-02T00:31:13.000Z\", October 1, 2026\n  cited source: \"EX-99.2: 6-K 2026-10-02T00:31:13.000Z\", October 1, 2026\n  cited source: \"REPORT OF FOREIGN PRIVATE ISSUER\", October 1, 2026\n  what the desk does not have (repeat none of its numbers): The evidence does not link the current session's price move to the semi-annual filing.; No primary-source evidence in the bundle identifies a fresh favourable company-specific event that explains the move.\n\nAMIX: ranked #3 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): A secondary news source reported on October 2 that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology. The event is favorable and company-specific, but the bundle contains only a secondary headline without the underlying patent announcement or details about commercial impact.\n  event date: October 2, 2026\n  cited source: \"Autonomix Medical Announces Issuance Of Canadian Patent No. 3,183,802 For Catheter-Based Nerve Treatment Technology\", October 2, 2026\n  what the desk does not have (repeat none of its numbers): The underlying company announcement or patent document is absent.; The bundle does not quantify the patent's addressable market, licensing value, or expected revenue contribution.; Causation between the headline and elevated trading activity is not established.\n\nCYCU: ranked #4 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): Secondary coverage dated October 2 reported that Cycurion regained Nasdaq compliance. This is potentially favorable listing-status news, but the bundle does not include an exchange notice or other primary confirmation of the regained-compliance determination. A September company release also referred to an ongoing Nasdaq listing process.\n  event date: October 2, 2026\n  cited source: \"Cycurion Regains Nasdaq Compliance\", October 2, 2026\n  cited source: \"EX-99.1: 8-K 2026-09-28T12:17:27.000Z\", September 28, 2026\n  what the desk does not have (repeat none of its numbers): No Nasdaq exchange notice confirming regained compliance is included.; The bundle does not establish the specific prior deficiency, compliance deadline, or conditions of compliance.\n\nSMX: ranked #5 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: none found: use the ruled phrase for no catalyst\n  the news (restate in your own words, never quote): Coverage is adequate, but the October 1 company communications in the bundle are promotional items about media attention and the company's technology, with no stated contract, financing, regulatory approval, operating result or other material company-specific development. A secondary report described an after-hours rise following \"fresh company updates,\" but does not establish a substantive underlying event.\n  cited source: \"SMX Stock Climbs Over 38% After-Hours: What's Going On?\", October 2, 2026\n  cited source: \"SMX Story In the Boston Herald Latest Media Report Illustrating Company's Growing Profile Across the Globe\", September 30, 2026\n  cited source: \"SMX Trust Layer Adds Luster to Gold as Global Uncertainty Drives Investors to Physical Assets\", October 1, 2026\n  cited source: \"SMX Draws Growing Global Media Coverage as Boston Herald Spotlights Its Technology\", October 1, 2026\n  what the desk does not have (repeat none of its numbers): The bundle does not provide the full text or material terms of the October 1 promotional communications.; No primary-source material transaction, approval, financial result or similar event is supplied for October 1 or October 2.\n\nSGRX: ranked #6 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: none found: use the ruled phrase for no catalyst\n  the news (restate in your own words, never quote): Adequate coverage identified a September 15 announcement of a new website and logo tied to the stated AI-infrastructure transition, and a September 9 sale of 3 million DOGE for approximately $267,665 of gross proceeds for working capital. The evidence does not identify a fresh company-specific operational, contractual, regulatory, or financing event sufficient to explain the current move. The September 3 name and ticker change is not itself a catalyst.\n  cited source: \"EX-99.1: 6-K 2026-09-15T20:30:06.000Z\", September 15, 2026\n  cited source: \"EX-99.1: 6-K 2026-09-09T20:30:25.000Z\", September 9, 2026\n  cited source: \"EX-99.1: 6-K 2026-09-03T13:05:14.000Z\", September 3, 2026\n  cited source: \"FORM 6-K\", September 15, 2026\n  cited source: \"FORM 6-K\", September 9, 2026\n  cited source: \"FORM 6-K\", September 3, 2026\n  what the desk does not have (repeat none of its numbers): The bundle does not provide a primary-source company event after September 15, 2026.; The bundle does not establish the specific cause of the current trading-session move.\n\nTNMG: ranked #7 in this range\n  the card above your line prints the prices and the move: do not restate them\n  since the previous checkpoint: down 13.5% since the previous checkpoint\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): On October 2, 2026, TNL Mediagene announced a definitive agreement, dated September 30, to sell its Japanese business, including its wholly owned Japan holding company and the Mediagene and Infobahn subsidiaries, to a CEO-led acquisition vehicle for aggregate consideration of $5.5 million. The transaction followed a special-committee process and fairness opinion. This is a material company-specific divestiture, although the bundle does not provide closing conditions, expected closing date, use of proceeds, or the financial contribution of the sold business.\n  event date: October 2, 2026\n  cited source: \"REPORT OF FOREIGN PRIVATE ISSUER\", October 2, 2026\n  cited source: \"EX-99.1: 6-K 2026-10-02T10:15:16.000Z\", October 2, 2026\n  cited source: \"TNL Mediagene Enters into Definitive Agreement to Sell Japanese Business in Management Buyout, Special Committee unanimously recommended the transaction following an independent process and receipt of a fairness opinion from Imperial Capital\", October 2, 2026\n  what the desk does not have (repeat none of its numbers): The bundle does not state when or whether the transaction will close.; The bundle does not state the use of the $5.5 million consideration.; The bundle does not provide pro forma revenue, earnings, cash, or continuing-operations effects.; The market-state snapshot has no explicit timestamp, so precise timing relative to the announcement is unknown.\n\nSORA: ranked #8 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): AsiaStrategy announced a non-binding memorandum of understanding with Plume to explore forming an Asia-focused joint venture for structuring, issuing and distributing tokenized financial products. The announcement is company-filed, but it is exploratory and does not establish that a joint venture, product launch or commercial revenue has occurred.\n  event date: October 1, 2026\n  cited source: \"REPORT OF FOREIGN PRIVATE ISSUER\", October 1, 2026\n  cited source: \"EX-99.1: 6-K 2026-10-01T16:06:09.000Z\", October 1, 2026\n  what the desk does not have (repeat none of its numbers): The bundle does not provide financial terms, ownership terms, a launch date, expected revenue or a definitive joint-venture agreement.; The MOU is expressly non-binding, so consummation remains uncertain.\n\nGOW: ranked #9 in this range\n  the card above your line prints the prices and the move: do not restate them\n  since the previous checkpoint: printed a new high of day\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): GOWell closed its business combination and began Nasdaq trading as GOW on September 28. Concurrently, it completed a previously announced $50 million closing PIPE of preferred shares and warrants, while an earlier private placement contributed approximately $20 million, for stated PIPE gross proceeds of $70 million before fees and expenses. The Nasdaq debut is a company-specific attention event, but the completed preferred-share and warrant financing creates new security supply and potential dilution.\n  event date: September 25, 2026\n  cited source: \"EX-99.1–6-K 2026-09-25T20:04:25.000Z\", September 25, 2026\n  cited source: \"REPORT OF FOREIGN PRIVATE ISSUER\", September 25, 2026\n  what the desk does not have (repeat none of its numbers): The evidence does not establish whether the September 25 closing directly caused the observed price move.; The number of PIPE preferred shares and warrants issued is not provided in the available excerpts.; No current company-specific operating, contract, approval, or financial-results catalyst was provided after the business-combination closing.\n\nLOCL: ranked #10 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: not researched: use the ruled phrase for not researched\n\nSSM: ranked #11 in this range\n  the card above your line prints the prices and the move: do not restate them\n  since the previous checkpoint: printed a new high of day\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): A Schedule 13D was filed on October 1, and secondary coverage reports that Alpine Fox Capital disclosed a roughly 21.5% stake in Sono Group. The October 2 premarket report directly associated the disclosure with SSM being up about 13%.\n  event date: October 1, 2026\n  cited source: \"SCHEDULE 13D\", October 1, 2026\n  cited source: \"Sono Group: Alpine Fox reports roughly 21.5% stake\", October 1, 2026\n  cited source: \"Sono Group Shares Up 13% Premarket; Alpine Fox Capital Reported A 21.5 % Stake In A 13D Filing On Thursday\", October 2, 2026\n  what the desk does not have (repeat none of its numbers): The primary Schedule 13D source in the bundle has no substantive excerpt, so the exact share count, acquisition dates, purchase price, and stated purpose are not established here.; It is not established whether the reported stake reflects recent market buying versus securities acquired earlier.; The Schedule 13D disclosure does not establish that Alpine Fox will buy additional shares or seek a transaction.\n\nSDEV: ranked #12 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: none found: use the ruled phrase for no catalyst\n  the news (restate in your own words, never quote): Adequate coverage identified no fresh company-specific catalyst. On September 29, 2026, the company reported unusual trading activity but said it knew of no material development or other reason for the market action.\n  cited source: \"FORM 8-K\", September 29, 2026\n  cited source: \"Stablecoin Development Acknowledges Unusual Trading Activity In Its Common Stock; Announces No Material Development Or Other Reason For Unusual Market Action\", September 29, 2026\n  cited source: \"Stablecoin Development Stock Skyrockets Tuesday: What's Happening?\", September 29, 2026\n  what the desk does not have (repeat none of its numbers): The evidence does not establish what caused the unusual trading activity.; The bundle does not provide sufficient objective live-demand evidence to classify the move as FLOW_DOMINANT."
+    }
+  ],
+  "rawWriterTexts": [
+    "{\"narrative\":\"AMOD ranked first in this range, up 200 percent from the prior close, with fresh news in our sources: on October 1, Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30, which was previously described as adding 3,170 Bitcoin valued above $200 million alongside 51,621,560 newly issued Class A PIPE shares. Since the previous checkpoint, AMOD was up 76.3% and printed a new high of day. AIXI was up 39 percent from the prior close, with fresh news in our sources: its October 2026 semi-annual filing reported that first-half 2026 revenue fell about 99.12% year over year after it discontinued low-margin cloud-platform resale activities, while financing including convertible notes may dilute shareholders upon conversion and the period included a substantial shareholder loss. Since the previous checkpoint, AIXI was up 17.2% and printed a new high of day. SDEV was up 38 percent from the prior close, with no catalyst found in our sources. Of the 12 names the desk covers, 7 had fresh news in our sources.\",\"lines\":[{\"ticker\":\"AMOD\",\"text\":\"On October 1, Alpha Modus reported that it had completed its bitcoin-backed PIPE transaction on September 30. The transaction had previously been described as adding 3,170 Bitcoin, then valued above $200 million, while the related purchase agreement contemplated 51,621,560 newly issued Class A PIPE shares.\"},{\"ticker\":\"AIXI\",\"text\":\"On October 1, the October 2026 semi-annual filing reported that first-half 2026 revenue fell about 99.12% year over year after the company discontinued low-margin cloud-platform resale activities. The filing also said the company relied on financing including convertible notes, which may dilute shareholders upon conversion, and reported a substantial shareholder loss for the period.\"},{\"ticker\":\"AMIX\",\"text\":\"A secondary news source reported on October 2 that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology.\"},{\"ticker\":\"CYCU\",\"text\":\"Secondary coverage reported on October 2 that Cycurion regained Nasdaq compliance. A September 28 company release also referred to an ongoing Nasdaq listing process.\"},{\"ticker\":\"SMX\",\"text\":\"Not researched at this checkpoint\"},{\"ticker\":\"SGRX\",\"text\":\"no catalyst found in our sources\"},{\"ticker\":\"TNMG\",\"text\":\"On October 2, TNL Mediagene announced a definitive agreement dated September 30 to sell its Japanese business, including its wholly owned Japan holding company and the Mediagene and Infobahn subsidiaries, to a CEO-led acquisition vehicle for aggregate consideration of $5.5 million. The transaction followed a special-committee process and fairness opinion.\"},{\"ticker\":\"SORA\",\"text\":\"On October 1, AsiaStrategy announced a non-binding memorandum of understanding with Plume to explore forming an Asia-focused joint venture for structuring, issuing and distributing tokenized financial products.\"},{\"ticker\":\"GOW\",\"text\":\"On September 25, GOWell closed its business combination and began Nasdaq trading as GOW. It also completed a previously announced $50 million closing PIPE of preferred shares and warrants, while an earlier private placement contributed approximately $20 million, for stated PIPE gross proceeds of $70 million before fees and expenses.\"},{\"ticker\":\"LOCL\",\"text\":\"Not researched at this checkpoint\"},{\"ticker\":\"SSM\",\"text\":\"On October 1, a Schedule 13D was filed, and secondary coverage reported that Alpine Fox Capital disclosed a roughly 21.5% stake in Sono Group.\"},{\"ticker\":\"SDEV\",\"text\":\"no catalyst found in our sources\"}]}"
+  ],
+  "draft": {
+    "headline": "",
+    "overall": "AMOD ranked first in this range, up 200 percent from the prior close, with fresh news in our sources: on October 1, Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30, which was previously described as adding 3,170 Bitcoin valued above $200 million alongside 51,621,560 newly issued Class A PIPE shares. Since the previous checkpoint, AMOD was up 76.3% and printed a new high of day. AIXI was up 39 percent from the prior close, with fresh news in our sources: its October 2026 semi-annual filing reported that first-half 2026 revenue fell about 99.12% year over year after it discontinued low-margin cloud-platform resale activities, while financing including convertible notes may dilute shareholders upon conversion and the period included a substantial shareholder loss. Since the previous checkpoint, AIXI was up 17.2% and printed a new high of day. SDEV was up 38 percent from the prior close, with no catalyst found in our sources. Of the 12 names the desk covers, 7 had fresh news in our sources.",
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "AMOD",
+            "text": "On October 1, Alpha Modus reported that it had completed its bitcoin-backed PIPE transaction on September 30. The transaction had previously been described as adding 3,170 Bitcoin, then valued above $200 million, while the related purchase agreement contemplated 51,621,560 newly issued Class A PIPE shares."
+          },
+          {
+            "ticker": "AIXI",
+            "text": "On October 1, the October 2026 semi-annual filing reported that first-half 2026 revenue fell about 99.12% year over year after the company discontinued low-margin cloud-platform resale activities. The filing also said the company relied on financing including convertible notes, which may dilute shareholders upon conversion, and reported a substantial shareholder loss for the period."
+          },
+          {
+            "ticker": "AMIX",
+            "text": "A secondary news source reported on October 2 that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology."
+          },
+          {
+            "ticker": "CYCU",
+            "text": "Secondary coverage reported on October 2 that Cycurion regained Nasdaq compliance. A September 28 company release also referred to an ongoing Nasdaq listing process."
+          },
+          {
+            "ticker": "SMX",
+            "text": "Not researched at this checkpoint"
+          },
+          {
+            "ticker": "SGRX",
+            "text": "no catalyst found in our sources"
+          },
+          {
+            "ticker": "TNMG",
+            "text": "On October 2, TNL Mediagene announced a definitive agreement dated September 30 to sell its Japanese business, including its wholly owned Japan holding company and the Mediagene and Infobahn subsidiaries, to a CEO-led acquisition vehicle for aggregate consideration of $5.5 million. The transaction followed a special-committee process and fairness opinion."
+          },
+          {
+            "ticker": "SORA",
+            "text": "On October 1, AsiaStrategy announced a non-binding memorandum of understanding with Plume to explore forming an Asia-focused joint venture for structuring, issuing and distributing tokenized financial products."
+          },
+          {
+            "ticker": "GOW",
+            "text": "On September 25, GOWell closed its business combination and began Nasdaq trading as GOW. It also completed a previously announced $50 million closing PIPE of preferred shares and warrants, while an earlier private placement contributed approximately $20 million, for stated PIPE gross proceeds of $70 million before fees and expenses."
+          },
+          {
+            "ticker": "LOCL",
+            "text": "Not researched at this checkpoint"
+          },
+          {
+            "ticker": "SSM",
+            "text": "On October 1, a Schedule 13D was filed, and secondary coverage reported that Alpine Fox Capital disclosed a roughly 21.5% stake in Sono Group."
+          },
+          {
+            "ticker": "SDEV",
+            "text": "no catalyst found in our sources"
+          }
+        ]
+      }
+    ]
+  },
+  "checkerReplies": [
+    {
+      "raw": "{\"verdicts\":[{\"id\":\"O\",\"supported\":true,\"note\":\"Every count, move, catalyst clause and date matches the narrative facts and the stored research; 7 of 12 FRESH_FOUND is correct.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L1\",\"supported\":true,\"note\":\"Matches AMOD's catalyst summary; the October 1 date matches the event time of 07:30 ET on 2026-10-01.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L2\",\"supported\":true,\"note\":\"Matches AIXI's summary; the event's ET reading is 20:31 ET on 2026-10-01.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L3\",\"supported\":true,\"note\":\"Restates AMIX's catalyst summary.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L4\",\"supported\":true,\"note\":\"Restates CYCU's summary; the only September source cited is the 2026-09-28 8-K exhibit.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L5\",\"supported\":false,\"note\":\"SMX has stored research (status NONE_FOUND), so 'Not researched' is contradicted.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L6\",\"supported\":true,\"note\":\"SGRX catalyst status is NONE_FOUND.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L7\",\"supported\":true,\"note\":\"Restates TNMG's catalyst summary.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L8\",\"supported\":true,\"note\":\"Restates SORA's summary; the event is at 12:06 ET on 2026-10-01.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L9\",\"supported\":false,\"note\":\"Research says GOW began Nasdaq trading on September 28, not September 25.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L10\",\"supported\":true,\"note\":\"LOCL has no research and null labels.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L11\",\"supported\":true,\"note\":\"Restates SSM's summary; the 13D and the secondary report are both dated 2026-10-01.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L12\",\"supported\":true,\"note\":\"SDEV catalyst status is NONE_FOUND.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"}]}",
+      "error": null
+    }
+  ],
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "INTO_RTH",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-02",
+      "targetTradingDate": null,
+      "checkpoints": [
+        {
+          "id": 616,
+          "type": "OPEN_SPIKE_ASSESSMENT",
+          "completedAt": "2026-10-02T13:25:20.221Z"
+        }
+      ],
+      "publishedAt": "2026-10-15T01:50:22.979Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "FRESH NEWS FOUND",
+          "lines": [
+            {
+              "ticker": "AMOD",
+              "liveFeed": null,
+              "text": "On October 1, Alpha Modus reported that it had completed its bitcoin-backed PIPE transaction on September 30. The transaction had previously been described as adding 3,170 Bitcoin, then valued above $200 million, while the related purchase agreement contemplated 51,621,560 newly issued Class A PIPE shares.",
+              "company": {
+                "name": "ALPHA MODUS HOLDINGS, INC.",
+                "country": "United States",
+                "business": "Alpha Modus develops technology for personalized retail marketing and advertising."
+              },
+              "path": {
+                "from": 1.17,
+                "high": 3.6,
+                "now": 3.5087,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "1d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 7:30 AM ET",
+                  "headline": "Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30. The transaction was previously described as adding 3,170 Bitcoin, then valued above $200 million, while the related purchase agreement contemplated 51,621,560 newly issued Class A PIPE shares. The bitcoin balance-sheet addition is favourable, but the very large equity issuance is a material supply consideration.",
+                  "explainsMove": true,
+                  "freshness": "RECENT",
+                  "tone": "warn",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is RECENT rather than fresh."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "51.6M sh supply",
+                  "detail": "The August bitcoin-backed PIPE agreement contemplated 51,621,560 new Class A shares, compared with 4,986,264 Class A shares reported outstanding as of August 24.",
+                  "tone": "neg",
+                  "full": "The August bitcoin-backed PIPE agreement contemplated 51,621,560 new Class A shares, compared with 4,986,264 Class A shares reported outstanding as of August 24. This is substantial potential dilution versus the pre-transaction share base."
+                }
+              }
+            },
+            {
+              "ticker": "AIXI",
+              "liveFeed": null,
+              "text": "On October 1, the October 2026 semi-annual filing reported that first-half 2026 revenue fell about 99.12% year over year after the company discontinued low-margin cloud-platform resale activities. The filing also said the company relied on financing including convertible notes, which may dilute shareholders upon conversion, and reported a substantial shareholder loss for the period.",
+              "company": {
+                "name": "Xiao-I Corp",
+                "country": "China",
+                "business": "Xiao-I primarily develops artificial intelligence technology in China."
+              },
+              "path": {
+                "from": 1.215,
+                "high": 1.92,
+                "now": 1.6879,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "C",
+                  "age": "since Thu close",
+                  "ageIsPriorClose": true,
+                  "eventAt": "Oct 1, 8:31 PM ET",
+                  "headline": "The October 2026 semi-annual filing reported that revenue for the first half of 2026 fell about 99.12% year over year following discontinuation of low-margin cloud-platform resale activities. It also said the company relied on financing, including convertible notes, which may dilute shareholders upon conversion. The filing also reports a substantial shareholder loss for the period.",
+                  "explainsMove": false,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH. It is FRESH because it broke after the prior session's close (since Thu close), so the market has not traded on it yet -- not because it is recent by the calendar. The exact time is below."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "19.5M sh",
+                  "detail": "The company completed a one-for-seven reverse ADS split effective September 8, 2026.",
+                  "tone": "warn",
+                  "full": "The company completed a one-for-seven reverse ADS split effective September 8, 2026. The filing states that no ordinary shares were issued or canceled in connection with that ADS-ratio change."
+                }
+              }
+            },
+            {
+              "ticker": "AMIX",
+              "liveFeed": null,
+              "text": "A secondary news source reported on October 2 that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology.",
+              "company": {
+                "name": "Autonomix Medical, Inc.",
+                "country": "United States",
+                "business": "Autonomix Medical is a medical-device company developing precision nerve-targeted treatments."
+              },
+              "path": {
+                "from": 3.92,
+                "high": 4.57,
+                "now": 3.93,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "1h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 2, 8:08 AM ET",
+                  "headline": "A secondary news source reported on October 2 that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology. The event is favorable and company-specific, but the bundle contains only a secondary headline without the underlying patent announcement or details about commercial impact.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "2.36M sh supply",
+                  "detail": "The latest explicit shares-outstanding figure, 971,043 as of August 6, predates the August agreement for immediate exercise of 857,462 warrants, so it may materially understate subsequent issued shares.",
+                  "tone": "neg",
+                  "full": "The latest explicit shares-outstanding figure, 971,043 as of August 6, predates the August agreement for immediate exercise of 857,462 warrants, so it may materially understate subsequent issued shares."
+                }
+              }
+            },
+            {
+              "ticker": "CYCU",
+              "liveFeed": null,
+              "text": "Secondary coverage reported on October 2 that Cycurion regained Nasdaq compliance. A September 28 company release also referred to an ongoing Nasdaq listing process.",
+              "company": {
+                "name": "Cycurion, Inc.",
+                "country": "United States",
+                "business": "Cycurion provides IT cybersecurity, program management, business continuity and AI-driven solutions."
+              },
+              "path": {
+                "from": 2.69,
+                "high": 3.39,
+                "now": 3.0239,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "54m",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 2, 8:31 AM ET",
+                  "headline": "Secondary coverage dated October 2 reported that Cycurion regained Nasdaq compliance. This is potentially favorable listing-status news, but the bundle does not include an exchange notice or other primary confirmation of the regained-compliance determination. A September company release also referred to an ongoing Nasdaq listing process.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "30.0M sh supply",
+                  "detail": "The reported 25,840,335 shares outstanding date, August 10, 2026, precedes the August 28, 2026 1-for-8 reverse split.",
+                  "tone": "neg",
+                  "full": "The reported 25,840,335 shares outstanding date, August 10, 2026, precedes the August 28, 2026 1-for-8 reverse split. The bundle provides no post-split outstanding-share count, so it should not be treated as a current post-split share count."
+                }
+              }
+            },
+            {
+              "ticker": "TNMG",
+              "liveFeed": null,
+              "text": "On October 2, TNL Mediagene announced a definitive agreement dated September 30 to sell its Japanese business, including its wholly owned Japan holding company and the Mediagene and Infobahn subsidiaries, to a CEO-led acquisition vehicle for aggregate consideration of $5.5 million. The transaction followed a special-committee process and fairness opinion.",
+              "company": {
+                "name": "TNL Mediagene",
+                "country": null,
+                "business": "TNL Mediagene is a technology and digital media company providing AI-driven advertising, marketing technology, content commerce and data analytics solutions, while operating multilingual digital media brands across Asia."
+              },
+              "path": {
+                "from": 4.15,
+                "high": 5.79,
+                "now": 4.75,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "4h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 2, 5:30 AM ET",
+                  "headline": "On October 2, 2026, TNL Mediagene announced a definitive agreement, dated September 30, to sell its Japanese business, including its wholly owned Japan holding company and the Mediagene and Infobahn subsidiaries, to a CEO-led acquisition vehicle for aggregate consideration of $5.5 million. The transaction followed a special-committee process and fairness opinion. This is a material company-specific divestiture, although the bundle does not provide closing conditions, expected closing date, use of proceeds, or the financial contribution of the sold business.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "A 1-for-8 share consolidation became effective for split-adjusted Nasdaq trading on September 8, 2026.",
+                  "tone": "warn",
+                  "full": "A 1-for-8 share consolidation became effective for split-adjusted Nasdaq trading on September 8, 2026."
+                }
+              }
+            },
+            {
+              "ticker": "SORA",
+              "liveFeed": null,
+              "text": "On October 1, AsiaStrategy announced a non-binding memorandum of understanding with Plume to explore forming an Asia-focused joint venture for structuring, issuing and distributing tokenized financial products.",
+              "company": {
+                "name": "AsiaStrategy",
+                "country": null,
+                "business": "AsiaStrategy is a luxury-watch trading company that has diversified into Bitcoin and digital-asset treasury activities, including digital-asset-collateralised lending and compute infrastructure."
+              },
+              "path": {
+                "from": 2.4,
+                "high": 3.09,
+                "now": 2.47,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "21h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 12:06 PM ET",
+                  "headline": "AsiaStrategy announced a non-binding memorandum of understanding with Plume to explore forming an Asia-focused joint venture for structuring, issuing and distributing tokenized financial products. The announcement is company-filed, but it is exploratory and does not establish that a joint venture, product launch or commercial revenue has occurred.",
+                  "explainsMove": true,
+                  "freshness": "RECENT",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is RECENT rather than fresh."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "No filing in the supplied evidence states a current public float.",
+                  "tone": "warn",
+                  "full": "No filing in the supplied evidence states a current public float. Shares outstanding, 24,864,000 as of December 31, 2025, is not float."
+                }
+              }
+            },
+            {
+              "ticker": "SSM",
+              "liveFeed": null,
+              "text": "On October 1, a Schedule 13D was filed, and secondary coverage reported that Alpine Fox Capital disclosed a roughly 21.5% stake in Sono Group.",
+              "company": {
+                "name": "Sono Group N.V.",
+                "country": "Germany",
+                "business": "Sono Group N.V. is a Netherlands-incorporated holding company, whose disclosed subsidiary is Sono Motors GmbH (Sono Solar)."
+              },
+              "path": {
+                "from": 2.21,
+                "high": 2.88,
+                "now": 2.4,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "1d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 30, 8:00 PM ET",
+                  "headline": "A Schedule 13D was filed on October 1, and secondary coverage reports that Alpine Fox Capital disclosed a roughly 21.5% stake in Sono Group. The October 2 premarket report directly associated the disclosure with SSM being up about 13%.",
+                  "explainsMove": true,
+                  "freshness": "RECENT",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is RECENT rather than fresh."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "284K sh",
+                  "detail": "The displayed non-affiliate share count of 1,194,083 was calculated as of August 28, before the subsequent 283,500-share registered direct offering.",
+                  "tone": "warn",
+                  "full": "The displayed non-affiliate share count of 1,194,083 was calculated as of August 28, before the subsequent 283,500-share registered direct offering. It should not be treated as a current reconciled float."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "OLDER OR SECONDARY NEWS",
+          "lines": [
+            {
+              "ticker": "GOW",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "GOWell Energy Technology",
+                "country": null,
+                "business": "GOWell provides well logging solutions for the energy sector."
+              },
+              "path": {
+                "from": 2.98,
+                "high": 3.97,
+                "now": 3.21,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "7d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 25, 4:04 PM ET",
+                  "headline": "No fresh catalyst · latest: Sep 25 · GOWell closed its business combination and began Nasdaq trading as GOW on September 28. Concurrently, it completed a previously announced $50 million closing PIPE of preferred shares and warrants, while an earlier private placement contributed approximately $20 million, for stated PIPE gross proceeds of $70 million before fees and expenses. The Nasdaq debut is a company-specific attention event, but the completed preferred-share and warrant financing creates new security supply and potential dilution.",
+                  "explainsMove": null,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "980K sh",
+                  "detail": "A completed $50 million PIPE consisted of preferred shares and warrants, with a separate approximately $20 million private placement cited by the company.",
+                  "tone": "warn",
+                  "full": "A completed $50 million PIPE consisted of preferred shares and warrants, with a separate approximately $20 million private placement cited by the company."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NO CATALYST FOUND IN OUR SOURCES",
+          "lines": [
+            {
+              "ticker": "SMX",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "SMX (Security Matters) Public Ltd Co",
+                "country": "Ireland",
+                "business": "SMX develops a digital material passport platform intended to mark, verify and certify physical plastic materials."
+              },
+              "path": {
+                "from": 6.16,
+                "high": 10.6355,
+                "now": 5.39,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NO_FRESH_CATALYST",
+                  "grade": "C",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Coverage is adequate, but the October 1 company communications in the bundle are promotional items about media attention and the company's technology, with no stated contract, financing, regulatory approval, operating result or other material company-specific development. A secondary report described an after-hours rise following \"fresh company updates,\" but does not establish a substantive underlying event.",
+                  "explainsMove": false,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "1.20M sh supply",
+                  "detail": "The disclosed SEPA provides up to $250 million of equity-line capacity, and the associated F-1 was effective August 4, 2026.",
+                  "tone": "neg",
+                  "full": "The disclosed SEPA provides up to $250 million of equity-line capacity, and the associated F-1 was effective August 4, 2026. This is an active issuance mechanism, although the remaining dollar capacity cannot be converted into a share count from this bundle."
+                }
+              }
+            },
+            {
+              "ticker": "SGRX",
+              "liveFeed": null,
+              "text": "no catalyst found in our sources",
+              "company": {
+                "name": "SANGRIX INC.",
+                "country": null,
+                "business": "Sangrix is pursuing AI-workload infrastructure focused on GPU computing, server leasing, storage infrastructure and related services."
+              },
+              "path": {
+                "from": 1.39,
+                "high": 2.08,
+                "now": 1.8098,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NO_FRESH_CATALYST",
+                  "grade": "C",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Adequate coverage identified a September 15 announcement of a new website and logo tied to the stated AI-infrastructure transition, and a September 9 sale of 3 million DOGE for approximately $267,665 of gross proceeds for working capital. The evidence does not identify a fresh company-specific operational, contractual, regulatory, or financing event sufficient to explain the current move. The September 3 name and ticker change is not itself a catalyst.",
+                  "explainsMove": false,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "52.2M sh",
+                  "detail": "Reported shares outstanding of 1,476,900 are dated December 31, 2025 and may not reflect later changes.",
+                  "tone": "warn",
+                  "full": "Reported shares outstanding of 1,476,900 are dated December 31, 2025 and may not reflect later changes. This figure is not float."
+                }
+              }
+            },
+            {
+              "ticker": "SDEV",
+              "liveFeed": null,
+              "text": "no catalyst found in our sources",
+              "company": {
+                "name": "Stablecoin Development Corp",
+                "country": "United States",
+                "business": "Stablecoin Development Corp holds SKY tokens and earns staking rewards through the Sky Protocol."
+              },
+              "path": {
+                "from": 3.66,
+                "high": 5.57,
+                "now": 5.06,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NO_FRESH_CATALYST",
+                  "grade": "C",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Adequate coverage identified no fresh company-specific catalyst. On September 29, 2026, the company reported unusual trading activity but said it knew of no material development or other reason for the market action.",
+                  "explainsMove": false,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "213.3M sh",
+                  "detail": "The preliminary S-3 contemplated resale of up to 212,876,259 shares, including 45,337,032 issued shares and 167,539,227 shares underlying January 2026 pre-funded warrants.",
+                  "tone": "warn",
+                  "full": "The preliminary S-3 contemplated resale of up to 212,876,259 shares, including 45,337,032 issued shares and 167,539,227 shares underlying January 2026 pre-funded warrants. This is potential supply, not proof that the registration became effective or that shares were sold."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NOT RESEARCHED AT THIS CHECKPOINT",
+          "lines": [
+            {
+              "ticker": "LOCL",
+              "liveFeed": null,
+              "text": "Not researched at this checkpoint",
+              "company": null,
+              "path": {
+                "from": 1.06,
+                "high": 1.06,
+                "now": 1.06,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "watchCount": 12,
+      "narrative": "AMOD ranked first in this range, up 200 percent from the prior close, with fresh news in our sources: on October 1, Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30, which was previously described as adding 3,170 Bitcoin valued above $200 million alongside 51,621,560 newly issued Class A PIPE shares. Since the previous checkpoint, AMOD was up 76.3% and printed a new high of day. AIXI was up 39 percent from the prior close, with fresh news in our sources: its October 2026 semi-annual filing reported that first-half 2026 revenue fell about 99.12% year over year after it discontinued low-margin cloud-platform resale activities, while financing including convertible notes may dilute shareholders upon conversion and the period included a substantial shareholder loss. Of the 12 names the desk covers, 7 had fresh news in our sources.",
+      "narrativeFootnotes": null
+    },
+    "diagnostics": {
+      "lines": 13,
+      "strikes": [
+        {
+          "id": "S1L5",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "SMX has stored research (status NONE_FOUND), so 'Not researched' is contradicted.",
+          "text": "Not researched at this checkpoint"
+        },
+        {
+          "id": "S1L9",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "Research says GOW began Nasdaq trading on September 28, not September 25.",
+          "text": "On September 25, GOWell closed its business combination and began Nasdaq trading as GOW. It also completed a previously announced $50 million closing PIPE of preferred shares and warrants, while an earlier private placement contributed approximately $20 million, for stated PIPE gross proceeds of $70 million before fees and expenses."
+        }
+      ],
+      "writerMs": 15036,
+      "checkerMs": 21990
+    }
+  }
+}
