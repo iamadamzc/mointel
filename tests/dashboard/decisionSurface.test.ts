@@ -405,8 +405,9 @@ describe('resolveWhy', () => {
 
   it('never emits a raw UTC timestamp for the event time', () => {
     const why = resolveWhy(buildDeskRow('SUGP', demand(), intelligence()), NOW);
-    expect(why.eventAt).toContain('ET');
     expect(why.eventAt).not.toMatch(/\d{4}-\d{2}-\d{2}T/);
+    // Integration 41st: no cited EXACT/INFERRED source carries this instant, so the shared rule gives the date only.
+    expect(why.eventAt).toMatch(/^[A-Z][a-z]{2} \d{1,2}, time not stated$/);
   });
 });
 
