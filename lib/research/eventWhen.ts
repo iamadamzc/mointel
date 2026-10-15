@@ -6,7 +6,8 @@
  */
 
 import { etClock } from '../market/session';
-import { eventEtDate, type TimePrecision } from './time';
+import { catalystAgeAt, eventEtDate, freshnessFromAge, type CatalystAge, type TimePrecision } from './time';
+import type { CatalystFreshness } from './types';
 
 /**
  * A stored date or instant as its ET calendar date and, when it carries one,
@@ -96,4 +97,36 @@ export function eventWhenDetail(catalyst: { eventTimestamp: string | null; sourc
   const at = Date.parse(catalyst.eventTimestamp);
   const exact = catalyst.sources.some((s) => s.precision === 'EXACT' && s.publishedAt !== null && Date.parse(s.publishedAt) === at);
   return { ...when, precision: exact ? 'EXACT' : 'INFERRED' };
+}
+
+/**
+ * A CATALYST'S AGE BY THE SAME RULE (Integration 41st, 2026-10-15): the day from eventWhen, and an elapsed span only
+ * when eventWhen trusts the clock. Read from the raw stamp (`catalystAge`), a date-only midnight-UTC placeholder is
+ * 20:00 ET the day before: the age chip a day older and in hours, and the band a day staler (WETO's
+ * "2026-09-17T00:00:00Z", a Sept. 17 release, read as Sep 16 20:00 ET).
+ */
+export function catalystAgeOf(catalyst: { eventTimestamp: string | null; sources: readonly WhenSource[] }, now: Date): CatalystAge | null {
+  const when = eventWhen(catalyst);
+  return catalystAgeAt(when.date, when.clock !== null ? catalyst.eventTimestamp : null, now);
+}
+
+/**
+ * The catalyst's CITED sources (its `evidenceSourceIds`) as the rule reads them, from any source rows that carry an
+ * id, a publication time and its precision (a bundle's sources, stored research sources, the board's evidence links).
+ */
+export function citedWhenSources(
+  citedIds: readonly number[] | null | undefined,
+  sources: readonly { id: number; publishedAt: string | null; publishedPrecision: TimePrecision | string }[],
+): WhenSource[] {
+  const wanted = new Set(citedIds ?? []);
+  return sources.filter((source) => wanted.has(source.id)).map((source) => ({ publishedAt: source.publishedAt, precision: source.publishedPrecision }));
+}
+
+/** A catalyst's freshness band from `catalystAgeOf`: his day bands, and the prior-close window for a trusted clock only. */
+export function catalystFreshnessOf(
+  catalyst: { eventTimestamp: string | null; sources: readonly WhenSource[] },
+  now: Date,
+  freshFrom?: Date | null,
+): CatalystFreshness {
+  return freshnessFromAge(catalystAgeOf(catalyst, now), now, freshFrom);
 }

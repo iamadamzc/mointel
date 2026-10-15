@@ -13,7 +13,8 @@
 
 import type { DeskRow } from '@/lib/dashboard/merge';
 import { calendarDay, catalystEventTime } from '@/lib/dashboard/catalystView';
-import { catalystAge, resolveCatalystFreshness } from '@/lib/research/time';
+import { catalystAgeOf, catalystFreshnessOf, citedWhenSources, type WhenSource } from '@/lib/research/eventWhen';
+import { catalystAge } from '@/lib/research/time';
 import type { CatalystFreshness } from '@/lib/research/types';
 
 export type WhyCode =
@@ -100,8 +101,17 @@ const DAY = 24 * HOUR;
  * `today` RATHER THAN `0d`, because zero days is not how anyone says it and a
  * bare date from this morning is exactly the row he is looking for.
  */
-export function relativeAge(at: string | null | undefined, nowMs: number): string | null {
-  const age = catalystAge(at, new Date(nowMs));
+export function relativeAge(
+  at: string | null | undefined,
+  nowMs: number,
+  /**
+   * A CATALYST's cited sources: the age then follows the shared event rule (lib/research/eventWhen.ts), hours only
+   * when a cited EXACT or INFERRED source carries the instant. Omitted for an instant that is its own evidence
+   * (a source's or a dossier's own time).
+   */
+  sources?: readonly WhenSource[],
+): string | null {
+  const age = sources ? catalystAgeOf({ eventTimestamp: at ?? null, sources }, new Date(nowMs)) : catalystAge(at, new Date(nowMs));
   if (age === null) return null;
 
   if (age.precision === 'CLOCK') {
@@ -210,7 +220,9 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
   const headline = catalyst?.summary?.trim() || null;
 
   const eventAt = catalyst?.eventTimestamp ?? null;
-  const age = relativeAge(eventAt, nowMs);
+  // The catalyst's cited sources, so its age and band follow the shared event rule (lib/research/eventWhen.ts).
+  const cited = catalyst ? citedWhenSources(catalyst.evidenceSourceIds, row.intelligence?.evidence ?? []) : [];
+  const age = relativeAge(eventAt, nowMs, cited);
 
   if (!catalyst) {
     return {
@@ -304,8 +316,8 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
    * usable tripwire rather than a hope.
    */
   const freshness: CatalystFreshness | null = catalyst
-    ? resolveCatalystFreshness(
-        catalyst.eventTimestamp,
+    ? catalystFreshnessOf(
+        { eventTimestamp: catalyst.eventTimestamp, sources: cited },
         new Date(nowMs),
         row.catalystFreshFrom ? new Date(row.catalystFreshFrom) : null,
       )
@@ -340,7 +352,7 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
     freshness === 'FRESH' &&
     catalyst !== null &&
     row.catalystFreshFrom !== null &&
-    resolveCatalystFreshness(catalyst.eventTimestamp, new Date(nowMs)) !== 'FRESH';
+    catalystFreshnessOf({ eventTimestamp: catalyst.eventTimestamp, sources: cited }, new Date(nowMs)) !== 'FRESH';
 
   const priorClose = promotedByPriorClose ? priorCloseLabel(row.catalystFreshFrom) : null;
 

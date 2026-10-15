@@ -59,10 +59,10 @@ describe('the write side reconciles the two', () => {
     // Instrument first: the recomputation this hangs off must still be here,
     // and must still come BEFORE the reconciliation, or the status would be
     // compared against a freshness the model supplied.
-    const recompute = source.indexOf(
-      'catalyst.freshness = resolveCatalystFreshness(catalyst.eventTimestamp, now, freshFrom);',
-    );
+    // Since 2026-10-15 the band reads the shared event rule (catalystFreshnessOf, the cited sources vouching for a clock).
+    const recompute = source.indexOf('catalyst.freshness = catalystFreshnessOf(');
     expect(recompute).toBeGreaterThan(-1);
+    expect(source.slice(recompute, recompute + 220)).toContain('freshFrom');
 
     const normalise = source.indexOf(
       "if (catalyst.catalystStatus === 'FRESH_FOUND' && catalyst.freshness === 'STALE') {",
@@ -144,8 +144,9 @@ describe('one boundary, three readers', () => {
     const source = await fs.readFile(path.join(process.cwd(), 'lib/research/queue.ts'), 'utf8');
     expect(source).toContain('catalystFreshFromUtc(db, options.tradingDate)');
     // And it is the value actually passed, not merely computed and dropped.
-    const at = source.indexOf('resolveCatalystFreshness(');
-    expect(source.slice(at, at + 220)).toContain('freshFrom');
+    const at = source.indexOf('catalystFreshnessOf(');
+    expect(at).toBeGreaterThan(-1);
+    expect(source.slice(at, at + 420)).toContain('freshFrom');
   });
 
   it('the write side takes the boundary and the pipeline supplies it', async () => {
@@ -155,9 +156,9 @@ describe('one boundary, three readers', () => {
       path.join(process.cwd(), 'lib/research/interpret/guardrails.ts'),
       'utf8',
     );
-    expect(guardrails).toContain(
-      'catalyst.freshness = resolveCatalystFreshness(catalyst.eventTimestamp, now, freshFrom);',
-    );
+    const write = guardrails.indexOf('catalyst.freshness = catalystFreshnessOf(');
+    expect(write).toBeGreaterThan(-1);
+    expect(guardrails.slice(write, write + 220)).toContain('freshFrom');
 
     const pipeline = await fs.readFile(
       path.join(process.cwd(), 'lib/research/interpret/pipeline.ts'),

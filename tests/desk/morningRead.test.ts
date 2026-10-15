@@ -19,7 +19,7 @@ import {
   insertAssessmentTickers,
   type AssessmentTickerRecord,
 } from '@/lib/market/store/assessmentRepo';
-import type { ResearchAnalysisVersion } from '@/lib/research/types';
+import type { ResearchAnalysisVersion, ResearchSource } from '@/lib/research/types';
 
 /*
  * Confirmation (row 22) and the PM catalyst update (row 21), spec
@@ -281,5 +281,20 @@ describe('morningReadOf: the server read', () => {
     expect(morningReadOf(db, D, '2026-10-06T12:00:00.000Z')).toEqual({
       morningAt: null, eveningAt: null, morningTickers: [], eveningTickers: [], byTicker: new Map(),
     });
+  });
+});
+
+describe('EVENT_DATE by the shared event rule (lib/research/eventWhen.ts; Integration 41st, 2026-10-15)', () => {
+  it('a date-only midnight-UTC placeholder is its own date, not 20:00 ET the day before; a cited EXACT source at the instant keeps the ET day', () => {
+    const withVersion = (v: Version) => new Map<number, Version>([[10, VERSIONS.get(10)!], [20, v]]);
+    // Version 10's event is the bare date 2026-10-05; version 20 stores the same day as a midnight-UTC placeholder.
+    const placeholder = version(20, '2026-10-06T10:30:00.000Z', 'FRESH_FOUND', '2026-10-05T00:00:00Z');
+    expect(confirmationOf(input(row(10), row(20), [], { versions: withVersion(placeholder) })).changes).toEqual([]);
+    // Control: a cited EXACT source at that instant vouches for the clock, so it is 20:00 ET on 2026-10-04, a real change.
+    const cited = { ...placeholder, dossier: { catalyst: { ...placeholder.dossier.catalyst, evidenceSourceIds: [7] } } } as unknown as Version;
+    const sources = [{ id: 7, publishedAt: '2026-10-05T00:00:00Z', publishedPrecision: 'EXACT' }] as unknown as ResearchSource[];
+    expect(confirmationOf(input(row(10), row(20), [], { versions: withVersion(cited), sources })).changes).toEqual([
+      { part: 'EVENT_DATE', from: '2026-10-05', to: '2026-10-04' },
+    ]);
   });
 });
