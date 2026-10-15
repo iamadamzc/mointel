@@ -594,3 +594,43 @@ describe('NOT_SELF_CONTAINED: the counterparty its own research names', () => {
     );
   });
 });
+
+/* Commercial's spec, controls (5) and points (b) and (c), added after its full text reached Research. */
+describe('NOT_SELF_CONTAINED counterparty: the spec controls', () => {
+  const research = (entries: Array<[string, string]>) =>
+    new Map<string, ReportResearch>(
+      entries.map(([ticker, summary]) => [ticker, { catalyst: { summary, status: 'FRESH_FOUND', grade: 'MODERATE', eventTimestamp: '2026-10-14T12:00:00Z', sources: [], unknowns: [], whyTradersMayCare: null, plausiblyExplainsMove: true } } as unknown as ReportResearch]),
+    );
+  const LINE = 'On October 14, 2026, Faraday Future announced that it and BBB had signed definitive agreements for BBB to acquire its robotics assets.';
+  const strikesOn = (lineText: string, map: Map<string, ReportResearch>) =>
+    ruleStrikes({ ...input(GOOD_INTRADAY, lineText, intraday), research: map })
+      .filter((s) => s.id === 'S1L1' && s.reason === 'NOT_SELF_CONTAINED')
+      .map((s) => s.detail);
+
+  it('(5) a covered ticker named in a DIFFERENT name\'s research strikes in this line', () => {
+    // CCC's research names BBB; AAA's does not. AAA's line naming BBB is not admitted.
+    const map = research([['AAA', 'Faraday Future signed agreements to sell its robotics assets.'], ['CCC', 'CCC and BBB signed a supply agreement.']]);
+    expect(strikesOn(LINE, map)).toEqual(['also names BBB']);
+  });
+
+  it('(5) the rule reads the covered list only: an uncovered ticker is not its to strike, before or after (the model question is the key there)', () => {
+    // ZZZZ is not covered. The rule never struck it (it filters the report's rows), and admitting nothing changes that.
+    const map = research([['AAA', 'Faraday Future and ZZZZ signed agreements.']]);
+    expect(counterpartyTickers('AAA', TICKERS, map)).toEqual(new Set());
+    expect(strikesOn('Faraday Future and ZZZZ signed agreements.', map)).toEqual([]);
+  });
+
+  it('(b) whole-word and case-sensitive: a short covered ticker is not found inside a word or in lower case', () => {
+    const tickers = ['AAA', 'TC', 'AI'];
+    const map = research([['AAA', 'The TCV investment, an ATC filing, tc in lower case, and said AIM.']]);
+    expect(counterpartyTickers('AAA', tickers, map)).toEqual(new Set());
+    const named = research([['AAA', 'TC agreed to buy the unit; AI licensed it.']]);
+    expect(counterpartyTickers('AAA', tickers, named)).toEqual(new Set(['TC', 'AI']));
+  });
+
+  it('(c) LIMIT: the other name\'s news without a number is not something the rule can strike; the model\'s support read is the key for it', () => {
+    const map = research([['AAA', 'Faraday Future announced that it and BBB signed definitive agreements for BBB to acquire its robotics assets.']]);
+    // BBB's own news (no number) in AAA's line: the rule admits the ticker and has no number to trace.
+    expect(strikesOn(`${LINE} BBB also launched a new humanoid robot.`, map)).toEqual([]);
+  });
+});
