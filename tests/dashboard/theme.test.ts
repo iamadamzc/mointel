@@ -4,7 +4,7 @@ import { runInNewContext } from 'node:vm';
 
 import { describe, expect, it } from 'vitest';
 
-import { THEME_BOOT, THEME_STORAGE_KEY, isThemedPath, parseTheme } from '@/lib/theme';
+import { THEME_BOOT, THEME_STORAGE_KEY, isThemedPath, parseTheme, themeForPath } from '@/lib/theme';
 
 /*
  * Light / dark mode (his ask 2026-10-14). Dark is the default; light is per viewer, desk and review only.
@@ -36,6 +36,24 @@ describe('the theme rules', () => {
   it('applies on the desk and review pages only', () => {
     for (const p of ['/desk', '/review/abc', '/review/abc/diagnostics']) expect(isThemedPath(p)).toBe(true);
     for (const p of ['/', '/signin', '/terms', '/desktop', '/reviewer']) expect(isThemedPath(p)).toBe(false);
+  });
+});
+
+describe('client-side navigation (Web on 78b07b00)', () => {
+  it('a path change re-applies the rule: the stored choice on the desk, dark on the public site', () => {
+    expect(themeForPath('/desk', 'light')).toBe('light');
+    expect(themeForPath('/review/tok', 'light')).toBe('light');
+    expect(themeForPath('/', 'light')).toBe('dark');
+    expect(themeForPath('/signin', 'light')).toBe('dark');
+    expect(themeForPath('/desk', 'dark')).toBe('dark');
+  });
+
+  it('the root layout mounts the watcher, which applies themeForPath on every path change', () => {
+    const layout = readFileSync(join(process.cwd(), 'app/layout.tsx'), 'utf8');
+    expect(layout).toContain('<ThemeSync />');
+    const sync = readFileSync(join(process.cwd(), 'components/ThemeSync.tsx'), 'utf8');
+    expect(sync).toContain('applyTheme(themeForPath(');
+    expect(sync).toContain('[pathname]');
   });
 });
 

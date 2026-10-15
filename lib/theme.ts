@@ -26,6 +26,11 @@ export function parseTheme(raw: unknown): Theme {
   return raw === 'light' ? 'light' : 'dark';
 }
 
+/** The theme a path shows: the stored choice on the desk and review pages, dark everywhere else. */
+export function themeForPath(pathname: string, stored: Theme): Theme {
+  return isThemedPath(pathname) ? stored : 'dark';
+}
+
 export function readTheme(): Theme {
   try {
     return parseTheme(window.localStorage.getItem(THEME_STORAGE_KEY));

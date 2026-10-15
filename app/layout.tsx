@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ThemeSync } from "@/components/ThemeSync";
 import { THEME_BOOT } from "@/lib/theme";
 
 const geistSans = Geist({
@@ -58,7 +59,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT }} />
       </head>
-      <body className="min-h-full bg-desk text-ink">{children}</body>
+      <body className="min-h-full bg-desk text-ink">
+        <ThemeSync />
+        {children}
+      </body>
     </html>
   );
 }
