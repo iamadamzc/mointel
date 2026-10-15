@@ -238,7 +238,9 @@ async function main() {
       const allowed = namedTickers(facts);
       const board = read.inputs.facts.map((f) => f.ticker);
       const others = board.filter((t) => !allowed.has(t));
-      const withUnknown = board.find((t) => (read.inputs.research.get(t)?.catalyst.unknowns.length ?? 0) > 0) ?? null;
+      // The dry's disclosure plant goes on a filings-only name where the input has one, so rule 5's count sees a present case.
+      const unknownsOf = (t: string) => read.inputs.research.get(t)?.catalyst.unknowns ?? [];
+      const withUnknown = board.find((t) => unknownsOf(t).some((u) => FILINGS_ONLY_SOURCE.test(u))) ?? board.find((t) => unknownsOf(t).length > 0) ?? null;
       const usage: RunRecord['usage'] = [];
       const calls: KeptCall[] = [];
       const inner = dry ? stubWriter(facts, run, others[0] ?? null, withUnknown) : createReportModelsV6({ ...config, claudeChecker: null }, (u) => usage.push({ ...u, role: 'writer' })).writer;

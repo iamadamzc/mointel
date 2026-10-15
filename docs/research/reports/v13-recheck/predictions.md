@@ -30,7 +30,7 @@ If fewer than 12 of the 15 publish, the result is **NOT DECIDED** and goes to hi
 
 ## The dry (stub models, $0), and what it proves
 
-Each measure saw its planted case: the Summary naming a board name the facts do not (drafts 9 of 9 planted, each struck by the rule as NOT_SELF_CONTAINED, so PUBLISHED 0); the desk's words in a published line (9 planted, 9 counted); "company filings only" (3 planted, 3 counted). Limit: the PUBLISHED other-names count has no published present case, because the rule strikes every planted one first; it uses the same ticker match as the draft count, which did see them.
+Each measure saw its planted case: the Summary naming a board name the facts do not (drafts 9 of 9 planted, each struck by the rule as NOT_SELF_CONTAINED, so PUBLISHED 0); the desk's words in a published line (9 planted, 9 counted); "company filings only" (3 planted, 3 counted; on a filings-only name where the input has one, so rule 5's FILINGS-ONLY count saw 1). Limit: the PUBLISHED other-names count has no published present case, because the rule strikes every planted one first; it uses the same ticker match as the draft count, which did see them.
 
 ## Predictions (this seat's, before any call)
 
