@@ -1,0 +1,72 @@
+store A:/mointel/data/slim-2026-10-14.db: 89141248 bytes, mtime 2026-10-15T00:55:08.346Z; days 2026-10-14
+store A:/mointel/data/market-prod-2026-10-07.db: 5512986624 bytes, mtime 2026-10-07T15:13:47.202Z; days 2026-10-02, 2026-10-05, 2026-10-06
+clock fixed at 2026-10-15T01:10:03.219Z; kinds INTO_RTH, INTO_POWER_HOUR, AFTER_HOURS; range $1-$20; 3 runs per input
+prompt v7 version 11, writer gpt-5.6-luna; checker claude-opus-5-5 (Tests-TMI key, no fallback); every raw reply kept
+stop $8: a report launches only if spend + its worst case ($0.8116) fits
+every Summary measure on the PUBLISHED narrative (result.report.narrative), the draft beside it
+
+2026-10-14-INTO_RTH-v7.11-run1: PUBLISHED; Summary published; count yes; first-ranked GENK yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 2 of 12; $0.1432
+2026-10-14-INTO_RTH-v7.11-run2: PUBLISHED; Summary published; count yes; first-ranked GENK yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 2 of 12; $0.1370
+2026-10-14-INTO_RTH-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked GENK yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 1 of 12; $0.1309
+2026-10-14-INTO_POWER_HOUR-v7.11-run1: PUBLISHED; Summary published; count yes; first-ranked TC yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 1; judgement lines 0; name lines struck 0 of 12; $0.1297
+2026-10-14-INTO_POWER_HOUR-v7.11-run2: PUBLISHED; Summary published; count yes; first-ranked TC yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 1; judgement lines 0; name lines struck 1 of 12; $0.1323
+2026-10-14-INTO_POWER_HOUR-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked TC yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 1; judgement lines 0; name lines struck 1 of 12; $0.1344
+2026-10-14-AFTER_HOURS-v7.11-run1: PUBLISHED; Summary published; count yes; first-ranked TC yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 1 of 12; $0.1526
+2026-10-14-AFTER_HOURS-v7.11-run2: PUBLISHED; Summary published; count yes; first-ranked TC yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 0 of 12; $0.1535
+2026-10-14-AFTER_HOURS-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked TC yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 1 of 12; $0.1531
+2026-10-02-INTO_RTH-v7.11-run1: PUBLISHED; Summary published; count yes; first-ranked AMOD yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 3 of 12; $0.1846
+2026-10-02-INTO_RTH-v7.11-run2: PUBLISHED; Summary published; count yes; first-ranked AMOD yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 1; judgement lines 0; name lines struck 0 of 12; $0.1808
+2026-10-02-INTO_RTH-v7.11-run3: PUBLISHED; Summary STRUCK (UNSUPPORTED/model); count NO; first-ranked AMOD NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.1801
+2026-10-02-INTO_POWER_HOUR-v7.11-run1: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, NOT_SELF_CONTAINED/rule, UNSUPPORTED/model); count NO; first-ranked ZNB NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.1463
+2026-10-02-INTO_POWER_HOUR-v7.11-run2: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, UNSUPPORTED/model); count NO; first-ranked ZNB NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.1335
+2026-10-02-INTO_POWER_HOUR-v7.11-run3: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, UNSUPPORTED/model); count NO; first-ranked ZNB NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.1288
+2026-10-02-AFTER_HOURS-v7.11-run1: PUBLISHED; Summary published; count yes; first-ranked ZNB yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.1393
+2026-10-02-AFTER_HOURS-v7.11-run2: PUBLISHED; Summary published; count yes; first-ranked ZNB yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 1 of 12; $0.1355
+2026-10-02-AFTER_HOURS-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked ZNB yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.1302
+2026-10-05-INTO_RTH-v7.11-run1: PUBLISHED; Summary published; count yes; first-ranked MI yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 2 of 12; $0.1827
+2026-10-05-INTO_RTH-v7.11-run2: PUBLISHED; Summary published; count yes; first-ranked MI yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 2; name lines struck 2 of 12; $0.1765
+2026-10-05-INTO_RTH-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked MI yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 2 of 12; $0.1792
+2026-10-05-INTO_POWER_HOUR-v7.11-run1: PUBLISHED; Summary published; count yes; first-ranked MI yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 0 of 12; $0.1120
+2026-10-05-INTO_POWER_HOUR-v7.11-run2: PUBLISHED; Summary published; count yes; first-ranked MI yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 1 of 12; $0.1159
+2026-10-05-INTO_POWER_HOUR-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked MI yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 0 of 12; $0.1123
+2026-10-05-AFTER_HOURS-v7.11-run1: PUBLISHED; Summary published; count yes; first-ranked MI yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.1161
+2026-10-05-AFTER_HOURS-v7.11-run2: PUBLISHED; Summary published; count yes; first-ranked MI yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.1168
+2026-10-05-AFTER_HOURS-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked MI yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.1156
+2026-10-06-INTO_RTH-v7.11-run1: PUBLISHED; Summary published; count yes; first-ranked XHG yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 1 of 12; $0.1489
+2026-10-06-INTO_RTH-v7.11-run2: PUBLISHED; Summary published; count yes; first-ranked XHG yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 1 of 12; $0.1442
+2026-10-06-INTO_RTH-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked XHG yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 1 of 12; $0.1496
+2026-10-06-INTO_POWER_HOUR-v7.11-run1: PUBLISHED; Summary published; count yes; first-ranked XHG yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 1 of 12; $0.1570
+2026-10-06-INTO_POWER_HOUR-v7.11-run2: PUBLISHED; Summary STRUCK (NOT_SELF_CONTAINED/rule, UNSUPPORTED/model); count NO; first-ranked XHG NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 1 of 12; $0.1569
+2026-10-06-INTO_POWER_HOUR-v7.11-run3: PUBLISHED; Summary STRUCK (NOT_SELF_CONTAINED/rule, UNSUPPORTED/model); count NO; first-ranked XHG NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 1 of 12; $0.1670
+2026-10-06-AFTER_HOURS-v7.11-run1: PUBLISHED; Summary published; count yes; first-ranked XHG yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 2 of 12; $0.1642
+2026-10-06-AFTER_HOURS-v7.11-run2: PUBLISHED; Summary published; count yes; first-ranked XHG yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 1 of 12; $0.1711
+2026-10-06-AFTER_HOURS-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked XHG yes; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 0 of 12; $0.1630
+
+LIVE 10-14 (reports 45 to 47 inputs): run 9; published 9; failed 0
+  Summary STRUCK 0 of 9; strike reasons none
+  UNFRAMED_PERCENT Summary strikes: 0
+  count sentence PUBLISHED 9 of 9; first-ranked PUBLISHED 9 of 9
+  drafts with a report label 0; a change note with "when" 0; a causal join 0
+  PUBLISHED Summaries with a change note + "when" 0; with a causal join 0 (read 135: both must be 0)
+  growth-framed percents in published Summaries (each read by hand, read 135 c): 3
+  published name lines with a judgement word or a news kind (read 107 a, each read by hand): 6
+  checker calls that threw 0; name lines struck 9
+EARLIER INPUTS (10-02, 10-05, 10-06): run 27; published 27; failed 0
+  Summary STRUCK 6 of 27; strike reasons UNSUPPORTED/model 6, NUMBER_WITHOUT_ROW/rule 3, NOT_SELF_CONTAINED/rule 3
+  UNFRAMED_PERCENT Summary strikes: 0
+  count sentence PUBLISHED 21 of 27; first-ranked PUBLISHED 21 of 27
+  drafts with a report label 0; a change note with "when" 0; a causal join 0
+  PUBLISHED Summaries with a change note + "when" 0; with a causal join 0 (read 135: both must be 0)
+  growth-framed percents in published Summaries (each read by hand, read 135 c): 1
+  published name lines with a judgement word or a news kind (read 107 a, each read by hand): 15
+  checker calls that threw 0; name lines struck 20
+ALL: run 36; published 36; failed 0
+  Summary STRUCK 6 of 36; strike reasons UNSUPPORTED/model 6, NUMBER_WITHOUT_ROW/rule 3, NOT_SELF_CONTAINED/rule 3
+  UNFRAMED_PERCENT Summary strikes: 0
+  count sentence PUBLISHED 30 of 36; first-ranked PUBLISHED 30 of 36
+  drafts with a report label 0; a change note with "when" 0; a causal join 0
+  PUBLISHED Summaries with a change note + "when" 0; with a causal join 0 (read 135: both must be 0)
+  growth-framed percents in published Summaries (each read by hand, read 135 c): 4
+  published name lines with a judgement word or a news kind (read 107 a, each read by hand): 21
+  checker calls that threw 0; name lines struck 29
+TOTAL reports run 36 of 36; spend $5.2748

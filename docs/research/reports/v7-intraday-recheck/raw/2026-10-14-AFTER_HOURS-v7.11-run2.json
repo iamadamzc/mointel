@@ -1,0 +1,645 @@
+{
+  "record": {
+    "tag": "2026-10-14-AFTER_HOURS-v7.11-run2",
+    "store": "slim-2026-10-14.db",
+    "kind": "AFTER_HOURS",
+    "day": "2026-10-14",
+    "run": 2,
+    "status": "PUBLISHED",
+    "error": null,
+    "narrativeStruck": false,
+    "summaryStrikes": [],
+    "nameLinesStruck": 0,
+    "lines": 13,
+    "draftSummary": "TC ranked first in this range, up 2 percent from the prior close, with our research reaching no conclusion. NXGL was up 32 percent from the prior close, with our sources finding only older or secondary news about its effective 1-for-20 reverse stock split and split-adjusted Nasdaq trading. NXGL was down 23.2% since the previous checkpoint. MXCT was up 30 percent from the prior close, with fresh news that MaxCyte reported preliminary third-quarter 2026 core revenue of about $8.1 million, up 26% year over year, and raised full-year 2026 revenue guidance to about $34 million, including a core-business outlook of about $28 million. Of the 12 names the desk covers, 3 had fresh news in our sources.",
+    "narrative": "TC ranked first in this range, up 2 percent from the prior close, with our research reaching no conclusion. NXGL was up 32 percent from the prior close, with our sources finding only older or secondary news about its effective 1-for-20 reverse stock split and split-adjusted Nasdaq trading. NXGL was down 23.2% since the previous checkpoint. Of the 12 names the desk covers, 3 had fresh news in our sources.",
+    "countPublished": true,
+    "firstRanked": "TC",
+    "firstRankedPublished": true,
+    "labelInDraft": false,
+    "noteWhenInDraft": false,
+    "causalJoinInDraft": false,
+    "noteWhenPublished": false,
+    "causalJoinPublished": false,
+    "growthPercentsPublished": [],
+    "judgementLines": [
+      {
+        "ticker": "IACQ",
+        "text": "On September 2, 2026, a Form 8-K reported that IACQ dismissed its certifying accountant. The bundle did not establish whether the change involved a reportable disagreement or another accounting issue, and no fresh company-specific catalyst was established.",
+        "matched": [
+          "company-specific catalyst"
+        ],
+        "research": "A September 2 Form 8-K reported the dismissal of the company's certifying accountant. The SEC-only catalyst coverage is incomplete, and no fresh company-specific catalyst is established in the bundle."
+      }
+    ],
+    "writerCalls": 1,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1535204,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4710,
+        "outputTokens": 1842,
+        "cachedInputTokens": 4707,
+        "reasoningTokens": 950,
+        "durationMs": 14485,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 25257,
+        "outputTokens": 2467,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 22057,
+        "role": "checker"
+      }
+    ]
+  },
+  "sentPrompts": [
+    {
+      "system": "You write a short session report: a Summary of the session and one line per name.\n\nTHE SUMMARY (\"narrative\") must include, in whatever order reads best, in a few sentences, only what the narrative facts give:\n- On the evening recaps: how many counted names ran at least 50 percent above the prior close and how many of them kept at least half of the peak gain (or, if none ran, that none did); the named movers, each called a covered 50 percent mover (never the highest peaks among all movers), each with its own news; the after-hours name and its move, about that move only; and how many of the names the desk covers had fresh news in our sources.\n- Intraday: the name ranked first in this range (it may be down) and the next named gainers, each with its move and its own news; and how many of the names the desk covers had fresh news in our sources.\n- Never use a report label from the facts, such as \"Intraday\", in the Summary, and do not say when the report was written: the report's header says it.\n- A change note is restated once, in the facts' own words, and nothing is added to it: no time, and no 'when' clause.\n- Join a move to its news with \"with\" (\"up 20 percent from the prior close, with fresh news in our sources\"), never with a word that says one caused the other.\n- For a name the Summary mentions, you may restate its own news (what happened, with the dates and figures in its own research in the NAMES section). Never put one name's facts on another, and never mention a name the narrative facts do not name.\n- Name only the tickers the narrative facts name. Use the given numbers exactly; every percent carries its frame in the same clause (\"from the prior close\", \"above the prior close\", \"after the close\"). A count goes with \"ran at least 50 percent\" and \"gave the entire move back\" whenever you use those phrases.\n\nUSING THE FACTS:\n- Use only the facts given. Copy every number and date exactly; never compute one. Say a catalyst amount as you would on air, shortened to one decimal at most (\"$46.8 million\"). Restate stored text in your own words; never quote it.\n- The voice below keeps the move out of a name line because the card prints it above the line. Where a name's sheet says no card path is printed, no card sits above that line, so its price and change may be stated, in the past tense.\n- A deal or plan is what was agreed or announced, never \"will\". A deal is a fact: say what the company or a named party agreed, sold, bought or entered into, as the source states it. Keep the status the source gives (proposed, non-binding, agreed, rejected, completed); say a deal closed or was signed only if the source says so. Never a recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words.\n- A named analyst firm's rating change is a fact that our sources report, and you may state it as that firm's view, with the firm named and the rating capitalised ('Wells Fargo raised its rating to Buy'); never as advice, and never from an unnamed source.\n- Restate what the source reports and its terms, never the desk's reading of what it may mean or what traders, investors or the market may think, do or care about.\n- Never call news \"positive\", \"negative\" or any other judgement its source does not state.\n- Never say what kind of catalyst a name's news is (for example \"an operating catalyst\") unless its research says so.\n- The joining words in the voice below are forbidden only where they connect a move to news, and a date's \"on\" is fine (\"On October 5, the company disclosed\"); never join a move and news with \"due to\", \"because of\", \"in response to\", \"in the wake of\" either. Never open a line with \"It's\", \"That name\" either.\n- Never \"still\", \"remains\" or \"continues\"; never \"top\"; never a count of names in a name line, \"every name\", \"all the movers\" or \"the real catalyst\".\n- No float number, no share count called float, no halt unless the sheet has one, no engine constant in capitals, no em dash and no spaced hyphen as a dash.\n\nREPLY\n- JSON only: {\"narrative\": string | null, \"lines\": [{\"ticker\": string | null, \"text\": string}]}, one line per name. With no names, one line: {\"ticker\": null, \"text\": \"Nothing in our sources for this section.\"}. \"narrative\" is null only when the narrative facts give nothing to say.\n\nYou are a financial news desk reporter on air at a small-cap trading desk. Report what moved and what the news was, the way a person says it to camera: natural, varied, connected, and never robotic. Do not fill in a template name after name; let each story find its own shape and let each name's line and the Summary read as coherent, human speech, not a stack of separate sentences; coherence lives within a line, and a name's line never refers to another name. Do not repeat a stock phrase from name to name, except the ruled state phrases below.\n\nWhat each name's line must include: the name, and the news the desk found, with its date, as the sources state it. A supply fact belongs only when it is itself the news (a placement, an ATM program, a reverse split). Say nothing about the move in a name line: no price, no percent, no up or down, no word about the high (the card prints all of it above the line). The one exception: you may say that nothing in our sources tied the move to the news, and nothing else about the move. The Summary may use the percents it is given. For a name with no news to report, say the ruled state phrase exactly and nothing more: \"Not researched at this checkpoint\", \"no catalyst found in our sources\", \"our research reached no conclusion\"; never invent or pad news for it.\n\nWhat must stay true, whatever the style: attribute what you report (\"the company said\", \"our sources show\", \"secondary coverage reported\") and say \"in our sources\" only where a claim would otherwise read as about the market. Never say what a headline caused, what the stock will do, or what anyone should do. Never address the reader or a viewer (\"you\", \"stay with us\", \"back to you\"), and never say what traders, investors or the market are doing, thinking or feeling. Use no word the facts do not define (\"surging\", \"hot\", \"busy\", \"quiet\"). Say a rank as a rank (\"ranked first in this range\"), never \"led\" or \"biggest\". Speak of the checkpoint in the past tense (\"was up\", \"had fresh news\"), so a report read later does not state a market condition as now; anchor every time to a date, and never write a clock time such as \"2:30 PM\". Make each name's line stand on its own: open it with the company or the news, never with \"It\", \"Its\", \"Also\", \"The same\", \"This name\", \"They\", \"Both\" or \"Either\", and name no other ticker. Never join a move and a news item with after, following, on, as, amid, thanks to, driven by, sparked, triggered or fueled. These are rules for you to follow yourself; write with care, because figures, dates and tickers are checked against the data.\n\nONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (an intraday report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given. A recap's Summary instead follows the counts and the named movers it is given, and names only the tickers its facts list):\n\nSummary. MI ranked first in this range, up 806 percent from the prior close, and the only news in our sources was older or secondary. QTEX was up 44 percent from the prior close with the same kind of news. ALEC, up 20 percent from the prior close, had fresh news in our sources: a license agreement with Genentech for certain GCase candidates. Of the 12 names the desk covers, 2 had fresh news in our sources.\n\nALEC. On October 5, Alector disclosed a September 30 license agreement with Genentech for certain GCase candidates: Genentech leads development and commercialization, Alector keeps its Brain Carrier platform and wholly owned pipeline, and the company said the deal extends its cash runway into 2029. No upfront, milestone or deal-value terms were given.\n\nMI. The news in our sources was older. On September 30, NFT Limited agreed to a private placement of 80,000,000 Class A shares at $0.45, about $36 million, and nothing in our evidence showed it closed. Our evidence had no company event dated October 5.\n\nQTEX. The latest news we found was from October 1: QTREX said an unnamed quantum-computing company had tested its interconnect at 20 mK and measured more than 100 dB channel isolation, and that it was finalizing a binding agreement with that company. None was reported as signed.",
+      "user": "Into after-hours: the regular session has closed.\n\nNARRATIVE FACTS:\n  ranked first in this range (it may be down): TC, up 2 percent from the prior close; news state: no conclusion: use the ruled phrase for no conclusion\n  next covered gainer by move: NXGL, up 32 percent from the prior close; news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  since the previous checkpoint, NXGL: down 23.2% since the previous checkpoint\n  next covered gainer by move: MXCT, up 30 percent from the prior close; news state: fresh: our sources found a fresh catalyst; the fresh catalyst (restate briefly, never quote): MaxCyte reported preliminary third-quarter 2026 core revenue of about $8.1 million, up 26% year over year, and raised full-year 2026 revenue guidance to about $34 million, including core-business revenue outlook of about $28 million.\n  names the desk covers that had fresh news in our sources: 3 of 12\n\nNAMES:\nTC: ranked #1 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: no conclusion: use the ruled phrase for no conclusion\n  the news (restate in your own words, never quote): A secondary news item reported that Token Cat shares resumed trading on October 14, 2026, but the bundle contains no primary company disclosure explaining the session's move and source coverage is incomplete.\n  event date: October 14, 2026\n  cited source: \"Token Cat Shares Resume Trade\", October 14, 2026\n  what the desk does not have (repeat none of its numbers): Coverage is incomplete, including no reported current share count.; No primary company-specific announcement explaining the October 14 trading move was located in the bundle.\n\nGENK: ranked #2 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): A secondary news item reported that GEN Restaurant Group entered a $100 million non-binding letter of intent with Chubby Group to sell operations at 47 U.S. restaurants. The reported transaction remains proposed under a letter of intent.\n  event date: October 14, 2026\n  cited source: \"GEN Restaurant Group Inks $100M Letter Of Intent With Chubby Group To Sell Operations At 47 U.S. Restaurants\", October 14, 2026\n  what the desk does not have (repeat none of its numbers): The bundle does not include a primary-source announcement dated October 14, 2026 that confirms the reported letter of intent or its terms.; A letter of intent does not establish that definitive agreements will be signed or that a transaction will close.\n\nNWGL: ranked #3 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): A 6-K reported that Nasdaq notified the company on September 16, 2026 that it had regained compliance with the $1.00 minimum bid-price rule and that the prior deficiency matter was closed.\n  event date: September 16, 2026\n  cited source: \"6-K\", October 10, 2026\n\nIACQ: ranked #4 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): A September 2 Form 8-K reported the dismissal of the company's certifying accountant. The SEC-only catalyst coverage is incomplete, and no fresh company-specific catalyst is established in the bundle.\n  event date: September 2, 2026\n  cited source: \"FORM 8-K\", September 4, 2026\n  what the desk does not have (repeat none of its numbers): No company IR, newsroom, newswire, or non-SEC catalyst source was located.; The bundle does not establish whether the accountant change involved a reportable disagreement or other accounting issue.; The available catalyst coverage does not establish a fresh event tied to current trading.\n\nNXGL: ranked #5 in this range\n  the card above your line prints the prices and the move: do not restate them\n  since the previous checkpoint: down 23.2% since the previous checkpoint\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): NEXGEL announced that its previously approved 1-for-20 reverse stock split had become effective, with split-adjusted Nasdaq trading beginning at the October 12 market open. The bundle also contains an August S-1 registering 15,252,337 shares for resale, with no effectiveness notice for that registration in the collected evidence.\n  event date: October 12, 2026\n  cited source: \"NEXGEL Announces 1-for-20 Reverse Stock Split Effectiveness\", October 12, 2026\n  cited source: \"S-1\", August 20, 2026\n  what the desk does not have (repeat none of its numbers): The evidence does not establish a company operating, commercial, regulatory, or financial-results announcement on October 12.; The evidence does not establish whether the August resale registration later became effective.\n  halt: halted at this checkpoint\n\nMXCT: ranked #6 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): MaxCyte reported preliminary third-quarter 2026 core revenue of about $8.1 million, up 26% year over year, and raised full-year 2026 revenue guidance to about $34 million, including core-business revenue outlook of about $28 million.\n  event date: October 14, 2026\n  cited source: \"MaxCyte Reports Preliminary Third Quarter 2026 Revenue and Raises Full Year 2026 Revenue Guidance\", October 14, 2026\n  cited source: \"EX-99.1 to 8-K\", October 14, 2026\n  cited source: \"MaxCyte Reports Preliminary Q3 Core Revenue Of ~$8.1M, Up 26% YoY; Raises FY26 Revenue Guidance To ~$34M, Core Business Revenue Outlook To ~$28M\", October 14, 2026\n  what the desk does not have (repeat none of its numbers): The bundle does not provide final third-quarter financial results or the full guidance assumptions.\n\nGTEN: ranked #7 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: not researched: use the ruled phrase for not researched\n\nBLRK: ranked #8 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): Bluerock announced on August 3, 2026 a proposed merger with Yellow.ai, with transaction materials describing an implied pro forma equity value of approximately $550 million, assuming no BLRK shareholder redemptions, and $30 million of committed PIPE financing. This is a legitimate corporate-development event, but it is not fresh relative to the observed August 25 market session.\n  event date: August 3, 2026\n  cited source: \"EX-99.1–8-K 2026-08-03\", August 3, 2026\n  cited source: \"CURRENT REPORT\", August 3, 2026\n  what the desk does not have (repeat none of its numbers): The bundle contains no fresh company announcement tied to the observed session.; Non-SEC catalyst coverage is absent and overall coverage is flagged incomplete, so it cannot support a definitive claim that no fresh catalyst exists.; Closing timing, shareholder-redemption outcome, final transaction capitalization, and PIPE share terms are not established by the supplied excerpts.\n\nRAC: ranked #9 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): A January 26, 2026 NYSE notice stated that Rithm Acquisition Corp. was not in compliance with the exchange's minimum public stockholders requirement.\n  event date: January 26, 2026\n  cited source: \"EX-99.1 to 8-K\", January 30, 2026\n  cited source: \"FORM 8-K\", January 30, 2026\n  what the desk does not have (repeat none of its numbers): Catalyst coverage is incomplete because no company newsroom, investor-relations source, or non-SEC newswire source was located.; The bundle does not establish whether the company announced a later company-specific development outside SEC filings.\n\nXCH: ranked #10 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: none found: use the ruled phrase for no catalyst\n  the news (restate in your own words, never quote): Adequate coverage found no fresh company-specific operating, financing, regulatory, or commercial event explaining the October 14 trading activity. In its October 14 statement, XCharge said it was not aware of any specific reason for recent ADS price fluctuations.\n  cited source: \"EX-99.1 to 6-K\", October 14, 2026\n  cited source: \"XCHG Issues Statement Regarding Recent ADS Volatility; Not Aware Of Any Specific Reason For Market Movements\", October 14, 2026\n\nSOUL: ranked #11 in this range\n  the card above your line prints the prices and the move: do not restate them\n  since the previous checkpoint: lost $10.49 support\n  news state: no conclusion: use the ruled phrase for no conclusion\n  the news (restate in your own words, never quote): SEC-only evidence shows that on August 28, 2026 Soulpower, SWB Holdings and SWB entered a second amendment to their proposed transaction, including a contemplated $5.0 million cash contribution and potential issuance of Pubco Class A ordinary shares tied to milestones and earnout targets. The supplied excerpt does not establish final economics or closing status. Catalyst coverage is incomplete because no company newsroom, IR, or newswire coverage was located.\n  event date: August 28, 2026\n  cited source: \"8-K\", September 3, 2026\n  what the desk does not have (repeat none of its numbers): No company IR, newsroom, or newswire source was available, so an announcement outside SEC filings may not have been captured.; The supplied evidence does not establish whether the amended transaction closed, the final merger consideration, or the number of possible Pubco shares.; No sufficient fresh company-specific catalyst can be determined from the incomplete SEC-only coverage.\n\nDFNS: ranked #12 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): A secondary news item reported that Positech completed its first shipment of heavy-duty single-axis rotators under a $3.9 million order from an Israeli client.\n  event date: October 14, 2026\n  cited source: \"T3 Defense's Positech Subsidiary Completed First Shipment Of Heavy-Duty Single-Axis Rotators Under $3.9M Order From Israeli Client\", October 14, 2026\n  what the desk does not have (repeat none of its numbers): The bundle does not include the underlying company release, contract terms, remaining order value, delivery schedule, or customer identity.; The source says the first shipment was completed, but does not establish that the full order was fulfilled."
+    }
+  ],
+  "rawWriterTexts": [
+    "{\"narrative\":\"TC ranked first in this range, up 2 percent from the prior close, with our research reaching no conclusion. NXGL was up 32 percent from the prior close, with our sources finding only older or secondary news about its effective 1-for-20 reverse stock split and split-adjusted Nasdaq trading. NXGL was down 23.2% since the previous checkpoint. MXCT was up 30 percent from the prior close, with fresh news that MaxCyte reported preliminary third-quarter 2026 core revenue of about $8.1 million, up 26% year over year, and raised full-year 2026 revenue guidance to about $34 million, including a core-business outlook of about $28 million. Of the 12 names the desk covers, 3 had fresh news in our sources.\",\"lines\":[{\"ticker\":\"TC\",\"text\":\"TC. Our research reached no conclusion.\"},{\"ticker\":\"GENK\",\"text\":\"On October 14, 2026, a secondary news item reported that GEN Restaurant Group entered a $100 million non-binding letter of intent with Chubby Group to sell operations at 47 U.S. restaurants. The transaction remained proposed under the letter of intent, and the bundle had no primary-source announcement confirming the reported terms.\"},{\"ticker\":\"NWGL\",\"text\":\"On September 16, 2026, Nasdaq notified NWGL that it had regained compliance with the $1.00 minimum bid-price rule and that the prior deficiency matter was closed, according to a 6-K reported in our sources.\"},{\"ticker\":\"IACQ\",\"text\":\"On September 2, 2026, a Form 8-K reported that IACQ dismissed its certifying accountant. The bundle did not establish whether the change involved a reportable disagreement or another accounting issue, and no fresh company-specific catalyst was established.\"},{\"ticker\":\"NXGL\",\"text\":\"On October 12, 2026, NEXGEL announced that its previously approved 1-for-20 reverse stock split had become effective, with split-adjusted Nasdaq trading beginning at the market open. An August 20, 2026 S-1 also registered 15,252,337 shares for resale, with no effectiveness notice in the collected evidence.\"},{\"ticker\":\"MXCT\",\"text\":\"On October 14, 2026, MaxCyte reported preliminary third-quarter 2026 core revenue of about $8.1 million, up 26% year over year, and raised full-year 2026 revenue guidance to about $34 million, including a core-business revenue outlook of about $28 million. Final third-quarter results and the full guidance assumptions were not provided in the bundle.\"},{\"ticker\":\"GTEN\",\"text\":\"GTEN. Not researched at this checkpoint.\"},{\"ticker\":\"BLRK\",\"text\":\"On August 3, 2026, Bluerock announced a proposed merger with Yellow.ai, with transaction materials describing an implied pro forma equity value of approximately $550 million assuming no BLRK shareholder redemptions, and $30 million of committed PIPE financing. The supplied excerpts did not establish closing timing, the shareholder-redemption outcome, final transaction capitalization, or PIPE share terms.\"},{\"ticker\":\"RAC\",\"text\":\"On January 26, 2026, a NYSE notice stated that Rithm Acquisition Corp. was not in compliance with the exchange's minimum public stockholders requirement. The bundle did not establish a later company-specific development outside SEC filings.\"},{\"ticker\":\"XCH\",\"text\":\"XCH. No catalyst found in our sources.\"},{\"ticker\":\"SOUL\",\"text\":\"On August 28, 2026, SEC-only evidence showed that Soulpower, SWB Holdings and SWB entered a second amendment to their proposed transaction, including a contemplated $5.0 million cash contribution and potential issuance of Pubco Class A ordinary shares tied to milestones and earnout targets. The supplied evidence did not establish final economics or closing status.\"},{\"ticker\":\"DFNS\",\"text\":\"On October 14, 2026, a secondary news item reported that Positech completed its first shipment of heavy-duty single-axis rotators under a $3.9 million order from an Israeli client. The bundle did not include the underlying company release, contract terms, remaining order value, delivery schedule, or customer identity.\"}]}"
+  ],
+  "draft": {
+    "headline": "",
+    "overall": "TC ranked first in this range, up 2 percent from the prior close, with our research reaching no conclusion. NXGL was up 32 percent from the prior close, with our sources finding only older or secondary news about its effective 1-for-20 reverse stock split and split-adjusted Nasdaq trading. NXGL was down 23.2% since the previous checkpoint. MXCT was up 30 percent from the prior close, with fresh news that MaxCyte reported preliminary third-quarter 2026 core revenue of about $8.1 million, up 26% year over year, and raised full-year 2026 revenue guidance to about $34 million, including a core-business outlook of about $28 million. Of the 12 names the desk covers, 3 had fresh news in our sources.",
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "TC",
+            "text": "TC. Our research reached no conclusion."
+          },
+          {
+            "ticker": "GENK",
+            "text": "On October 14, 2026, a secondary news item reported that GEN Restaurant Group entered a $100 million non-binding letter of intent with Chubby Group to sell operations at 47 U.S. restaurants. The transaction remained proposed under the letter of intent, and the bundle had no primary-source announcement confirming the reported terms."
+          },
+          {
+            "ticker": "NWGL",
+            "text": "On September 16, 2026, Nasdaq notified NWGL that it had regained compliance with the $1.00 minimum bid-price rule and that the prior deficiency matter was closed, according to a 6-K reported in our sources."
+          },
+          {
+            "ticker": "IACQ",
+            "text": "On September 2, 2026, a Form 8-K reported that IACQ dismissed its certifying accountant. The bundle did not establish whether the change involved a reportable disagreement or another accounting issue, and no fresh company-specific catalyst was established."
+          },
+          {
+            "ticker": "NXGL",
+            "text": "On October 12, 2026, NEXGEL announced that its previously approved 1-for-20 reverse stock split had become effective, with split-adjusted Nasdaq trading beginning at the market open. An August 20, 2026 S-1 also registered 15,252,337 shares for resale, with no effectiveness notice in the collected evidence."
+          },
+          {
+            "ticker": "MXCT",
+            "text": "On October 14, 2026, MaxCyte reported preliminary third-quarter 2026 core revenue of about $8.1 million, up 26% year over year, and raised full-year 2026 revenue guidance to about $34 million, including a core-business revenue outlook of about $28 million. Final third-quarter results and the full guidance assumptions were not provided in the bundle."
+          },
+          {
+            "ticker": "GTEN",
+            "text": "GTEN. Not researched at this checkpoint."
+          },
+          {
+            "ticker": "BLRK",
+            "text": "On August 3, 2026, Bluerock announced a proposed merger with Yellow.ai, with transaction materials describing an implied pro forma equity value of approximately $550 million assuming no BLRK shareholder redemptions, and $30 million of committed PIPE financing. The supplied excerpts did not establish closing timing, the shareholder-redemption outcome, final transaction capitalization, or PIPE share terms."
+          },
+          {
+            "ticker": "RAC",
+            "text": "On January 26, 2026, a NYSE notice stated that Rithm Acquisition Corp. was not in compliance with the exchange's minimum public stockholders requirement. The bundle did not establish a later company-specific development outside SEC filings."
+          },
+          {
+            "ticker": "XCH",
+            "text": "XCH. No catalyst found in our sources."
+          },
+          {
+            "ticker": "SOUL",
+            "text": "On August 28, 2026, SEC-only evidence showed that Soulpower, SWB Holdings and SWB entered a second amendment to their proposed transaction, including a contemplated $5.0 million cash contribution and potential issuance of Pubco Class A ordinary shares tied to milestones and earnout targets. The supplied evidence did not establish final economics or closing status."
+          },
+          {
+            "ticker": "DFNS",
+            "text": "On October 14, 2026, a secondary news item reported that Positech completed its first shipment of heavy-duty single-axis rotators under a $3.9 million order from an Israeli client. The bundle did not include the underlying company release, contract terms, remaining order value, delivery schedule, or customer identity."
+          }
+        ]
+      }
+    ]
+  },
+  "checkerReplies": [
+    {
+      "raw": "{\"verdicts\":[{\"id\":\"O\",\"supported\":true,\"note\":\"Counts, moves, NXGL checkpoint change and MXCT catalyst all match the narrative facts and stored research.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L1\",\"supported\":true,\"note\":\"Catalyst status UNKNOWN supports 'reached no conclusion'.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L2\",\"supported\":true,\"note\":\"Matches the summary, the 08:34 ET Oct 14 event time and the unknowns.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L3\",\"supported\":true,\"note\":\"Matches the 6-K summary and the Sept 16 event date.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L4\",\"supported\":true,\"note\":\"Matches the summary (September 2 Form 8-K) and the unknowns.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L5\",\"supported\":true,\"note\":\"Matches the summary, the Oct 12 event and the Aug 20 S-1 source.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L6\",\"supported\":true,\"note\":\"Matches the summary figures and the unknowns.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L7\",\"supported\":true,\"note\":\"GTEN has no research on file.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L8\",\"supported\":true,\"note\":\"Matches the summary and the unknowns.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L9\",\"supported\":true,\"note\":\"Matches the summary's January 26, 2026 NYSE notice and the unknowns.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L10\",\"supported\":true,\"note\":\"Status NONE_FOUND supports this.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L11\",\"supported\":true,\"note\":\"Matches the summary.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L12\",\"supported\":true,\"note\":\"Matches the summary, the Oct 14 event and the unknowns.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"}]}",
+      "error": null
+    }
+  ],
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "AFTER_HOURS",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-14",
+      "targetTradingDate": null,
+      "checkpoints": [
+        {
+          "id": 789,
+          "type": "RTH_CLOSE",
+          "completedAt": "2026-10-14T20:00:01.336Z"
+        }
+      ],
+      "publishedAt": "2026-10-15T01:10:03.219Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "FRESH NEWS FOUND",
+          "lines": [
+            {
+              "ticker": "GENK",
+              "liveFeed": null,
+              "text": "On October 14, 2026, a secondary news item reported that GEN Restaurant Group entered a $100 million non-binding letter of intent with Chubby Group to sell operations at 47 U.S. restaurants. The transaction remained proposed under the letter of intent, and the bundle had no primary-source announcement confirming the reported terms.",
+              "company": {
+                "name": "GEN Restaurant Group, Inc.",
+                "country": "United States",
+                "business": "GEN Restaurant Group operates restaurants and has a consumer packaged goods division."
+              },
+              "path": {
+                "from": 1.45,
+                "high": 2.85,
+                "now": 1.695,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "7h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 14, 8:34 AM ET",
+                  "headline": "A secondary news item reported that GEN Restaurant Group entered a $100 million non-binding letter of intent with Chubby Group to sell operations at 47 U.S. restaurants. The reported transaction remains proposed under a letter of intent.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "43.2M sh supply",
+                  "detail": "An effective S-1 resale registration covers up to 15,000,000 shares issuable under the Roth Principal Investments purchase agreement, with up to $25,000,000 aggregate gross proceeds available subject to its terms.",
+                  "tone": "neg",
+                  "full": "An effective S-1 resale registration covers up to 15,000,000 shares issuable under the Roth Principal Investments purchase agreement, with up to $25,000,000 aggregate gross proceeds available subject to its terms."
+                }
+              }
+            },
+            {
+              "ticker": "MXCT",
+              "liveFeed": null,
+              "text": "On October 14, 2026, MaxCyte reported preliminary third-quarter 2026 core revenue of about $8.1 million, up 26% year over year, and raised full-year 2026 revenue guidance to about $34 million, including a core-business revenue outlook of about $28 million. Final third-quarter results and the full guidance assumptions were not provided in the bundle.",
+              "company": {
+                "name": "MAXCYTE, INC.",
+                "country": "United States",
+                "business": "MaxCyte provides cell-engineering solutions and services supporting advanced cell therapies."
+              },
+              "path": {
+                "from": 0.9643,
+                "high": 1.33,
+                "now": 1.2503,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "8h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 14, 8:00 AM ET",
+                  "headline": "MaxCyte reported preliminary third-quarter 2026 core revenue of about $8.1 million, up 26% year over year, and raised full-year 2026 revenue guidance to about $34 million, including core-business revenue outlook of about $28 million.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "12.3M sh",
+                  "detail": "The latest reported shares outstanding were 103,206,206 as of August 7, 2026, not a reported public float.",
+                  "tone": "warn",
+                  "full": "The latest reported shares outstanding were 103,206,206 as of August 7, 2026, not a reported public float."
+                }
+              }
+            },
+            {
+              "ticker": "DFNS",
+              "liveFeed": null,
+              "text": "On October 14, 2026, a secondary news item reported that Positech completed its first shipment of heavy-duty single-axis rotators under a $3.9 million order from an Israeli client. The bundle did not include the underlying company release, contract terms, remaining order value, delivery schedule, or customer identity.",
+              "company": {
+                "name": "T3 Defense Inc.",
+                "country": "United States",
+                "business": "T3 Defense is an aerospace and defense holding company focused on acquiring small and mid-sized private companies in defense, aerospace and advanced manufacturing."
+              },
+              "path": {
+                "from": 5.75,
+                "high": 7.36,
+                "now": 6.5,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "7h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 14, 9:02 AM ET",
+                  "headline": "A secondary news item reported that Positech completed its first shipment of heavy-duty single-axis rotators under a $3.9 million order from an Israeli client.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "15.1M sh",
+                  "detail": "The latest reported shares outstanding figure is dated August 14, 2026, before the September registration filings and is not a current float figure.",
+                  "tone": "warn",
+                  "full": "The latest reported shares outstanding figure is dated August 14, 2026, before the September registration filings and is not a current float figure."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "OLDER OR SECONDARY NEWS",
+          "lines": [
+            {
+              "ticker": "NWGL",
+              "liveFeed": null,
+              "text": "On September 16, 2026, Nasdaq notified NWGL that it had regained compliance with the $1.00 minimum bid-price rule and that the prior deficiency matter was closed, according to a 6-K reported in our sources.",
+              "company": {
+                "name": "CL Workshop Group Ltd",
+                "country": null,
+                "business": "The company operates in the lumber and wood-products industry."
+              },
+              "path": {
+                "from": 1.19,
+                "high": 1.44,
+                "now": 0.2633,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "A",
+                  "age": "28d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 15, 8:00 PM ET",
+                  "headline": "No fresh catalyst · latest: Sep 15 · A 6-K reported that Nasdaq notified the company on September 16, 2026 that it had regained compliance with the $1.00 minimum bid-price rule and that the prior deficiency matter was closed.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade A: strong, or legitimately positive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "61.5M sh",
+                  "detail": "The reported 132,425,321-share count is dated December 31, 2024, before the August 2026 private placement.",
+                  "tone": "warn",
+                  "full": "The reported 132,425,321-share count is dated December 31, 2024, before the August 2026 private placement."
+                }
+              }
+            },
+            {
+              "ticker": "IACQ",
+              "liveFeed": null,
+              "text": "On September 2, 2026, a Form 8-K reported that IACQ dismissed its certifying accountant. The bundle did not establish whether the change involved a reportable disagreement or another accounting issue, and no fresh company-specific catalyst was established.",
+              "company": {
+                "name": "Irenic Acquisition Corp.",
+                "country": "United States",
+                "business": "Irenic Acquisition Corp. is a blank check company seeking a merger, share exchange, asset acquisition, share purchase, reorganization or similar business combination."
+              },
+              "path": {
+                "from": 9.95,
+                "high": 9.92,
+                "now": 9.91,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "—",
+                  "age": "42d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 1, 8:00 PM ET",
+                  "headline": "No fresh catalyst · latest: Sep 1 · A September 2 Form 8-K reported the dismissal of the company's certifying accountant. The SEC-only catalyst coverage is incomplete, and no fresh company-specific catalyst is established in the bundle.",
+                  "explainsMove": null,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "No catalyst grade established. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "25.3M sh",
+                  "detail": "The bundle provides no reported current shares outstanding or float.",
+                  "tone": "warn",
+                  "full": "The bundle provides no reported current shares outstanding or float."
+                }
+              }
+            },
+            {
+              "ticker": "NXGL",
+              "liveFeed": null,
+              "text": "On October 12, 2026, NEXGEL announced that its previously approved 1-for-20 reverse stock split had become effective, with split-adjusted Nasdaq trading beginning at the market open. An August 20, 2026 S-1 also registered 15,252,337 shares for resale, with no effectiveness notice in the collected evidence.",
+              "company": {
+                "name": "NEXGEL, INC.",
+                "country": "United States",
+                "business": "NEXGEL is a medical technology company that works with clinicians to provide solutions intended to improve patient care."
+              },
+              "path": {
+                "from": 4.05,
+                "high": 7.25,
+                "now": 5.35,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "C",
+                  "age": "2d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 12, 8:00 AM ET",
+                  "headline": "NEXGEL announced that its previously approved 1-for-20 reverse stock split had become effective, with split-adjusted Nasdaq trading beginning at the October 12 market open. The bundle also contains an August S-1 registering 15,252,337 shares for resale, with no effectiveness notice for that registration in the collected evidence.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "15.3M sh",
+                  "detail": "The reported 9,747,663 shares outstanding figure predates the October 12 reverse split and is not a post-split reconciled share count.",
+                  "tone": "warn",
+                  "full": "The reported 9,747,663 shares outstanding figure predates the October 12 reverse split and is not a post-split reconciled share count."
+                }
+              }
+            },
+            {
+              "ticker": "BLRK",
+              "liveFeed": null,
+              "text": "On August 3, 2026, Bluerock announced a proposed merger with Yellow.ai, with transaction materials describing an implied pro forma equity value of approximately $550 million assuming no BLRK shareholder redemptions, and $30 million of committed PIPE financing. The supplied excerpts did not establish closing timing, the shareholder-redemption outcome, final transaction capitalization, or PIPE share terms.",
+              "company": {
+                "name": "Bluerock Acquisition Corp.",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 10.14,
+                "high": 10.155,
+                "now": 10.13,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "B",
+                  "age": "72d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Aug 2, 8:00 PM ET",
+                  "headline": "No fresh catalyst · latest: Aug 2 · Bluerock announced on August 3, 2026 a proposed merger with Yellow.ai, with transaction materials describing an implied pro forma equity value of approximately $550 million, assuming no BLRK shareholder redemptions, and $30 million of committed PIPE financing. This is a legitimate corporate-development event, but it is not fresh relative to the observed August 25 market session.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "23.0M sh",
+                  "detail": "No reported current shares-outstanding figure is available in the bundle; the 10-Q excerpts provide weighted-average Class A and Class B share counts, which are not a current reported outstanding-share count.",
+                  "tone": "warn",
+                  "full": "No reported current shares-outstanding figure is available in the bundle; the 10-Q excerpts provide weighted-average Class A and Class B share counts, which are not a current reported outstanding-share count."
+                }
+              }
+            },
+            {
+              "ticker": "RAC",
+              "liveFeed": null,
+              "text": "On January 26, 2026, a NYSE notice stated that Rithm Acquisition Corp. was not in compliance with the exchange's minimum public stockholders requirement. The bundle did not establish a later company-specific development outside SEC filings.",
+              "company": {
+                "name": "Rithm Acquisition Corp.",
+                "country": "United States",
+                "business": "Rithm Acquisition Corp. is a blank-check company seeking an initial business combination."
+              },
+              "path": {
+                "from": 10.58,
+                "high": 10.58,
+                "now": 10.58,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "262d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Jan 25, 7:00 PM ET",
+                  "headline": "No fresh catalyst · latest: Jan 25 · A January 26, 2026 NYSE notice stated that Rithm Acquisition Corp. was not in compliance with the exchange's minimum public stockholders requirement.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "Public warrants have an $11.50 exercise price and become exercisable only after an initial business combination under the stated timing condition.",
+                  "tone": "warn",
+                  "full": "Public warrants have an $11.50 exercise price and become exercisable only after an initial business combination under the stated timing condition."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NO CATALYST FOUND IN OUR SOURCES",
+          "lines": [
+            {
+              "ticker": "XCH",
+              "liveFeed": null,
+              "text": "XCH. No catalyst found in our sources.",
+              "company": {
+                "name": "XCHG Ltd",
+                "country": null,
+                "business": "XCHG Limited supplies high-power electric vehicle charging and energy-storage solutions."
+              },
+              "path": {
+                "from": 1.95,
+                "high": 3.28,
+                "now": 2.18,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NO_FRESH_CATALYST",
+                  "grade": "C",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Adequate coverage found no fresh company-specific operating, financing, regulatory, or commercial event explaining the October 14 trading activity. In its October 14 statement, XCharge said it was not aware of any specific reason for recent ADS price fluctuations.",
+                  "explainsMove": false,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "347.0M sh supply",
+                  "detail": "The company completed a 1-for-20 equivalent ADS ratio change effective August 21, 2026.",
+                  "tone": "neg",
+                  "full": "The company completed a 1-for-20 equivalent ADS ratio change effective August 21, 2026."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "RESEARCH COULD NOT TELL",
+          "lines": [
+            {
+              "ticker": "TC",
+              "liveFeed": null,
+              "text": "TC. Our research reached no conclusion.",
+              "company": {
+                "name": "Token Cat Ltd",
+                "country": "China",
+                "business": null
+              },
+              "path": {
+                "from": 1.295,
+                "high": 4.15,
+                "now": 1.32,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "—",
+                  "age": "6h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 14, 10:20 AM ET",
+                  "headline": "A secondary news item reported that Token Cat shares resumed trading on October 14, 2026, but the bundle contains no primary company disclosure explaining the session's move and source coverage is incomplete.",
+                  "explainsMove": null,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "No catalyst grade established. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "96000.0M sh supply",
+                  "detail": "A completed February 2026 private placement issued 96,000,000,001 Class A ordinary shares.",
+                  "tone": "neg",
+                  "full": "A completed February 2026 private placement issued 96,000,000,001 Class A ordinary shares."
+                }
+              }
+            },
+            {
+              "ticker": "SOUL",
+              "liveFeed": null,
+              "text": "On August 28, 2026, SEC-only evidence showed that Soulpower, SWB Holdings and SWB entered a second amendment to their proposed transaction, including a contemplated $5.0 million cash contribution and potential issuance of Pubco Class A ordinary shares tied to milestones and earnout targets. The supplied evidence did not establish final economics or closing status.",
+              "company": {
+                "name": "Soulpower Acquisition Corp.",
+                "country": "Cayman Islands",
+                "business": "Soulpower Acquisition Corp. is a blank check company formed to pursue a merger, share exchange, asset acquisition, share purchase, recapitalization, reorganization or similar business combination."
+              },
+              "path": {
+                "from": 10.5,
+                "high": 10.505,
+                "now": 10.49,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "—",
+                  "age": "47d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Aug 27, 8:00 PM ET",
+                  "headline": "No fresh catalyst · latest: Aug 27 · SEC-only evidence shows that on August 28, 2026 Soulpower, SWB Holdings and SWB entered a second amendment to their proposed transaction, including a contemplated $5.0 million cash contribution and potential issuance of Pubco Class A ordinary shares tied to milestones and earnout targets. The supplied excerpt does not establish final economics or closing status. Catalyst coverage is incomplete because no company newsroom, IR, or newswire coverage was located.",
+                  "explainsMove": null,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "No catalyst grade established. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "620K sh",
+                  "detail": "Reported shares outstanding of 25.62 million is not a float, and no float figure or float reconciliation is supplied.",
+                  "tone": "warn",
+                  "full": "Reported shares outstanding of 25.62 million is not a float, and no float figure or float reconciliation is supplied."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NOT RESEARCHED AT THIS CHECKPOINT",
+          "lines": [
+            {
+              "ticker": "GTEN",
+              "liveFeed": null,
+              "text": "GTEN. Not researched at this checkpoint.",
+              "company": null,
+              "path": {
+                "from": 10.42,
+                "high": 10.42,
+                "now": 10.42,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "watchCount": 12,
+      "narrative": "TC ranked first in this range, up 2 percent from the prior close, with our research reaching no conclusion. NXGL was up 32 percent from the prior close, with our sources finding only older or secondary news about its effective 1-for-20 reverse stock split and split-adjusted Nasdaq trading. NXGL was down 23.2% since the previous checkpoint. Of the 12 names the desk covers, 3 had fresh news in our sources.",
+      "narrativeFootnotes": null
+    },
+    "diagnostics": {
+      "lines": 13,
+      "strikes": [],
+      "writerMs": 14485,
+      "checkerMs": 22060
+    }
+  }
+}
