@@ -47,8 +47,13 @@ import { parseDraftV6, wholePercent, type WriterInputV6 } from './writerV6';
  * name list): a recap lists the tickers its Summary may name (`recapSummaryRule`); Commercial read 100's notes 1 to 3
  * (no judgement word the source does not state, no catalyst kind the research does not state, the "confirmed" clause cut);
  * the specimen header says it is intraday and a recap's Summary differs (Marketing's advisory on the L13 read).
+ * 11: three lines for the INTRADAY Summary (his "no, everything gets done tonight", Integration chat uuid 69769171;
+ * reports 45 to 47 published with no Summary, Commercial read 131): no report label such as "Intraday" and no saying
+ * when the report was written; a change note restated once in the facts' own words with nothing added; a move joined
+ * to its news with "with", never causally. Marketing f6562b63, Commercial read 132a PASS. Numbered 11, not 8: versions
+ * 8 to 10 were research prompts that never shipped and are named in recorded raws.
  */
-export const REPORT_WRITER_PROMPT_VERSION_V7 = 7;
+export const REPORT_WRITER_PROMPT_VERSION_V7 = 11;
 
 export type WriterInputV7 = WriterInputV6;
 
@@ -207,6 +212,9 @@ export const SYSTEM_V7 = [
   'THE SUMMARY ("narrative") must include, in whatever order reads best, in a few sentences, only what the narrative facts give:',
   '- On the evening recaps: how many counted names ran at least 50 percent above the prior close and how many of them kept at least half of the peak gain (or, if none ran, that none did); the named movers, each called a covered 50 percent mover (never the highest peaks among all movers), each with its own news; the after-hours name and its move, about that move only; and how many of the names the desk covers had fresh news in our sources.',
   '- Intraday: the name ranked first in this range (it may be down) and the next named gainers, each with its move and its own news; and how many of the names the desk covers had fresh news in our sources.',
+  "- Never use a report label from the facts, such as \"Intraday\", in the Summary, and do not say when the report was written: the report's header says it.",
+  "- A change note is restated once, in the facts' own words, and nothing is added to it: no time, and no 'when' clause.",
+  "- Join a move to its news with \"with\" (\"up 20 percent from the prior close, with fresh news in our sources\"), never with a word that says one caused the other.",
   '- For a name the Summary mentions, you may restate its own news (what happened, with the dates and figures in its own research in the NAMES section). Never put one name\'s facts on another, and never mention a name the narrative facts do not name.',
   '- Name only the tickers the narrative facts name. Use the given numbers exactly; every percent carries its frame in the same clause ("from the prior close", "above the prior close", "after the close"). A count goes with "ran at least 50 percent" and "gave the entire move back" whenever you use those phrases.',
   '',
