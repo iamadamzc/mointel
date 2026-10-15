@@ -356,6 +356,17 @@ describe('ruleStrikes, v6', () => {
     expect(v5.system).not.toContain('v6: THE NARRATIVE');
   });
 
+  it('the v6 system prompt is byte-identical across reports and well past the 512-token cache minimum (his yes 9ec621a3: it is cached)', () => {
+    // Every per-report fact is in the user message; the system prompt the Claude checker marks cacheable never varies.
+    const a = buildCheckerPrompt(input(GOOD_INTRADAY, 'An intraday line.', intraday));
+    const b = buildCheckerPrompt({ ...input(GOOD_RECAP, 'A different recap line.', recap), kind: 'PREMARKET' as const });
+    expect(a.user).not.toBe(b.user);
+    expect(a.system).toBe(b.system);
+    // Opus 5.5's minimum cacheable prompt is 512 tokens (prompt-caching doc, read 2026-10-15); a shorter one is sent
+    // uncached with no error. 8,000 characters is about 2,000 tokens at four characters a token, four times the minimum.
+    expect(a.system.length).toBeGreaterThan(8_000);
+  });
+
   it('the v6 prompt asks read 82\'s two questions and carve-outs in exactly the words the night scan asks them (nightScan.ts)', () => {
     const v6 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', intraday));
     expect(v6.system).toContain(`${ADVICE_ASK}\n${FORECAST_ASK}\n`);

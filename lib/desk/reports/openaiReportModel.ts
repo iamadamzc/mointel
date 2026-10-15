@@ -61,13 +61,19 @@ export const DRAFT_SCHEMA = {
 
 /**
  * What one call cost, for sizing and the strike-rate diagnostics.
- * `cachedInputTokens` is a SUBSET of `inputTokens`, not an addition.
+ * `cachedInputTokens` (read from a cache) and `cacheWriteInputTokens` (written
+ * to one) are SUBSETS of `inputTokens`, the call's total input, not additions.
  */
 export interface ReportModelUsage {
   model: string;
   inputTokens: number | null;
   outputTokens: number | null;
   cachedInputTokens: number | null;
+  /**
+   * Tokens written to a prompt cache on this call (Anthropic's `cache_creation_input_tokens`; billed above the base
+   * input price, 1.25x for a 5-minute write). Absent where the provider reports none (OpenAI caches without a write charge).
+   */
+  cacheWriteInputTokens?: number | null;
   /** A SUBSET of `outputTokens`: billed as output, never shown. */
   reasoningTokens: number | null;
   durationMs: number;

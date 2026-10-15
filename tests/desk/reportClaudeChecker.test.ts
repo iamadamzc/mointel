@@ -43,11 +43,35 @@ describe('AnthropicReportModel (the Claude checker)', () => {
     expect(headers['x-api-key']).toBe('rk-test');
     expect(headers['anthropic-version']).toBe('2023-06-01');
     const body = JSON.parse(String(init.body));
-    expect(body).toMatchObject({ model: 'claude-opus-5-5', stream: true, system: 'SYSTEM TEXT', messages: [{ role: 'user', content: 'USER TEXT' }] });
+    // His yes (uuid 9ec621a3): the system prompt goes as one text block marked cacheable (5-minute default); the
+    // per-report user message carries no marker, so it is never written to the cache.
+    expect(body).toMatchObject({ model: 'claude-opus-5-5', stream: true, messages: [{ role: 'user', content: 'USER TEXT' }] });
+    expect(body.system).toEqual([{ type: 'text', text: 'SYSTEM TEXT', cache_control: { type: 'ephemeral' } }]);
+    expect(JSON.stringify(body.messages)).not.toContain('cache_control');
     expect(body.output_config).toEqual({ effort: 'high', format: { type: 'json_schema', schema: VERDICT_SCHEMA } });
     expect(CLAUDE_CHECKER_EFFORT).toBe('high');
     expect(body).not.toHaveProperty('tools');
-    expect(usage).toEqual([{ model: 'claude-opus-5-5', inputTokens: 29_000, outputTokens: 1_900, cachedInputTokens: 0, reasoningTokens: null, durationMs: expect.any(Number) }]);
+    expect(usage).toEqual([{ model: 'claude-opus-5-5', inputTokens: 29_000, outputTokens: 1_900, cachedInputTokens: 0, cacheWriteInputTokens: null, reasoningTokens: null, durationMs: expect.any(Number) }]);
+  });
+
+  it('records the TOTAL input with the cache write and the cache read as subsets of it (Anthropic counts only the tokens after the breakpoint)', async () => {
+    const run = async (start: Record<string, number>) => {
+      const usage: ReportModelUsage[] = [];
+      const events: unknown[] = stream(VERDICTS);
+      events[0] = { type: 'message_start', message: { usage: start } };
+      await model(async () => sse(events), usage).complete(prompt);
+      return usage[0]!;
+    };
+    // The first report in five minutes writes the system prompt to the cache ...
+    expect(await run({ input_tokens: 21_000, cache_creation_input_tokens: 8_000, cache_read_input_tokens: 0 })).toMatchObject({
+      inputTokens: 29_000, cacheWriteInputTokens: 8_000, cachedInputTokens: 0,
+    });
+    // ... the next one reads it.
+    expect(await run({ input_tokens: 21_000, cache_creation_input_tokens: 0, cache_read_input_tokens: 8_000 })).toMatchObject({
+      inputTokens: 29_000, cacheWriteInputTokens: 0, cachedInputTokens: 8_000,
+    });
+    // No input count at all stays unknown, never a total built from the cache figures alone.
+    expect(await run({ cache_read_input_tokens: 8_000 })).toMatchObject({ inputTokens: null, cachedInputTokens: 8_000 });
   });
 
   it('THROWS on every failure kind, with the status and type only (never the provider message, never the key), and still reports usage', async () => {

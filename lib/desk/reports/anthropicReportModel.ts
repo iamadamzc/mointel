@@ -38,7 +38,7 @@ export interface AnthropicReportModelOptions {
 
 interface StreamEvent {
   type?: string;
-  message?: { usage?: { input_tokens?: number; cache_read_input_tokens?: number } };
+  message?: { usage?: { input_tokens?: number; cache_creation_input_tokens?: number; cache_read_input_tokens?: number } };
   delta?: { type?: string; text?: string; stop_reason?: string | null };
   usage?: { output_tokens?: number };
   error?: { type?: string };
@@ -65,6 +65,7 @@ export class AnthropicReportModel implements ReportModel {
     let inputTokens: number | null = null;
     let outputTokens: number | null = null;
     let cachedInputTokens: number | null = null;
+    let cacheWriteInputTokens: number | null = null;
     let stopReason: string | null = null;
     let streamError: string | null = null;
     let text = '';
@@ -76,7 +77,10 @@ export class AnthropicReportModel implements ReportModel {
           model: this.options.model,
           max_tokens: CLAUDE_CHECKER_MAX_TOKENS,
           stream: true,
-          system: prompt.system,
+          // His yes (Integration chat uuid 9ec621a3): the system prompt is marked cacheable. The checker's is one module
+          // constant (CHECKER_SYSTEM_V6), byte-identical on every report, with no date, id or per-report text; everything
+          // per report is in the user message, after this breakpoint. The default lifetime, 5 minutes.
+          system: [{ type: 'text', text: prompt.system, cache_control: { type: 'ephemeral' } }],
           messages: [{ role: 'user', content: prompt.user }],
           output_config: { effort: CLAUDE_CHECKER_EFFORT, format: { type: 'json_schema', schema: this.options.schema } },
         }),
@@ -102,8 +106,15 @@ export class AnthropicReportModel implements ReportModel {
           if (!data) continue;
           const event = JSON.parse(data) as StreamEvent;
           if (event.type === 'message_start') {
-            inputTokens = event.message?.usage?.input_tokens ?? null;
-            cachedInputTokens = event.message?.usage?.cache_read_input_tokens ?? null;
+            // Anthropic's input_tokens counts only the tokens AFTER the last cache breakpoint; the total is it plus the
+            // tokens written to and read from the cache (prompt-caching doc, "Tracking cache performance", read
+            // 2026-10-15). The usage record's inputTokens is the TOTAL, with the read and written tokens as subsets of
+            // it, the same contract as OpenAI's (`ReportModelUsage`), so a cost reckoned from it never undercounts.
+            const u = event.message?.usage;
+            const after = u?.input_tokens ?? null;
+            cachedInputTokens = u?.cache_read_input_tokens ?? null;
+            cacheWriteInputTokens = u?.cache_creation_input_tokens ?? null;
+            inputTokens = after === null ? null : after + (cachedInputTokens ?? 0) + (cacheWriteInputTokens ?? 0);
           } else if (event.type === 'content_block_delta' && event.delta?.type === 'text_delta') {
             text += event.delta.text ?? '';
           } else if (event.type === 'message_delta') {
@@ -120,6 +131,7 @@ export class AnthropicReportModel implements ReportModel {
         inputTokens,
         outputTokens,
         cachedInputTokens,
+        cacheWriteInputTokens,
         reasoningTokens: null,
         durationMs: Date.now() - startedAt,
       });
