@@ -6,6 +6,7 @@ import { DataFreshness } from '@/components/DataFreshness';
 import { DeskAssessmentStatus } from '@/components/DeskAssessmentStatus';
 import { MarketStatus } from '@/components/MarketStatus';
 import { ResearchEngineStatus } from '@/components/ResearchEngineStatus';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import type { AssessmentPanel } from '@/lib/desk/view';
 import type { DataSourceMeta } from '@/lib/data/types';
 import type { MarketHealthView } from '@/lib/market/health';
@@ -105,6 +106,7 @@ export function DashboardHeader({
           >
             {refreshing ? 'Syncing…' : 'Refresh'}
           </button>
+          <ThemeToggle />
         </div>
       </div>
 

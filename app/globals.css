@@ -58,6 +58,38 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/*
+ * LIGHT MODE (his ask 2026-10-14: "can we setup a light/dark mode? default is dark."). The same tokens, so every
+ * surface that paints with them follows; dark stays the default and the palette above is untouched. Set by
+ * `data-theme="light"` on <html> (lib/theme.ts), only on the desk and review pages. Every text token measured
+ * against all four surfaces at WCAG AA (4.5:1 floor): lowest is pos on panel-3 at 4.68.
+ */
+html {
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+  --color-desk: #f3f5f8;
+  --color-panel: #ffffff;
+  --color-panel-2: #f6f8fb;
+  --color-panel-3: #eceff4;
+  --color-line: #dfe3ea;
+  --color-line-2: #c6cdd8;
+
+  --color-ink: #0d1218;
+  --color-ink-1: #253042;
+  --color-ink-2: #475365;
+  --color-ink-3: #566173;
+  /* Hairlines and disabled glyphs only, never text, as in dark. */
+  --color-ink-4: #9aa3b1;
+
+  --color-pos: #0f7a45;
+  --color-warn: #8a5a00;
+  --color-neg: #c22a22;
+  --color-accent: #1d5fd1;
+}
+
 html,
 body {
   height: 100%;
