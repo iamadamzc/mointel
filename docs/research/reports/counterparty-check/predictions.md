@@ -10,6 +10,8 @@
 3. **No published FFAI line carries FFR's own facts** (its whole-percent move or its rank): 0 of 5.
 4. **The deterministic controls pass in the gate** (tests/desk/reportCheckV6.test.ts: FFAI/FFR admitted; a covered ticker named only in a DIFFERENT name's research strikes; a covered ticker not in the line's research strikes; name-only research admits nothing; no uncovered ticker admitted; TC and AI whole-word controls).
 
+5. **Added by Commercial read 138 (PASS with this condition), before any call: Commercial's own hand read** of each of the five published FFAI lines with FFAI's research open beside it; none may state anything about FFR that FFAI's own research does not (price, move, rank, news, status). Condition 3 catches only numbers; this read covers FFR's news stated without one (the LIMIT test). The raw goes to Commercial when committed, before Research reads it.
+
 A PASS ships nothing by itself; the change ships on his go by sha.
 
 **Reported, not pass conditions:** every strike on FFAI's line with its reason; whether the writer said the company instead of the ticker; FFR's news without a number in FFAI's line (a LIMIT: only the model's support read can strike it).
