@@ -17,6 +17,7 @@
  */
 
 import { etTimestamp, relativeAge } from '@/lib/dashboard/why';
+import { eventWhenDetail, sourceWhen } from '@/lib/research/eventWhen';
 import type { EvidenceLink } from '@/lib/research/view';
 
 export type EventTimeKind = 'EXACT' | 'DATE_ONLY' | 'INFERRED' | 'NONE';
@@ -36,19 +37,53 @@ export const EVENT_TIME_WORDS = {
     'The source does not state a time. This time was taken from something next to the event, such as the time the filing was accepted.',
 } as const;
 
-const MONTH_DAY = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric' });
+const CALENDAR_DAY = new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric' });
 
-/** "Aug 17": the ET calendar day of an instant, or null when it cannot be read. */
-export function monthDay(iso: string | null | undefined): string | null {
-  if (!iso) return null;
-  const at = new Date(iso);
-  return Number.isNaN(at.getTime()) ? null : MONTH_DAY.format(at);
+/** "Sep 17" for a calendar date "2026-09-17", read as written (never shifted by a zone), or null. */
+export function calendarDay(date: string | null | undefined): string | null {
+  if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
+  const at = new Date(`${date}T12:00:00Z`);
+  return Number.isNaN(at.getTime()) ? null : CALENDAR_DAY.format(at);
 }
 
-function sameInstant(a: string, b: string): boolean {
-  const x = Date.parse(a);
-  const y = Date.parse(b);
-  return Number.isFinite(x) && Number.isFinite(y) && x === y;
+/** The catalyst's cited sources in the shape the shared rule reads. */
+function citedSources(citedIds: readonly number[] | null | undefined, evidence: readonly EvidenceLink[]) {
+  const wanted = new Set(citedIds ?? []);
+  return evidence.filter((link) => wanted.has(link.id)).map((link) => ({ publishedAt: link.publishedAt, precision: link.publishedPrecision }));
+}
+
+/**
+ * THE ONE BOARD READING OF THE CATALYST'S EVENT TIME (Integration 41st, 2026-10-15): Research's eventWhen
+ * (lib/research/eventWhen.ts), the same rule the report writer and checker use. The clock prints only when a cited
+ * EXACT or INFERRED source carries that instant; otherwise the date AS WRITTEN, never converted (a date-only
+ * "2026-09-17" or "2026-09-17T00:00:00Z" is Sep 17, not the "Sep 16, 8:00 PM ET" an ET conversion made of it).
+ * `date` is the calendar date ("2026-09-17"); `text` is the passed wording. Used by the dossier row, the Why hover
+ * and the OLD headline's day.
+ */
+export interface CatalystEventTime {
+  kind: EventTimeKind;
+  date: string | null;
+  /** The passed wording: an ET stamp, "<stamp>, time inferred", or "<day>, time not stated". */
+  text: string | null;
+}
+
+export function catalystEventTime(
+  eventTimestamp: string | null | undefined,
+  citedIds: readonly number[] | null | undefined,
+  evidence: readonly EvidenceLink[],
+): CatalystEventTime {
+  if (!eventTimestamp) return { kind: 'NONE', date: null, text: null };
+  const when = eventWhenDetail({ eventTimestamp, sources: citedSources(citedIds, evidence) });
+  if (when.clock !== null && when.precision !== null) {
+    const stamp = etTimestamp(eventTimestamp);
+    if (stamp) {
+      return when.precision === 'EXACT'
+        ? { kind: 'EXACT', date: when.date, text: stamp }
+        : { kind: 'INFERRED', date: when.date, text: `${stamp}, ${EVENT_TIME_WORDS.inferred}` };
+    }
+  }
+  const day = calendarDay(when.date);
+  return day ? { kind: 'DATE_ONLY', date: when.date, text: `${day}, ${EVENT_TIME_WORDS.dateOnly}` } : { kind: 'NONE', date: null, text: null };
 }
 
 export function eventTimeView(
@@ -57,31 +92,14 @@ export function eventTimeView(
   evidence: readonly EvidenceLink[],
   nowMs: number,
 ): EventTimeView {
-  if (!eventTimestamp || !Number.isFinite(Date.parse(eventTimestamp))) {
-    return { kind: 'NONE', text: EVENT_TIME_WORDS.none, hover: null };
-  }
-  const wanted = new Set(citedIds ?? []);
-  const match = evidence.find(
-    (link) => wanted.has(link.id) && link.publishedAt !== null && sameInstant(link.publishedAt, eventTimestamp),
-  );
-  const precision = match?.publishedPrecision;
-
-  if (precision === 'EXACT') {
-    const stamp = etTimestamp(eventTimestamp);
-    if (!stamp) return { kind: 'NONE', text: EVENT_TIME_WORDS.none, hover: null };
+  const time = catalystEventTime(eventTimestamp, citedIds, evidence);
+  if (time.kind === 'NONE' || time.text === null) return { kind: 'NONE', text: EVENT_TIME_WORDS.none, hover: null };
+  if (time.kind === 'EXACT') {
     const age = relativeAge(eventTimestamp, nowMs);
-    return { kind: 'EXACT', text: age ? `${stamp} · ${age} ago` : stamp, hover: null };
+    return { kind: 'EXACT', text: age ? `${time.text} · ${age} ago` : time.text, hover: null };
   }
-  if (precision === 'INFERRED') {
-    const stamp = etTimestamp(eventTimestamp);
-    if (stamp) {
-      return { kind: 'INFERRED', text: `${stamp}, ${EVENT_TIME_WORDS.inferred}`, hover: EVENT_TIME_WORDS.inferredHover };
-    }
-  }
-  const day = monthDay(eventTimestamp);
-  return day
-    ? { kind: 'DATE_ONLY', text: `${day}, ${EVENT_TIME_WORDS.dateOnly}`, hover: null }
-    : { kind: 'NONE', text: EVENT_TIME_WORDS.none, hover: null };
+  if (time.kind === 'INFERRED') return { kind: 'INFERRED', text: time.text, hover: EVENT_TIME_WORDS.inferredHover };
+  return { kind: 'DATE_ONLY', text: time.text, hover: null };
 }
 
 export interface CatalystSource {
@@ -107,7 +125,8 @@ export function catalystSources(
     seen.add(id);
     const link = byId.get(id);
     if (!link) continue;
-    out.push({ link, day: monthDay(link.publishedAt), dateOnly: link.publishedPrecision === 'DATE_ONLY' });
+    // The source's own date by the shared rule: an EXACT/INFERRED instant in ET, anything else as written.
+    out.push({ link, day: calendarDay(sourceWhen({ publishedAt: link.publishedAt, precision: link.publishedPrecision }).date), dateOnly: link.publishedPrecision === 'DATE_ONLY' });
   }
   return out;
 }

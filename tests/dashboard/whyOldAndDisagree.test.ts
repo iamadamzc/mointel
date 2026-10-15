@@ -20,7 +20,8 @@ import { describe, expect, it } from 'vitest';
 
 import { NO_CATALYST_MARK, WhyCell, WhyMarks } from '@/components/DecisionCells';
 import { buildDeskRow } from '@/lib/dashboard/merge';
-import { etDay, resolveWhy } from '@/lib/dashboard/why';
+import { calendarDay } from '@/lib/dashboard/catalystView';
+import { resolveWhy } from '@/lib/dashboard/why';
 import type { AutoIntelligence } from '@/lib/research/view';
 
 /** A bare ET date `days` ago (the shape 77% of stored timestamps have). */
@@ -80,7 +81,7 @@ describe('an OLD catalyst row', () => {
     expect(why.code).toBe('OLD_CATALYST');
     expect(why.tone).toBe('dim');
     expect(why.headline).toBe(
-      `No fresh catalyst · latest: ${etDay(etDaysAgo(4))} · NYSE American notice of non-compliance.`,
+      `No fresh catalyst · latest: ${calendarDay(etDaysAgo(4))} · NYSE American notice of non-compliance.`,
     );
     // The grade itself is not hidden; it is dimmed.
     expect(why.grade).toBe('C');
@@ -106,7 +107,7 @@ describe('an OLD catalyst row', () => {
 
   it('still reads as dated when the desk left no summary', () => {
     const why = resolveWhy(row(intel({ days: 4, summary: null })));
-    expect(why.headline).toBe(`No fresh catalyst · latest: ${etDay(etDaysAgo(4))}`);
+    expect(why.headline).toBe(`No fresh catalyst · latest: ${calendarDay(etDaysAgo(4))}`);
   });
 
   it('is unchanged when the old catalyst is believed to explain the move', () => {

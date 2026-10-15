@@ -306,7 +306,9 @@ describe('a row promoted by the prior close states the reason, not the age', () 
      * whether that is one day or four.
      */
     const promoted = resolveWhy(rowWithEvent('2026-09-25T21:18:05.000Z', FRI_CLOSE), MON);
-    expect(promoted.eventAt).toContain('ET');
+    // Integration 41st: with no cited EXACT/INFERRED source at that instant the hover is the date only (the shared
+    // rule); a sourced clock is kept (tests/dashboard/eventClock.test.ts).
+    expect(promoted.eventAt).toBe('Sep 25, time not stated');
     expect(promoted.title).toContain("prior session's close");
     expect(promoted.title).toContain('since Fri close');
 

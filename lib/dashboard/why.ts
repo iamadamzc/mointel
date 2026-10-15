@@ -12,6 +12,7 @@
  */
 
 import type { DeskRow } from '@/lib/dashboard/merge';
+import { calendarDay, catalystEventTime } from '@/lib/dashboard/catalystView';
 import { catalystAge, resolveCatalystFreshness } from '@/lib/research/time';
 import type { CatalystFreshness } from '@/lib/research/types';
 
@@ -368,7 +369,12 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
    * the Sheet's line under the desk's date. SLND showed a four-day-old
    * listing notice as an amber C headline this way.
    */
-  const day = onlyOld ? etDay(eventAt) : null;
+  // The event's time by the shared rule (catalystView.ts catalystEventTime, Research's eventWhen): a date-only event
+  // is its date as written, never an ET conversion that lands a day early with a false clock (Integration 41st).
+  const eventTime = catalyst
+    ? catalystEventTime(eventAt, catalyst.evidenceSourceIds, row.intelligence?.evidence ?? [])
+    : null;
+  const day = onlyOld ? calendarDay(eventTime?.date) : null;
   const summary = catalyst?.summary?.trim() || null;
   const oldHeadline = onlyOld
     ? `No fresh catalyst · latest: ${[day, summary].filter(Boolean).join(' · ') || 'no summary'}`
@@ -384,7 +390,7 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
      */
     age: priorClose ?? age,
     ageIsPriorClose: priorClose !== null,
-    eventAt: etTimestamp(eventAt),
+    eventAt: eventTime?.text ?? null,
     headline: oldHeadline ?? headline,
     explainsMove: catalyst?.plausiblyExplainsMove ?? null,
     freshness,
