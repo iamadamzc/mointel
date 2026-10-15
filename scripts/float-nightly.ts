@@ -57,6 +57,7 @@ import {
   storedRowCheck,
 } from '../lib/research/floatNightly';
 import { SecClient } from '../lib/research/sec/client';
+import { archiveCacheSize } from '../lib/research/secArchiveCache';
 
 function log(line: string): void {
   console.log(line);
@@ -109,7 +110,8 @@ async function main(): Promise<number> {
     // Archive documents never change once filed (secArchiveCache.ts): a repeat night reads them from disk.
     const cacheSetting = process.env.FLOAT_ARCHIVE_CACHE_DIR;
     const archiveCacheDir = cacheSetting === 'off' ? null : cacheSetting || path.join(path.dirname(market.dbPath), 'sec-archive-cache');
-    log(`[float-nightly] archive cache ${archiveCacheDir ?? 'off'}`);
+    const size = archiveCacheDir ? archiveCacheSize(archiveCacheDir) : null;
+    log(`[float-nightly] archive cache ${archiveCacheDir ?? 'off'}${size ? `: ${size.files} documents, ${(size.bytes / 1_048_576).toFixed(1)} MB` : ''}`);
     const summary = await runFloatNightly(buildNightlyDeps({ db, sec: secClient, splits, band, log, archiveCacheDir }), {
       date,
       maxRssMb: args.maxRssMb,

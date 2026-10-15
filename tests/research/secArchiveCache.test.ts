@@ -4,7 +4,7 @@ import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { computeFloatBound, type FloatJobDeps, type SubmissionsRecent } from '@/lib/research/floatJob';
-import { ARCHIVE_DOCUMENT, archiveCachePath, archiveCached } from '@/lib/research/secArchiveCache';
+import { ARCHIVE_DOCUMENT, archiveCachePath, archiveCacheSize, archiveCached } from '@/lib/research/secArchiveCache';
 
 /*
  * L8 defect fix (Integration 41st): EDGAR archive documents are immutable by accession, so a repeat night reads them from
@@ -56,6 +56,17 @@ describe('archiveCached', () => {
     const passthrough = archiveCached(async () => 'x', null);
     await passthrough(DOC);
     expect(fs.existsSync(archiveCachePath(dir, DOC))).toBe(false);
+  });
+
+  it('reports its size (Ops: it cannot grow unseen); a missing directory reads as empty', async () => {
+    const dir = tempDir();
+    expect(archiveCacheSize(path.join(dir, 'none'))).toEqual({ files: 0, bytes: 0 });
+    const get = archiveCached(async () => 'the document', dir);
+    await get(DOC);
+    await get('https://www.sec.gov/Archives/edgar/data/555/000120919126000002/b.xml');
+    const size = archiveCacheSize(dir);
+    expect(size.files).toBe(2);
+    expect(size.bytes).toBeGreaterThan(0);
   });
 
   it('a corrupt cache file is refetched, never trusted, and the fetch still succeeds', async () => {

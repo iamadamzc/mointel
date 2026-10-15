@@ -29,6 +29,32 @@ export function archiveCachePath(dir: string, url: string): string {
   return path.join(dir, key.slice(0, 2), `${key}.txt.gz`);
 }
 
+/**
+ * The cache's size, so it cannot grow unseen (Ops's ask): the nightly run logs it at start. Never throws: a missing or
+ * unreadable directory reads as empty.
+ */
+export function archiveCacheSize(dir: string): { files: number; bytes: number } {
+  let files = 0;
+  let bytes = 0;
+  try {
+    for (const shard of fs.readdirSync(dir)) {
+      const shardDir = path.join(dir, shard);
+      try {
+        for (const name of fs.readdirSync(shardDir)) {
+          if (!name.endsWith('.txt.gz')) continue;
+          files += 1;
+          bytes += fs.statSync(path.join(shardDir, name)).size;
+        }
+      } catch {
+        // Not a shard directory.
+      }
+    }
+  } catch {
+    // No cache yet.
+  }
+  return { files, bytes };
+}
+
 /** `getText` with archive documents served from `dir` after their first fetch. `dir` null: no cache (today's path). */
 export function archiveCached(getText: (url: string) => Promise<string>, dir: string | null): (url: string) => Promise<string> {
   if (dir === null) return getText;
