@@ -13,7 +13,7 @@
 
 import type { ResearchEvidenceBundle } from './bundle';
 import { withoutCitationsDeep } from '../citations';
-import { resolveCatalystFreshness } from '../time';
+import { catalystFreshnessOf, citedWhenSources } from '../eventWhen';
 import { DEAL_EVENTS, MODEL_NO_EVENT, MODEL_NOT_A_DEAL, NO_CATALYST } from './catalystTheme';
 import { validateEvidenceRisk } from './evidenceRisk';
 import type {
@@ -361,8 +361,15 @@ export function validateDossier(
    * today FRESH, yesterday RECENT, two or more OLD -- because 77% of stored
    * event timestamps carry no clock and no hours-based rule can be computed for
    * them at all.
+   *
+   * `catalystFreshnessOf` (lib/research/eventWhen.ts, Integration 41st's ruling (b), 2026-10-15): a midnight-UTC
+   * placeholder that no cited EXACT or INFERRED source carries is its own date, not 20:00 ET the day before.
    */
-  catalyst.freshness = resolveCatalystFreshness(catalyst.eventTimestamp, now, freshFrom);
+  catalyst.freshness = catalystFreshnessOf(
+    { eventTimestamp: catalyst.eventTimestamp, sources: citedWhenSources(catalyst.evidenceSourceIds, bundle.sources) },
+    now,
+    freshFrom,
+  );
 
   /*
    * AND THE STATUS IS RECONCILED WITH THE BAND, BECAUSE NOTHING ELSE DID.

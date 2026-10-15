@@ -1,0 +1,37 @@
+OLD = resolveCatalystFreshness (raw stamp, production); NEW = catalystFreshnessOf (shared event rule, this tree)
+
+store A:/mointel/data/market-prod-2026-10-07.db: 20 published reports
+  report 1 2026-09-30 INTO_POWER_HOUR at 2026-10-01T01:25:41.178Z: 12 names; changed 0
+  report 2 2026-09-30 AFTER_HOURS at 2026-10-01T01:26:10.124Z: 11 names; changed 0
+  report 3 2026-09-30 PREMARKET at 2026-10-01T02:01:10.161Z: 11 names; changed 0
+  report 4 2026-10-01 INTO_RTH at 2026-10-01T13:26:10.528Z: 11 names; changed 0
+  report 5 2026-10-01 INTO_POWER_HOUR at 2026-10-01T18:30:51.336Z: 11 names; changed 1: WFCF 2026-09-30T20:00:00.000Z FRESH->RECENT (status FRESH_FOUND)
+  report 6 2026-10-01 AFTER_HOURS at 2026-10-01T20:01:21.486Z: 11 names; changed 1: WFCF 2026-09-30T20:00:00.000Z FRESH->RECENT (status FRESH_FOUND)
+  report 7 2026-10-01 PREMARKET at 2026-10-02T02:01:25.300Z: 11 names; changed 0
+  report 8 2026-10-02 INTO_RTH at 2026-10-02T13:26:18.060Z: 11 names; changed 0
+  report 9 2026-10-02 INTO_POWER_HOUR at 2026-10-02T18:31:16.740Z: 10 names; changed 1: AIXI 2026-10-01T20:31:13.000Z FRESH->RECENT (status FRESH_FOUND)
+  report 10 2026-10-02 AFTER_HOURS at 2026-10-02T20:01:10.426Z: 11 names; changed 1: AIXI 2026-10-01T20:31:13.000Z FRESH->RECENT (status FRESH_FOUND)
+  report 11 2026-10-02 PREMARKET at 2026-10-03T02:01:01.485Z: 4 names; changed 0
+  report 12 2026-10-05 INTO_RTH at 2026-10-05T13:26:21.287Z: 9 names; changed 0
+  report 13 2026-10-05 INTO_POWER_HOUR at 2026-10-05T18:31:06.164Z: 11 names; changed 0
+  report 14 2026-10-05 AFTER_HOURS at 2026-10-05T20:01:18.300Z: 9 names; changed 0
+  report 15 2026-10-05 PREMARKET at 2026-10-06T02:00:51.976Z: 10 names; changed 0
+  report 16 2026-10-06 INTO_RTH at 2026-10-06T13:25:53.617Z: 10 names; changed 0
+  report 17 2026-10-06 INTO_POWER_HOUR at 2026-10-06T18:31:02.624Z: 10 names; changed 0
+  report 18 2026-10-06 AFTER_HOURS at 2026-10-06T20:00:58.913Z: 9 names; changed 0
+  report 19 2026-10-06 PREMARKET at 2026-10-07T02:01:20.001Z: 11 names; changed 0
+  report 20 2026-10-07 INTO_RTH at 2026-10-07T13:26:10.457Z: 11 names; changed 0
+
+store A:/mointel/data/slim-2026-10-14.db: 9 published reports
+  report 40 2026-10-13 INTO_RTH at 2026-10-13T13:25:58.828Z: 12 names; changed 0
+  report 41 2026-10-13 INTO_POWER_HOUR at 2026-10-13T18:30:50.606Z: 12 names; changed 0
+  report 42 2026-10-13 AFTER_HOURS at 2026-10-13T20:00:55.944Z: 12 names; changed 0
+  report 43 2026-10-13 EVENING at 2026-10-14T00:20:59.887Z: 12 names; changed 0
+  report 44 2026-10-13 PREMARKET at 2026-10-14T02:01:13.057Z: 12 names; changed 0
+  report 45 2026-10-14 INTO_RTH at 2026-10-14T13:25:43.646Z: 12 names; changed 0
+  report 46 2026-10-14 INTO_POWER_HOUR at 2026-10-14T18:30:45.877Z: 12 names; changed 0
+  report 47 2026-10-14 AFTER_HOURS at 2026-10-14T20:01:00.129Z: 12 names; changed 0
+  report 48 2026-10-14 EVENING at 2026-10-15T00:20:54.648Z: 12 names; changed 0
+
+TOTAL name-reports 266; band changed 4; into FRESH 0, out of FRESH 4; into STALE 0, out of STALE 0
+transitions: FRESH -> RECENT 4

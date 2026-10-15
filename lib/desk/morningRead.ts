@@ -13,9 +13,9 @@
 
 import { readAssessment, readAssessmentTickers, type AssessmentRecord } from '../market/store/assessmentRepo';
 import type { MarketDatabase } from '../market/store/db';
-import { readAnalysisVersionsByIds, researchTablesPresent } from '../market/store/researchRepo';
-import { eventEtDate } from '../research/time';
-import type { ResearchAnalysisVersion } from '../research/types';
+import { readAnalysisVersionsByIds, readSourcesByIds, researchTablesPresent } from '../market/store/researchRepo';
+import { citedWhenSources, eventWhen } from '../research/eventWhen';
+import type { ResearchAnalysisVersion, ResearchSource } from '../research/types';
 
 /** The evening call: the 22:00 ET recap whose target is D. */
 export const EVENING_TYPE = 'NEXT_DAY_RECAP';
@@ -54,6 +54,8 @@ export interface MorningInput {
   morning: { checkpoint: CallCheckpoint; row: CallRow } | null;
   versions: ReadonlyMap<number, Pick<ResearchAnalysisVersion, 'id' | 'generatedAt' | 'dossier'>>;
   jobs: readonly CompletedJob[];
+  /** The versions' cited sources, so the event date reads by the shared rule (absent: no source vouches for a clock). */
+  sources?: readonly ResearchSource[];
 }
 
 export type ConfirmationState = 'NO_EVENING_CALL' | 'NOT_YET' | 'UNKNOWN' | 'REVISED' | 'NOT_RECHECKED' | 'CONFIRMED';
@@ -74,10 +76,10 @@ export interface PmCatalyst {
   state: PmCatalystState;
   reason: 'VERSION_UNREADABLE' | 'VERSION_ORDER' | null;
   /**
-   * NEWER only. `eventClock` is always null in this build. The reports' rule (a
-   * clock only when a cited exact source carries it) is now in production as
-   * `eventWhen` (lib/desk/reports/traced.ts), but this read does not use it, so
-   * it never prints a clock; the date is `eventEtDate`, the board's own reader.
+   * NEWER only. `eventClock` is always null in this build: this read never
+   * prints a clock. The date is `eventWhen`'s (lib/research/eventWhen.ts, the
+   * reports' and the board's one rule, Integration 41st 2026-10-15), so a
+   * date-only midnight-UTC placeholder is its own date, not the day before.
    */
   catalyst: { summary: string | null; status: string | null; grade: string | null; eventDate: string | null; eventClock: null } | null;
   /** NEWER only: whether any catalyst part of spec section 2 differs from the evening's. */
@@ -131,12 +133,18 @@ function versionOf(input: MorningInput, id: number | null): VersionRead {
 }
 
 /** The catalyst parts of spec section 2 a version contributes (null when the row cites none). */
-function catalystParts(row: CallRow, read: VersionRead): Record<'CATALYST_GRADE' | 'CATALYST_STATUS' | 'EVENT_DATE', string | null> {
+function catalystParts(
+  row: CallRow,
+  read: VersionRead,
+  sources: readonly ResearchSource[],
+): Record<'CATALYST_GRADE' | 'CATALYST_STATUS' | 'EVENT_DATE', string | null> {
   const catalyst = read.kind === 'OK' ? read.version.dossier.catalyst : null;
   return {
     CATALYST_GRADE: row.catalyst,
     CATALYST_STATUS: catalyst?.catalystStatus ?? null,
-    EVENT_DATE: eventEtDate(catalyst?.eventTimestamp ?? null),
+    EVENT_DATE: catalyst
+      ? eventWhen({ eventTimestamp: catalyst.eventTimestamp, sources: citedWhenSources(catalyst.evidenceSourceIds, sources) }).date
+      : null,
   };
 }
 
@@ -176,8 +184,8 @@ export function confirmationOf(input: MorningInput): Confirmation {
   const morningVersion = versionOf(input, morning.row.analysisVersionId);
   if (eveningVersion.kind === 'UNREADABLE' || morningVersion.kind === 'UNREADABLE') return out('UNKNOWN', 'VERSION_UNREADABLE');
 
-  const before = catalystParts(evening.row, eveningVersion);
-  const after = catalystParts(morning.row, morningVersion);
+  const before = catalystParts(evening.row, eveningVersion, input.sources ?? []);
+  const after = catalystParts(morning.row, morningVersion, input.sources ?? []);
   const changes: Confirmation['changes'] = [];
   for (const part of ['CATALYST_GRADE', 'CATALYST_STATUS', 'EVENT_DATE'] as const) {
     if (before[part] !== after[part]) changes.push({ part, from: before[part], to: after[part] });
@@ -214,8 +222,8 @@ export function pmCatalystOf(input: MorningInput): PmCatalyst {
   }
 
   const catalyst = morningVersion.version.dossier.catalyst;
-  const before = catalystParts(evening.row, eveningVersion);
-  const after = catalystParts(morning.row, morningVersion);
+  const before = catalystParts(evening.row, eveningVersion, input.sources ?? []);
+  const after = catalystParts(morning.row, morningVersion, input.sources ?? []);
   return {
     state: 'NEWER',
     reason: null,
@@ -287,6 +295,7 @@ export function morningReadOf(db: MarketDatabase, d: string, at: string): Mornin
   const ids: number[] = [];
   for (const row of [...eveningRows.values(), ...morningRows]) if (row.analysisVersionId !== null) ids.push(row.analysisVersionId);
   const versions = readAnalysisVersionsByIds(db, ids);
+  const sources = readSourcesByIds(db, [...new Set([...versions.values()].flatMap((version) => version.dossier?.catalyst?.evidenceSourceIds ?? []))]);
   const jobs = researchTablesPresent(db)
     ? (db
         .prepare(
@@ -305,6 +314,7 @@ export function morningReadOf(db: MarketDatabase, d: string, at: string): Mornin
       morning: { checkpoint: morningCheckpoint, row },
       versions,
       jobs,
+      sources,
     };
     out.byTicker.set(row.ticker, { confirmation: confirmationOf(input), pmCatalyst: pmCatalystOf(input) });
   }

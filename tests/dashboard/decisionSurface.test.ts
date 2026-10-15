@@ -184,7 +184,9 @@ function intelligence(overrides: Parameters<typeof dossier>[0] = {}): AutoIntell
     schemaVersion: 1,
     analysisVersionId: 1,
     coverageIncomplete: false,
-    evidence: [],
+    // The cited source 1, EXACT at the event's instant, as a clocked production catalyst has: the hover's strict
+    // eventWhen rule (since 2026-10-15) shows the clock only when a cited EXACT or INFERRED source carries it.
+    evidence: [{ id: 1, publishedAt: dossier(overrides).catalyst.eventTimestamp, publishedPrecision: 'EXACT' }] as unknown as AutoIntelligence['evidence'],
   };
 }
 
@@ -406,8 +408,9 @@ describe('resolveWhy', () => {
   it('never emits a raw UTC timestamp for the event time', () => {
     const why = resolveWhy(buildDeskRow('SUGP', demand(), intelligence()), NOW);
     expect(why.eventAt).not.toMatch(/\d{4}-\d{2}-\d{2}T/);
-    // Integration 41st: no cited EXACT/INFERRED source carries this instant, so the shared rule gives the date only.
-    expect(why.eventAt).toMatch(/^[A-Z][a-z]{2} \d{1,2}, time not stated$/);
+    // The fixture cites source 1 EXACT at this instant (since 2026-10-15, as a clocked production catalyst does), so the
+    // shared rule keeps the ET clock; the date-only words for an unsourced instant are tests/dashboard/eventClock.test.ts.
+    expect(why.eventAt).toBe('Aug 21, 8:00 AM ET');
   });
 });
 

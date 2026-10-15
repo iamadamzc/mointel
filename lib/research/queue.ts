@@ -18,10 +18,11 @@ import {
   readLatestJobForTicker,
   readRetryState,
   readSources,
+  readSourcesByIds,
 } from '../market/store/researchRepo';
+import { catalystFreshnessOf, citedWhenSources } from './eventWhen';
 import { computeEvidenceFingerprint } from './fingerprint';
 import { evaluateRetry } from './retry';
-import { resolveCatalystFreshness } from './time';
 import { catalystFreshFromUtc } from './freshFrom';
 
 export interface QueueCandidate {
@@ -313,10 +314,19 @@ export function queueDiscoveryResearch(
      */
     const staleReaskApplies =
       candidate.rank <= Math.min(options.autoRank, STALE_REASK_MAX_RANK);
+    // `catalystFreshnessOf` (lib/research/eventWhen.ts): a midnight-UTC placeholder no cited EXACT or INFERRED source
+    // carries is its own date. Read only where the re-ask can apply, so the source lookup costs nothing elsewhere.
     const catalystIsStale =
+      staleReaskApplies &&
       currentAnalysis !== null &&
-      resolveCatalystFreshness(
-        currentAnalysis.dossier.catalyst.eventTimestamp,
+      catalystFreshnessOf(
+        {
+          eventTimestamp: currentAnalysis.dossier.catalyst.eventTimestamp,
+          sources: citedWhenSources(
+            currentAnalysis.dossier.catalyst.evidenceSourceIds,
+            readSourcesByIds(db, currentAnalysis.dossier.catalyst.evidenceSourceIds),
+          ),
+        },
         options.now,
         freshFrom === null ? null : new Date(freshFrom),
       ) === 'STALE';

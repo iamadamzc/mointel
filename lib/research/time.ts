@@ -270,32 +270,42 @@ export type CatalystAge =
   | { precision: 'CLOCK'; days: number; elapsedMs: number }
   | { precision: 'DATE'; days: number };
 
-export function catalystAge(
-  eventTimestamp: string | null | undefined,
-  now: Date,
-): CatalystAge | null {
-  const eventDate = eventEtDate(eventTimestamp);
+/**
+ * The age from an event's RESOLVED ET date and, only when its clock is trusted, its instant. `catalystAgeOf`
+ * (lib/research/eventWhen.ts) uses it for a midnight-UTC placeholder that no cited EXACT or INFERRED source carries
+ * (Integration 41st's ruling (b), 2026-10-15): read raw, "2026-09-17T00:00:00Z" is 20:00 ET the day before.
+ */
+export function catalystAgeAt(eventDate: string | null, instant: string | null, now: Date): CatalystAge | null {
   if (eventDate === null) return null;
 
   const days = etDaysBetween(eventDate, etDateString(now));
   if (days === null || days < 0) return null;
 
+  if (instant === null) return { precision: 'DATE', days };
+  const ms = Date.parse(instant);
+  if (!Number.isFinite(ms)) return { precision: 'DATE', days };
+
+  const elapsedMs = now.getTime() - ms;
+  if (elapsedMs < 0) return null;
+  return { precision: 'CLOCK', days, elapsedMs };
+}
+
+/**
+ * The age of a raw stamp: every stamp that parses as an instant is trusted. For a CATALYST use `catalystAgeOf`
+ * (lib/research/eventWhen.ts), which first refuses the clock of an unvouched midnight-UTC placeholder.
+ */
+export function catalystAge(
+  eventTimestamp: string | null | undefined,
+  now: Date,
+): CatalystAge | null {
   /*
    * A bare calendar date states no time, so no clock is offered for it. The
    * ET-wall-clock form is not treated as CLOCK either: its date is Eastern and
    * its offset is not stated, so an exact elapsed span would be a guess.
    */
   const raw = (eventTimestamp ?? '').trim();
-  if (/^\d{4}-\d{2}-\d{2}$/.test(raw) || /\sET$/i.test(raw)) {
-    return { precision: 'DATE', days };
-  }
-
-  const ms = Date.parse(raw);
-  if (!Number.isFinite(ms)) return { precision: 'DATE', days };
-
-  const elapsedMs = now.getTime() - ms;
-  if (elapsedMs < 0) return null;
-  return { precision: 'CLOCK', days, elapsedMs };
+  const clockless = /^\d{4}-\d{2}-\d{2}$/.test(raw) || /\sET$/i.test(raw);
+  return catalystAgeAt(eventEtDate(eventTimestamp), clockless ? null : raw, now);
 }
 
 /**
@@ -371,7 +381,14 @@ export function resolveCatalystFreshness(
    * ET is the same calendar day and has not happened yet. `catalystAge` already
    * refused it, so the two disagreed until this delegated.
    */
-  const age = catalystAge(eventTimestamp, now);
+  return freshnessFromAge(catalystAge(eventTimestamp, now), now, freshFrom);
+}
+
+/**
+ * The band for an age already resolved: `resolveCatalystFreshness` for a raw stamp, `catalystFreshnessOf`
+ * (lib/research/eventWhen.ts) for a catalyst, whose clock its cited sources must vouch for.
+ */
+export function freshnessFromAge(age: CatalystAge | null, now: Date, freshFrom?: Date | null): CatalystFreshness {
   if (age === null) return 'UNKNOWN';
 
   /*

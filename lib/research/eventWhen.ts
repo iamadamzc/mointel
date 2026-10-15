@@ -6,7 +6,8 @@
  */
 
 import { etClock } from '../market/session';
-import { eventEtDate, type TimePrecision } from './time';
+import { catalystAge, catalystAgeAt, eventEtDate, freshnessFromAge, type CatalystAge, type TimePrecision } from './time';
+import type { CatalystFreshness } from './types';
 
 /**
  * A stored date or instant as its ET calendar date and, when it carries one,
@@ -96,4 +97,45 @@ export function eventWhenDetail(catalyst: { eventTimestamp: string | null; sourc
   const at = Date.parse(catalyst.eventTimestamp);
   const exact = catalyst.sources.some((s) => s.precision === 'EXACT' && s.publishedAt !== null && Date.parse(s.publishedAt) === at);
   return { ...when, precision: exact ? 'EXACT' : 'INFERRED' };
+}
+
+/** A midnight-UTC stamp: the shape a date-only event takes when the model writes it as an instant. */
+const MIDNIGHT_UTC = /^\d{4}-\d{2}-\d{2}T00:00:00(?:\.0+)?Z$/;
+
+/**
+ * A CATALYST'S AGE (Integration 41st's ruling (b), 2026-10-15): a MIDNIGHT-UTC stamp that no cited EXACT or INFERRED
+ * source carries is a date only, its stored date with no hours; every other stamp is read as before (`catalystAge`).
+ * Read raw, the placeholder is 20:00 ET the day before: the age chip a day older and in hours, the band a day staler
+ * (WETO's "2026-09-17T00:00:00Z", a Sept. 17 release, read as Sep 16 20:00 ET).
+ *
+ * NOT the full eventWhen clock rule, which the replay refused (docs/research/freshness/replay.txt): it drops the clock
+ * whenever no source sits AT the stamp, and the model's stamps are often off from their sources (AIXI's
+ * "2026-10-01T20:31:13Z" against 6-K exhibits at 00:31:13Z, the ET clock written with a Z), so real after-close news
+ * fell from FRESH to RECENT. A clock borrowed from a same-day source is the next window's rule, for every reader.
+ */
+export function catalystAgeOf(catalyst: { eventTimestamp: string | null; sources: readonly WhenSource[] }, now: Date): CatalystAge | null {
+  const raw = catalyst.eventTimestamp?.trim() ?? null;
+  if (raw && MIDNIGHT_UTC.test(raw) && eventWhen(catalyst).clock === null) return catalystAgeAt(calendarDate(raw), null, now);
+  return catalystAge(raw, now);
+}
+
+/**
+ * The catalyst's CITED sources (its `evidenceSourceIds`) as the rule reads them, from any source rows that carry an
+ * id, a publication time and its precision (a bundle's sources, stored research sources, the board's evidence links).
+ */
+export function citedWhenSources(
+  citedIds: readonly number[] | null | undefined,
+  sources: readonly { id: number; publishedAt: string | null; publishedPrecision: TimePrecision | string }[],
+): WhenSource[] {
+  const wanted = new Set(citedIds ?? []);
+  return sources.filter((source) => wanted.has(source.id)).map((source) => ({ publishedAt: source.publishedAt, precision: source.publishedPrecision }));
+}
+
+/** A catalyst's freshness band from `catalystAgeOf`: his day bands, and the prior-close window for a trusted clock only. */
+export function catalystFreshnessOf(
+  catalyst: { eventTimestamp: string | null; sources: readonly WhenSource[] },
+  now: Date,
+  freshFrom?: Date | null,
+): CatalystFreshness {
+  return freshnessFromAge(catalystAgeOf(catalyst, now), now, freshFrom);
 }
