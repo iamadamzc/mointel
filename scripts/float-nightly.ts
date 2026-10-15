@@ -31,7 +31,11 @@
  *                                  Alpaca's announced splits, rule R-A; required unless --dry-run (market/credentials.ts:124-125)
  *   DISCOVERY_PRICE_MIN / DISCOVERY_PRICE_MAX
  *                                  the band ONLY when the store holds no discovery_summary (market/config.ts:137-138)
+ *   FLOAT_ARCHIVE_CACHE_DIR        where EDGAR archive documents are kept after their first fetch (secArchiveCache.ts);
+ *                                  default sec-archive-cache beside the store; "off" disables the cache
  */
+import path from 'node:path';
+
 import { loadWorkerEnv } from '../worker/env';
 loadWorkerEnv();
 
@@ -53,6 +57,7 @@ import {
   storedRowCheck,
 } from '../lib/research/floatNightly';
 import { SecClient } from '../lib/research/sec/client';
+import { archiveCacheSize } from '../lib/research/secArchiveCache';
 
 function log(line: string): void {
   console.log(line);
@@ -102,7 +107,12 @@ async function main(): Promise<number> {
       `[float-nightly] ${date} start: band $${band.min}-$${band.max}, rate ${rate}/s, max rss ${args.maxRssMb}MB, ` +
         `max SEC requests ${args.maxSecRequests}, limit ${args.limit ?? 'none'}, deadline ${deadlineMs === null ? 'none' : new Date(deadlineMs).toISOString()}`,
     );
-    const summary = await runFloatNightly(buildNightlyDeps({ db, sec: secClient, splits, band, log }), {
+    // Archive documents never change once filed (secArchiveCache.ts): a repeat night reads them from disk.
+    const cacheSetting = process.env.FLOAT_ARCHIVE_CACHE_DIR;
+    const archiveCacheDir = cacheSetting === 'off' ? null : cacheSetting || path.join(path.dirname(market.dbPath), 'sec-archive-cache');
+    const size = archiveCacheDir ? archiveCacheSize(archiveCacheDir) : null;
+    log(`[float-nightly] archive cache ${archiveCacheDir ?? 'off'}${size ? `: ${size.files} documents, ${(size.bytes / 1_048_576).toFixed(1)} MB` : ''}`);
+    const summary = await runFloatNightly(buildNightlyDeps({ db, sec: secClient, splits, band, log, archiveCacheDir }), {
       date,
       maxRssMb: args.maxRssMb,
       maxSecRequests: args.maxSecRequests,

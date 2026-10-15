@@ -33,6 +33,7 @@ import { writeFloatBound } from '../market/store/floatBoundRepo';
 import { readRangeCandidates } from '../market/store/repo';
 import { readLatestAnalysesAsOf } from '../market/store/researchRepo';
 import { countingSec } from './boardFloatPass';
+import { archiveCached } from './secArchiveCache';
 import { computeFloatBound, type FloatBoundRow, type FloatJobDeps, type FloatJobInput } from './floatJob';
 import { fetchAnnouncedActions, type FloatSplitClient } from './floatRun';
 import { readSpanBars } from './history';
@@ -348,6 +349,11 @@ export interface NightlyWiring {
   log: (line: string) => void;
   rss?: () => number;
   now?: () => number;
+  /**
+   * Where EDGAR archive documents are kept after their first fetch (secArchiveCache.ts); null or absent: no cache.
+   * A cached document is not an SEC request, so it does not count toward the run's cap.
+   */
+  archiveCacheDir?: string | null;
 }
 
 /** The real deps: the store, the counted SEC client, Alpaca's splits, and floatRun's six float deps. */
@@ -359,7 +365,8 @@ export function buildNightlyDeps(wiring: NightlyWiring): NightlyDeps {
   // The same object runFloatJob builds (floatRun.ts:37-44), over the counted client.
   const floatDeps: FloatJobDeps = {
     getJson: async <T>(url: string) => (await sec.getJson<T>(url)).data,
-    getText: async (url: string) => (await sec.get(url)).body,
+    // The cache sits OUTSIDE the counted client: only a real fetch is counted.
+    getText: archiveCached(async (url: string) => (await sec.get(url)).body, wiring.archiveCacheDir ?? null),
     spanBars: (symbol, from, to) => readSpanBars(db, symbol, from, to),
     announcedSplits: async (symbol, start, end) =>
       (await splits.getSplits({ symbols: [symbol], start, end })).filter((s) => s.symbol === symbol).map((s) => s.exDate),
