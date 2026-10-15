@@ -28,7 +28,7 @@ import { withoutCitations } from '../../research/citations';
 import type { ReportFact } from './facts';
 import type { NarrativeFacts } from './narrative';
 import type { ReportResearch } from './research';
-import { claimsIn, dateAllowed, etDayAndClock, eventWhen, roundsTo, sourceWhen, traceLine } from './traced';
+import { claimsIn, dateAllowed, eventWhen, roundsTo, sourceWhen, traceLine } from './traced';
 import { narrativeSheet } from './writerV6';
 import { numbersIn, stripTimestamps, verifyLine } from './verify';
 import { NOTHING_LINE, type ReportDraft, type WriterPrompt } from './writer';
@@ -877,8 +877,11 @@ const CHECKER_SYSTEM_V5 = [
  * the advice question by class (`OPINION_CLAUSE`: the desk's own opinion of price, value, attractiveness or suitability).
  * 17: the self-containedness question admits a counterparty named in the line's own research (his "yes to both",
  * uuid 193d6e98; report 45's FFAI line naming FFR); the rule half is `counterpartyTickers`.
+ * 18: the times in the research it is shown read as the writer and the rules read them (`whenReading`): a clock only
+ * where a cited EXACT or INFERRED source carries it, else the stored calendar date. No prompt text changed; the data
+ * did (report 50, 2026-10-15: WETO's date struck; Integration 41st's ruling, a defect fix inside L13).
  */
-export const REPORT_CHECKER_PROMPT_VERSION_V6 = 17;
+export const REPORT_CHECKER_PROMPT_VERSION_V6 = 18;
 
 /**
  * Read 82 (2)(i)'s two questions, VERBATIM, and its carve-out with six examples drawn from the 46 real deal lines
@@ -952,11 +955,17 @@ const CHECKER_SYSTEM_V6 = [
   ...SECOND_READ_V6,
 ].join('\n');
 
-/** Each time with its ET reading beside the raw UTC: voice run v5's checker read 09:40Z as 09:40 ET. */
-function etReading(raw: string | null): string | null {
-  const { date, clock } = etDayAndClock(raw);
-  if (!date) return null;
-  return clock ? `${clock} ET on ${date}` : `${date} (date only)`;
+/**
+ * Each time with its reading beside the raw UTC (voice run v5's checker read 09:40Z as 09:40 ET), and the reading is
+ * the one the WRITER and the RULES use: `eventWhen` for the event, `sourceWhen` for a source. A clock only where it is
+ * trusted; otherwise the stored calendar date, "(date only)". Until V6 18 the model was shown every value converted to
+ * ET, so a date-only midnight-UTC placeholder read as 19:00 or 20:00 ET the day before and a correct date was struck
+ * (RAC: research 3384 "A January 26, 2026 NYSE notice", stored 2026-01-26T00:00:00Z, shown "19:00 ET on 2026-01-25";
+ * report 50's WETO the same shape).
+ */
+function whenReading(when: { date: string | null; clock: string | null }): string | null {
+  if (!when.date) return null;
+  return when.clock ? `${when.clock} ET on ${when.date}` : `${when.date} (date only)`;
 }
 
 function storedResearch(research: ReadonlyMap<string, ReportResearch>): string {
@@ -967,8 +976,8 @@ function storedResearch(research: ReadonlyMap<string, ReportResearch>): string {
         ...r,
         catalyst: {
           ...r.catalyst,
-          eventTimestamp: { raw: r.catalyst.eventTimestamp, et: etReading(r.catalyst.eventTimestamp) },
-          sources: r.catalyst.sources.map((s) => ({ ...s, publishedAt: { raw: s.publishedAt, et: s.precision === 'EXACT' ? etReading(s.publishedAt) : etReading(s.publishedAt?.slice(0, 10) ?? null) } })),
+          eventTimestamp: { raw: r.catalyst.eventTimestamp, et: whenReading(eventWhen(r.catalyst)) },
+          sources: r.catalyst.sources.map((s) => ({ ...s, publishedAt: { raw: s.publishedAt, et: whenReading(sourceWhen(s)) } })),
         },
       },
     ]),

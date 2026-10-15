@@ -356,6 +356,33 @@ describe('ruleStrikes, v6', () => {
     expect(v5.system).not.toContain('v6: THE NARRATIVE');
   });
 
+  it('V6 18: the research times the checker is shown read as the writer and the rules read them (report 50, WETO; RAC)', () => {
+    const shown = (eventTimestamp: string, sources: Array<{ publishedAt: string; precision: string }>) => {
+      const research = new Map<string, ReportResearch>([
+        ['AAA', {
+          catalyst: {
+            status: 'SECONDARY_STALE', grade: 'WEAK', summary: 'A notice.', eventTimestamp, whyTradersMayCare: null, unknowns: [], plausiblyExplainsMove: false,
+            sources: sources.map((s, i) => ({ title: `source ${i}`, ...s })),
+          },
+          structure: { classification: 'CLEAN', sharesOutstanding: null, supply: [] },
+        } as unknown as ReportResearch],
+      ]);
+      return buildCheckerPrompt({ ...input(GOOD_INTRADAY, 'x', intraday), research }).user;
+    };
+    // RAC's shape (research 3384): a midnight-UTC placeholder with no EXACT or INFERRED source at that instant is its
+    // stored calendar date, as the writer is told ("event date: January 26, 2026"); never 19:00 ET the day before.
+    const rac = shown('2026-01-26T00:00:00.000Z', [{ publishedAt: '2026-01-30', precision: 'UNKNOWN' }]);
+    expect(rac).toContain('"et": "2026-01-26 (date only)"');
+    expect(rac).not.toContain('2026-01-25');
+    // Control: an EXACT source carries the same instant, so the clock is trusted and read in ET, as eventWhen reads it.
+    const exact = shown('2026-09-17T00:00:00.000Z', [{ publishedAt: '2026-09-17T00:00:00.000Z', precision: 'EXACT' }]);
+    expect(exact.split('"et": "20:00 ET on 2026-09-16"').length - 1).toBe(2);
+    // An INFERRED source after 20:00 ET is its ET date with no clock (sourceWhen); the UTC slice made it the next day.
+    const inferred = shown('2026-09-17', [{ publishedAt: '2026-09-18T01:30:00.000Z', precision: 'INFERRED' }]);
+    expect(inferred).toContain('"et": "2026-09-17 (date only)"');
+    expect(inferred).not.toContain('2026-09-18 (date only)');
+  });
+
   it('the v6 prompt asks read 82\'s two questions and carve-outs in exactly the words the night scan asks them (nightScan.ts)', () => {
     const v6 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', intraday));
     expect(v6.system).toContain(`${ADVICE_ASK}\n${FORECAST_ASK}\n`);
