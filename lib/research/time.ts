@@ -271,10 +271,9 @@ export type CatalystAge =
   | { precision: 'DATE'; days: number };
 
 /**
- * The age from an event's RESOLVED ET date and, only when its clock is trusted, its instant. The catalyst readers
- * (`catalystAgeOf` in lib/research/eventWhen.ts) resolve both with `eventWhen`, which trusts a clock only when a cited
- * EXACT or INFERRED source carries that instant (Integration 41st, 2026-10-15): read from the raw stamp alone, a
- * date-only midnight-UTC placeholder ("2026-09-17T00:00:00Z") is 20:00 ET the day before, a day staler and in hours.
+ * The age from an event's RESOLVED ET date and, only when its clock is trusted, its instant. `catalystAgeOf`
+ * (lib/research/eventWhen.ts) uses it for a midnight-UTC placeholder that no cited EXACT or INFERRED source carries
+ * (Integration 41st's ruling (b), 2026-10-15): read raw, "2026-09-17T00:00:00Z" is 20:00 ET the day before.
  */
 export function catalystAgeAt(eventDate: string | null, instant: string | null, now: Date): CatalystAge | null {
   if (eventDate === null) return null;
@@ -292,8 +291,8 @@ export function catalystAgeAt(eventDate: string | null, instant: string | null, 
 }
 
 /**
- * The age of a raw stamp with no sources to vouch for its clock: every stamp that parses as an instant is trusted.
- * For a CATALYST use `catalystAgeOf` (lib/research/eventWhen.ts), which asks the cited sources first.
+ * The age of a raw stamp: every stamp that parses as an instant is trusted. For a CATALYST use `catalystAgeOf`
+ * (lib/research/eventWhen.ts), which first refuses the clock of an unvouched midnight-UTC placeholder.
  */
 export function catalystAge(
   eventTimestamp: string | null | undefined,

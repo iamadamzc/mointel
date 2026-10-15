@@ -7,10 +7,11 @@ import { catalystAge, resolveCatalystFreshness } from '@/lib/research/time';
 import type { AutoIntelligence, EvidenceLink } from '@/lib/research/view';
 
 /*
- * A catalyst's AGE and FRESHNESS BAND by the shared event rule (Integration 41st, 2026-10-15): the day from eventWhen,
- * and an elapsed span only when a cited EXACT or INFERRED source carries the instant. Read from the raw stamp alone, a
- * date-only midnight-UTC placeholder (WETO's "2026-09-17T00:00:00Z", a Sept. 17 release) is 20:00 ET the day before:
- * a day staler, in hours. The raw readers stay for instants that are their own evidence.
+ * A catalyst's AGE and FRESHNESS BAND (Integration 41st's ruling (b), 2026-10-15): a MIDNIGHT-UTC stamp that no cited
+ * EXACT or INFERRED source carries is a date only, its stored date with no hours; every other stamp reads as before.
+ * Read raw, the placeholder (WETO's "2026-09-17T00:00:00Z", a Sept. 17 release) is 20:00 ET the day before: a day
+ * staler, in hours. The stricter eventWhen clock rule was refused by the replay: it demoted real after-close news
+ * whose model-written stamp is off from its source (AIXI, WFCF; docs/research/freshness/replay.txt).
  */
 
 const WETO = '2026-09-17T00:00:00Z';
@@ -45,11 +46,19 @@ describe('catalystAgeOf / catalystFreshnessOf', () => {
     expect(catalystFreshnessOf(catalyst, now, priorClose)).toBe('FRESH');
   });
 
-  it('noon UTC with no source at the instant: its date, no hours offered', () => {
+  it('every other stamp reads as before, noon UTC included (ruling (b): only the midnight placeholder changes)', () => {
     const noon = '2026-09-17T12:00:00Z';
     const now = new Date('2026-09-17T15:00:00Z');
-    expect(catalystAgeOf({ eventTimestamp: noon, sources: NONE }, now)).toEqual({ precision: 'DATE', days: 0 });
-    expect(catalystAge(noon, now)).toMatchObject({ precision: 'CLOCK' });
+    expect(catalystAgeOf({ eventTimestamp: noon, sources: NONE }, now)).toEqual(catalystAge(noon, now));
+    expect(catalystAgeOf({ eventTimestamp: noon, sources: NONE }, now)).toMatchObject({ precision: 'CLOCK' });
+  });
+
+  it("AIXI's shape (report 9, 10-02) is not demoted: an evening stamp off from its source stays FRESH after the prior close", () => {
+    // The model wrote 20:31 ET with a Z; its 6-K exhibits are INFERRED at 00:31:13Z. The strict rule made this RECENT.
+    const aixi = { eventTimestamp: '2026-10-01T20:31:13.000Z', sources: [{ publishedAt: '2026-10-02T00:31:13.000Z', precision: 'INFERRED' }] };
+    const now = new Date('2026-10-02T18:31:16Z');
+    expect(catalystFreshnessOf(aixi, now, new Date('2026-10-01T20:00:00Z'))).toBe('FRESH');
+    expect(catalystFreshnessOf(aixi, now, new Date('2026-10-01T20:00:00Z'))).toBe(resolveCatalystFreshness(aixi.eventTimestamp, now, new Date('2026-10-01T20:00:00Z')));
   });
 
   it('no stamp is no age and UNKNOWN, never STALE', () => {
@@ -118,8 +127,15 @@ describe('the board (why.ts) reads the same age and band', () => {
     expect(why.freshness).toBe('FRESH');
   });
 
-  it('relativeAge with no sources reads the raw instant, for times that are their own evidence', () => {
-    expect(relativeAge('2026-09-18T11:00:00Z', NOW)).toBe('3h');
-    expect(relativeAge('2026-09-18T11:00:00Z', NOW, [])).toBe('today');
+  it('a midnight placeholder is today on the row; with a cited EXACT source at the instant it keeps its hours', () => {
+    const midnight = '2026-09-18T00:00:00Z'; // 20:00 ET Sep 17 if the clock is real
+    expect(resolveWhy(buildDeskRow('WETO', null, intel(midnight, [link(1, '2026-09-16T21:05:00.000Z', 'UNKNOWN')])), NOW).age).toBe('today');
+    expect(resolveWhy(buildDeskRow('WETO', null, intel(midnight, [link(1, midnight, 'EXACT')])), NOW).age).toBe('14h');
+  });
+
+  it('relativeAge: the placeholder rule applies only with sources given; an ordinary instant reads the same either way', () => {
+    expect(relativeAge('2026-09-18T00:00:00Z', NOW)).toBe('14h');
+    expect(relativeAge('2026-09-18T00:00:00Z', NOW, [])).toBe('today');
+    expect(relativeAge('2026-09-18T11:00:00Z', NOW, [])).toBe('3h');
   });
 });

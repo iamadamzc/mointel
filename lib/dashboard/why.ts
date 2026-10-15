@@ -105,9 +105,9 @@ export function relativeAge(
   at: string | null | undefined,
   nowMs: number,
   /**
-   * A CATALYST's cited sources: the age then follows the shared event rule (lib/research/eventWhen.ts), hours only
-   * when a cited EXACT or INFERRED source carries the instant. Omitted for an instant that is its own evidence
-   * (a source's or a dossier's own time).
+   * A CATALYST's cited sources: the age then follows `catalystAgeOf` (lib/research/eventWhen.ts), where a
+   * midnight-UTC placeholder no cited EXACT or INFERRED source carries is a date only. Omitted for an instant that is
+   * its own evidence (a source's or a dossier's own time).
    */
   sources?: readonly WhenSource[],
 ): string | null {
@@ -220,7 +220,7 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
   const headline = catalyst?.summary?.trim() || null;
 
   const eventAt = catalyst?.eventTimestamp ?? null;
-  // The catalyst's cited sources, so its age and band follow the shared event rule (lib/research/eventWhen.ts).
+  // The catalyst's cited sources, for catalystAgeOf / catalystFreshnessOf (lib/research/eventWhen.ts).
   const cited = catalyst ? citedWhenSources(catalyst.evidenceSourceIds, row.intelligence?.evidence ?? []) : [];
   const age = relativeAge(eventAt, nowMs, cited);
 

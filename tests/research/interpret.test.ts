@@ -407,7 +407,7 @@ const FILLED_RISK = EVIDENCE_RISK_GOOD.replace('{amount}', '$25 million');
 /* -------------------------------------------------------------- guardrails */
 
 describe('structural guardrails', () => {
-  it('bands the catalyst by the shared event rule: a midnight-UTC placeholder is its own date, a cited INFERRED source keeps the clock (Integration 41st, 2026-10-15)', () => {
+  it('bands the catalyst by ruling (b): a midnight-UTC placeholder is its own date, a cited INFERRED source at the instant keeps the clock (Integration 41st, 2026-10-15)', () => {
     const now = new Date('2026-08-18T14:00:00Z'); // 10:00 ET Aug 18
     const at = (eventTimestamp: string, sourceAt = '2026-08-17T11:00:00Z') =>
       validateDossier(
@@ -418,9 +418,9 @@ describe('structural guardrails', () => {
     // Cited source 1 is INFERRED at 2026-08-17T11:00:00Z, not at this instant: the stamp is the date Aug 18, FRESH.
     // Read raw it is 20:00 ET Aug 17, a day staler (RECENT).
     expect(at('2026-08-18T00:00:00Z')).toBe('FRESH');
-    // Control: the cited INFERRED source carries this instant, so the clock stands: 22:00 ET Aug 17, RECENT. Without
-    // the source vouching it would be its UTC date, Aug 18, FRESH: this is the case that needs the bundle's sources.
-    expect(at('2026-08-18T02:00:00Z', '2026-08-18T02:00:00Z')).toBe('RECENT');
+    // Control: the cited INFERRED source carries this midnight instant, so the clock stands: 20:00 ET Aug 17, RECENT.
+    // Without the source vouching it would be the date Aug 18, FRESH: this is the case that needs the bundle's sources.
+    expect(at('2026-08-18T00:00:00Z', '2026-08-18T00:00:00Z')).toBe('RECENT');
   });
 
   it('a removed evidence risk sentence adds no violation (the dossier is not made PARTIAL), and a valid one survives', () => {

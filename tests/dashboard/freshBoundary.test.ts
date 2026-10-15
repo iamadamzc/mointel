@@ -42,8 +42,8 @@ function rowWithEvent(eventTimestamp: string | null, catalystFreshFrom: string |
     state: 'ACCEPTED',
     generatedAt: '2026-09-25T12:00:00.000Z',
     coverageIncomplete: false,
-    // A clocked release cites a source EXACT at its instant: since 2026-10-15 the board trusts a catalyst's clock only
-    // when a cited EXACT or INFERRED source carries it (lib/research/eventWhen.ts).
+    // A clocked release cites a source EXACT at its instant, as production does: the hover (catalystEventTime, the
+    // strict eventWhen rule since 2026-10-15) shows a clock only when a cited EXACT or INFERRED source carries it.
     evidence: eventTimestamp ? [{ id: 1, publishedAt: eventTimestamp, publishedPrecision: 'EXACT' }] : [],
     analysis: {
       dossier: {
@@ -310,9 +310,9 @@ describe('a row promoted by the prior close states the reason, not the age', () 
      * whether that is one day or four.
      */
     const promoted = resolveWhy(rowWithEvent('2026-09-25T21:18:05.000Z', FRI_CLOSE), MON);
-    // The fixture cites a source EXACT at the instant, so the hover keeps the clock AND the band promotes on it: since
-    // 2026-10-15 both read the shared rule (lib/research/eventWhen.ts). Before, the hover said the date only while the
-    // band promoted on the same unvouched clock. An unsourced instant promotes nothing (tests/research/catalystEventAge).
+    // The fixture cites a source EXACT at the instant, so the hover keeps the clock (the strict eventWhen rule) and
+    // the band promotes on it. The band changes only for a midnight-UTC placeholder no source vouches for
+    // (tests/research/catalystEventAge.test.ts).
     expect(promoted.eventAt).toBe('Sep 25, 5:18 PM ET');
     expect(promoted.title).toContain("prior session's close");
     expect(promoted.title).toContain('since Fri close');

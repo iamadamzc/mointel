@@ -362,9 +362,8 @@ export function validateDossier(
    * event timestamps carry no clock and no hours-based rule can be computed for
    * them at all.
    *
-   * By the shared event rule (lib/research/eventWhen.ts, Integration 41st 2026-10-15): the clock counts only when a
-   * cited EXACT or INFERRED source carries that instant, so a date-only midnight-UTC placeholder is its own date,
-   * not 20:00 ET the day before.
+   * `catalystFreshnessOf` (lib/research/eventWhen.ts, Integration 41st's ruling (b), 2026-10-15): a midnight-UTC
+   * placeholder that no cited EXACT or INFERRED source carries is its own date, not 20:00 ET the day before.
    */
   catalyst.freshness = catalystFreshnessOf(
     { eventTimestamp: catalyst.eventTimestamp, sources: citedWhenSources(catalyst.evidenceSourceIds, bundle.sources) },

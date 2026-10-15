@@ -184,8 +184,8 @@ function intelligence(overrides: Parameters<typeof dossier>[0] = {}): AutoIntell
     schemaVersion: 1,
     analysisVersionId: 1,
     coverageIncomplete: false,
-    // The cited source 1, EXACT at the event's instant: since 2026-10-15 the board trusts a catalyst's clock only when a
-    // cited EXACT or INFERRED source carries it (lib/research/eventWhen.ts), as a clocked production catalyst has.
+    // The cited source 1, EXACT at the event's instant, as a clocked production catalyst has: the hover's strict
+    // eventWhen rule (since 2026-10-15) shows the clock only when a cited EXACT or INFERRED source carries it.
     evidence: [{ id: 1, publishedAt: dossier(overrides).catalyst.eventTimestamp, publishedPrecision: 'EXACT' }] as unknown as AutoIntelligence['evidence'],
   };
 }

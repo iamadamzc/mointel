@@ -314,8 +314,8 @@ export function queueDiscoveryResearch(
      */
     const staleReaskApplies =
       candidate.rank <= Math.min(options.autoRank, STALE_REASK_MAX_RANK);
-    // By the shared event rule (lib/research/eventWhen.ts): the clock counts only when a cited EXACT or INFERRED
-    // source carries it. Read only where the re-ask can apply, so the source lookup costs nothing elsewhere.
+    // `catalystFreshnessOf` (lib/research/eventWhen.ts): a midnight-UTC placeholder no cited EXACT or INFERRED source
+    // carries is its own date. Read only where the re-ask can apply, so the source lookup costs nothing elsewhere.
     const catalystIsStale =
       staleReaskApplies &&
       currentAnalysis !== null &&
