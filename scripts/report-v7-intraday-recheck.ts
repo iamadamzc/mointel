@@ -86,6 +86,11 @@ class KeptChecker implements CheckerModel {
 
 const named = (facts: NarrativeFacts) => (facts.intradayNamed ?? []).map((m) => m.ticker);
 const COUNT = (f: NarrativeFacts) => `Of the ${f.fresh.covered} names the desk covers, ${f.fresh.count} had fresh news in our sources.`;
+/** The leader's move as the sheet gives it (whole percent), so a planted Summary carries no invented number. */
+const move = (f: NarrativeFacts) => {
+  const pct = f.intradayNamed?.[0]?.percentChange ?? 0;
+  return `${pct < 0 ? 'down' : 'up'} ${Math.round(Math.abs(pct))} percent`;
+};
 /** --dry: run 1 plants what the rules must strike; run 2 plants what the fix must let through; run 3 is clean. */
 function stubWriter(facts: NarrativeFacts, run: number): ReportModel {
   const leader = named(facts)[0] ?? 'AAA';
@@ -101,8 +106,10 @@ function stubWriter(facts: NarrativeFacts, run: number): ReportModel {
       : run === 2
         ? `${leader} ranked first in this range; the company reported revenue up 26 percent year over year, and it was down 3.2 percent since the previous checkpoint. ${COUNT(facts)}`
         : // Run 3 plants read 135's two PASS measures, which no rule strikes with the word list off: a causal join and a
-          // change note with a "when" clause, so the published measures see a present case.
-          `${leader} ranked first in this range, up 5 percent from the prior close after a contract award; it was up 2 percent since the previous checkpoint, when it printed a new high. ${COUNT(facts)}`;
+          // change note with a "when" clause, so the published measures see a present case. Its only numbers come from
+          // the facts (the leader's whole-percent move, the count), so the number rule does not strike it first (the
+          // first dry struck every planted Summary for invented numbers, NUMBER_WITHOUT_ROW, and so proved nothing).
+          `${leader} ranked first in this range, ${move(facts)} from the prior close after a contract award; it moved since the previous checkpoint, when it printed a new high. ${COUNT(facts)}`;
   return { complete: async (prompt) => JSON.stringify({ narrative: summary, lines: lines(prompt.user) }) };
 }
 const stubChecker = (): CheckerModel => ({

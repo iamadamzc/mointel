@@ -1,0 +1,72 @@
+store A:/mointel/data/slim-2026-10-14.db: 89141248 bytes, mtime 2026-10-15T00:55:08.346Z; days 2026-10-14
+store A:/mointel/data/market-prod-2026-10-07.db: 5512986624 bytes, mtime 2026-10-07T15:13:47.202Z; days 2026-10-02, 2026-10-05, 2026-10-06
+clock fixed at 2026-10-15T01:08:34.580Z; kinds INTO_RTH, INTO_POWER_HOUR, AFTER_HOURS; range $1-$20; 3 runs per input
+prompt v7 version 11, writer gpt-5.6-luna; checker claude-opus-5-5 (Tests-TMI key, no fallback); every raw reply kept
+stop $8: a report launches only if spend + its worst case ($0.8116) fits; DRY: stub models, nothing spent
+every Summary measure on the PUBLISHED narrative (result.report.narrative), the draft beside it
+
+2026-10-14-INTO_RTH-v7.11-run1: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, UNFRAMED_PERCENT/rule); count NO; first-ranked GENK NO; label YES; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 0 of 12; $0.0000
+2026-10-14-INTO_RTH-v7.11-run2: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, NUMBER_WITHOUT_ROW/rule); count NO; first-ranked GENK NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-14-INTO_RTH-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked GENK yes; label no; note+when draft YES PUBLISHED YES; causal join draft YES PUBLISHED YES; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-14-INTO_POWER_HOUR-v7.11-run1: PUBLISHED; Summary STRUCK (UNFRAMED_PERCENT/rule); count NO; first-ranked TC NO; label YES; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 0 of 12; $0.0000
+2026-10-14-INTO_POWER_HOUR-v7.11-run2: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule); count NO; first-ranked TC NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-14-INTO_POWER_HOUR-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked TC yes; label no; note+when draft YES PUBLISHED YES; causal join draft YES PUBLISHED YES; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-14-AFTER_HOURS-v7.11-run1: PUBLISHED; Summary STRUCK (UNFRAMED_PERCENT/rule); count NO; first-ranked TC NO; label YES; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 0 of 12; $0.0000
+2026-10-14-AFTER_HOURS-v7.11-run2: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule); count NO; first-ranked TC NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-14-AFTER_HOURS-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked TC yes; label no; note+when draft YES PUBLISHED YES; causal join draft YES PUBLISHED YES; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-02-INTO_RTH-v7.11-run1: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, UNFRAMED_PERCENT/rule); count NO; first-ranked AMOD NO; label YES; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 0 of 12; $0.0000
+2026-10-02-INTO_RTH-v7.11-run2: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, NUMBER_WITHOUT_ROW/rule); count NO; first-ranked AMOD NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-02-INTO_RTH-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked AMOD yes; label no; note+when draft YES PUBLISHED YES; causal join draft YES PUBLISHED YES; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-02-INTO_POWER_HOUR-v7.11-run1: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, UNFRAMED_PERCENT/rule); count NO; first-ranked ZNB NO; label YES; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 0 of 12; $0.0000
+2026-10-02-INTO_POWER_HOUR-v7.11-run2: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, NUMBER_WITHOUT_ROW/rule); count NO; first-ranked ZNB NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-02-INTO_POWER_HOUR-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked ZNB yes; label no; note+when draft YES PUBLISHED YES; causal join draft YES PUBLISHED YES; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-02-AFTER_HOURS-v7.11-run1: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, UNFRAMED_PERCENT/rule); count NO; first-ranked ZNB NO; label YES; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 0 of 12; $0.0000
+2026-10-02-AFTER_HOURS-v7.11-run2: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, NUMBER_WITHOUT_ROW/rule); count NO; first-ranked ZNB NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-02-AFTER_HOURS-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked ZNB yes; label no; note+when draft YES PUBLISHED YES; causal join draft YES PUBLISHED YES; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-05-INTO_RTH-v7.11-run1: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, UNFRAMED_PERCENT/rule); count NO; first-ranked MI NO; label YES; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 0 of 12; $0.0000
+2026-10-05-INTO_RTH-v7.11-run2: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, NUMBER_WITHOUT_ROW/rule); count NO; first-ranked MI NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-05-INTO_RTH-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked MI yes; label no; note+when draft YES PUBLISHED YES; causal join draft YES PUBLISHED YES; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-05-INTO_POWER_HOUR-v7.11-run1: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, UNFRAMED_PERCENT/rule); count NO; first-ranked MI NO; label YES; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 0 of 12; $0.0000
+2026-10-05-INTO_POWER_HOUR-v7.11-run2: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, NUMBER_WITHOUT_ROW/rule); count NO; first-ranked MI NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-05-INTO_POWER_HOUR-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked MI yes; label no; note+when draft YES PUBLISHED YES; causal join draft YES PUBLISHED YES; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-05-AFTER_HOURS-v7.11-run1: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, UNFRAMED_PERCENT/rule); count NO; first-ranked MI NO; label YES; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 0 of 12; $0.0000
+2026-10-05-AFTER_HOURS-v7.11-run2: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, NUMBER_WITHOUT_ROW/rule); count NO; first-ranked MI NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-05-AFTER_HOURS-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked MI yes; label no; note+when draft YES PUBLISHED YES; causal join draft YES PUBLISHED YES; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-06-INTO_RTH-v7.11-run1: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, UNFRAMED_PERCENT/rule); count NO; first-ranked XHG NO; label YES; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 0 of 12; $0.0000
+2026-10-06-INTO_RTH-v7.11-run2: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, NUMBER_WITHOUT_ROW/rule); count NO; first-ranked XHG NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-06-INTO_RTH-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked XHG yes; label no; note+when draft YES PUBLISHED YES; causal join draft YES PUBLISHED YES; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-06-INTO_POWER_HOUR-v7.11-run1: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, UNFRAMED_PERCENT/rule); count NO; first-ranked XHG NO; label YES; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 0 of 12; $0.0000
+2026-10-06-INTO_POWER_HOUR-v7.11-run2: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, NUMBER_WITHOUT_ROW/rule); count NO; first-ranked XHG NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-06-INTO_POWER_HOUR-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked XHG yes; label no; note+when draft YES PUBLISHED YES; causal join draft YES PUBLISHED YES; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-06-AFTER_HOURS-v7.11-run1: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, UNFRAMED_PERCENT/rule); count NO; first-ranked XHG NO; label YES; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 1; name lines struck 0 of 12; $0.0000
+2026-10-06-AFTER_HOURS-v7.11-run2: PUBLISHED; Summary STRUCK (NUMBER_WITHOUT_ROW/rule, NUMBER_WITHOUT_ROW/rule); count NO; first-ranked XHG NO; label no; note+when draft no PUBLISHED no; causal join draft no PUBLISHED no; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+2026-10-06-AFTER_HOURS-v7.11-run3: PUBLISHED; Summary published; count yes; first-ranked XHG yes; label no; note+when draft YES PUBLISHED YES; causal join draft YES PUBLISHED YES; growth percents published 0; judgement lines 0; name lines struck 0 of 12; $0.0000
+
+LIVE 10-14 (reports 45 to 47 inputs): run 9; published 9; failed 0
+  Summary STRUCK 6 of 9; strike reasons NUMBER_WITHOUT_ROW/rule 5, UNFRAMED_PERCENT/rule 3
+  UNFRAMED_PERCENT Summary strikes: 3
+  count sentence PUBLISHED 3 of 9; first-ranked PUBLISHED 3 of 9
+  drafts with a report label 3; a change note with "when" 3; a causal join 3
+  PUBLISHED Summaries with a change note + "when" 3; with a causal join 3 (read 135: both must be 0)
+  growth-framed percents in published Summaries (each read by hand, read 135 c): 0
+  published name lines with a judgement word or a news kind (read 107 a, each read by hand): 3
+  checker calls that threw 0; name lines struck 0
+EARLIER INPUTS (10-02, 10-05, 10-06): run 27; published 27; failed 0
+  Summary STRUCK 18 of 27; strike reasons NUMBER_WITHOUT_ROW/rule 27, UNFRAMED_PERCENT/rule 9
+  UNFRAMED_PERCENT Summary strikes: 9
+  count sentence PUBLISHED 9 of 27; first-ranked PUBLISHED 9 of 27
+  drafts with a report label 9; a change note with "when" 9; a causal join 9
+  PUBLISHED Summaries with a change note + "when" 9; with a causal join 9 (read 135: both must be 0)
+  growth-framed percents in published Summaries (each read by hand, read 135 c): 0
+  published name lines with a judgement word or a news kind (read 107 a, each read by hand): 9
+  checker calls that threw 0; name lines struck 0
+ALL: run 36; published 36; failed 0
+  Summary STRUCK 24 of 36; strike reasons NUMBER_WITHOUT_ROW/rule 32, UNFRAMED_PERCENT/rule 12
+  UNFRAMED_PERCENT Summary strikes: 12
+  count sentence PUBLISHED 12 of 36; first-ranked PUBLISHED 12 of 36
+  drafts with a report label 12; a change note with "when" 12; a causal join 12
+  PUBLISHED Summaries with a change note + "when" 12; with a causal join 12 (read 135: both must be 0)
+  growth-framed percents in published Summaries (each read by hand, read 135 c): 0
+  published name lines with a judgement word or a news kind (read 107 a, each read by hand): 12
+  checker calls that threw 0; name lines struck 0
+TOTAL reports run 36 of 36; spend $0.0000 (dry: stub models, nothing spent)
