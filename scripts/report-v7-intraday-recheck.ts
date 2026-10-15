@@ -11,7 +11,8 @@
  * HARD STOP $8 per report as before (a report launches only if spend + its worst case fits). Spend needs his yes.
  *   node --env-file=../mointel/.env.local --import tsx scripts/report-v7-intraday-recheck.ts <store-10-07> <store-10-14> <out-dir> --key-file <path> [--dry]
  * --dry: stub models with PLANTED CONTROLS (run 1: a report label and a bare percent, which the rules strike; run 2: an
- * attributed growth percent and a change note in the sheet's frame, which must survive; run 3: clean), no key, no spend.
+ * attributed growth percent and a change note in the sheet's frame, which must survive; run 3: a causal join and a change
+ * note with "when", read 135's PUBLISHED measures' present case), no key, no spend.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -89,13 +90,19 @@ const COUNT = (f: NarrativeFacts) => `Of the ${f.fresh.covered} names the desk c
 function stubWriter(facts: NarrativeFacts, run: number): ReportModel {
   const leader = named(facts)[0] ?? 'AAA';
   const lines = (user: string) =>
-    [...user.matchAll(/^([A-Z][A-Z.]{0,5}): ranked #/gm)].map((m) => ({ ticker: m[1]!, text: 'Dry run line.' }));
+    [...user.matchAll(/^([A-Z][A-Z.]{0,5}): ranked #/gm)].map((m, i) => ({
+      ticker: m[1]!,
+      // Run 1 plants read 107 (a)'s scan target in the first name line.
+      text: run === 1 && i === 0 ? 'Planted control: a positive operating update.' : 'Dry run line.',
+    }));
   const summary =
     run === 1
       ? `Intraday, ${leader} ranked first in this range, up 26 percent. ${COUNT(facts)}`
       : run === 2
         ? `${leader} ranked first in this range; the company reported revenue up 26 percent year over year, and it was down 3.2 percent since the previous checkpoint. ${COUNT(facts)}`
-        : `${leader} ranked first in this range. ${COUNT(facts)}`;
+        : // Run 3 plants read 135's two PASS measures, which no rule strikes with the word list off: a causal join and a
+          // change note with a "when" clause, so the published measures see a present case.
+          `${leader} ranked first in this range, up 5 percent from the prior close after a contract award; it was up 2 percent since the previous checkpoint, when it printed a new high. ${COUNT(facts)}`;
   return { complete: async (prompt) => JSON.stringify({ narrative: summary, lines: lines(prompt.user) }) };
 }
 const stubChecker = (): CheckerModel => ({
@@ -110,6 +117,11 @@ const stubChecker = (): CheckerModel => ({
 const names = (text: string | null, ticker: string) =>
   text !== null && new RegExp(`(?<![A-Za-z0-9])${ticker.replace('.', '\\.')}(?![A-Za-z0-9])`).test(text);
 const hasCount = (text: string | null) => text !== null && /names the desk covers/.test(text) && /fresh news/.test(text);
+/** Commercial read 135 (c): a percent framed by a growth period, to be read by hand against the company's research. */
+const GROWTH_PERCENT = /[^.;]*\b\d[\d,.]*\s+percent\b[^.;]*\b(?:year over year|year-over-year|from a year earlier|compared with the same quarter)\b[^.;]*/gi;
+/** Commercial read 107 (a), across the name lines: a judgement word, or a classification of the news by kind. */
+const JUDGEMENT = /\bpositive\b|\bnegative\b|\brather than an?\b[^.]*\bcatalyst\b|\boperating\b|\btransaction-development\b|\b[a-z-]+ catalyst\b/gi;
+const NOT_A_KIND = new Set(['no catalyst', 'fresh catalyst']);
 /** A report label used as one (read 131: "Intraday," copied into an AFTER_HOURS Summary). */
 const LABEL = /\b(?:Intraday|Into the open|Into power hour|After hours)\s*[,:]/;
 /** A change note with something added to it (read 131: "since the previous checkpoint, when it ..."). */
@@ -137,6 +149,12 @@ interface RunRecord {
   labelInDraft: boolean;
   noteWhenInDraft: boolean;
   causalJoinInDraft: boolean;
+  /** Commercial read 135: (a) and (b) are PASS conditions on the PUBLISHED Summary; (c) growth-framed percents, by hand. */
+  noteWhenPublished: boolean;
+  causalJoinPublished: boolean;
+  growthPercentsPublished: string[];
+  /** Read 107 (a) across the published name lines, each hit with its ticker's research beside it, for the hand read. */
+  judgementLines: Array<{ ticker: string | null; text: string; matched: string[]; research: string | null }>;
   writerCalls: number;
   checkerReplies: number;
   checkerErrors: number;
@@ -230,6 +248,20 @@ async function main() {
             labelInDraft: draftSummary !== null && LABEL.test(draftSummary),
             noteWhenInDraft: draftSummary !== null && NOTE_PLUS_WHEN.test(draftSummary),
             causalJoinInDraft: draftSummary !== null && CAUSAL_JOIN.test(draftSummary),
+            noteWhenPublished: narrative !== null && NOTE_PLUS_WHEN.test(narrative),
+            causalJoinPublished: narrative !== null && CAUSAL_JOIN.test(narrative),
+            growthPercentsPublished: narrative === null ? [] : [...narrative.matchAll(GROWTH_PERCENT)].map((m) => m[0].trim()),
+            judgementLines:
+              result?.status === 'PUBLISHED'
+                ? result.report.sections.flatMap((section) =>
+                    section.lines.flatMap((line) => {
+                      const matched = [...line.text.matchAll(JUDGEMENT)].map((m) => m[0]).filter((w) => !NOT_A_KIND.has(w.toLowerCase()));
+                      if (matched.length === 0) return [];
+                      const research = line.ticker ? read.inputs.research.get(line.ticker)?.catalyst.summary ?? null : null;
+                      return [{ ticker: line.ticker, text: line.text, matched, research }];
+                    }),
+                  )
+                : [],
             writerCalls: calls.length,
             checkerReplies: checker.replies.length,
             checkerErrors: checker.replies.filter((r) => r.error !== null).length,
@@ -242,7 +274,7 @@ async function main() {
           summary.push(
             `${tag}: ${record.error ? `ERROR ${record.error}` : record.status}; Summary ${record.narrativeStruck ? `STRUCK (${record.summaryStrikes.map((s) => `${s.reason}/${s.by}`).join(', ')})` : 'published'}; ` +
               `count ${record.countPublished ? 'yes' : 'NO'}; first-ranked ${first ?? '-'} ${record.firstRankedPublished ? 'yes' : 'NO'}; ` +
-              `label ${record.labelInDraft ? 'YES' : 'no'}; note+when ${record.noteWhenInDraft ? 'YES' : 'no'}; causal join ${record.causalJoinInDraft ? 'YES' : 'no'}; ` +
+              `label ${record.labelInDraft ? 'YES' : 'no'}; note+when draft ${record.noteWhenInDraft ? 'YES' : 'no'} PUBLISHED ${record.noteWhenPublished ? 'YES' : 'no'}; causal join draft ${record.causalJoinInDraft ? 'YES' : 'no'} PUBLISHED ${record.causalJoinPublished ? 'YES' : 'no'}; growth percents published ${record.growthPercentsPublished.length}; judgement lines ${record.judgementLines.length}; ` +
               `name lines struck ${record.nameLinesStruck} of ${Math.max(record.lines - 1, 0)}; $${record.costUsd.toFixed(4)}`,
           );
           if (!dry && records.length === 1 && record.error) stopped = 'the first report had an error (fail fast)';
@@ -262,6 +294,9 @@ async function main() {
       `  UNFRAMED_PERCENT Summary strikes: ${pub.filter((r) => r.summaryStrikes.some((s) => s.reason === 'UNFRAMED_PERCENT')).length}`,
       `  count sentence PUBLISHED ${pub.filter((r) => r.countPublished).length} of ${pub.length}; first-ranked PUBLISHED ${pub.filter((r) => r.firstRankedPublished).length} of ${pub.filter((r) => r.firstRanked).length}`,
       `  drafts with a report label ${rows.filter((r) => r.labelInDraft).length}; a change note with "when" ${rows.filter((r) => r.noteWhenInDraft).length}; a causal join ${rows.filter((r) => r.causalJoinInDraft).length}`,
+      `  PUBLISHED Summaries with a change note + "when" ${pub.filter((r) => r.noteWhenPublished).length}; with a causal join ${pub.filter((r) => r.causalJoinPublished).length} (read 135: both must be 0)`,
+      `  growth-framed percents in published Summaries (each read by hand, read 135 c): ${pub.reduce((n, r) => n + r.growthPercentsPublished.length, 0)}`,
+      `  published name lines with a judgement word or a news kind (read 107 a, each read by hand): ${pub.reduce((n, r) => n + r.judgementLines.length, 0)}`,
       `  checker calls that threw ${rows.reduce((n, r) => n + r.checkerErrors, 0)}; name lines struck ${rows.reduce((n, r) => n + r.nameLinesStruck, 0)}`,
     ];
   };

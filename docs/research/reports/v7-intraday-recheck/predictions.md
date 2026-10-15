@@ -14,6 +14,13 @@
 5. **The count sentence is in every published Summary that was not struck** (the count keep, read 124, is in a966a517).
 6. **Failed checks (MISSED or ERROR): at most 3 of 36.**
 
+**Added by Commercial read 135 (PASS with these changes), before any call:**
+7. **No PUBLISHED Summary has a change note plus a "when" clause** (report 45's fault): 0.
+8. **No PUBLISHED Summary joins a move to its news with a causal word** (with the word list off only the model strikes it): 0.
+9. **By hand: every growth-framed percent in a published Summary is the company's own reported figure in its research** (read 134's limit: the rule sees only that a frame word is present).
+10. **Commercial's own read** of every published Summary and name line of the 36 for any claim the facts do not give, with read 107's scan across the name lines (positive or negative, a classification of the news) judged against the research; the raw goes to Commercial when committed.
+Reported as before; more than two published Summaries without the first-ranked name goes to him with the figure.
+
 If fewer than 27 reports publish, the result is **NOT DECIDED** and goes to him as such. A PASS ships nothing by itself: the frame fix and version 11 ship on his go by sha.
 
 **Reported, not pass conditions:** drafts with a change note plus "when" (line 2); drafts joining a move to its news causally (line 3); the first-ranked name in the published Summary; name lines struck; every Summary strike with its reason and detail.
@@ -26,5 +33,6 @@ If fewer than 27 reports publish, the result is **NOT DECIDED** and goes to him 
 4. Count sentence in every unstruck published Summary: **yes**.
 5. Failed checks: **0 or 1**.
 6. Spend **$4.90 to $5.80**, all 36 run.
+7. Read 135's new pass conditions: published change note plus "when" **0**; published causal join **0 or 1** (the model strikes most; one that survives fails rule 8); growth-framed percents in published Summaries **0 to 4** (MaxCyte's on the 10-14 INTO_POWER_HOUR and AFTER_HOURS inputs), each the company's own figure.
 
 My honest expectation: rules 3 to 6 pass; rule 1 is the one at risk, because the model's UNSUPPORTED reads (two of the three live strikes) were about time and attribution, which prompt lines reduce but do not remove.
