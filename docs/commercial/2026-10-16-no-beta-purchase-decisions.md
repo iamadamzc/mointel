@@ -1,11 +1,12 @@
 # No beta, purchase pages: the price breaks first, then what he must decide
 
-**Commercial-tmi (7th tenure), 2026-10-16 (UTC), for Integration to put to him. Version 2:** version 1 (`6f10e70a`) treated the price and the provider as open. They are not. This version replaces it.
+**Commercial-tmi (7th tenure), 2026-10-16 (UTC), for Integration to put to him. Version 3.** Version 1 (`6f10e70a`) treated the price and the provider as open; version 2 (`8d44410f`) priced the breaks from $5 a day. His $5.50 daily price (below) replaces that, and every number in section 1 is rebuilt on it. This version replaces both.
 
 **What he has ruled, in his words (read at his turns through Integration):**
 - "i've decided i dont want to do beta. so we can remove any beta elements and setup purchase pages." (Integration chat, uuid 6a3e4300, 2026-10-16T23:21:40.715Z)
 - "$5 per day of use. it has been discussed throuroughly." (uuid 01659ed1, 2026-10-16T23:27:12.069Z)
 - "$5/day. Day starts at the close of AH. So a user starts their day with the report going into premarket the next day. cards will automatically be charged per day. if a user chooses to do monthly, 6 month or annual, caluclate the logical price breaks for such a scenario." (his latest message in that chat)
+- "we'll make the daily $5.50 to cover the stripe charge." (uuid dea68bce, 2026-10-16T23:33:31.014Z)
 - Provider: Stripe, one new account for Andromeda Genius with TMI as a product under it (his 2026-10-05 decision in the corporate-office record, relayed by Integration; I did not find that entry in `A:\corporate-office\company\decisions.md`, and I cite what Integration relayed).
 
 **Two supersessions, said once.** His request for monthly, 6-month and annual replaces his 2026-09-27 "i will not do monthly. we can do daily, or annual"; the newer word wins. And "no beta" replaces his 2026-10-05 "free beta, limited invites" and corporate-office D-076 ("TMI launch will be beta, not paying customers. Once validated through beta, we'll negotiate the agreements needed. But i want everything piped for GA."). With no beta, the agreements D-076 deferred to "once validated" now come before the first paying customer. That is one item below (the licence).
@@ -15,6 +16,12 @@
 ---
 
 ## 1. The price breaks
+
+### The daily price and what the card takes from it
+
+His latest word on the daily price: "we'll make the daily $5.50 to cover the stripe charge." (uuid dea68bce, 2026-10-16T23:33:31.014Z) So the daily charge is **$5.50**.
+
+Stripe's fee is 2.9% plus 30 cents per successful domestic card charge (*read today*). On $5.50 that is $0.4595, which is 8.3% of the charge, and it leaves **$5.04**. So $5.50 covers the fee and leaves four cents over a clean $5.00. It does not cover sales tax or Stripe's own tax tool ($0.50 a transaction through the API, *read today*): if either is taken out of a $5.50 day, the desk keeps less than $5.04, unless tax is added on top of the price.
 
 ### The day, as he states it
 
@@ -32,53 +39,59 @@ One consequence of those two rules, stated so nobody finds it later: a sign-in f
 
 2026 closures: Jan 1, Jan 19, Feb 16, Apr 3, May 25, Jun 19, Jul 3, Sep 7, Nov 26, Dec 25. 2027: Jan 1, Jan 18, Feb 15, Mar 26, May 31, Jun 18, Jul 5, Sep 6, Nov 25, Dec 24. Early-close days (Nov 27 and Dec 24, 2026; Nov 26, 2027) are still charged days.
 
-### What a trader who uses every day pays at $5
+### What a trader who uses every day pays at $5.50
 
-| Period | Days | Total at $5 | Card fees if charged daily |
-| --- | --- | --- | --- |
-| Month (average) | 20.9 | **$104.58** (a month runs $95 to $110) | $9.31 |
-| Six months | 125.5 | **$627.50** | $55.85 |
-| Year | 251 | **$1,255** | $111.70 |
+| Period | Days | Total at $5.50 | Card fees if charged daily | Desk keeps |
+| --- | --- | --- | --- | --- |
+| Month (average) | 20.9 | **$115.04** (a month runs $104.50 to $121) | $9.61 | $105.43 |
+| Six months | 125.5 | **$690.25** | $57.67 | $632.58 |
+| Year | 251 | **$1,380.50** | $115.33 | $1,265.17 |
 
-Stripe's fee is 2.9% plus 30 cents per successful domestic card charge (*read today*), so a $5 day costs $0.445, which is 8.9% of the day. The 30 cents is fixed, so daily charging pays it every day; one charge for a period pays it once. A year of daily charges costs $111.70 in fees; one charge for the year costs about $24.
+The 30 cents is fixed, so daily charging pays it every day; one charge for a period pays it once.
+
+### Which base I priced the breaks from, and why
+
+**I priced them from the $5.50 list, not from the $5 he nets.** Two reasons.
+- A buyer compares a plan with what the page tells them a day costs, which is $5.50. A break advertised as "15% off" has to be true against that number, or the page says something false.
+- The fee is already inside the $5.50, so it is already paid for. A plan that saves the card fee gives some of that back. Priced from $5.50, the plan that leaves the desk exactly as well off as daily charging is only about 5.5% off the list (a month at $108.89, six months at $651.78, a year at $1,303.26). So the first 5.5 points of any break cost the desk nothing; every point beyond that is a real concession, and the table shows it.
 
 ### The ladder I recommend, and why each step
 
 His to set. These are my numbers, built on the arithmetic above.
 
-| Plan | Price | Per trading day | Off the daily total | One-charge fee | Daily fees avoided | Pays off for a trader who uses more than |
+| Plan | Price | Per trading day | Off the $5.50 total | One-charge fee | Daily fees avoided | Pays off for a trader who uses more than |
 | --- | --- | --- | --- | --- | --- | --- |
-| Daily | $5 a day | $5.00 | none | $0.445 each | none | not applicable |
-| Monthly | **$89** | $4.25 | 15% | $2.88 | $6.43 | 17.8 days of 20.9 (85%) |
-| Six months | **$470** | $3.75 | 25% | $13.93 | $41.92 | 94 days of 125.5 (75%) |
-| Annual | **$815** | $3.25 | 35% | $23.94 | $87.76 | 163 days of 251 (65%) |
+| Daily | $5.50 a day | $5.50 | none | $0.46 each | none | not applicable |
+| Monthly | **$98** | $4.69 | 15% | $3.14 | $6.47 | 17.8 days of 20.9 (85%) |
+| Six months | **$518** | $4.13 | 25% | $15.32 | $42.35 | 94 days of 125.5 (75%) |
+| Annual | **$897** | $3.57 | 35% | $26.31 | $89.02 | 163 days of 251 (65%) |
 
 **The reasons, step by step.**
-- **Where the first step comes from.** Charging once instead of 21 times saves about $6.43 a month in card fees, which is 7% of $89. That is the least a break can be justified by: the fee is money that stops leaving. The rest of the 15% is the price of paying a month ahead and of one fewer failed-card event, each of which also stops a day's session.
-- **Why each longer step is bigger.** The fee saving grows (9% of the price at six months, 11% at a year), and the buyer is also lending the desk the money and carrying the risk that a new product disappoints for longer. I used equal ten-point steps (15, 25, 35) so the ladder is easy to say and easy to defend.
-- **Why not more.** A plan only pays off for a heavy user (the last column). Light users stay on the daily day and are not affected by the plan prices at all. So a break costs revenue only on traders who would have paid every day anyway; it buys fewer fees, cash in advance, and a committed user. I cannot size how many heavy users a bigger break would convert: there are no users to measure. The first months of purchases will say.
-- **A month is not a fixed number of days.** A flat $89 is $4.68 a day in a 19-day month and $4.05 a day in a 22-day month. The plan is priced on the 20.9 average. Whether a "month" is a calendar month or a fixed span is one of the decisions below.
-- **Gentler and steeper versions, if he wants them** (the same method, break-even is always one minus the break):
+- **Where the first step comes from.** Charging once instead of 21 times saves about $6.47 a month in card fees, which is 6.6% of $98. That is the part of a break the desk pays for out of money that stops leaving. The rest of the 15% is the price of paying a month ahead and of one fewer failed-card event, each of which also stops a day's session.
+- **Why each longer step is bigger.** The fee saving grows (8% of the price at six months, 10% at a year), and the buyer is also lending the desk the money and carrying the risk that a new product disappoints for longer. I used equal ten-point steps (15, 25, 35) so the ladder is easy to say and easy to defend.
+- **Why not more.** A plan only pays off for a heavy user (the last column). Light users stay on the daily day and the plan prices do not touch them. So a break costs revenue only on traders who would have paid every day anyway; it buys fewer fees, cash in advance, and a committed user. I cannot size how many heavy users a bigger break would convert: there are no users to measure. The first months of purchases will say.
+- **A month is not a fixed number of days.** A flat $98 is $5.16 a day in a 19-day month and $4.45 a day in a 22-day month. The plan is priced on the 20.9 average. Whether a "month" is a calendar month or a fixed span is one of the decisions below.
+- **Gentler and steeper versions, if he wants them** (the same method; the pays-off threshold is always one minus the break):
 
   | Ladder | Monthly | Six months | Annual |
   | --- | --- | --- | --- |
-  | Gentle: 10, 20, 30% | $94 | $502 | $878 |
-  | Recommended: 15, 25, 35% | $89 | $470 | $815 |
-  | Steep: 20, 30, 40% | $84 | $439 | $753 |
+  | Gentle: 10, 20, 30% | $104 | $552 | $966 |
+  | Recommended: 15, 25, 35% | $98 | $518 | $897 |
+  | Steep: 20, 30, 40% | $92 | $483 | $828 |
 
 **What it does to the licence arithmetic.** Longer plans bring in less per person per month after fees, so more people are needed to cover a monthly licence cost. Heads needed, assuming every one is a full-use trader paying all 20.9 days, before sales tax, refunds and disputes:
 
 | Monthly licence cost | Daily, full use | Monthly plan | Six-month plan | Annual plan |
 | --- | --- | --- | --- | --- |
-| $4,498 | 48 | 53 | 60 | 69 |
-| $10,000 | 105 | 117 | 132 | 152 |
-| $20,000 | 210 | 233 | 264 | 304 |
+| $4,498 | 43 | 48 | 54 | 62 |
+| $10,000 | 95 | 106 | 120 | 138 |
+| $20,000 | 190 | 211 | 239 | 276 |
 
-Net per head per month after the card fee: $95.28 daily, $86.12 monthly, $76.01 six-month, $65.92 annual.
+Net per head per month after the card fee: $105.43 daily, $94.86 monthly, $83.78 six-month, $72.56 annual.
 
-**What traders pay elsewhere, for the ladder to sit against** (a competitor's own comparison pages, *read today*, so confirm on the vendors' sites): Day Trade Dash $197 a month; Trade Ideas Premium $254 a month or $2,136 a year. Per trading day that is $9.42 and $12.14; Trade Ideas annual is $8.51 a day. TMI at $5 a day, and $3.25 a day on the annual, sits well under both. Whether that is the right place to sit is his.
+**What traders pay elsewhere, for the ladder to sit against** (a competitor's own comparison pages, *read today*, so confirm on the vendors' sites): Day Trade Dash $197 a month; Trade Ideas Premium $254 a month or $2,136 a year. Per trading day that is $9.42 and $12.14; Trade Ideas annual is $8.51 a day. TMI at $5.50 a day, and $3.57 a day on the annual, sits well under both. Whether that is the right place to sit is his.
 
-**One more number he should see.** Stripe charges $15 for each dispute, and $15 more if we respond to it ($15 back if we win) (*read today*). On a $5 day a single dispute costs three days' revenue. On a $815 annual it also puts $815 at risk. That is a reason for clear charge words and a clear refund rule (below), not a reason to change the price.
+**One more number he should see.** Stripe charges $15 for each dispute, and $15 more if we respond to it ($15 back if we win) (*read today*). On a $5.50 day a single dispute costs almost three days' revenue. On an $897 annual it also puts $897 at risk. That is a reason for clear charge words and a clear refund rule (below), not a reason to change the price.
 
 ---
 
@@ -86,7 +99,7 @@ Net per head per month after the card fee: $95.28 daily, $86.12 monthly, $76.01 
 
 Each item gives the choices, my lean (a lean, not a ruling), and what it blocks.
 
-**The ladder.** Does he take the recommended breaks (monthly $89, six months $470, annual $815), a gentler or steeper set from the table, or his own numbers? *Blocks:* the pricing page, the checkout words, the terms of sale.
+**The ladder.** Does he take the recommended breaks (monthly $98, six months $518, annual $897, built on the $5.50 daily list), a gentler or steeper set from the table, or his own numbers? *Blocks:* the pricing page, the checkout words, the terms of sale.
 
 **What a "month", "six months" and "year" are, and whether a plan renews on its own.**
 - A period measured by calendar (a month from the first paid day, ending at 20:00 ET) or by a count of paid days. My lean: calendar, ending at 20:00 ET.
@@ -133,8 +146,8 @@ Each item gives the choices, my lean (a lean, not a ruling), and what it blocks.
 
 **Sales tax.** I told him in my 09-26 scope that no tax would be owed for a US-only, low-volume sale. That is withdrawn: I had not checked it, and Stripe's own page describes tax collection as a separate product you turn on.
 - What I could read today, from secondary sources and not from the Texas Comptroller: Texas generally treats subscription access to data and information as taxable, on 80% of the charge, at 6.25% plus local rates up to 8.25%. Other states differ. The desk is a Texas company selling to the whole country.
-- Stripe's tax tool (*read today*): 0.5% per transaction where registered (no-code), or $0.50 per transaction through the API, or from $90 a month for the full product. On a $5 day, $0.50 is 10%.
-- Choices: (a) the company's accountant says what applies before the first charge, then we pick a tool; (b) a merchant of record carries it (Paddle is 5% + 50 cents per checkout, including tax, fraud, chargebacks and billing support; its page says to contact them about products under $10, which a $5 day is; I did not read its acceptable-use page and have not checked that it supports a daily saved-card charge). My lean: (a), and it is the same conversation as the lawyer.
+- Stripe's tax tool (*read today*): 0.5% per transaction where registered (no-code), or $0.50 per transaction through the API, or from $90 a month for the full product. On a $5.50 day, $0.50 is 9.1%.
+- Choices: (a) the company's accountant says what applies before the first charge, then we pick a tool; (b) a merchant of record carries it (Paddle is 5% + 50 cents per checkout, including tax, fraud, chargebacks and billing support; its page says to contact them about products under $10, which a $5.50 day is; I did not read its acceptable-use page and have not checked that it supports a daily saved-card charge). My lean: (a), and it is the same conversation as the lawyer.
 - I am not a tax adviser. This seat's job is to say the question exists and that the first charge makes it due.
 
 **A lawyer before the first charge.** On 2026-10-05 he said no lawyer before the beta. This is not a beta. The terms file says in its own header "NOBODY WITH A LAW LICENCE HAS READ THIS FILE", and its payment clauses are due "the day the desk charges for anything" (`docs/legal/terms.md:63-86`).
@@ -158,7 +171,7 @@ Two defaults I applied, for him to overrule: no free first day, and a first-time
 
 ## 3. Already ruled, not to be asked again
 
-- The unit is a day pass to everything (2026-09-27: "a subscriber pays for a days usage of everything"), $5 a day, the paid day 20:00 to 20:00 ET.
+- The unit is a day pass to everything (2026-09-27: "a subscriber pays for a days usage of everything"), $5.50 a day ($5 a day with the card fee covered, his 23:33:31Z word), the paid day 20:00 to 20:00 ET.
 - Charge at sign-in, in the background, automatically each paid day. A failed charge gives one hour "regardless of time", counted once from the first failure; retry only when the card is updated; a lapsed hour ends only that day's session; no charge on a non-trading day; two OS notifications (at the failure, and at 10 minutes left).
 - The door is the allowlist; the gate never learns about payment.
 - Nothing charges anyone until he approves the first real run.
