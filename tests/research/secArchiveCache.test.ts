@@ -1,10 +1,20 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import zlib from 'node:zlib';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { computeFloatBound, type FloatJobDeps, type SubmissionsRecent } from '@/lib/research/floatJob';
-import { ARCHIVE_DOCUMENT, archiveCachePath, archiveCacheSize, archiveCached } from '@/lib/research/secArchiveCache';
+import {
+  ARCHIVE_DOCUMENT,
+  archiveCacheMaxBytes,
+  archiveCachePath,
+  archiveCacheSize,
+  archiveCached,
+  archiveYear,
+  legacyArchiveCachePath,
+  pruneArchiveCache,
+} from '@/lib/research/secArchiveCache';
 
 /*
  * L8 defect fix (Integration 41st): EDGAR archive documents are immutable by accession, so a repeat night reads them from
@@ -158,5 +168,98 @@ describe('a name computed on a second night', () => {
     const uncached: string[] = [];
     await computeFloatBound(input, night(uncached, null));
     expect(uncached).toHaveLength(first.length);
+  });
+});
+
+/* ---------------------------------------------------------------- the bound */
+
+/*
+ * The bound (Integration 41st, L8 follow-up; Ops measured 67,205 documents / 206.4 MB after one full night): filing-year
+ * shards, the first layout read and migrated, a prune at nightly start, and a write-stop cap that never deletes.
+ */
+const gz = (text: string) => zlib.gzipSync(Buffer.from(text, 'utf8'));
+const put = (file: string, text: string, mtime?: Date) => {
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, gz(text));
+  if (mtime) fs.utimesSync(file, mtime, mtime);
+};
+
+describe('the archive cache bound', () => {
+  it('reads the filing year from the accession; 90-99 are the 1990s; a URL with no accession has none', () => {
+    expect(archiveYear(DOC)).toBe(2026);
+    expect(archiveYear('https://www.sec.gov/Archives/edgar/data/555/000095012399000001/old.txt')).toBe(1999);
+    expect(archiveYear('https://data.sec.gov/submissions/CIK0000000555.json')).toBeNull();
+    expect(archiveCachePath('/c', DOC).split(path.sep)).toContain('2026');
+    expect(legacyArchiveCachePath('/c', DOC).split(path.sep)).not.toContain('2026');
+  });
+
+  it('serves a first-layout file without a fetch and moves it into its year shard', async () => {
+    const dir = tempDir();
+    put(legacyArchiveCachePath(dir, DOC), 'kept from the first night');
+    let calls = 0;
+    const get = archiveCached(async () => {
+      calls += 1;
+      return 'fetched';
+    }, dir);
+    expect(await get(DOC)).toBe('kept from the first night');
+    expect(calls).toBe(0);
+    expect(fs.existsSync(archiveCachePath(dir, DOC))).toBe(true);
+    expect(fs.existsSync(legacyArchiveCachePath(dir, DOC))).toBe(false);
+    expect(await get(DOC)).toBe('kept from the first night');
+    expect(calls).toBe(0);
+  });
+
+  it('prunes year shards older than this year minus 2 and first-layout files unread for 7 days; keeps the rest', () => {
+    const dir = tempDir();
+    const now = new Date('2026-10-16T08:00:00Z');
+    const at = (yy: string, n: number) => `https://www.sec.gov/Archives/edgar/data/555/0001209191${yy}${String(n).padStart(6, '0')}/d.xml`;
+    put(archiveCachePath(dir, at('23', 1)), 'old');
+    put(archiveCachePath(dir, at('24', 1)), 'kept: 2024 is this year minus 2');
+    put(archiveCachePath(dir, at('26', 1)), 'kept');
+    put(legacyArchiveCachePath(dir, at('26', 2)), 'unread for 8 days', new Date('2026-10-08T08:00:00Z'));
+    put(legacyArchiveCachePath(dir, at('26', 3)), 'read 1 day ago', new Date('2026-10-15T08:00:00Z'));
+    const removed = pruneArchiveCache(dir, now);
+    expect(removed.yearShards).toEqual(['2023']);
+    expect(removed.legacyFiles).toBe(1);
+    expect(removed.bytes).toBeGreaterThan(0);
+    expect(fs.existsSync(archiveCachePath(dir, at('23', 1)))).toBe(false);
+    expect(fs.existsSync(archiveCachePath(dir, at('24', 1)))).toBe(true);
+    expect(fs.existsSync(archiveCachePath(dir, at('26', 1)))).toBe(true);
+    expect(fs.existsSync(legacyArchiveCachePath(dir, at('26', 2)))).toBe(false);
+    expect(fs.existsSync(legacyArchiveCachePath(dir, at('26', 3)))).toBe(true);
+    expect(archiveCacheSize(dir).files).toBe(3);
+    // A missing directory prunes nothing and does not throw.
+    expect(pruneArchiveCache(path.join(dir, 'none'), now)).toEqual({ yearShards: [], legacyFiles: 0, bytes: 0 });
+  });
+
+  it('at its cap stops WRITING, says so once, deletes nothing, and still serves what it holds', async () => {
+    const dir = tempDir();
+    const full: number[] = [];
+    let calls = 0;
+    const get = archiveCached(
+      async (url) => {
+        calls += 1;
+        return `text of ${url}`;
+      },
+      dir,
+      { maxBytes: 1, startBytes: 0, onFull: (bytes) => full.push(bytes) },
+    );
+    const second = 'https://www.sec.gov/Archives/edgar/data/555/000120919126000002/b.xml';
+    await get(DOC); // under the cap at the start: written
+    await get(second); // now over: fetched, not written
+    await get(second);
+    await get(DOC); // still served from disk
+    expect(calls).toBe(3);
+    expect(fs.existsSync(archiveCachePath(dir, DOC))).toBe(true);
+    expect(fs.existsSync(archiveCachePath(dir, second))).toBe(false);
+    expect(full).toHaveLength(1);
+  });
+
+  it('reads the cap setting: default 2048 MB, "off" none, megabytes otherwise, a bad value the default', () => {
+    expect(archiveCacheMaxBytes(undefined)).toBe(2048 * 1_048_576);
+    expect(archiveCacheMaxBytes('off')).toBeNull();
+    expect(archiveCacheMaxBytes('100')).toBe(100 * 1_048_576);
+    expect(archiveCacheMaxBytes('lots')).toBe(2048 * 1_048_576);
+    expect(archiveCacheMaxBytes('0')).toBe(2048 * 1_048_576);
   });
 });
