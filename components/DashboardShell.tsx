@@ -633,7 +633,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
             rangePending={market.rangePending}
           />
         ) : (
-          <AssessmentSnapshotBoard key={selectedAssessment} id={selectedAssessment} />
+          <AssessmentSnapshotBoard key={selectedAssessment} id={selectedAssessment} onSelectTicker={setSelectedTicker} />
         )}
 
         {/*

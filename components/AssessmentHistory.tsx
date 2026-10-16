@@ -80,6 +80,19 @@ interface SnapshotResponse {
 }
 
 /**
+ * A snapshot row's ticker (L19): with a handler, the report window's ticker button (SessionReports.tsx), so the two
+ * open the dossier alike, keyboard included; without one, plain text as before.
+ */
+export function SnapshotTicker({ ticker, onSelectTicker }: { ticker: string; onSelectTicker?: (ticker: string) => void }) {
+  if (!onSelectTicker) return <span className="text-[13px] font-bold text-ink">{ticker}</span>;
+  return (
+    <button type="button" onClick={() => onSelectTicker(ticker)} className="text-[13px] font-bold text-ink hover:text-accent">
+      {ticker}
+    </button>
+  );
+}
+
+/**
  * A frozen assessment, rendered from the stored snapshot alone.
  *
  * No live telemetry is merged in — not price, not rank, not freshness. A
@@ -87,7 +100,18 @@ interface SnapshotResponse {
  * a record and behave like a lie, so this deliberately renders only what was
  * written at capture time and says so at the top.
  */
-export function AssessmentSnapshotBoard({ id }: { id: number }) {
+export function AssessmentSnapshotBoard({
+  id,
+  onSelectTicker,
+}: {
+  id: number;
+  /**
+   * L19 (his ask 2026-10-16T07:53:36.559Z: "i should be able to click on these tickers in the recap and see the
+   * deeper detail"): a ticker opens the same dossier the board and the reports open, with CURRENT detail. The
+   * snapshot's own rows stay frozen. Absent, the ticker is plain text, as before.
+   */
+  onSelectTicker?: (ticker: string) => void;
+}) {
   const { apiBase } = useDeskMode();
   const [data, setData] = useState<SnapshotResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -198,7 +222,7 @@ export function AssessmentSnapshotBoard({ id }: { id: number }) {
                   {row.assessmentRank ?? '—'}
                 </td>
                 <td className="px-2 py-1.5">
-                  <span className="text-[13px] font-bold text-ink">{row.ticker}</span>
+                  <SnapshotTicker ticker={row.ticker} onSelectTicker={onSelectTicker} />
                   {/*
                     * THE `focus` BADGE WAS REMOVED HERE, AND IT SHOULD NOT COME
                     * BACK ON THE STRENGTH OF THE COLUMN STILL EXISTING.
