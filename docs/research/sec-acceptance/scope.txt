@@ -1,0 +1,169 @@
+headers cached: 8540 (with an acceptance 8540)
+
+== market-prod-2026-10-07.db
+(iv) DRY-RUN REPAIR of research_sources (timed SEC rows; stored minus header): checked 10261, no header 0, would change 580 (5.7%)
+     by delta: -4h 312, +4h 225, +5h 38, -5h 5
+     by type: SEC_FILING 360 of 7901, SEC_EXHIBIT 220 of 2360
+(ii) EXPOSURE, current catalysts (research_dossiers.current_version_id): 1263; with a stamp 1061; stamp equal to a cited SEC instant 335, of which that instant is OFF 67
+     stamps already equal to a cited source's TRUE (header) instant while its stored one is off (AIXI's shape): 3
+     a trusted clock (card hover, eventWhen) now 578, after repair 581
+     off: MYSZ 2026-09-16T09:28:19.000Z -> 2026-09-16T13:28:19.000Z
+     off: AIXC 2026-09-28T17:47:42.000Z -> 2026-09-28T21:47:42.000Z
+     off: QTEX 2026-10-01T17:20:11.000Z -> 2026-10-01T13:20:11.000Z
+     off: ZTG 2026-09-16T06:03:07.000Z -> 2026-09-16T10:03:07.000Z
+     off: SUGP 2026-09-29T16:34:03.000Z -> 2026-09-29T20:34:03.000Z
+     off: SCNI 2026-09-21T03:00:14-04:00 -> 2026-09-21T11:00:14.000Z
+     off: SDOT 2026-10-01T06:30:22.000Z -> 2026-10-01T10:30:22.000Z
+     off: HTOO 2026-09-10T08:00:22.000Z -> 2026-09-10T12:00:22.000Z
+     off: DAIC 2026-09-16T17:23:33.000Z -> 2026-09-16T21:23:33.000Z
+     off: YI 2026-09-17T06:08:11.000Z -> 2026-09-17T10:08:11.000Z
+     off: IPW 2026-09-15T17:19:41.000Z -> 2026-09-15T21:19:41.000Z
+     off: SKYQ 2026-09-24T08:38:47.000Z -> 2026-09-24T12:38:47.000Z
+     off: NVX 2026-09-14T06:12:53.000Z -> 2026-09-14T10:12:53.000Z
+     off: WALD 2026-09-14T06:50:24.000Z -> 2026-09-14T10:50:24.000Z
+     off: JLHL 2026-09-28T20:30:04.000Z -> 2026-09-29T00:30:04.000Z
+     off: MTEK 2026-09-28T08:00:06.000Z -> 2026-09-28T12:00:06.000Z
+     off: CUPR 2026-09-16T14:30:36.000Z -> 2026-09-16T18:30:36.000Z
+     off: COLA 2026-09-29T17:28:34.000Z -> 2026-09-29T13:28:34.000Z
+     off: HE 2026-09-04T20:25:06.000Z -> 2026-09-05T00:25:06.000Z
+     off: OPTH 2026-09-08T08:30:07.000Z -> 2026-09-08T12:30:07.000Z
+     off: GCDT 2026-09-08T10:20:02.000Z -> 2026-09-08T14:20:02.000Z
+     off: ACCL 2026-09-08T17:15:01.000Z -> 2026-09-08T21:15:01.000Z
+     off: DSAC 2026-09-09T07:37:49.000Z -> 2026-09-09T11:37:49.000Z
+     off: FBRT 2026-07-29T17:00:14.000Z -> 2026-07-29T21:00:14.000Z
+     off: TORO 2026-09-09T16:35:54.000Z -> 2026-09-09T20:35:54.000Z
+     off: VNCE 2026-09-10T07:01:15.000Z -> 2026-09-10T11:01:15.000Z
+     off: TURB 2026-09-17T08:15:11.000Z -> 2026-09-17T12:15:11.000Z
+     off: BENF 2026-09-23T03:35:16-04:00 -> 2026-09-23T11:35:16.000Z
+     off: KPTI 2026-09-11T07:45:19.000Z -> 2026-09-11T11:45:19.000Z
+     off: PMAX 2026-09-28T08:35:06.000Z -> 2026-09-28T12:35:06.000Z
+     off: APUR 2026-09-11T07:45:39.000Z -> 2026-09-11T11:45:39.000Z
+     off: ARMP 2026-09-14T07:12:01.000Z -> 2026-09-14T11:12:01.000Z
+     off: NAMI 2026-09-15T06:26:04.000Z -> 2026-09-15T10:26:04.000Z
+     off: VRA 2026-09-15T08:13:32.000Z -> 2026-09-15T12:13:32.000Z
+     off: SVAQ 2026-09-18T08:51:56.000Z -> 2026-09-18T12:51:56.000Z
+     off: LUXE 2026-09-16T06:00:27.000Z -> 2026-09-16T10:00:27.000Z
+     off: CODX 2026-09-16T08:45:13.000Z -> 2026-09-16T12:45:13.000Z
+     off: FLNC 2026-09-16T16:26:58.000Z -> 2026-09-16T20:26:58.000Z
+     off: LRHC 2026-10-01T09:00:17.000Z -> 2026-10-01T13:00:17.000Z
+     off: BCBP 2026-09-16T21:01:42.000Z -> 2026-09-17T01:01:42.000Z
+     off: HWH 2026-09-18T17:24:59.000Z -> 2026-09-18T21:24:59.000Z
+     off: LGHL 2026-09-30T09:15:01.000Z -> 2026-09-30T13:15:01.000Z
+     off: SOHU 2026-09-16T06:04:17.000Z -> 2026-09-16T10:04:17.000Z
+     off: HERE 2026-09-22T06:02:04.000Z -> 2026-09-22T10:02:04.000Z
+     off: FLNA 2026-09-22T04:00:40-04:00 -> 2026-09-22T12:00:40.000Z
+     off: BRSL 2026-09-16T06:01:45.000Z -> 2026-09-16T10:01:45.000Z
+     off: TLSI 2026-09-22T16:14:43.000Z -> 2026-09-22T20:14:43.000Z
+     off: ALP 2026-10-06T19:13:42.000Z -> 2026-10-06T15:13:42.000Z
+     off: MAAS 2026-09-23T05:10:07-04:00 -> 2026-09-23T13:10:07.000Z
+     off: SFIX 2026-09-23T16:01:20.000Z -> 2026-09-23T20:01:20.000Z
+     off: UXIN 2026-09-24T08:03:41.000Z -> 2026-09-24T12:03:41.000Z
+     off: YIBO 2026-09-16T09:29:11.000Z -> 2026-09-16T13:29:11.000Z
+     off: IFBD 2026-09-24T17:00:47.000Z -> 2026-09-24T21:00:47.000Z
+     off: DKI 2026-09-30T06:30:50.000Z -> 2026-09-30T10:30:50.000Z
+     off: KNDI 2026-09-28T07:00:01.000Z -> 2026-09-28T11:00:01.000Z
+     off: KNRX 2026-09-28T13:21:30.000Z -> 2026-09-28T17:21:30.000Z
+     off: QURE 2026-09-29T09:05:32.000Z -> 2026-09-29T13:05:32.000Z
+     off: BIYA 2026-09-29T16:28:32.000Z -> 2026-09-29T20:28:32.000Z
+     off: TGE 2026-09-30T09:14:02.000Z -> 2026-09-30T13:14:02.000Z
+     off: CNTB 2026-09-30T07:05:05.000Z -> 2026-09-30T11:05:05.000Z
+     off: SEED 2026-09-30T07:08:15.000Z -> 2026-09-30T11:08:15.000Z
+     off: INSG 2026-10-01T06:01:58.000Z -> 2026-10-01T10:01:58.000Z
+     off: SORA 2026-10-01T16:06:09.000Z -> 2026-10-01T20:06:09.000Z
+     off: MGRX 2026-10-01T23:50:43.000Z -> 2026-10-01T19:50:43.000Z
+     off: XHLD 2026-10-06T00:39:48.000Z -> 2026-10-05T20:39:48.000Z
+     off: ALT 2026-07-28T15:04:40.000Z -> 2026-07-28T11:04:40.000Z
+     off: RMCF 2026-10-07T00:15:28.000Z -> 2026-10-06T20:15:28.000Z
+(iii) REPLAY over 20 published reports, 166 name-reports: changed name-reports 33; bands 3, event dates 0, cited-source dates 2, age chips 17, hover clocks 31
+     report 1 2026-09-30 INTO_POWER_HOUR TGE (stamp 2026-09-30T09:14:02.000Z): hover clock 05:14->09:14; age 16h->12h
+     report 1 2026-09-30 INTO_POWER_HOUR LGHL (stamp 2026-09-30T09:15:01.000Z): hover clock 05:15->09:15; age 16h->12h
+     report 1 2026-09-30 INTO_POWER_HOUR CNTB (stamp 2026-09-30T07:05:05.000Z): hover clock 03:05->07:05; age 18h->14h
+     report 1 2026-09-30 INTO_POWER_HOUR BIYA (stamp 2026-09-29T16:28:32.000Z): band RECENT->FRESH; hover clock 12:28->16:28
+     report 1 2026-09-30 INTO_POWER_HOUR SEED (stamp 2026-09-30T07:08:15.000Z): hover clock 03:08->07:08; age 18h->14h
+     report 2 2026-09-30 AFTER_HOURS TGE (stamp 2026-09-30T09:14:02.000Z): hover clock 05:14->09:14; age 16h->12h
+     report 2 2026-09-30 AFTER_HOURS CNTB (stamp 2026-09-30T07:05:05.000Z): hover clock 03:05->07:05; age 18h->14h
+     report 2 2026-09-30 AFTER_HOURS BIYA (stamp 2026-09-29T16:28:32.000Z): band RECENT->FRESH; hover clock 12:28->16:28
+     report 2 2026-09-30 AFTER_HOURS SEED (stamp 2026-09-30T07:08:15.000Z): hover clock 03:08->07:08; age 18h->14h
+     report 2 2026-09-30 AFTER_HOURS LGHL (stamp 2026-09-30T09:15:01.000Z): hover clock 05:15->09:15; age 16h->12h
+     report 3 2026-09-30 PREMARKET TGE (stamp 2026-09-30T09:14:02.000Z): hover clock 05:14->09:14; age 17h->13h
+     report 3 2026-09-30 PREMARKET NCNA (stamp 2026-09-30T08:09:23.000Z): hover clock 04:09->08:09; age 18h->14h
+     report 4 2026-10-01 INTO_RTH LRHC (stamp 2026-10-01T09:00:17.000Z): hover clock 05:00->09:00; age 4h->26m
+     report 5 2026-10-01 INTO_POWER_HOUR FHTX (stamp 2026-10-01T07:01:21.000Z): hover clock 03:01->07:01; age 11h->7h
+     report 5 2026-10-01 INTO_POWER_HOUR WFCF (stamp 2026-09-30T20:00:00.000Z): source 124440 SEC_FILING date 2026-09-30->2026-10-01
+     report 6 2026-10-01 AFTER_HOURS FHTX (stamp 2026-10-01T07:01:21.000Z): hover clock 03:01->07:01; age 13h->9h
+     report 6 2026-10-01 AFTER_HOURS WFCF (stamp 2026-09-30T20:00:00.000Z): source 124440 SEC_FILING date 2026-09-30->2026-10-01
+     report 7 2026-10-01 PREMARKET SORA (stamp 2026-10-01T16:06:09.000Z): hover clock 12:06->16:06; age 10h->6h
+     report 7 2026-10-01 PREMARKET COLA (stamp 2026-09-11T08:01:18.000Z): hover clock 04:01->08:01
+     report 8 2026-10-02 INTO_RTH AMOD (stamp 2026-10-01T11:30:52.000Z): hover clock 07:30->11:30; age 1d->22h
+     report 8 2026-10-02 INTO_RTH SORA (stamp 2026-10-01T16:06:09.000Z): band RECENT->FRESH; hover clock 12:06->16:06; age 21h->17h
+     report 8 2026-10-02 INTO_RTH AIXI (stamp 2026-10-02T00:31:13.000Z): hover clock 20:31->16:31; age 13h->17h
+     report 9 2026-10-02 INTO_POWER_HOUR AIXI (stamp 2026-10-01T20:31:13.000Z): hover clock none->16:31
+     report 9 2026-10-02 INTO_POWER_HOUR QTEX (stamp 2026-10-01T17:20:11.000Z): hover clock 13:20->09:20
+     report 9 2026-10-02 INTO_POWER_HOUR FACT (stamp 2026-07-21T20:33:07-04:00): hover clock 20:33->16:33
+     report 10 2026-10-02 AFTER_HOURS QTEX (stamp 2026-10-01T17:20:11.000Z): hover clock 13:20->09:20
+     report 10 2026-10-02 AFTER_HOURS AIXI (stamp 2026-10-01T20:31:13.000Z): hover clock none->16:31
+     report 12 2026-10-05 INTO_RTH QTEX (stamp 2026-10-01T17:20:11.000Z): hover clock 13:20->09:20
+     report 13 2026-10-05 INTO_POWER_HOUR QTEX (stamp 2026-10-01T17:20:11.000Z): hover clock 13:20->09:20
+     report 15 2026-10-05 PREMARKET QTEX (stamp 2026-10-01T17:20:11.000Z): hover clock 13:20->09:20
+     report 16 2026-10-06 INTO_RTH AIXI (stamp 2026-10-01T20:31:13.000Z): hover clock none->16:31
+     report 19 2026-10-06 PREMARKET BIYA (stamp 2026-09-29T16:28:32.000Z): hover clock 12:28->16:28
+     report 20 2026-10-07 INTO_RTH BIYA (stamp 2026-09-29T16:28:32.000Z): hover clock 12:28->16:28
+(iii-b) the same replay if ONLY the source rows are repaired (stamps left as written): changed name-reports 31; bands 0, event dates 1, age chips 0, hover clocks 31
+     report 1 2026-09-30 INTO_POWER_HOUR TGE: hover clock 05:14->none
+     report 1 2026-09-30 INTO_POWER_HOUR LGHL: hover clock 05:15->none
+     report 1 2026-09-30 INTO_POWER_HOUR CNTB: hover clock 03:05->none
+     report 1 2026-09-30 INTO_POWER_HOUR BIYA: hover clock 12:28->none
+     report 1 2026-09-30 INTO_POWER_HOUR SEED: hover clock 03:08->none
+     report 2 2026-09-30 AFTER_HOURS TGE: hover clock 05:14->none
+     report 2 2026-09-30 AFTER_HOURS CNTB: hover clock 03:05->none
+     report 2 2026-09-30 AFTER_HOURS BIYA: hover clock 12:28->none
+     report 2 2026-09-30 AFTER_HOURS SEED: hover clock 03:08->none
+     report 2 2026-09-30 AFTER_HOURS LGHL: hover clock 05:15->none
+     report 3 2026-09-30 PREMARKET TGE: hover clock 05:14->none
+     report 3 2026-09-30 PREMARKET NCNA: hover clock 04:09->none
+     report 4 2026-10-01 INTO_RTH LRHC: hover clock 05:00->none
+     report 5 2026-10-01 INTO_POWER_HOUR FHTX: hover clock 03:01->none
+     report 6 2026-10-01 AFTER_HOURS FHTX: hover clock 03:01->none
+     report 7 2026-10-01 PREMARKET SORA: hover clock 12:06->none
+     report 7 2026-10-01 PREMARKET COLA: hover clock 04:01->none
+     report 8 2026-10-02 INTO_RTH AMOD: hover clock 07:30->none
+     report 8 2026-10-02 INTO_RTH SORA: hover clock 12:06->none
+     report 8 2026-10-02 INTO_RTH AIXI: event date 2026-10-01->2026-10-02; hover clock 20:31->none
+     report 9 2026-10-02 INTO_POWER_HOUR AIXI: hover clock none->16:31
+     report 9 2026-10-02 INTO_POWER_HOUR QTEX: hover clock 13:20->none
+     report 9 2026-10-02 INTO_POWER_HOUR FACT: hover clock 20:33->none
+     report 10 2026-10-02 AFTER_HOURS QTEX: hover clock 13:20->none
+     report 10 2026-10-02 AFTER_HOURS AIXI: hover clock none->16:31
+     report 12 2026-10-05 INTO_RTH QTEX: hover clock 13:20->none
+     report 13 2026-10-05 INTO_POWER_HOUR QTEX: hover clock 13:20->none
+     report 15 2026-10-05 PREMARKET QTEX: hover clock 13:20->none
+     report 16 2026-10-06 INTO_RTH AIXI: hover clock none->16:31
+     report 19 2026-10-06 PREMARKET BIYA: hover clock 12:28->none
+     report 20 2026-10-07 INTO_RTH BIYA: hover clock 12:28->none
+
+== slim-2026-10-14.db
+(iv) DRY-RUN REPAIR of research_sources (timed SEC rows; stored minus header): checked 1650, no header 0, would change 429 (26.0%)
+     by delta: +4h 371, +5h 32, -4h 26
+     by type: SEC_FILING 315 of 1235, SEC_EXHIBIT 114 of 415
+(ii) EXPOSURE, current catalysts (research_dossiers.current_version_id): 140; with a stamp 118; stamp equal to a cited SEC instant 46, of which that instant is OFF 12
+     stamps already equal to a cited source's TRUE (header) instant while its stored one is off (AIXI's shape): 4
+     a trusted clock (card hover, eventWhen) now 76, after repair 80
+     off: JLHL 2026-09-28T20:30:04.000Z -> 2026-09-29T00:30:04.000Z
+     off: YIBO 2026-09-16T09:29:11.000Z -> 2026-09-16T13:29:11.000Z
+     off: LGHL 2026-09-30T09:15:01.000Z -> 2026-09-30T13:15:01.000Z
+     off: XHLD 2026-10-06T00:39:48.000Z -> 2026-10-05T20:39:48.000Z
+     off: SHFS 2026-10-06T16:30:23.000Z -> 2026-10-06T12:30:23.000Z
+     off: RBNE 2026-10-09T17:18:11.000Z -> 2026-10-09T13:18:11.000Z
+     off: NIVF 2026-10-08T00:01:22.000Z -> 2026-10-07T20:01:22.000Z
+     off: INBS 2026-09-09T16:50:25.000Z -> 2026-09-09T12:50:25.000Z
+     off: NRSN 2026-10-13T16:40:47.000Z -> 2026-10-13T12:40:47.000Z
+     off: HLSQ 2026-10-14T01:10:14.000Z -> 2026-10-13T21:10:14.000Z
+     off: ACI 2026-10-13T15:31:19.000Z -> 2026-10-13T11:31:19.000Z
+     off: PLMK 2026-10-01T17:16:28.000Z -> 2026-10-01T13:16:28.000Z
+(iii) REPLAY over 9 published reports, 100 name-reports: changed name-reports 3; bands 0, event dates 0, cited-source dates 2, age chips 0, hover clocks 1
+     report 46 2026-10-14 INTO_POWER_HOUR NWGL (stamp 2026-09-16): source 178112 SEC_FILING date 2026-10-10->2026-10-09
+     report 47 2026-10-14 AFTER_HOURS NWGL (stamp 2026-09-16): source 178112 SEC_FILING date 2026-10-10->2026-10-09
+     report 48 2026-10-14 EVENING PLMK (stamp 2026-10-01T17:16:28.000Z): hover clock 13:16->09:16
+(iii-b) the same replay if ONLY the source rows are repaired (stamps left as written): changed name-reports 1; bands 0, event dates 0, age chips 0, hover clocks 1
+     report 48 2026-10-14 EVENING PLMK: hover clock 13:16->none
+
