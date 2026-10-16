@@ -33,7 +33,7 @@ import { writeFloatBound } from '../market/store/floatBoundRepo';
 import { readRangeCandidates } from '../market/store/repo';
 import { readLatestAnalysesAsOf } from '../market/store/researchRepo';
 import { countingSec } from './boardFloatPass';
-import { archiveCached } from './secArchiveCache';
+import { archiveCached, type ArchiveCacheCap } from './secArchiveCache';
 import { computeFloatBound, type FloatBoundRow, type FloatJobDeps, type FloatJobInput } from './floatJob';
 import { fetchAnnouncedActions, type FloatSplitClient } from './floatRun';
 import { readSpanBars } from './history';
@@ -354,6 +354,8 @@ export interface NightlyWiring {
    * A cached document is not an SEC request, so it does not count toward the run's cap.
    */
   archiveCacheDir?: string | null;
+  /** The cache's write-stop cap (secArchiveCache.ts ArchiveCacheCap); null or absent: no cap. */
+  archiveCacheCap?: ArchiveCacheCap | null;
 }
 
 /** The real deps: the store, the counted SEC client, Alpaca's splits, and floatRun's six float deps. */
@@ -366,7 +368,7 @@ export function buildNightlyDeps(wiring: NightlyWiring): NightlyDeps {
   const floatDeps: FloatJobDeps = {
     getJson: async <T>(url: string) => (await sec.getJson<T>(url)).data,
     // The cache sits OUTSIDE the counted client: only a real fetch is counted.
-    getText: archiveCached(async (url: string) => (await sec.get(url)).body, wiring.archiveCacheDir ?? null),
+    getText: archiveCached(async (url: string) => (await sec.get(url)).body, wiring.archiveCacheDir ?? null, wiring.archiveCacheCap ?? undefined),
     spanBars: (symbol, from, to) => readSpanBars(db, symbol, from, to),
     announcedSplits: async (symbol, start, end) =>
       (await splits.getSplits({ symbols: [symbol], start, end })).filter((s) => s.symbol === symbol).map((s) => s.exDate),

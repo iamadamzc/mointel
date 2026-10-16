@@ -33,6 +33,9 @@
  *                                  the band ONLY when the store holds no discovery_summary (market/config.ts:137-138)
  *   FLOAT_ARCHIVE_CACHE_DIR        where EDGAR archive documents are kept after their first fetch (secArchiveCache.ts);
  *                                  default sec-archive-cache beside the store; "off" disables the cache
+ *   FLOAT_ARCHIVE_CACHE_MAX_MB     above this the cache stops WRITING (it never deletes on size); default 2048, "off"
+ *                                  no cap. At start the cache drops filing-year shards older than this year minus 2, and
+ *                                  first-layout files not read in 7 days (secArchiveCache.ts pruneArchiveCache).
  */
 import path from 'node:path';
 
@@ -57,7 +60,7 @@ import {
   storedRowCheck,
 } from '../lib/research/floatNightly';
 import { SecClient } from '../lib/research/sec/client';
-import { archiveCacheSize } from '../lib/research/secArchiveCache';
+import { archiveCacheMaxBytes, archiveCacheSize, pruneArchiveCache } from '../lib/research/secArchiveCache';
 
 function log(line: string): void {
   console.log(line);
@@ -110,9 +113,26 @@ async function main(): Promise<number> {
     // Archive documents never change once filed (secArchiveCache.ts): a repeat night reads them from disk.
     const cacheSetting = process.env.FLOAT_ARCHIVE_CACHE_DIR;
     const archiveCacheDir = cacheSetting === 'off' ? null : cacheSetting || path.join(path.dirname(market.dbPath), 'sec-archive-cache');
-    const size = archiveCacheDir ? archiveCacheSize(archiveCacheDir) : null;
-    log(`[float-nightly] archive cache ${archiveCacheDir ?? 'off'}${size ? `: ${size.files} documents, ${(size.bytes / 1_048_576).toFixed(1)} MB` : ''}`);
-    const summary = await runFloatNightly(buildNightlyDeps({ db, sec: secClient, splits, band, log, archiveCacheDir }), {
+    const before = archiveCacheDir ? archiveCacheSize(archiveCacheDir) : null;
+    log(`[float-nightly] archive cache ${archiveCacheDir ?? 'off'}${before ? `: ${before.files} documents, ${mb(before.bytes)} MB` : ''}`);
+    // The bound (L8 follow-up): old filing-year shards and unmigrated first-layout files go before the run.
+    let archiveCacheCap: { maxBytes: number | null; startBytes: number; onFull: (bytes: number) => void } | null = null;
+    if (archiveCacheDir && before) {
+      const pruned = pruneArchiveCache(archiveCacheDir, new Date());
+      const after = archiveCacheSize(archiveCacheDir);
+      log(
+        `[float-nightly] archive cache pruned: year shards [${pruned.yearShards.join(', ')}], ${pruned.legacyFiles} first-layout files, ` +
+          `${mb(pruned.bytes)} MB; now ${after.files} documents, ${mb(after.bytes)} MB`,
+      );
+      const maxBytes = archiveCacheMaxBytes(process.env.FLOAT_ARCHIVE_CACHE_MAX_MB);
+      log(`[float-nightly] archive cache write cap ${maxBytes === null ? 'off' : `${mb(maxBytes)} MB`}`);
+      archiveCacheCap = {
+        maxBytes,
+        startBytes: after.bytes,
+        onFull: (bytes) => log(`[float-nightly] archive cache at ${mb(bytes)} MB, at or over its cap: documents are fetched and no longer written`),
+      };
+    }
+    const summary = await runFloatNightly(buildNightlyDeps({ db, sec: secClient, splits, band, log, archiveCacheDir, archiveCacheCap }), {
       date,
       maxRssMb: args.maxRssMb,
       maxSecRequests: args.maxSecRequests,
