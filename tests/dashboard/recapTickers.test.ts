@@ -41,4 +41,14 @@ describe('a recap snapshot ticker', () => {
     // Control: the report window and the other surfaces open tickers through the same setter (two before L19).
     expect(shell.match(/onSelectTicker=\{setSelectedTicker\}/g)?.length).toBe(3);
   });
+
+  it('the open ticker is requested from the market feed, so a name off the board (DRMA under $1) still opens', () => {
+    const shell = readFileSync(join(process.cwd(), 'components/DashboardShell.tsx'), 'utf8').replace(/\r\n/g, '\n');
+    const start = shell.indexOf('const sheetSymbols = useMemo(');
+    const block = shell.slice(start, shell.indexOf('const market = useMarket(sheetSymbols', start));
+    expect(block).toContain('...(selectedTicker ? [selectedTicker] : [])');
+    expect(block).toContain('[data, focus.tickers, selectedTicker]');
+    // Control: the market hook reads this list.
+    expect(shell).toContain('const market = useMarket(sheetSymbols, boardRange);');
+  });
 });
