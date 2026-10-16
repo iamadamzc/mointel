@@ -1,6 +1,6 @@
 # No beta, purchase pages: the price breaks first, then what he must decide
 
-**Commercial-tmi (7th tenure), 2026-10-16 (UTC), for Integration to put to him. Version 3.** Version 1 (`6f10e70a`) treated the price and the provider as open; version 2 (`8d44410f`) priced the breaks from $5 a day. His $5.50 daily price (below) replaces that, and every number in section 1 is rebuilt on it. This version replaces both.
+**Commercial-tmi (7th tenure), 2026-10-16 (UTC), for Integration to put to him. Version 4.** Version 1 (`6f10e70a`) treated the price and the provider as open; version 2 (`8d44410f`) priced the breaks from $5 a day. His $5.50 daily price (below) replaces that, and every number in section 1 is rebuilt on it. Version 3 (`5bb97f6d`) rebuilt section 1 on his $5.50 daily price. This version (4) records his answers to the open items and replaces all three.
 
 **What he has ruled, in his words (read at his turns through Integration):**
 - "i've decided i dont want to do beta. so we can remove any beta elements and setup purchase pages." (Integration chat, uuid 6a3e4300, 2026-10-16T23:21:40.715Z)
@@ -95,77 +95,62 @@ Net per head per month after the card fee: $105.43 daily, $94.86 monthly, $83.78
 
 ---
 
-## 2. NEEDS YOU
+## 2. His answers, and what is still open
 
-Each item gives the choices, my lean (a lean, not a ruling), and what it blocks.
+### Answered (his typed message in this session, 2026-10-16)
 
-**The ladder.** Does he take the recommended breaks (monthly $98, six months $518, annual $897, built on the $5.50 daily list), a gentler or steeper set from the table, or his own numbers? *Blocks:* the pricing page, the checkout words, the terms of sale.
+His words: "a month is as it is according to the market. anyone can buy on day one. will have license in place. done. i will deal wiht taxes and an attorney. why is us only important? i read support."
 
-**What a "month", "six months" and "year" are, and whether a plan renews on its own.**
-- A period measured by calendar (a month from the first paid day, ending at 20:00 ET) or by a count of paid days. My lean: calendar, ending at 20:00 ET.
-- Renewal. His daily plan charges automatically. For the longer plans: (a) renews automatically and charges the saved card; (b) ends at its date and the user buys again. Automatic renewal of a prepaid term is regulated in several states (disclosure, clear consent, an easy way to cancel online; California's law also asks for a reminder 15 to 45 days before an annual renewal, per law-firm summaries I read today, not the statute). A daily automatic charge may fall under the same laws. This goes to the lawyer item below. My lean: (b) for the longer plans at first, because it needs no renewal notice and the user decides each time.
-- Moving between plans. A daily buyer who buys a monthly plan on day 10: is there a credit for days already paid? My lean: no credit; each paid day was delivered in full.
-- Stopping. Cancelling a plan means it does not renew; access runs to its paid date (as in my 09-27 annual file).
+- **A month** is the market's month: a calendar month, with the trading days the market has in it (19 to 22). The monthly price stays flat; section 1 shows what that is per day in a short and a long month. Six months and a year follow the same calendar.
+- **Anyone can buy on day one.** No approval step. So the "by invitation" words in the terms (sections 2 and 3), the privacy policy (section 8) and the front page are all replaced, and payment writes the buyer to the allowlist. The allowlist stays the one door and the gate does not learn about payment (`lib/auth/gate.ts:31-50`, Web). A lapse ends only that day's session (ruled 2026-09-28).
+- **The licence will be in place.** I read that as before the first paying customer, which is what D-076 deferred and what "no beta" now brings forward. He did not say whether it is before the public pages go live or only before the first charge. I do not need that answer to proceed: the pages and the build are not blocked by it, and the "by invitation" words come out in the same release either way. If the pages go live first, the page is the visible surface the contracts talk about (section 1 of the licence reference below).
+- **Taxes and an attorney are his.** Nothing for the seats to decide. What each needs to read is in the hand-off list below.
+- **Support is read by him.** `info@andromedagenius.com`.
 
-**Who can buy on the first day: anyone, or only people he approves.** Both put a paying stranger in front of the board; they differ in the words and in his daily work.
-- Anyone: the "by invitation" lines in the terms (sections 2 and 3), the privacy policy (section 8) and the front page all become false and are replaced. Payment writes the buyer to the allowlist; a lapse ends only that day's session (ruled 2026-09-28). The allowlist stays the one door and the gate must not learn about payment (`lib/auth/gate.ts:31-50`, Web).
-- Approved first: the invite words stay, the page sells a place in a queue, and he approves each buyer.
-- My lean: anyone, because that is what "purchase pages" says.
+### Open: five things
 
-**The market-data and news licence (the agreements D-076 deferred).** Plainly: on 2026-09-08 he said "the moment we have something moving, i'll sign up", and left that trigger undefined on purpose. I do not decide whether a paying stranger is "something moving". He does.
-- **What the contracts say now** (*read 09-07*, news *read 09-25*). Alpaca: content is for personal and noncommercial use; Alpaca may end the service "with or without cause at any time and effective immediately"; its support answer is "you cannot redistribute Alpaca API data". The exchange agreements forbid giving the data to anyone else, and the exchanges can enforce that "by legal proceedings or otherwise". Retroactive fees and penalties are named; what an exchange would charge an individual is not published. The desk's news comes from Alpaca's Benzinga feed under the same personal-use clause.
-- **One bad case the contract allows.** The feed is one account Alpaca can close at will. Every subscriber goes dark at once, the fallback is a rebuild of the market worker on a vendor not yet integrated, and the people who paid for that day have paid for nothing.
-- **Visibility is what changes with purchase pages.** My 09-08 reading of the contracts was that detection follows visibility, not volume: a handful of invited viewers has almost no public surface, and "a public launch with search presence, payments and social posts is the evidence in full view". A public pricing page and a payment processor are that surface.
-- **What a licence costs, published prices only.** None of these is a quote, and exchange fees are not in the monthly figures unless stated.
+**The ladder.** Does he take the recommended breaks (monthly $98, six months $518, annual $897, built on the $5.50 daily list), a gentler or steeper set from the table in section 1, or his own numbers? *Blocks:* the pricing page, the checkout words, the terms of sale.
 
-  | Path | Price | Re-read |
-  | --- | --- | --- |
-  | Massive Stocks Business plus Full Market real-time | $2,499 + $1,999 = $4,498 a month; "Additional exchange fees apply to these products... guide you through exchange approval" (amounts not stated) | today |
-  | Massive plus Full Market Delayed (15 minutes late; the premarket window the board exists for is gone) | $2,499 + $499 = $2,998 a month | today |
-  | Databento Plus (external distribution), annual contract | $1,750 a month in license fees (it was $1,500 on 09-07); the page shows no exchange-fee figure | today |
-  | A vendor-published all-in figure for real-time SIP | $10,000 to $20,000 a month | 09-07 |
-  | Alpaca Broker partnership (end users hold Alpaca accounts) | sales-priced, no published figure | 09-07 |
-  | Each user brings their own Alpaca key (only Alpaca documents this) | $0 to the desk; $99 a month to each user for all US exchanges, $0 for IEX only; the discovery layer is still the desk's own subscription | prices today; approach 09-07 |
-
-  Besides the monthly price, signing involves exchange agreements, a subscriber agreement or click-through for every viewer, monthly reporting, three years of records, and a rebuild of the market worker for any vendor but Alpaca (*read 09-07*). The 2027-04-01 consolidated-tape changes alter the per-viewer rates and the derived-data rule; I have not re-read them.
-- **How many paying people cover it:** the heads table in section 1.
-- **The choices, in his words to answer.**
-  (a) Sign a licence before the public pages go live.
-  (b) Sign one before the first charge (the pages show the price but nothing is charged until it is signed).
-  (c) Open the pages and sell on the personal licence, and name the point at which he signs (a number of paying users, a month's revenue, anything he picks, or never). I will not suggest the number.
-  (d) Change what a paying viewer sees. A board with rank, volume ratio and catalyst but no price, no move percent and no VWAP is a different licensing object under the exchange schedules, but not under Alpaca's individual terms, which forbid showing anything derived to others. It does not remove the Alpaca question.
-- **Asking is an approach.** Giving Alpaca the 30-day "User Application" notice is free, licenses nothing, and puts the plan on Alpaca's file. Asking Massive or Databento for the exchange fees is an enquiry. Both are his, never a seat's.
-- One trigger covers the news feed too. Benzinga direct has no published price; the primary wires bar reuse or publish nothing (*read 09-25*).
-- A hazard from corporate-office D-016 that applies here: a payment path built complete and sitting one environment variable from live, with nothing in front of it. The ruling that protects against it is already his: nothing charges anyone until he approves the first real run. Keep that gate and keep the pages unreachable until the licence answer and the words are in.
-
-**The Stripe account.** Stripe is decided. What is left is not a choice, it is state I could not establish:
-- The existing Stripe account is a Malta-country account, "not portable"; whether it is registered as an individual or a business was left open (corporate-office `revenue/pre-contact-checks.md`, 2026-09-15). TMI sells as Andromeda Genius, Inc., a Texas company formed 2026-09-24 (`company/decisions.md:3775`). That file says the Texas route runs "EIN → bank → a new Stripe account". I could not find whether the EIN, the business bank account and the new account exist today. Whoever holds corporate-office can say; if any step is missing it is the longest item in the sequence, because it is not code.
-- Corporate-office D-014 (2026-09-15) says no seat sets up Stripe products, prices, webhooks or checkout; it goes to the project thread, by Stripe's MCP or CLI, once the shape is settled. For mointel that means Ops and Web build it, not Commercial or Integration. The account and the keys are his.
-- **The provider may question the business.** Stripe lists "Investment and brokerage services" as restricted: "additional due diligence... proof of relevant licenses or more details about your business model" (*read today*). TMI is an information service, not an investment or brokerage service, but Stripe decides how it classifies the business, and I do not know until the account applies. Stripe also prohibits "get rich quick" schemes, which is one more reason the page copy stays inside `docs/marketing/what-it-is-not.md`.
-- Seats never create accounts or enter keys. He creates it, test mode first, and puts the keys in `.env.local` himself (Ops 09-28).
-
-**Sales tax.** I told him in my 09-26 scope that no tax would be owed for a US-only, low-volume sale. That is withdrawn: I had not checked it, and Stripe's own page describes tax collection as a separate product you turn on.
-- What I could read today, from secondary sources and not from the Texas Comptroller: Texas generally treats subscription access to data and information as taxable, on 80% of the charge, at 6.25% plus local rates up to 8.25%. Other states differ. The desk is a Texas company selling to the whole country.
-- Stripe's tax tool (*read today*): 0.5% per transaction where registered (no-code), or $0.50 per transaction through the API, or from $90 a month for the full product. On a $5.50 day, $0.50 is 9.1%.
-- Choices: (a) the company's accountant says what applies before the first charge, then we pick a tool; (b) a merchant of record carries it (Paddle is 5% + 50 cents per checkout, including tax, fraud, chargebacks and billing support; its page says to contact them about products under $10, which a $5.50 day is; I did not read its acceptable-use page and have not checked that it supports a daily saved-card charge). My lean: (a), and it is the same conversation as the lawyer.
-- I am not a tax adviser. This seat's job is to say the question exists and that the first charge makes it due.
-
-**A lawyer before the first charge.** On 2026-10-05 he said no lawyer before the beta. This is not a beta. The terms file says in its own header "NOBODY WITH A LAW LICENCE HAS READ THIS FILE", and its payment clauses are due "the day the desk charges for anything" (`docs/legal/terms.md:63-86`).
-- What a lawyer would read: the terms of service, the terms of sale, the privacy policy, automatic renewal (above), the investment-adviser posture of the reports (my 09-27 section, which rests on the publisher's exclusion and Lowe v. SEC and has never had counsel), and sales tax.
-- One fact that helps: selling to the public, not by invitation, is the shape the publisher's exclusion describes ("general and regular circulation"). What remains a risk is anything personalised; the board is the same for everyone.
-- My lean: yes before the first charge; his spend; his call.
+**Does a plan renew on its own, and what happens when someone changes plan.**
+- His daily plan charges automatically. For the monthly, six-month and annual plans: (a) the plan renews automatically and charges the saved card; (b) it ends at its date and the user buys again. Automatic renewal of a prepaid term is regulated in several states (clear disclosure, clear consent, an easy way to cancel online; California's law also asks for a reminder 15 to 45 days before an annual renewal; from law-firm summaries I read today, not the statutes). A daily automatic charge may fall under the same laws. That is for his attorney. My lean: (b) at first, because it needs no renewal notice and the user decides each time.
+- A daily buyer who buys a monthly plan on day 10: is there a credit for the days already paid? My lean: no credit; each paid day was delivered in full.
+- Cancelling a plan means it does not renew; access runs to its paid date.
 
 **The refund and cancellation rule.** The drafted terms of sale (`docs/legal/terms-of-sale-daily-pass.md`) hold this open for him. For the daily day the choices are no refund for a day that has run, pro-rated, or a short window. My recommended default, as already drafted: "no refund for a paid day that has already run its course: by the time a day ends, that day's reports have already been delivered in full. If a charge was made in error, or the service was unavailable for a paid day through our own fault, contact info@andromedagenius.com and we will make it right."
-- The longer plans need their own line. One comparable (Seeking Alpha's terms, *read 09-27*) is nonrefundable by default with a 30-day window on an annual plan. My lean for the plans: a full refund on request within a short window (seven days) if no more than one paid day has been used; after that none, and cancelling stops renewal.
-- The dispute numbers above are the reason to set this before the first charge.
+- The plans need their own line. One comparable (Seeking Alpha's terms, *read 09-27*) is nonrefundable by default with a 30-day window on an annual plan. My lean: a full refund on request within seven days if no more than one paid day was used; after that none; cancelling stops renewal.
+- Why before the first charge: Stripe charges $15 per dispute, and $15 more if we respond ($15 back if we win) (*read today*). On a $5.50 day one dispute costs almost three days' revenue; on an $897 annual it puts $897 at risk.
 
-**How "US market only" stays true when anyone can buy.** Privacy section 8 says "We do not offer it to the public anywhere. Access is by invitation, which is how the scope above stays a fact rather than a sentence: we choose who is invited." That becomes false the day the pages go up. His 2026-09-08 rule was anyone who trades the US market, "but i dont want any overhang on international regs".
-- Choices: (a) the buyer states they trade the US market and the billing address must be in the US, with non-US cards refused if Stripe can do that (I have not checked); (b) say only that the desk is for people trading the US market and take whoever pays.
-- My lean: (a). *Blocks:* the privacy section 8 rewrite.
+**Why "US only" is on the list.** He asked. It is not a legal requirement and it is not in the product. It came from his own words on 2026-09-08: anyone who trades the US market, "but i dont want any overhang on international regs." The privacy policy then wrote it down: the desk is "operated from the United States, by a US company, for people trading the US market", and it kept that true by saying "we do not offer it to the public anywhere... we choose who is invited." That sentence becomes false the day anyone can buy, so the policy needs a new sentence either way. The question is only what the new sentence says.
+- What selling to a buyer outside the US brings, as far as I know it: that country's consumer, tax and privacy rules can apply to the sale (for example value-added tax on digital services in the EU, and its data-protection law), and Stripe charges more on a card issued outside the US: +1.5% for an international card and +1% if currency has to be converted (*read today*). I have not read any non-US rules; this is for his attorney and accountant.
+- The two ways to write it: (a) the buyer says they trade the US market and the billing address must be in the US, with non-US cards refused if Stripe can do that (I have not checked); (b) the policy says the desk is for people trading the US market, and the desk takes whoever pays.
+- My lean: (b) is simplest and costs a little in card fees and possibly foreign tax; (a) is the cleaner way to keep his "no overhang" and costs a checkout step. It is his call, and "don't care" is a fair answer: then the policy and terms say the desk is for people trading the US market, and the attorney and accountant decide what that needs.
 
-**Who reads the support inbox.** `info@andromedagenius.com` is already the invite address and the support address. With public buyers, billing questions and "paid but cannot sign in" arrive there. Who reads it?
+**The Stripe account for Andromeda Genius.** Stripe is decided. What I could not establish:
+- The existing Stripe account is a Malta-country account, "not portable"; whether it is registered as an individual or a business was left open (corporate-office `revenue/pre-contact-checks.md`, 2026-09-15). TMI sells as Andromeda Genius, Inc., a Texas company formed 2026-09-24 (`company/decisions.md:3775`). That file says the Texas route runs "EIN → bank → a new Stripe account". I could not find whether the EIN, the business bank account and the new account exist today. If any step is missing it is the longest item in the sequence, because it is not code.
+- Corporate-office D-014 (2026-09-15): no seat sets up Stripe products, prices, webhooks or checkout; it goes to the project thread, by Stripe's MCP or CLI, once the shape is settled. For mointel that means Ops and Web build it. The account and the keys are his; seats never create accounts or enter keys.
+- Stripe may question the business. It lists "Investment and brokerage services" as restricted: "additional due diligence... proof of relevant licenses or more details about your business model" (*read today*). TMI is an information service, not an investment or brokerage service, but Stripe decides the classification, and I do not know until the account applies. Stripe also prohibits "get rich quick" schemes, one more reason the copy stays inside `docs/marketing/what-it-is-not.md`.
 
 Two defaults I applied, for him to overrule: no free first day, and a first-time buyer saves a card before the desk opens ("admitted immediately" starts from the second day, because there is no card on file the first time).
+
+### For his attorney and accountant: what each needs to read
+
+- **Attorney:** the terms of service (its header says "NOBODY WITH A LAW LICENCE HAS READ THIS FILE", and its payment clauses fall due "the day the desk charges for anything", `docs/legal/terms.md:63-86`); the terms of sale; the privacy policy; automatic renewal; the investment-adviser posture of the reports (my 09-27 section, `docs/research/session-reports/commercial.md`, which rests on the publisher's exclusion and Lowe v. SEC and has never had counsel; selling to the public, not by invitation, is the "general and regular circulation" shape the exclusion describes, and the board is the same for everyone); and the licence agreements.
+- **Accountant:** sales tax. I told him in my 09-26 scope that none would be owed for a US-only, low-volume sale. That is withdrawn: I had not checked it, and Stripe's page describes tax collection as a separate product you turn on. What I could read today, from secondary sources and not from the Texas Comptroller: Texas generally treats subscription access to data and information as taxable, on 80% of the charge, at 6.25% plus local rates up to 8.25%; other states differ. Stripe's tool (*read today*) is 0.5% per transaction where registered, or $0.50 per transaction through the API, or from $90 a month for the full product. A merchant of record (Paddle: 5% + 50 cents per checkout, including tax, fraud, chargebacks and billing support; it asks to be contacted for products under $10; I did not read its acceptable-use page) is the other route.
+
+### Licence reference (he has said it will be in place; this is what it involves)
+
+*Read 09-07 unless marked.* Alpaca's terms: content is for personal and noncommercial use; Alpaca may end the service "with or without cause at any time and effective immediately"; its support answer is "you cannot redistribute Alpaca API data". The exchange agreements forbid giving the data to anyone else. The desk's news comes from Alpaca's Benzinga feed under the same personal-use clause (*read 09-25*). My 09-08 reading: detection follows visibility, not volume, and "a public launch with search presence, payments and social posts is the evidence in full view".
+
+| Path | Price | Re-read |
+| --- | --- | --- |
+| Massive Stocks Business plus Full Market real-time | $2,499 + $1,999 = $4,498 a month; "Additional exchange fees apply to these products... guide you through exchange approval" (amounts not stated) | today |
+| Massive plus Full Market Delayed (15 minutes late; the premarket window the board exists for is gone) | $2,499 + $499 = $2,998 a month | today |
+| Databento Plus (external distribution), annual contract | $1,750 a month in license fees (it was $1,500 on 09-07); the page shows no exchange-fee figure | today |
+| A vendor-published all-in figure for real-time SIP | $10,000 to $20,000 a month | 09-07 |
+| Alpaca Broker partnership (end users hold Alpaca accounts) | sales-priced, no published figure | 09-07 |
+| Each user brings their own Alpaca key (only Alpaca documents this) | $0 to the desk; $99 a month to each user for all US exchanges, $0 for IEX only; the discovery layer is still the desk's own subscription | prices today; approach 09-07 |
+
+Besides the monthly price, signing involves exchange agreements, a subscriber agreement or click-through for every viewer, monthly reporting, three years of records, and a rebuild of the market worker for any vendor but Alpaca. The 2027-04-01 consolidated-tape changes alter the per-viewer rates and the derived-data rule; I have not re-read them. The same agreements have to cover the news feed (Benzinga direct has no published price; the primary wires bar reuse or publish nothing, *read 09-25*). Giving Alpaca the 30-day "User Application" notice is free, licenses nothing, and puts the plan on Alpaca's file; asking a vendor for exchange fees is an enquiry. Both are his, never a seat's. Corporate-office D-016's hazard applies: a payment path built complete and sitting one environment variable from live, with nothing in front of it. His rule already covers it: nothing charges anyone until he approves the first real run.
 
 ---
 
@@ -176,13 +161,14 @@ Two defaults I applied, for him to overrule: no free first day, and a first-time
 - The door is the allowlist; the gate never learns about payment.
 - Nothing charges anyone until he approves the first real run.
 - Monthly, six-month and annual plans are wanted (replacing the 09-27 refusal).
+- A month is the market's calendar month. Anyone can buy on day one. The licence will be in place. Taxes and the attorney are his. He reads support.
 
 ## 4. The sequence: what must be true before a buy button is live
 
 No dates. The paced items are his (the answers, the licence, the Stripe account, the lawyer, the approval), and a date I invented would reach him as a constraint. Sizes are my guesses for ordering only; no owner has estimated, and each owner replaces mine.
 
-1. **His answers in section 2.**
-2. **The licence decision**, before the public pages go live (visibility, above).
+1. **His answers still open in section 2** (the ladder, renewal, refunds, the "US only" sentence, the Stripe account state).
+2. **The licence in place** (his word). Before the first paying customer at the latest.
 3. **The Stripe account for Andromeda Genius, test mode, keys** (his), including Stripe's own review of the business. If the EIN or the bank account is missing, this is the long item.
 4. **Words and legal text** (Commercial, Marketing, Web), then his yes to the exact strings:
    - terms of service: section 2 ("There is no public sign-up") and section 3 ("Your invitation was issued to an email address"), and the payment clauses;
