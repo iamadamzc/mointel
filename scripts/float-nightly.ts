@@ -57,8 +57,10 @@ import {
   parseNightlyArgs,
   planFloatNightly,
   runFloatNightly,
+  sessionDateCheck,
   storedRowCheck,
 } from '../lib/research/floatNightly';
+import { calendarDays } from '../lib/desk/checkpointDates';
 import { SecClient } from '../lib/research/sec/client';
 import { archiveCacheMaxBytes, archiveCacheSize, pruneArchiveCache } from '../lib/research/secArchiveCache';
 
@@ -76,6 +78,22 @@ async function main(): Promise<number> {
   const deadlineMs = args.deadline === null ? null : parseDeadline(args.deadline, startMs, etToday);
   const market = loadMarketConfig();
   const fallbackBand = { min: market.discoveryPriceMin, max: market.discoveryPriceMax };
+
+  // A weekend or market holiday has no session to compute (his "a", 2026-10-16): exit before any SEC request, and
+  // before the timer can spend a night on it. Read only; the desk's own exchange calendar (sessionDateCheck).
+  {
+    const db = openDatabase(market.dbPath, { readonly: true });
+    try {
+      const session = sessionDateCheck(calendarDays(db), date);
+      if (session === 'NOT_SESSION') {
+        log(`[float-nightly] ${date} not a session date (a weekend or market holiday on the exchange calendar): nothing to compute; exit 0`);
+        return 0;
+      }
+      if (session === 'UNKNOWN') log(`[float-nightly] ${date} is not covered by the cached exchange calendar; running as before`);
+    } finally {
+      db.close();
+    }
+  }
 
   if (args.dryRun) {
     // Read-only: no schema work, no write (store/db.ts:1384).

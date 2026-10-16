@@ -179,6 +179,22 @@ export function exitCodeFor(summary: Pick<NightlySummary, 'stopped'>): number {
 }
 
 /**
+ * Whether D is an exchange session, from the desk's own cached calendar (checkpointDates.ts `calendarDays`, the
+ * exchange's sessions, a half-day included with its early close). His "a" (Integration chat uuid 2c3c548c,
+ * 2026-10-16): the nightly skips a non-trading date before the timer is turned on.
+ *
+ * AN EMPTY OR STALE CALENDAR LOOKS LIKE "NOT A SESSION" FROM INSIDE (checkpointDates.ts says so), so a date is called
+ * NOT_SESSION only when the calendar covers it: some listed session on or before D and some on or after. Otherwise it
+ * is UNKNOWN, and the run goes ahead as before rather than skipping a real session on a missing calendar.
+ */
+export function sessionDateCheck(days: readonly { date: string }[], date: string): 'SESSION' | 'NOT_SESSION' | 'UNKNOWN' {
+  const dates = days.map((day) => day.date);
+  if (dates.includes(date)) return 'SESSION';
+  const covered = dates.some((d) => d < date) && dates.some((d) => d > date);
+  return covered ? 'NOT_SESSION' : 'UNKNOWN';
+}
+
+/**
  * --deadline: an ISO instant (what Ops passes), or an ET wall clock HH:MM meaning the next such time after `startMs`
  * (market/session.ts:129 `etWallClockToUtc`). Throws on anything else.
  */
