@@ -30,13 +30,14 @@
  *   2026-10-07; on 10-06, 567 of 2,854 counted names had a premarket high above
  *   their regular-session high); the low and volume stay the 16:00 values latched
  *   on `rth_final_*`, and the split check reads those latched values; population
- *   = board eligibility with the PRIOR CLOSE in range (the names that started the
- *   day inside it, however they closed: his yes, Integration chat uuid 3268cfdd,
- *   2026-10-15, after WFF ran from $2.12 to $3.43 and closed at $0.175 and was
- *   left out of "gave the entire move back"; a name with no prior close, a first
- *   day of trading, and a split row, whose prior close is on the other basis, are
- *   picked by their official close as before), split rows left out (below); F10,
- *   F10b, F12b, the context; F3; F9 the covered names.
+ *   = board eligibility with the PRIOR CLOSE OR the OFFICIAL CLOSE in range (the
+ *   names that started or ended the day inside it: his choice "2, prior close or
+ *   close", 2026-10-15, after WFF ran from $2.12 to $3.43, closed at $0.175 and
+ *   was left out of "gave the entire move back"; by the prior close alone 35
+ *   movers that ran in from under $1 would have left, so he kept them; a split
+ *   row, whose prior close is on the other basis, is picked by its official close
+ *   alone), split rows left out (below); F10, F10b, F12b, the context; F3; F9 the
+ *   covered names.
  *
  * THE SPLIT CHECK (recap). `ticker_session.previous_close` carried the PRE-split
  * close onto at least 12 effective dates (`docs/research/split-day-previous-
@@ -152,7 +153,7 @@ export interface NarrativeFacts {
   /** F6 / F7 / G, recap only. */
   movers50: number | null;
   gaveBack: number | null;
-  /** G: in-range names (by the prior close, else the price) that traded but have no official close for the day, so are outside the recap's counts. Never hidden. */
+  /** G: in-range names (by the prior close or the price) that traded but have no official close for the day, so are outside the recap's counts. Never hidden. */
   noClose: number | null;
   /** F9, recap only: the names the desk carries into the next session (this report's covered names). */
   tracking: string[] | null;
@@ -284,7 +285,7 @@ export interface RecapCounts {
   splitExcluded: number;
   keptHalf: number;
   /**
-   * Counted names (in range by the prior close, with an official close, traded) with no regular-session minute bar: left out of
+   * Counted names (in range by the prior close or the official close, traded) with no regular-session minute bar: left out of
    * the high-based figures only (F6, F7, F15, F10), still counted in F1 by their close
    * (Integration's ruling, 2026-10-07). Not a footnote; recorded for the record and tests.
    */
@@ -332,7 +333,7 @@ const OFFICIAL_CLOSE_SQL = `CASE WHEN ts.reference_rth_close_basis = 'CURRENT_SE
                 AND ts.reference_rth_close_date = ts.trading_date
               THEN ts.reference_rth_close END`;
 
-/** F1 (picked by the prior close, counted by the official close), F6, F7, F15 and G for the recap, in one read per name. */
+/** F1 (picked by the prior close or the official close, counted by the official close), F6, F7, F15 and G for the recap, in one read per name. */
 export function readRecapCounts(db: MarketDatabase, tradingDate: string, range: { min: number; max: number }): RecapCounts {
   const rows = db
     .prepare(
@@ -355,11 +356,12 @@ export function readRecapCounts(db: MarketDatabase, tradingDate: string, range: 
     (regularHigh.get(symbol, rthWindow.start, rthWindow.end) as { high: number | null }).high;
 
   for (const r of rows) {
-    // The population is the names that STARTED the day in range: the prior close decides, so a name that ran past
-    // the top or collapsed under the bottom stays counted however it closed (see the header). With no prior close
-    // (a first day of trading) there is no start, and the official close (or, for G, the price) decides as before.
+    // The population is the names that STARTED OR ENDED the day in range (his choice, "2, prior close or close",
+    // 2026-10-15): a name that collapsed under the bottom or ran past the top stays counted, and a name that ran into
+    // the range from under $1 is still counted, as before (see the header). With no prior close (a first day of
+    // trading) the official close decides; for G, the prior close or the price.
     if (r.official_close === null) {
-      if (inside(r.previous_close ?? r.price) && (r.cumulative_volume ?? 0) > 0) counts.noClose += 1;
+      if ((inside(r.previous_close) || inside(r.price)) && (r.cumulative_volume ?? 0) > 0) counts.noClose += 1;
       continue;
     }
     const close = r.official_close;
@@ -372,9 +374,9 @@ export function readRecapCounts(db: MarketDatabase, tradingDate: string, range: 
       r.rth_final_low !== null &&
       isSplitRow(db, { symbol: r.symbol, date: tradingDate, previousClose: prev, high: r.rth_final_high, low: r.rth_final_low, close });
     // A split row's prior close is on the other basis (a 1-for-5 carries the pre-split $0.50 onto a $2.50 day), so it
-    // cannot say where the day started: its official close decides whether it is in range, and it is then left out as
-    // a split, as before. Every other row is in range by its prior close.
-    if (!inside(split ? close : prev ?? close)) continue;
+    // cannot say where the day started: its official close alone decides whether it is in range, and it is then left
+    // out as a split, as before. Every other row is in range by its prior close or its official close.
+    if (!(split ? inside(close) : inside(prev) || inside(close))) continue;
     if (split) {
       counts.splitExcluded += 1;
       continue;

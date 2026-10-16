@@ -186,7 +186,7 @@ describe('readRecapCounts: the CLOSE is the official close, never the bell captu
   });
 });
 
-describe('readRecapCounts: the names are picked by the PRIOR close (his yes, Integration chat uuid 3268cfdd)', () => {
+describe('readRecapCounts: the names are picked by the PRIOR close OR the CLOSE (his choice "2, prior close or close", 2026-10-15)', () => {
   it('P1: WFF 10-14, $2.12 to a $3.43 high and a $0.175 close, is counted and gave the entire move back; the in-range control is unchanged', () => {
     const db = store();
     seed(db, [
@@ -203,36 +203,41 @@ describe('readRecapCounts: the names are picked by the PRIOR close (his yes, Int
     db.close();
   });
 
-  it('P2: a name that started in range and closed above it is counted; one that started outside and closed inside is not', () => {
+  it('P2: started in range OR ended in range is counted, each way; started and ended outside is not', () => {
     const db = store();
     seed(db, [
-      // Started at $15, ran to $25, closed $24: counted, a 50 percent mover that kept half.
+      // Started at $15, ran to $25, closed $24: counted by its prior close, a 50 percent mover that kept half.
       { symbol: 'PAST', prev: 15, close: 24, high: 25, low: 15, rthVol: 900, price: 24, vol: 900 },
-      // Started at $25 and fell to $18: never in the population, though it closed inside.
+      // Started at $25 and fell to $18: counted by its close, as before.
       { symbol: 'FELL', prev: 25, close: 18, high: 26, low: 17, rthVol: 900, price: 18, vol: 900 },
-      // Started at $0.80 and ran to $1.60, closing $1.50: never in the population (counted by its close before).
+      // Started at $0.80 and ran to $1.60, closing $1.50: counted by its close, as before (MI 10-05's shape).
       { symbol: 'SUB', prev: 0.8, close: 1.5, high: 1.6, low: 0.8, rthVol: 900, price: 1.5, vol: 900 },
+      // Started at $25, ran to $40, closed $30: outside at both ends, never counted.
+      { symbol: 'OUT', prev: 25, close: 30, high: 40, low: 25, rthVol: 900, price: 30, vol: 900 },
     ]);
     const r = readRecapCounts(db, DATE, RANGE);
-    expect(r.breadth).toEqual({ window: 'REGULAR_SESSION', eligible: 1, traded: 1, up: 1, down: 0 });
-    expect([r.movers50, r.gaveBack, r.keptHalf]).toEqual([1, 0, 1]);
-    expect(r.movers.map((m) => m.symbol)).toEqual(['PAST']);
+    // By the prior close alone this reads eligible 1 (PAST); by the close alone 2 (FELL, SUB).
+    expect(r.breadth).toEqual({ window: 'REGULAR_SESSION', eligible: 3, traded: 3, up: 2, down: 1 });
+    expect([r.movers50, r.gaveBack, r.keptHalf]).toEqual([2, 0, 2]);
+    expect(r.movers.map((m) => m.symbol).sort()).toEqual(['PAST', 'SUB']);
     db.close();
   });
 
-  it('P3: G (no official close) is picked by the prior close too, and by the price only when there is none', () => {
+  it('P3: G (no official close) is picked by the prior close or the price', () => {
     const db = store();
     seed(db, [
-      // Started in range, trading at $0.50 with no official close: G.
+      // Started in range, trading at $0.50 with no official close: G by its prior close.
       { symbol: 'GIN', prev: 2, close: null, price: 0.5, vol: 500 },
       { symbol: 'GIN2', prev: 3, close: null, price: 0.4, vol: 500 },
-      // Started at $25, trading at $3 with no official close: not G.
+      // Started at $25, trading at $3: G by its price, as before.
       { symbol: 'GOUT', prev: 25, close: null, price: 3, vol: 500 },
       // No prior close, trading at $3: G by its price, as before.
       { symbol: 'GNEW', prev: null, close: null, price: 3, vol: 500 },
+      // Started at $25, trading at $30: outside at both, not G.
+      { symbol: 'GNONE', prev: 25, close: null, price: 30, vol: 500 },
     ]);
-    // By the price alone this reads 2 (GOUT, GNEW); by the prior close 3 (GIN, GIN2, GNEW).
-    expect(readRecapCounts(db, DATE, RANGE).noClose).toBe(3);
+    // By the price alone this reads 2 (GOUT, GNEW); by the prior close alone 3 (GIN, GIN2, GNEW); by either 4.
+    expect(readRecapCounts(db, DATE, RANGE).noClose).toBe(4);
     db.close();
   });
 });
