@@ -1,6 +1,6 @@
 # No beta, purchase pages: the price breaks first, then what he must decide
 
-**Commercial-tmi (7th tenure), 2026-10-16 (UTC), for Integration to put to him. Version 4.** Version 1 (`6f10e70a`) treated the price and the provider as open; version 2 (`8d44410f`) priced the breaks from $5 a day. His $5.50 daily price (below) replaces that, and every number in section 1 is rebuilt on it. Version 3 (`5bb97f6d`) rebuilt section 1 on his $5.50 daily price. This version (4) records his answers to the open items and replaces all three.
+**Commercial-tmi (7th tenure), 2026-10-16 (UTC), for Integration to put to him. Version 5.** Version 1 (`6f10e70a`) treated the price and the provider as open; version 2 (`8d44410f`) priced the breaks from $5 a day. His $5.50 daily price (below) replaces that, and every number in section 1 is rebuilt on it. Version 3 (`5bb97f6d`) rebuilt section 1 on his $5.50 daily price. Version 4 (`71b7c1ef`) recorded his first answers. This version (5) records his second set (his ladder, renewal, cancel, no refunds, US wording) and replaces all four.
 
 **What he has ruled, in his words (read at his turns through Integration):**
 - "i've decided i dont want to do beta. so we can remove any beta elements and setup purchase pages." (Integration chat, uuid 6a3e4300, 2026-10-16T23:21:40.715Z)
@@ -49,93 +49,87 @@ One consequence of those two rules, stated so nobody finds it later: a sign-in f
 
 The 30 cents is fixed, so daily charging pays it every day; one charge for a period pays it once.
 
-### Which base I priced the breaks from, and why
+### Which base the breaks are measured from, and why
 
-**I priced them from the $5.50 list, not from the $5 he nets.** Two reasons.
-- A buyer compares a plan with what the page tells them a day costs, which is $5.50. A break advertised as "15% off" has to be true against that number, or the page says something false.
+**I measure his ladder against the $5.50 list, not against the $5 he nets.** Two reasons.
+- A buyer compares a plan with what the page tells them a day costs, which is $5.50. A break advertised as a percent off has to be true against that number, or the page says something false.
 - The fee is already inside the $5.50, so it is already paid for. A plan that saves the card fee gives some of that back. Priced from $5.50, the plan that leaves the desk exactly as well off as daily charging is only about 5.5% off the list (a month at $108.89, six months at $651.78, a year at $1,303.26). So the first 5.5 points of any break cost the desk nothing; every point beyond that is a real concession, and the table shows it.
 
-### The ladder I recommend, and why each step
+### His ladder, and what it means
 
-His to set. These are my numbers, built on the arithmetic above.
+He set it: **monthly $89, six months $499, annual $899**, with the daily at $5.50. My own earlier version ($98, $518, $897, a 15, 25 and 35 percent break) is superseded. Against the $5.50 list:
 
-| Plan | Price | Per trading day | Off the $5.50 total | One-charge fee | Daily fees avoided | Pays off for a trader who uses more than |
-| --- | --- | --- | --- | --- | --- | --- |
-| Daily | $5.50 a day | $5.50 | none | $0.46 each | none | not applicable |
-| Monthly | **$98** | $4.69 | 15% | $3.14 | $6.47 | 17.8 days of 20.9 (85%) |
-| Six months | **$518** | $4.13 | 25% | $15.32 | $42.35 | 94 days of 125.5 (75%) |
-| Annual | **$897** | $3.57 | 35% | $26.31 | $89.02 | 163 days of 251 (65%) |
+| Plan | Price | Per trading day | Off the $5.50 total | One-charge fee | Daily fees avoided | Pays off for a trader who uses more than | The desk keeps per month |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Daily | $5.50 a day | $5.50 | none | $0.46 each | none | not applicable | $105.43 (full use) |
+| Monthly | **$89** | $4.26 | 22.6% | $2.88 | $6.73 | 16.2 days of 20.9 (77%) | $86.12 |
+| Six months | **$499** | $3.98 | 27.7% | $14.77 | $42.90 | 90.7 days of 125.5 (72%) | $80.70 |
+| Annual | **$899** | $3.58 | 34.9% | $26.37 | $88.96 | 163.5 days of 251 (65%) | $72.72 |
 
-**The reasons, step by step.**
-- **Where the first step comes from.** Charging once instead of 21 times saves about $6.47 a month in card fees, which is 6.6% of $98. That is the part of a break the desk pays for out of money that stops leaving. The rest of the 15% is the price of paying a month ahead and of one fewer failed-card event, each of which also stops a day's session.
-- **Why each longer step is bigger.** The fee saving grows (8% of the price at six months, 10% at a year), and the buyer is also lending the desk the money and carrying the risk that a new product disappoints for longer. I used equal ten-point steps (15, 25, 35) so the ladder is easy to say and easy to defend.
-- **Why not more.** A plan only pays off for a heavy user (the last column). Light users stay on the daily day and the plan prices do not touch them. So a break costs revenue only on traders who would have paid every day anyway; it buys fewer fees, cash in advance, and a committed user. I cannot size how many heavy users a bigger break would convert: there are no users to measure. The first months of purchases will say.
-- **A month is not a fixed number of days.** A flat $98 is $5.16 a day in a 19-day month and $4.45 a day in a 22-day month. The plan is priced on the 20.9 average. Whether a "month" is a calendar month or a fixed span is one of the decisions below.
-- **Gentler and steeper versions, if he wants them** (the same method; the pays-off threshold is always one minus the break):
+Things the table shows, for him to weigh and not for me to correct:
+- **The first break is the big one.** Monthly is 22.6% under the daily total; the next two steps add 5.1 and 7.2 points. A trader who uses 17 days of a 21-day month is already better off on the monthly plan.
+- **The six-month plan sits close to the monthly one.** Six months of the monthly plan is $534; $499 is 6.6% below that. The annual is 15.8% below twelve monthly payments and 9.9% below two six-month payments. A buyer choosing between monthly and six-month saves $35 over six months.
+- **The desk keeps less per month on each longer plan**: $86.12, $80.70 and $72.72 against $105.43 for a full-use daily trader (18, 23 and 31 percent less). That is the price of the commitment. Only the first 5.5 points of any break are free to the desk (the plan that leaves it exactly as well off as daily charging is about 5.5% under the list).
+- **A month is the market's month.** A flat $89 is $4.68 a day in a 19-day month and $4.05 a day in a 22-day month.
 
-  | Ladder | Monthly | Six months | Annual |
-  | --- | --- | --- | --- |
-  | Gentle: 10, 20, 30% | $104 | $552 | $966 |
-  | Recommended: 15, 25, 35% | $98 | $518 | $897 |
-  | Steep: 20, 30, 40% | $92 | $483 | $828 |
-
-**What it does to the licence arithmetic.** Longer plans bring in less per person per month after fees, so more people are needed to cover a monthly licence cost. Heads needed, assuming every one is a full-use trader paying all 20.9 days, before sales tax, refunds and disputes:
+**Heads needed to cover a monthly licence cost**, assuming every one is a full-use trader paying all 20.9 days, before sales tax, refunds and disputes:
 
 | Monthly licence cost | Daily, full use | Monthly plan | Six-month plan | Annual plan |
 | --- | --- | --- | --- | --- |
-| $4,498 | 43 | 48 | 54 | 62 |
-| $10,000 | 95 | 106 | 120 | 138 |
-| $20,000 | 190 | 211 | 239 | 276 |
+| $4,498 | 43 | 53 | 56 | 62 |
+| $10,000 | 95 | 117 | 124 | 138 |
+| $20,000 | 190 | 233 | 248 | 276 |
 
-Net per head per month after the card fee: $105.43 daily, $94.86 monthly, $83.78 six-month, $72.56 annual.
+**What traders pay elsewhere, for the ladder to sit against** (a competitor's own comparison pages, *read today*, so confirm on the vendors' sites): Day Trade Dash $197 a month; Trade Ideas Premium $254 a month or $2,136 a year. Per trading day that is $9.42 and $12.14; Trade Ideas annual is $8.51 a day. TMI at $5.50 a day, $4.26 on the monthly and $3.58 on the annual sits well under both.
 
-**What traders pay elsewhere, for the ladder to sit against** (a competitor's own comparison pages, *read today*, so confirm on the vendors' sites): Day Trade Dash $197 a month; Trade Ideas Premium $254 a month or $2,136 a year. Per trading day that is $9.42 and $12.14; Trade Ideas annual is $8.51 a day. TMI at $5.50 a day, and $3.57 a day on the annual, sits well under both. Whether that is the right place to sit is his.
-
-**One more number he should see.** Stripe charges $15 for each dispute, and $15 more if we respond to it ($15 back if we win) (*read today*). On a $5.50 day a single dispute costs almost three days' revenue. On an $897 annual it also puts $897 at risk. That is a reason for clear charge words and a clear refund rule (below), not a reason to change the price.
+**One more number he should see.** Stripe charges $15 for each dispute, and $15 more if we respond to it ($15 back if we win) (*read today*). On a $5.50 day a single dispute costs almost three days' revenue. On an $899 annual it also puts $899 at risk. A "no refunds" rule does not stop a card dispute; it only makes the charge words and the cancel button the things a dispute is decided on.
 
 ---
 
 ## 2. His answers, and what is still open
 
-### Answered (his typed message in this session, 2026-10-16)
+### Answered (his typed messages in this session, 2026-10-16)
 
-His words: "a month is as it is according to the market. anyone can buy on day one. will have license in place. done. i will deal wiht taxes and an attorney. why is us only important? i read support."
+First message: "a month is as it is according to the market. anyone can buy on day one. will have license in place. done. i will deal wiht taxes and an attorney. why is us only important? i read support."
 
-- **A month** is the market's month: a calendar month, with the trading days the market has in it (19 to 22). The monthly price stays flat; section 1 shows what that is per day in a short and a long month. Six months and a year follow the same calendar.
-- **Anyone can buy on day one.** No approval step. So the "by invitation" words in the terms (sections 2 and 3), the privacy policy (section 8) and the front page are all replaced, and payment writes the buyer to the allowlist. The allowlist stays the one door and the gate does not learn about payment (`lib/auth/gate.ts:31-50`, Web). A lapse ends only that day's session (ruled 2026-09-28).
-- **The licence will be in place.** I read that as before the first paying customer, which is what D-076 deferred and what "no beta" now brings forward. He did not say whether it is before the public pages go live or only before the first charge. I do not need that answer to proceed: the pages and the build are not blocked by it, and the "by invitation" words come out in the same release either way. If the pages go live first, the page is the visible surface the contracts talk about (section 1 of the licence reference below).
-- **Taxes and an attorney are his.** Nothing for the seats to decide. What each needs to read is in the hand-off list below.
-- **Support is read by him.** `info@andromedagenius.com`.
+Second message: "take whoever pays, say it's for people trading the US market. the ladder:$89, $499, $899. yes auto renew, make easy cancel. plans renwe on their own. no refunds."
 
-### Open: five things
+- **A month** is the market's calendar month (19 to 22 trading days). Six months and a year follow the same calendar.
+- **The ladder** is $89 a month, $499 for six months, $899 a year, with $5.50 a day (section 1).
+- **Anyone can buy on day one.** No approval step. So the "by invitation" words in the terms (sections 2 and 3), the privacy policy (section 8) and the front page are replaced, and payment writes the buyer to the allowlist. The allowlist stays the one door and the gate does not learn about payment (`lib/auth/gate.ts:31-50`, Web). A lapse ends only that day's session (ruled 2026-09-28).
+- **"US only" becomes a statement, not a gate.** The desk takes whoever pays and says it is for people trading the US market. The terms already say "The desk covers the US market and is offered to people trading it. We do not market it anywhere else", which stays true. The privacy policy's section 8 sentence "We do not offer it to the public anywhere... we choose who is invited" has to be replaced; the new wording goes to him verbatim with the other strings.
+- **The plans renew on their own, and cancelling must be easy.** The daily plan also charges automatically each paid day (ruled 2026-09-28).
+- **No refunds.**
+- **The licence will be in place.** I read that as before the first paying customer. He did not say whether before the public pages go live; I do not need that to proceed.
+- **Taxes and an attorney are his.** **Support is read by him**, `info@andromedagenius.com`.
 
-**The ladder.** Does he take the recommended breaks (monthly $98, six months $518, annual $897, built on the $5.50 daily list), a gentler or steeper set from the table in section 1, or his own numbers? *Blocks:* the pricing page, the checkout words, the terms of sale.
+### What those answers set going, for the owners
 
-**Does a plan renew on its own, and what happens when someone changes plan.**
-- His daily plan charges automatically. For the monthly, six-month and annual plans: (a) the plan renews automatically and charges the saved card; (b) it ends at its date and the user buys again. Automatic renewal of a prepaid term is regulated in several states (clear disclosure, clear consent, an easy way to cancel online; California's law also asks for a reminder 15 to 45 days before an annual renewal; from law-firm summaries I read today, not the statutes). A daily automatic charge may fall under the same laws. That is for his attorney. My lean: (b) at first, because it needs no renewal notice and the user decides each time.
-- A daily buyer who buys a monthly plan on day 10: is there a credit for the days already paid? My lean: no credit; each paid day was delivered in full.
-- Cancelling a plan means it does not renew; access runs to its paid date.
+- **Terms of sale** (Commercial drafts, Marketing words, his yes): the daily charge, each plan's price and period, automatic renewal stated before the buyer pays and in plain words, how to cancel, "no refunds" stated before purchase, and the one-hour rule. Card-network and state rules on stating the renewal and refund terms clearly at checkout, and on an easy cancel, are for his attorney; I have read law-firm summaries of California's renewal law and no statute.
+- **Cancel** (Web): a cancel action in the product that needs no email and no extra steps. Cancelling stops renewal; access runs to the paid date. This is the "Cancel" page in Web's inventory, now required before launch and not optional.
+- **Renewal** (Ops, Web): a renewal charge on the saved card at the end of each period, and a renewal reminder if his attorney says one is due (California's law asks for a reminder 15 to 45 days before an annual renewal, per summaries). **The desk has no way to send a customer email today** (invitations are added by hand and notices are OS notifications), so a required reminder or a retainable receipt is a build of its own.
+- **Stripe account** (his): see below.
 
-**The refund and cancellation rule.** The drafted terms of sale (`docs/legal/terms-of-sale-daily-pass.md`) hold this open for him. For the daily day the choices are no refund for a day that has run, pro-rated, or a short window. My recommended default, as already drafted: "no refund for a paid day that has already run its course: by the time a day ends, that day's reports have already been delivered in full. If a charge was made in error, or the service was unavailable for a paid day through our own fault, contact info@andromedagenius.com and we will make it right."
-- The plans need their own line. One comparable (Seeking Alpha's terms, *read 09-27*) is nonrefundable by default with a 30-day window on an annual plan. My lean: a full refund on request within seven days if no more than one paid day was used; after that none; cancelling stops renewal.
-- Why before the first charge: Stripe charges $15 per dispute, and $15 more if we respond ($15 back if we win) (*read today*). On a $5.50 day one dispute costs almost three days' revenue; on an $897 annual it puts $897 at risk.
-
-**Why "US only" is on the list.** He asked. It is not a legal requirement and it is not in the product. It came from his own words on 2026-09-08: anyone who trades the US market, "but i dont want any overhang on international regs." The privacy policy then wrote it down: the desk is "operated from the United States, by a US company, for people trading the US market", and it kept that true by saying "we do not offer it to the public anywhere... we choose who is invited." That sentence becomes false the day anyone can buy, so the policy needs a new sentence either way. The question is only what the new sentence says.
-- What selling to a buyer outside the US brings, as far as I know it: that country's consumer, tax and privacy rules can apply to the sale (for example value-added tax on digital services in the EU, and its data-protection law), and Stripe charges more on a card issued outside the US: +1.5% for an international card and +1% if currency has to be converted (*read today*). I have not read any non-US rules; this is for his attorney and accountant.
-- The two ways to write it: (a) the buyer says they trade the US market and the billing address must be in the US, with non-US cards refused if Stripe can do that (I have not checked); (b) the policy says the desk is for people trading the US market, and the desk takes whoever pays.
-- My lean: (b) is simplest and costs a little in card fees and possibly foreign tax; (a) is the cleaner way to keep his "no overhang" and costs a checkout step. It is his call, and "don't care" is a fair answer: then the policy and terms say the desk is for people trading the US market, and the attorney and accountant decide what that needs.
+### Open
 
 **The Stripe account for Andromeda Genius.** Stripe is decided. What I could not establish:
 - The existing Stripe account is a Malta-country account, "not portable"; whether it is registered as an individual or a business was left open (corporate-office `revenue/pre-contact-checks.md`, 2026-09-15). TMI sells as Andromeda Genius, Inc., a Texas company formed 2026-09-24 (`company/decisions.md:3775`). That file says the Texas route runs "EIN → bank → a new Stripe account". I could not find whether the EIN, the business bank account and the new account exist today. If any step is missing it is the longest item in the sequence, because it is not code.
 - Corporate-office D-014 (2026-09-15): no seat sets up Stripe products, prices, webhooks or checkout; it goes to the project thread, by Stripe's MCP or CLI, once the shape is settled. For mointel that means Ops and Web build it. The account and the keys are his; seats never create accounts or enter keys.
 - Stripe may question the business. It lists "Investment and brokerage services" as restricted: "additional due diligence... proof of relevant licenses or more details about your business model" (*read today*). TMI is an information service, not an investment or brokerage service, but Stripe decides the classification, and I do not know until the account applies. Stripe also prohibits "get rich quick" schemes, one more reason the copy stays inside `docs/marketing/what-it-is-not.md`.
 
-Two defaults I applied, for him to overrule: no free first day, and a first-time buyer saves a card before the desk opens ("admitted immediately" starts from the second day, because there is no card on file the first time).
+**One small yes or no.** The drafted terms of sale say, after the no-refund line: "If a charge was made in error, or the service was unavailable for a paid day through our own fault, contact info@andromedagenius.com and we will make it right." With "no refunds" as his rule, does that sentence stay? It is a promise to look at a mistake, not a promise to refund. My lean: keep it, because a charge made in error is the case a dispute is won or lost on. His call.
+
+### Defaults I applied, for him to overrule
+
+- No free first day, and a first-time buyer saves a card before the desk opens ("admitted immediately" starts from the second day, because there is no card on file the first time).
+- A daily buyer who buys a plan part-way through gets no credit for days already paid; each paid day was delivered in full.
+- A plan renewal that fails gets the same one-hour warning as a daily charge, then that day's session ends; the plan has then lapsed and the next sign-in is a daily charge at $5.50.
+- No refund for any plan or day, as he ruled; cancelling stops renewal and access runs to the paid date.
 
 ### For his attorney and accountant: what each needs to read
 
-- **Attorney:** the terms of service (its header says "NOBODY WITH A LAW LICENCE HAS READ THIS FILE", and its payment clauses fall due "the day the desk charges for anything", `docs/legal/terms.md:63-86`); the terms of sale; the privacy policy; automatic renewal; the investment-adviser posture of the reports (my 09-27 section, `docs/research/session-reports/commercial.md`, which rests on the publisher's exclusion and Lowe v. SEC and has never had counsel; selling to the public, not by invitation, is the "general and regular circulation" shape the exclusion describes, and the board is the same for everyone); and the licence agreements.
-- **Accountant:** sales tax. I told him in my 09-26 scope that none would be owed for a US-only, low-volume sale. That is withdrawn: I had not checked it, and Stripe's page describes tax collection as a separate product you turn on. What I could read today, from secondary sources and not from the Texas Comptroller: Texas generally treats subscription access to data and information as taxable, on 80% of the charge, at 6.25% plus local rates up to 8.25%; other states differ. Stripe's tool (*read today*) is 0.5% per transaction where registered, or $0.50 per transaction through the API, or from $90 a month for the full product. A merchant of record (Paddle: 5% + 50 cents per checkout, including tax, fraud, chargebacks and billing support; it asks to be contacted for products under $10; I did not read its acceptable-use page) is the other route.
+- **Attorney:** the terms of service (its header says "NOBODY WITH A LAW LICENCE HAS READ THIS FILE", and its payment clauses fall due "the day the desk charges for anything", `docs/legal/terms.md:63-86`); the terms of sale; the privacy policy; automatic renewal, easy cancel and the no-refund disclosure; the investment-adviser posture of the reports (my 09-27 section, `docs/research/session-reports/commercial.md`, which rests on the publisher's exclusion and Lowe v. SEC and has never had counsel; selling to the public is the "general and regular circulation" shape the exclusion describes, and the board is the same for everyone); selling to buyers outside the US; and the licence agreements.
+- **Accountant:** sales tax. I told him in my 09-26 scope that none would be owed for a US-only, low-volume sale. That is withdrawn: I had not checked it, and Stripe's page describes tax collection as a separate product you turn on. What I could read today, from secondary sources and not from the Texas Comptroller: Texas generally treats subscription access to data and information as taxable, on 80% of the charge, at 6.25% plus local rates up to 8.25%; other states differ. Stripe's tool (*read today*) is 0.5% per transaction where registered, or $0.50 per transaction through the API, or from $90 a month for the full product. A merchant of record (Paddle: 5% + 50 cents per checkout, including tax, fraud, chargebacks and billing support; it asks to be contacted for products under $10; I did not read its acceptable-use page) is the other route. Selling to buyers outside the US adds Stripe's international card fee (+1.5%) and a currency conversion fee (+1%) (*read today*), and possibly foreign sales tax.
 
 ### Licence reference (he has said it will be in place; this is what it involves)
 
@@ -162,17 +156,18 @@ Besides the monthly price, signing involves exchange agreements, a subscriber ag
 - Nothing charges anyone until he approves the first real run.
 - Monthly, six-month and annual plans are wanted (replacing the 09-27 refusal).
 - A month is the market's calendar month. Anyone can buy on day one. The licence will be in place. Taxes and the attorney are his. He reads support.
+- The ladder is $89 a month, $499 for six months, $899 a year. The plans renew on their own, with an easy cancel. No refunds. "US only" is a statement ("for people trading the US market"), and the desk takes whoever pays.
 
 ## 4. The sequence: what must be true before a buy button is live
 
 No dates. The paced items are his (the answers, the licence, the Stripe account, the lawyer, the approval), and a date I invented would reach him as a constraint. Sizes are my guesses for ordering only; no owner has estimated, and each owner replaces mine.
 
-1. **His answers still open in section 2** (the ladder, renewal, refunds, the "US only" sentence, the Stripe account state).
+1. **His yes to the exact strings** (the words and legal text in item 4), and the one yes or no in section 2.
 2. **The licence in place** (his word). Before the first paying customer at the latest.
 3. **The Stripe account for Andromeda Genius, test mode, keys** (his), including Stripe's own review of the business. If the EIN or the bank account is missing, this is the long item.
 4. **Words and legal text** (Commercial, Marketing, Web), then his yes to the exact strings:
    - terms of service: section 2 ("There is no public sign-up") and section 3 ("Your invitation was issued to an email address"), and the payment clauses;
-   - terms of sale: the draft exists for the daily day; its section 2 still describes a self-serve card save, and it has nothing yet on the longer plans, tax, or the non-trading-day rule; the refund line is his;
+   - terms of sale: the draft exists for the daily day; its section 2 still describes a self-serve card save, and it has nothing yet on the longer plans, tax, or the non-trading-day rule; its refund section becomes his "no refunds" rule, with the plans and automatic renewal added;
    - privacy policy: section 8 (above); "who else sees it" gains Stripe; the billing data kept (Stripe's customer and payment-method ids and a charge row per paid day; no card numbers touch our box);
    - the front page: the hero, the access section, the FAQ price answer and the meta description, in both design copies (`landingCopy.ts:265-283`, `app/page.tsx:44`, both canvases). Web's inventory is `docs/web/2026-10-16-no-beta-purchase-inventory.md` (`be740b05`). Its section 2 voids the beta and invitation lines in my read 144 (decisions 1, 2 and 5 there); decision 3, decision 4 and the product sections stand.
    - **Order rule:** the words that say "by invitation" change before or with the first public purchase path, never after.
