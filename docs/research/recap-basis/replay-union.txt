@@ -1,0 +1,201 @@
+range $1-$20; OLD = production's readRecapCounts (A:/mointel-cparty), by the official close; NEW = this tree's, by the prior close
+
+store A:/mointel/data/market-prod-2026-10-07.db: 37 dates with official closes
+2026-08-14
+  OLD eligible 2700, traded 0, up 0, down 0; ran 50% 0, gave back 0, kept half 0; no close 0, split 0
+  NEW eligible 2724, traded 0, up 0, down 0; ran 50% 0, gave back 0, kept half 0; no close 0, split 0
+  movers in: none
+  movers out: none
+2026-08-17
+  OLD eligible 2761, traded 2759, up 959, down 1665; ran 50% 0, gave back 0, kept half 0; no close 0, split 0
+  NEW eligible 2788, traded 2786, up 967, down 1684; ran 50% 0, gave back 0, kept half 0; no close 0, split 0
+  movers in: none
+  movers out: none
+2026-08-18
+  OLD eligible 2720, traded 2720, up 987, down 1587; ran 50% 0, gave back 0, kept half 0; no close 3, split 0
+  NEW eligible 2740, traded 2740, up 994, down 1600; ran 50% 0, gave back 0, kept half 0; no close 3, split 0
+  movers in: none
+  movers out: none
+2026-08-19
+  OLD eligible 0, traded 0, up 0, down 0; ran 50% 0, gave back 0, kept half 0; no close 2762, split 0
+  NEW eligible 0, traded 0, up 0, down 0; ran 50% 0, gave back 0, kept half 0; no close 2796, split 0
+  movers in: none
+  movers out: none
+2026-08-20
+  OLD eligible 0, traded 0, up 0, down 0; ran 50% 0, gave back 0, kept half 0; no close 2760, split 0
+  NEW eligible 0, traded 0, up 0, down 0; ran 50% 0, gave back 0, kept half 0; no close 2771, split 0
+  movers in: none
+  movers out: none
+2026-08-21
+  OLD eligible 2786, traded 2783, up 1662, down 970; ran 50% 0, gave back 0, kept half 0; no close 2, split 0
+  NEW eligible 2811, traded 2808, up 1673, down 984; ran 50% 0, gave back 0, kept half 0; no close 2, split 0
+  movers in: none
+  movers out: none
+2026-08-24
+  OLD eligible 2771, traded 2768, up 1094, down 1512; ran 50% 0, gave back 0, kept half 0; no close 7, split 4
+  NEW eligible 2794, traded 2791, up 1103, down 1526; ran 50% 0, gave back 0, kept half 0; no close 7, split 4
+  movers in: none
+  movers out: none
+2026-08-25
+  OLD eligible 2810, traded 2810, up 1621, down 1015; ran 50% 0, gave back 0, kept half 0; no close 3, split 0
+  NEW eligible 2827, traded 2827, up 1631, down 1022; ran 50% 0, gave back 0, kept half 0; no close 3, split 0
+  movers in: none
+  movers out: none
+2026-08-26
+  OLD eligible 2785, traded 2782, up 1012, down 1607; ran 50% 0, gave back 0, kept half 0; no close 5, split 0
+  NEW eligible 2810, traded 2807, up 1018, down 1626; ran 50% 0, gave back 0, kept half 0; no close 5, split 0
+  movers in: none
+  movers out: none
+2026-08-27
+  OLD eligible 2772, traded 2771, up 1295, down 1317; ran 50% 0, gave back 0, kept half 0; no close 7, split 0
+  NEW eligible 2797, traded 2796, up 1306, down 1331; ran 50% 0, gave back 0, kept half 0; no close 7, split 0
+  movers in: none
+  movers out: none
+2026-08-28
+  OLD eligible 2778, traded 2764, up 919, down 1698; ran 50% 0, gave back 0, kept half 0; no close 4, split 0
+  NEW eligible 2798, traded 2784, up 924, down 1713; ran 50% 0, gave back 0, kept half 0; no close 4, split 0
+  movers in: none
+  movers out: none
+2026-08-31
+  OLD eligible 2813, traded 2811, up 1091, down 1544; ran 50% 0, gave back 0, kept half 0; no close 2, split 0
+  NEW eligible 2831, traded 2829, up 1099, down 1554; ran 50% 0, gave back 0, kept half 0; no close 2, split 0
+  movers in: none
+  movers out: none
+2026-09-01
+  OLD eligible 2812, traded 2811, up 821, down 1841; ran 50% 0, gave back 0, kept half 0; no close 2, split 1
+  NEW eligible 2831, traded 2830, up 827, down 1854; ran 50% 0, gave back 0, kept half 0; no close 2, split 1
+  movers in: none
+  movers out: none
+2026-09-02
+  OLD eligible 2796, traded 2792, up 1655, down 983; ran 50% 0, gave back 0, kept half 0; no close 2, split 0
+  NEW eligible 2823, traded 2819, up 1672, down 993; ran 50% 0, gave back 0, kept half 0; no close 2, split 0
+  movers in: none
+  movers out: none
+2026-09-03
+  OLD eligible 2767, traded 2764, up 1350, down 1232; ran 50% 0, gave back 0, kept half 0; no close 0, split 0
+  NEW eligible 2794, traded 2791, up 1365, down 1244; ran 50% 0, gave back 0, kept half 0; no close 0, split 0
+  movers in: none
+  movers out: none
+2026-09-04
+  OLD eligible 2778, traded 2775, up 1399, down 1192; ran 50% 0, gave back 0, kept half 0; no close 2, split 0
+  NEW eligible 2793, traded 2790, up 1406, down 1200; ran 50% 0, gave back 0, kept half 0; no close 2, split 0
+  movers in: none
+  movers out: none
+2026-09-08
+  OLD eligible 2795, traded 2795, up 988, down 1675; ran 50% 0, gave back 0, kept half 0; no close 6, split 8
+  NEW eligible 2814, traded 2814, up 992, down 1690; ran 50% 0, gave back 0, kept half 0; no close 6, split 8
+  movers in: none
+  movers out: none
+2026-09-09
+  OLD eligible 2790, traded 2788, up 720, down 1928; ran 50% 5, gave back 0, kept half 3; no close 0, split 0
+  NEW eligible 2808, traded 2806, up 724, down 1942; ran 50% 5, gave back 0, kept half 3; no close 0, split 0
+  movers in: none
+  movers out: none
+2026-09-10
+  OLD eligible 2812, traded 2811, up 854, down 1794; ran 50% 3, gave back 0, kept half 3; no close 6, split 0
+  NEW eligible 2837, traded 2836, up 860, down 1813; ran 50% 3, gave back 0, kept half 3; no close 6, split 0
+  movers in: none
+  movers out: none
+2026-09-11
+  OLD eligible 2787, traded 2785, up 1353, down 1265; ran 50% 9, gave back 1, kept half 4; no close 2, split 0
+  NEW eligible 2802, traded 2800, up 1362, down 1271; ran 50% 9, gave back 1, kept half 4; no close 2, split 0
+  movers in: none
+  movers out: none
+2026-09-14
+  OLD eligible 2850, traded 2848, up 1193, down 1474; ran 50% 4, gave back 0, kept half 4; no close 1, split 0
+  NEW eligible 2869, traded 2867, up 1199, down 1487; ran 50% 5, gave back 0, kept half 5; no close 1, split 0
+  movers in: ELMT 16.19->25.03->21.5 kept half
+  movers out: none
+2026-09-15
+  OLD eligible 2827, traded 2824, up 813, down 1851; ran 50% 7, gave back 0, kept half 4; no close 4, split 1
+  NEW eligible 2854, traded 2851, up 820, down 1871; ran 50% 7, gave back 0, kept half 4; no close 4, split 1
+  movers in: none
+  movers out: none
+2026-09-16
+  OLD eligible 2812, traded 2806, up 968, down 1646; ran 50% 12, gave back 1, kept half 3; no close 4, split 0
+  NEW eligible 2834, traded 2828, up 973, down 1663; ran 50% 12, gave back 1, kept half 3; no close 4, split 0
+  movers in: none
+  movers out: none
+2026-09-17
+  OLD eligible 2832, traded 2832, up 1739, down 925; ran 50% 13, gave back 0, kept half 6; no close 3, split 0
+  NEW eligible 2858, traded 2858, up 1755, down 935; ran 50% 13, gave back 0, kept half 6; no close 3, split 0
+  movers in: none
+  movers out: none
+2026-09-18
+  OLD eligible 2829, traded 2820, up 1091, down 1558; ran 50% 7, gave back 0, kept half 3; no close 1, split 0
+  NEW eligible 2845, traded 2836, up 1098, down 1567; ran 50% 7, gave back 0, kept half 3; no close 1, split 0
+  movers in: none
+  movers out: none
+2026-09-21
+  OLD eligible 2839, traded 2836, up 1467, down 1217; ran 50% 8, gave back 0, kept half 6; no close 1, split 0
+  NEW eligible 2861, traded 2858, up 1476, down 1230; ran 50% 8, gave back 0, kept half 6; no close 1, split 0
+  movers in: none
+  movers out: none
+2026-09-22
+  OLD eligible 2833, traded 2832, up 1570, down 1087; ran 50% 7, gave back 0, kept half 3; no close 5, split 0
+  NEW eligible 2850, traded 2849, up 1580, down 1094; ran 50% 8, gave back 0, kept half 4; no close 5, split 0
+  movers in: JAGX 2.67->41.53->34.46 kept half
+  movers out: none
+2026-09-23
+  OLD eligible 2868, traded 2865, up 639, down 2090; ran 50% 11, gave back 1, kept half 2; no close 3, split 0
+  NEW eligible 2885, traded 2882, up 641, down 2105; ran 50% 11, gave back 1, kept half 2; no close 3, split 0
+  movers in: none
+  movers out: none
+2026-09-24
+  OLD eligible 2873, traded 2872, up 1068, down 1620; ran 50% 15, gave back 1, kept half 6; no close 3, split 0
+  NEW eligible 2888, traded 2887, up 1072, down 1631; ran 50% 16, gave back 1, kept half 7; no close 3, split 0
+  movers in: SRZN 16.16->35.86->33.68 kept half
+  movers out: none
+2026-09-25
+  OLD eligible 2853, traded 2850, up 1217, down 1426; ran 50% 15, gave back 0, kept half 6; no close 5, split 0
+  NEW eligible 2875, traded 2872, up 1224, down 1441; ran 50% 15, gave back 0, kept half 6; no close 5, split 0
+  movers in: none
+  movers out: none
+2026-09-28
+  OLD eligible 2848, traded 2844, up 838, down 1857; ran 50% 6, gave back 1, kept half 4; no close 5, split 0
+  NEW eligible 2873, traded 2869, up 848, down 1872; ran 50% 6, gave back 1, kept half 4; no close 5, split 0
+  movers in: none
+  movers out: none
+2026-09-29
+  OLD eligible 2851, traded 2848, up 1160, down 1518; ran 50% 9, gave back 0, kept half 3; no close 3, split 0
+  NEW eligible 2883, traded 2880, up 1168, down 1542; ran 50% 9, gave back 0, kept half 3; no close 3, split 0
+  movers in: none
+  movers out: none
+2026-09-30
+  OLD eligible 2876, traded 2870, up 1118, down 1592; ran 50% 13, gave back 3, kept half 4; no close 6, split 0
+  NEW eligible 2892, traded 2886, up 1124, down 1602; ran 50% 13, gave back 3, kept half 4; no close 6, split 0
+  movers in: none
+  movers out: none
+2026-10-01
+  OLD eligible 2867, traded 2861, up 1130, down 1560; ran 50% 8, gave back 0, kept half 4; no close 67, split 0
+  NEW eligible 2903, traded 2897, up 1144, down 1582; ran 50% 9, gave back 0, kept half 5; no close 67, split 0
+  movers in: RPGL 16.39->26.37->26.2 kept half
+  movers out: none
+2026-10-02
+  OLD eligible 2882, traded 2881, up 1406, down 1304; ran 50% 6, gave back 0, kept half 5; no close 7, split 0
+  NEW eligible 2902, traded 2901, up 1415, down 1315; ran 50% 6, gave back 0, kept half 5; no close 7, split 0
+  movers in: none
+  movers out: none
+2026-10-05
+  OLD eligible 2851, traded 2848, up 1287, down 1419; ran 50% 9, gave back 0, kept half 5; no close 2, split 0
+  NEW eligible 2887, traded 2884, up 1302, down 1440; ran 50% 9, gave back 0, kept half 5; no close 3, split 0
+  movers in: none
+  movers out: none
+2026-10-06
+  OLD eligible 2841, traded 2838, up 1247, down 1419; ran 50% 11, gave back 0, kept half 5; no close 8, split 0
+  NEW eligible 2865, traded 2862, up 1256, down 1434; ran 50% 11, gave back 0, kept half 5; no close 8, split 0
+  movers in: none
+  movers out: none
+
+store A:/mointel/data/slim-2026-10-14.db: 2 dates with official closes
+2026-10-13
+  OLD eligible 2822, traded 2818, up 1004, down 1669; ran 50% 0, gave back 0, kept half 0; no close 5, split 0
+  NEW eligible 2854, traded 2850, up 1012, down 1693; ran 50% 0, gave back 0, kept half 0; no close 5, split 0
+  movers in: none
+  movers out: none
+2026-10-14
+  OLD eligible 2830, traded 2821, up 523, down 2156; ran 50% 7, gave back 0, kept half 1; no close 2, split 0
+  NEW eligible 2868, traded 2859, up 527, down 2190; ran 50% 8, gave back 1, kept half 1; no close 2, split 0
+  movers in: WFF 2.12->3.43->0.175 GAVE BACK
+  movers out: none
+
