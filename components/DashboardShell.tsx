@@ -211,11 +211,20 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
    * that — a name sliding from #3 to #80 is when a trader most wants it in
    * front of them.
    */
+  /*
+   * AND THE OPEN TICKER (L19, 2026-10-16). A name opened from a report or a recap snapshot that is off today's board
+   * (DRMA, the 22:00 recap's #1, trades under $1) had no market row, so the dossier never opened: the selected
+   * ticker reached the research feed (`openTickers`) but not this one.
+   */
   const sheetSymbols = useMemo(
     () => [
-      ...new Set([...(data?.tickers ?? []).map((ticker) => ticker.ticker), ...focus.tickers]),
+      ...new Set([
+        ...(data?.tickers ?? []).map((ticker) => ticker.ticker),
+        ...focus.tickers,
+        ...(selectedTicker ? [selectedTicker] : []),
+      ]),
     ],
-    [data, focus.tickers],
+    [data, focus.tickers, selectedTicker],
   );
   /*
    * The viewer's board range, remembered in this browser only (a per-viewer
@@ -633,7 +642,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
             rangePending={market.rangePending}
           />
         ) : (
-          <AssessmentSnapshotBoard key={selectedAssessment} id={selectedAssessment} />
+          <AssessmentSnapshotBoard key={selectedAssessment} id={selectedAssessment} onSelectTicker={setSelectedTicker} />
         )}
 
         {/*
