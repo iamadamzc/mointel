@@ -18,6 +18,7 @@ import {
 } from '../../market/store/researchRepo';
 import type { CikConfidence, NewResearchSource } from '../types';
 import { hashContent } from '../fingerprint';
+import { filingAcceptance } from './acceptance';
 import { SecClient, SecRequestError } from './client';
 import { companyFactsUrl, latestSharesOutstanding, type CompanyFactsResponse } from './companyFacts';
 import { extractEvidence, htmlToText, type EvidenceConcept } from './documents';
@@ -236,15 +237,24 @@ export async function collectSecEvidence(
     lastVerifiedAt: new Date().toISOString(),
   });
 
+  const known = readKnownAccessions(db, ticker);
+
   // Record the submissions document itself as a source, so the filing history
-  // a conclusion rested on is auditable.
+  // a conclusion rested on is auditable. Its time is the newest filing's
+  // acceptance FROM THAT FILING'S HEADER (acceptance.ts), never the JSON's. The
+  // row is keyed by CIK (`submissions:{cik}`), so it is stored once, on a
+  // ticker's first collection, and only then is the header read; later inserts
+  // are ignored, and a failed read leaves the filing date with UNKNOWN precision.
+  const newestFiling = profile.filings[0] ?? null;
+  const submissionsAcceptance =
+    newestFiling && known.size === 0 ? await filingAcceptance(client, resolution.cik, newestFiling.accession) : null;
   const submissionsSource: NewResearchSource = {
     ticker,
     sourceType: 'SEC_SUBMISSIONS',
     title: `${profile.name ?? ticker} filing history`,
     url: submissionsUrl(resolution.cik),
-    publishedAt:
-      profile.filings[0]?.acceptanceDateTime ?? profile.filings[0]?.filingDate ?? null,
+    publishedAt: submissionsAcceptance ?? newestFiling?.filingDate ?? null,
+    ...(submissionsAcceptance ? { publishedPrecision: 'EXACT' as const } : {}),
     fetchedAt: new Date().toISOString(),
     accession: null,
     secForm: null,
@@ -284,7 +294,6 @@ export async function collectSecEvidence(
     }
   }
 
-  const known = readKnownAccessions(db, ticker);
   report.newAccessions = selection.selected
     .filter((filing) => !known.has(filing.accession))
     .map((filing) => filing.accession);
@@ -292,7 +301,7 @@ export async function collectSecEvidence(
   const sources: NewResearchSource[] = [submissionsSource];
 
   for (const filing of selection.selected) {
-    const collected = await collectFiling(client, ticker, resolution.cik, filing);
+    const collected = await collectFiling(client, ticker, resolution.cik, filing, known);
     report.collected.push(collected.summary);
     if (collected.source) {
       sources.push(collected.source);
@@ -381,6 +390,8 @@ async function collectFiling(
   ticker: string,
   cik: string,
   filing: Filing,
+  /** Accessions already stored for this ticker: their insert is ignored, so their header is not read. */
+  known: ReadonlySet<string> = new Set(),
 ): Promise<{ summary: CollectedFiling; source: NewResearchSource | null }> {
   const url = filingDocumentUrl(cik, filing) ?? filingIndexUrl(cik, filing);
 
@@ -411,6 +422,10 @@ async function collectFiling(
     summary.excerptChars = evidence.excerpt.length;
     summary.fullLength = evidence.fullLength;
     summary.fallback = evidence.fallback;
+
+    // The acceptance instant from the filing's own header (acceptance.ts), read only for a NEW accession: a known
+    // one's row is already stored and this insert is ignored (unique ticker + document fingerprint).
+    const acceptance = known.has(filing.accession) ? null : await filingAcceptance(client, cik, filing.accession);
 
     return {
       summary,
@@ -448,9 +463,14 @@ async function collectFiling(
          * discriminator — partition on it, and never compare a rate across the
          * boundary without doing so, or the series shows filings acquiring
          * times that they always had.
+         *
+         * SINCE 2026-10-16 THE INSTANT IS THE FILING HEADER'S, NOT THE
+         * SUBMISSIONS JSON'S (acceptance.ts): the JSON was off by 4-5 h for 858
+         * of 10,446 stored rows. A failed header read stores the filing date
+         * with UNKNOWN precision, as before the boundary, never the JSON value.
          */
-        publishedAt: filing.acceptanceDateTime ?? filing.filingDate,
-        ...(filing.acceptanceDateTime ? { publishedPrecision: 'EXACT' as const } : {}),
+        publishedAt: acceptance ?? filing.filingDate,
+        ...(acceptance ? { publishedPrecision: 'EXACT' as const } : {}),
         fetchedAt: new Date().toISOString(),
         accession: filing.accession,
         secForm: filing.form,
