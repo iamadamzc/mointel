@@ -12,7 +12,7 @@ const line = (ticker: string | null, text = `${ticker} line`) => ({ ticker, text
 describe('computed section headings', () => {
   it('the six headings, in order, are the passed words (Marketing 3025f5ee, Commercial read 32a 9acd8adf)', () => {
     expect(SECTION_ORDER.map((s) => [s.key, s.label])).toEqual([
-      ['FRESH_FOUND', 'FRESH NEWS FOUND'],
+      ['FRESH_FOUND', 'RECENT NEWS FOUND'], // his yes to 'recent news' (Marketing 7266c0d7, Commercial read 148)
       ['CONFLICTING', 'SOURCES CONFLICT'],
       ['SECONDARY_STALE', 'OLDER OR SECONDARY NEWS'],
       ['NONE_FOUND', 'NO CATALYST FOUND IN OUR SOURCES'],
@@ -43,7 +43,7 @@ describe('computed section headings', () => {
     ]);
     const out = computedSections(written, research);
     expect(out.map((s) => [s.heading, s.lines.map((l) => l.ticker)])).toEqual([
-      ['FRESH NEWS FOUND', ['LGHL', 'NEWB']],
+      ['RECENT NEWS FOUND', ['LGHL', 'NEWB']],
       ['OLDER OR SECONDARY NEWS', ['GOW', 'CMCT']],
       ['NOT RESEARCHED AT THIS CHECKPOINT', ['ZZZ']],
     ]);

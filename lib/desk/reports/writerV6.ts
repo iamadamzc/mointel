@@ -56,8 +56,10 @@ import { dayWords, STATUS_WORDS, type WriterInputV5 } from './writerV5';
  * avoid what the checker allows. 16: a NAMED analyst's or firm's rating change may be stated as that firm's view (his
  * yes fbafcf83, 2026-10-13; Commercial read 88 (5)), the shape the checker now admits (`check.ts` ANALYST_RATING_CHANGE);
  * and the older rule is qualified to a rating "with no firm named" (Commercial read 90, REQUIRED; still 16, which never ran).
+ * 17: the FRESH_FOUND group is "recent news": its news words, the sheet's count line and the recap's count sentence
+ * ("had recent news in our sources") (his "b" and his "yes" to the exact strings (Integration chat uuid 2c3c548c; Research chat uuid ba8a0b2f, 2026-10-16), Marketing 7266c0d7, Commercial read 148).
  */
-export const REPORT_WRITER_PROMPT_VERSION_V6 = 16;
+export const REPORT_WRITER_PROMPT_VERSION_V6 = 17;
 
 export interface WriterInputV6 extends WriterInputV5 {
   narrative: NarrativeFacts;
@@ -98,7 +100,7 @@ function movedWords(exact: number): string {
 }
 
 const NEWS_WORDS: Record<string, string> = {
-  FRESH_FOUND: 'fresh news found in our sources',
+  FRESH_FOUND: 'recent news found in our sources',
   SECONDARY_STALE: 'only older or secondary news in our sources',
   NONE_FOUND: 'no catalyst found in our sources',
   CONFLICTING: 'sources that conflict',
@@ -143,7 +145,7 @@ function recapSheet(facts: NarrativeFacts): string[] {
       `after the close (from the 16:00 close to the last after-hours print; ALWAYS say "after the close" or "after hours", never mix it with the day's figures): ${a.ticker}, ${movedWords(a.percentChange)}`,
     );
   }
-  lines.push(`fresh news in our sources: ${n(facts.fresh.count)} of the ${n(facts.fresh.covered)} names the desk covers`);
+  lines.push(`recent news in our sources: ${n(facts.fresh.count)} of the ${n(facts.fresh.covered)} names the desk covers`);
   return lines;
 }
 
@@ -157,7 +159,7 @@ function intradaySheet(facts: NarrativeFacts): string[] {
     lines.push(`${label}: ${m.ticker}, ${movedWords(m.percentChange)} ${basisWords(m.basis)}; ${namedClauses(m)}`);
     if (m.changeNotes.length > 0) lines.push(`since the previous checkpoint, ${m.ticker}: ${m.changeNotes.join('; ')}`);
   }
-  lines.push(`fresh news in our sources: ${n(facts.fresh.count)} of the ${n(facts.fresh.covered)} names the desk covers`);
+  lines.push(`recent news in our sources: ${n(facts.fresh.count)} of the ${n(facts.fresh.covered)} names the desk covers`);
   return lines;
 }
 
@@ -183,8 +185,8 @@ const NARRATIVE_RULES = [
   '- A move and its news sit side by side, never cause and effect: join them with "with" ("{ticker}, up {percent} percent from the prior close, with {the news words given for that name}"), never "after", "on", "following", "amid", "due to", "in response to", "in the wake of" or "on the back of" between a move and its news (the frames "after the close" and "after hours" are not this).',
   '- Every percent move carries its frame in the same sentence: "from the prior close" or "above the prior close"; an after-hours move "after the close" or "after hours". When a sentence states two moves, each carries its own frame.',
   '- No adjective the facts do not define ("busy", "quiet", "hot", "strong"). No forecast: support, resistance and supply are described, never "will hold", "should break" or "expect".',
-  '- LENGTH AND ORDER. Intraday report: at most three short sentences, the leader first. Recap report (evening and premarket): at most FOUR sentences, in this order, each sentence one group of facts: (1) the 50 percent movers with retention, in one sentence ("Among the counted names, {n} ran at least 50 percent above the prior close, and {k} of them kept at least half of the peak gain at the close"; the give-back count may join the same sentence; never the price range, which the header carries); with zero 50 percent movers, write exactly "Among the counted names, none ran at least 50 percent above the prior close." and leave out sentence 2; (2) the named movers, in one sentence, each joined to its news by "with", never causal: "The two covered 50 percent movers with the highest peaks were {T1}, with {state1}, and {T2}, with {state2}." (one named mover: "The covered 50 percent mover with the highest peak was {T1}, with {state1}."), where each state is that name\'s OWN news as given: fresh news found: "fresh news found in our sources: {the catalyst in one short clause}"; no catalyst found: "no catalyst found in our sources"; only older or secondary news: "only older or secondary news in our sources"; the sources conflict: "sources that conflict"; the research could not tell: "research that could not tell"; not researched yet: "no research at this checkpoint". The sentence says nothing about any mover it does not name; never "biggest", "largest" or "top"; (3) the after-hours name, as its own sentence and about the after-hours move only, in the form "After the close, {TICKER} added {P} percent." with no news, no cycle and no other clause; (4) the fresh count over the covered names, as the sheet gives the pair: "{N} of the {M} names the desk covers had fresh news in our sources." (zero: "None of the names the desk covers had fresh news we could find."; one: "One of the {M} names the desk covers had fresh news in our sources."). Leave out a sentence whose facts are not given. Never pad, never add a fifth sentence, never list the covered names.',
-  '- Intraday: each named name gets its move, its news state in the words the sheet uses, and nothing else about that name (no cycle label, no change note; the cards carry them), except one catalyst clause of twelve words at most, and only when the news state is fresh news found. For every other news state, give the state and nothing more: never restate older or secondary news, and never describe a catalyst the sheet does not give as fresh.',
+  '- LENGTH AND ORDER. Intraday report: at most three short sentences, the leader first. Recap report (evening and premarket): at most FOUR sentences, in this order, each sentence one group of facts: (1) the 50 percent movers with retention, in one sentence ("Among the counted names, {n} ran at least 50 percent above the prior close, and {k} of them kept at least half of the peak gain at the close"; the give-back count may join the same sentence; never the price range, which the header carries); with zero 50 percent movers, write exactly "Among the counted names, none ran at least 50 percent above the prior close." and leave out sentence 2; (2) the named movers, in one sentence, each joined to its news by "with", never causal: "The two covered 50 percent movers with the highest peaks were {T1}, with {state1}, and {T2}, with {state2}." (one named mover: "The covered 50 percent mover with the highest peak was {T1}, with {state1}."), where each state is that name\'s OWN news as given: recent news found: "recent news found in our sources: {the catalyst in one short clause}"; no catalyst found: "no catalyst found in our sources"; only older or secondary news: "only older or secondary news in our sources"; the sources conflict: "sources that conflict"; the research could not tell: "research that could not tell"; not researched yet: "no research at this checkpoint". The sentence says nothing about any mover it does not name; never "biggest", "largest" or "top"; (3) the after-hours name, as its own sentence and about the after-hours move only, in the form "After the close, {TICKER} added {P} percent." with no news, no cycle and no other clause; (4) the recent-news count over the covered names, as the sheet gives the pair: "{N} of the {M} names the desk covers had recent news in our sources." (zero: "None of the names the desk covers had recent news we could find."; one: "One of the {M} names the desk covers had recent news in our sources."). Leave out a sentence whose facts are not given. Never pad, never add a fifth sentence, never list the covered names.',
+  '- Intraday: each named name gets its move, its news state in the words the sheet uses, and nothing else about that name (no cycle label, no change note; the cards carry them), except one catalyst clause of twelve words at most, and only when the news state is recent news found. For every other news state, give the state and nothing more: never restate older or secondary news, and never describe a catalyst the sheet does not give as recent.',
   '- When a count is zero, say so plainly ("none of them gave the entire move back") and drop the clause that depends on it. Number agreement throughout.',
 ];
 

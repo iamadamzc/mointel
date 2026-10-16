@@ -21,9 +21,9 @@ describe('the v5 models, built one way for the runner and every harness', () => 
     expect(w!.text.format.name).toBe('report_draft_v5');
     expect(w!.text.format.schema.required).toEqual(['overall', 'sections']);
     expect(JSON.stringify(w!.text.format.schema)).not.toContain('headline');
-    expect(w!.metadata).toEqual({ report_draft_v5_prompt_version: '5' });
+    expect(w!.metadata).toEqual({ report_draft_v5_prompt_version: '6' });
     expect(c!.model).toBe('c');
-    expect(c!.metadata).toEqual({ report_verdicts_prompt_version: '3' });
+    expect(c!.metadata).toEqual({ report_verdicts_prompt_version: '4' });
   });
 
   it('a reply the v5 schema admits is a reply parseDraftV5 accepts', () => {
@@ -50,9 +50,9 @@ describe('the v6 models', () => {
     expect(w!.text.format.name).toBe('report_draft_v6');
     expect(w!.text.format.schema.required).toEqual(['narrative', 'lines']);
     expect(JSON.stringify(w!.text.format.schema)).not.toMatch(/heading|overall/);
-    expect(w!.metadata).toEqual({ report_draft_v6_prompt_version: '16' });
+    expect(w!.metadata).toEqual({ report_draft_v6_prompt_version: '17' });
     // 18: the research times the checker is shown read as the writer and the rules read them (report 50's WETO date).
-    expect(c!.metadata).toEqual({ report_verdicts_prompt_version: '18' });
+    expect(c!.metadata).toEqual({ report_verdicts_prompt_version: '19' });
     // v6 13: the v6 checker asks for read 82's answers in its schema.
     expect(c!.text.format.schema.required).toEqual(['verdicts']);
     expect(JSON.stringify(c!.text.format.schema)).toContain('"leansOnAnother"');

@@ -22,7 +22,7 @@ import type { ReportResearch } from './research';
  * (9acd8adf; read 32, 6879deab, required three of them).
  */
 export const SECTION_ORDER = [
-  { key: 'FRESH_FOUND', label: 'FRESH NEWS FOUND' },
+  { key: 'FRESH_FOUND', label: 'RECENT NEWS FOUND' },
   { key: 'CONFLICTING', label: 'SOURCES CONFLICT' },
   { key: 'SECONDARY_STALE', label: 'OLDER OR SECONDARY NEWS' },
   { key: 'NONE_FOUND', label: 'NO CATALYST FOUND IN OUR SOURCES' },

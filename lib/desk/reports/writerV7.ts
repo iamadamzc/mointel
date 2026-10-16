@@ -59,8 +59,11 @@ import { parseDraftV6, wholePercent, type WriterInputV6 } from './writerV6';
  * only for a name the Summary names, with no added name or price level (five of its six struck Summaries); and "our
  * sources", never the desk's own words for its material (the bundle, supplied, excerpts, SEC-only coverage) in a
  * published line, keeping the disclosure as "company filings only". Marketing c8de2a3f, Commercial read 140a, VERBATIM.
+ * 14: the FRESH_FOUND group is "recent news" (the report section is RECENT NEWS FOUND): the state words, the Summary
+ * sheet's catalyst line and count line, the two Summary lines that name the count, the joining example, and the
+ * specimen's two sentences (his "b" and his "yes" to the exact strings (Integration chat uuid 2c3c548c; Research chat uuid ba8a0b2f, 2026-10-16), Marketing 7266c0d7, Commercial read 148).
  */
-export const REPORT_WRITER_PROMPT_VERSION_V7 = 13;
+export const REPORT_WRITER_PROMPT_VERSION_V7 = 14;
 
 export type WriterInputV7 = WriterInputV6;
 
@@ -77,8 +80,8 @@ export const RULED_STATE_PHRASES = {
 
 /** A name's news state as a FACT for the sheet: what the research found, never the sentence to write. */
 const NEWS_STATE: Record<string, string> = {
-  FRESH_FOUND: 'fresh: our sources found a fresh catalyst',
-  SECONDARY_STALE: 'older or secondary: our sources found only older or secondary news, not a fresh catalyst',
+  FRESH_FOUND: 'recent: our sources found recent news',
+  SECONDARY_STALE: 'older or secondary: our sources found only older or secondary news',
   NONE_FOUND: 'none found: use the ruled phrase for no catalyst',
   CONFLICTING: 'conflicting: the sources found conflict with each other',
   UNKNOWN: 'no conclusion: use the ruled phrase for no conclusion',
@@ -92,7 +95,7 @@ function newsState(status: string | null): string {
 /** A named mover's news for the Summary sheet: its state and, for fresh news only, the catalyst to restate. */
 function namedNews(name: { status: string | null; summary: string | null }): string {
   const state = `news state: ${newsState(name.status)}`;
-  return name.status === 'FRESH_FOUND' && name.summary ? `${state}; the fresh catalyst (restate briefly, never quote): ${name.summary}` : state;
+  return name.status === 'FRESH_FOUND' && name.summary ? `${state}; the recent news (restate briefly, never quote): ${name.summary}` : state;
 }
 
 const signed = (exact: number) => `${exact < 0 ? 'down' : 'up'} ${wholePercent(exact)} percent`;
@@ -124,7 +127,7 @@ export function narrativeSheetV7(facts: NarrativeFacts): string[] {
       if (m.changeNotes.length > 0) lines.push(`since the previous checkpoint, ${m.ticker}: ${m.changeNotes.join('; ')}`);
     }
   }
-  lines.push(`names the desk covers that had fresh news in our sources: ${facts.fresh.count} of ${facts.fresh.covered}`);
+  lines.push(`names the desk covers that had recent news in our sources: ${facts.fresh.count} of ${facts.fresh.covered}`);
   return lines;
 }
 
@@ -199,7 +202,7 @@ export const VOICE_PARAGRAPH = [
  * a state phrase, so a model would repeat it on every fresh name). One example of the voice, not a template.
  */
 export const VOICE_SPECIMEN = [
-  `Summary. MI ranked first in this range, up 806 percent from the prior close, and the only news in our sources was older or secondary. QTEX was up 44 percent from the prior close with the same kind of news. ALEC, up 20 percent from the prior close, had fresh news in our sources: a license agreement with Genentech for certain GCase candidates. Of the 12 names the desk covers, 2 had fresh news in our sources.`,
+  `Summary. MI ranked first in this range, up 806 percent from the prior close, and the only news in our sources was older or secondary. QTEX was up 44 percent from the prior close with the same kind of news. ALEC, up 20 percent from the prior close, had recent news in our sources: a license agreement with Genentech for certain GCase candidates. Of the 12 names the desk covers, 2 had recent news in our sources.`,
   `ALEC. On October 5, Alector disclosed a September 30 license agreement with Genentech for certain GCase candidates: Genentech leads development and commercialization, Alector keeps its Brain Carrier platform and wholly owned pipeline, and the company said the deal extends its cash runway into 2029. No upfront, milestone or deal-value terms were given.`,
   `MI. The news in our sources was older. On September 30, NFT Limited agreed to a private placement of 80,000,000 Class A shares at $0.45, about $36 million, and nothing in our evidence showed it closed. Our evidence had no company event dated October 5.`,
   `QTEX. The latest news we found was from October 1: QTREX said an unnamed quantum-computing company had tested its interconnect at 20 mK and measured more than 100 dB channel isolation, and that it was finalizing a binding agreement with that company. None was reported as signed.`,
@@ -217,12 +220,12 @@ export const SYSTEM_V7 = [
   'You write a short session report: a Summary of the session and one line per name.',
   '',
   'THE SUMMARY ("narrative") must include, in whatever order reads best, in a few sentences, only what the narrative facts give:',
-  '- On the evening recaps: how many counted names ran at least 50 percent above the prior close and how many of them kept at least half of the peak gain (or, if none ran, that none did); the named movers, each called a covered 50 percent mover (never the highest peaks among all movers), each with its own news; the after-hours name and its move, about that move only; and how many of the names the desk covers had fresh news in our sources.',
-  '- Intraday: the name ranked first in this range (it may be down) and the next named gainers, each with its move and its own news; and how many of the names the desk covers had fresh news in our sources.',
+  '- On the evening recaps: how many counted names ran at least 50 percent above the prior close and how many of them kept at least half of the peak gain (or, if none ran, that none did); the named movers, each called a covered 50 percent mover (never the highest peaks among all movers), each with its own news; the after-hours name and its move, about that move only; and how many of the names the desk covers had recent news in our sources.',
+  '- Intraday: the name ranked first in this range (it may be down) and the next named gainers, each with its move and its own news; and how many of the names the desk covers had recent news in our sources.',
   "- Never use a report label from the facts, such as \"Intraday\", in the Summary, and do not say when the report was written: the report's header says it.",
   "- A change note is restated once, in the facts' own words, and nothing is added to it: no time, and no 'when' clause.",
   "- A change note is restated only for a name the Summary names; never add a name or a price level the narrative facts do not carry.",
-  "- Join a move to its news with \"with\" (\"up 20 percent from the prior close, with fresh news in our sources\"), never with a word that says one caused the other.",
+  "- Join a move to its news with \"with\" (\"up 20 percent from the prior close, with recent news in our sources\"), never with a word that says one caused the other.",
   '- For a name the Summary mentions, you may restate its own news (what happened, with the dates and figures in its own research in the NAMES section). Never put one name\'s facts on another, and never mention a name the narrative facts do not name.',
   '- Name only the tickers the narrative facts name. Use the given numbers exactly; every percent carries its frame in the same clause ("from the prior close", "above the prior close", "after the close"). A count goes with "ran at least 50 percent" and "gave the entire move back" whenever you use those phrases.',
   '',

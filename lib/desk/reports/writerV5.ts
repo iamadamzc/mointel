@@ -43,8 +43,11 @@ import {
   type WriterResult,
 } from './writer';
 
-/** Bumped whenever `SYSTEM_V5`, the sheet's wording or the reply shape changes. */
-export const REPORT_WRITER_PROMPT_VERSION_V5 = 5;
+/**
+ * Bumped whenever `SYSTEM_V5`, the sheet's wording or the reply shape changes.
+ * 6: FRESH_FOUND's words are "recent news was found in our sources"; SECONDARY_STALE's lose "not a fresh catalyst" (his "b" and his "yes" to the exact strings (Integration chat uuid 2c3c548c; Research chat uuid ba8a0b2f, 2026-10-16), Marketing 7266c0d7, Commercial read 148).
+ */
+export const REPORT_WRITER_PROMPT_VERSION_V5 = 6;
 
 export interface WriterInputV5 extends WriterInput {
   /** Each name's research as of the checkpoint, by ticker. A missing name has none. */
@@ -90,8 +93,8 @@ const shares = (count: number) => Math.round(count).toLocaleString('en-US');
  * checker could not map (SDEV).
  */
 export const STATUS_WORDS: Record<string, string> = {
-  FRESH_FOUND: 'a fresh catalyst was found in our sources',
-  SECONDARY_STALE: 'only older or secondary news was found in our sources (say it is not a fresh catalyst)',
+  FRESH_FOUND: 'recent news was found in our sources',
+  SECONDARY_STALE: 'only older or secondary news was found in our sources',
   NONE_FOUND: 'no catalyst found in our sources (say exactly this)',
   CONFLICTING: 'the sources found conflict with each other',
   UNKNOWN: 'the analysis reached no conclusion about a catalyst (never say that none was found)',
