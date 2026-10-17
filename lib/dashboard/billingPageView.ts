@@ -30,6 +30,8 @@ export const BILLING_PAGE_WORDS = {
   dailyName: 'Daily',
   dailyPrice: '$5.50 a day',
   nextChargeDaily: 'The next paid day you sign in on',
+  // Marketing f4cb40a6, Commercial read 164a PASS (0c2ca99d): a Daily account with no card is charged nothing next.
+  nextChargeDailyNoCard: 'None. There is no card on file.',
   renews: (date: string) => `${date}, at the price then in force`,
   cancelledEnds: (time: string) => `Ends ${time}. It will not renew.`,
   cancelPlan: 'Cancel plan',
@@ -133,7 +135,8 @@ export function billingPageView(state: DeskBillingState, paidThroughDaily: strin
       { label: W.rowPlan, value: W.dailyName },
       { label: W.rowPrice, value: W.dailyPrice },
       ...(paidThrough ? [{ label: W.rowPaidThrough, value: paidThrough }] : []),
-      { label: W.rowNextCharge, value: W.nextChargeDaily },
+      // The row stays without a card, so the page still answers "will I be charged" in the same place.
+      { label: W.rowNextCharge, value: state.cardOnFile ? W.nextChargeDaily : W.nextChargeDailyNoCard },
     ],
     canCancel: false,
     canRemoveCard: state.cardOnFile,

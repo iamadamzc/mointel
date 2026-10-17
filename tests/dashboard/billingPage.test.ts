@@ -52,6 +52,29 @@ describe('the billing page', () => {
     // With no daily paid-through from Billing, the row is left out rather than guessed.
     expect(billingPageView(base(), null).rows.map((r) => r.label)).not.toContain('Paid through');
   });
+
+  it('daily with no card on file: the Next charge row stays and says none (Marketing f4cb40a6, read 164a)', () => {
+    const v = billingPageView(base({ cardOnFile: false }), '2026-10-20T00:00:00.000Z');
+    expect(v.rows).toEqual([
+      { label: 'Plan', value: 'Daily' },
+      { label: 'Price', value: '$5.50 a day' },
+      { label: 'Paid through', value: '8:00pm ET on Monday, October 19' },
+      { label: 'Next charge', value: 'None. There is no card on file.' },
+    ]);
+    expect(v.canRemoveCard).toBe(false);
+    expect(v.removeCardLine).toBeNull();
+    // With no paid-through either, the row is still kept, not omitted.
+    expect(billingPageView(base({ cardOnFile: false }), null).rows.at(-1)).toEqual({ label: 'Next charge', value: 'None. There is no card on file.' });
+  });
+
+  it('the no-card words reach only the daily Next charge row', () => {
+    // A card on file keeps the approved words.
+    expect(billingPageView(base({ cardOnFile: true }), null).rows.at(-1)).toEqual({ label: 'Next charge', value: 'The next paid day you sign in on' });
+    // A cancelled plan with its card removed has no Next charge row at all.
+    const p = billingPageView(base({ cardOnFile: false, plan: plan({ cancelAtPeriodEnd: true, renewsOn: null, endsOn: '2026-11-17T01:00:00.000Z' }) }), null);
+    expect(p.rows.map((r) => r.label)).not.toContain('Next charge');
+    expect(p.rows.map((r) => r.value)).not.toContain(W.nextChargeDailyNoCard);
+  });
 });
 
 describe('the confirmations (section 5)', () => {
