@@ -47,6 +47,17 @@ True on a weekend too: Checkout charges the $5.50 then, for Monday. So the close
 - The hero line "$5.50 for each day you sign in" is still true; a Saturday sign-in is a charged day now. The break-evens in read 162 are unchanged: one charge per trading day at most.
 - Anything that says the weekend is free, a closed-day sign-in costs nothing, or a paid day is "8:00pm ET to 8:00pm ET" is now false.
 
+## 5a. A plan whose period ends on a closed day (Billing's answer, fold build `c4466bfc`, `lib/billing/store.ts` line 400)
+
+Billing: the renewal is charged at the period end (a Saturday, say); the old period's access shows to the next trading day's 8:00pm ET (Monday); coverage is one date per plan, the later of the old and new, so the weekend is paid once and the new period is not shortened. Example from the code: bought Wednesday 2026-10-14 10:00am ET, period 1 ends Saturday 11-14 and is covered through Monday 11-16; period 2 ends Monday 12-14 and is covered through Monday 12-14.
+
+**Terms of sale, section 3, add after the paragraph that starts "A plan renews automatically":**
+"A renewal is charged on the date your period ends. If that date is a weekend or a market holiday, your access for the period you paid for runs on to 8:00pm ET on the next trading day, and the new period still ends on its own date, so you do not pay twice for those days."
+
+**A built string that is now wrong whenever a period ends on a closed day** (`YOU_ARE_IN.plan`, `lib/public/purchaseCopy.ts`, `purchase-flow-words-2026-10-17.md:` section 1, his word for word approval): "You were charged {amount} for {for}. Your plan runs to {endTime}, and renews then unless you cancel." The plan runs to Monday 8:00pm ET and the renewal is charged on the Saturday. **Becomes:** "You were charged {amount} for {for}. Your plan runs to {endTime}, and renews unless you cancel." (the renewal date is on the checkout page and the billing page: "Renews: {date}"). Needs Marketing's wording and his yes, as it changes an approved string.
+
+**Two screens to check in the build:** the billing page shows "Paid through {date}" (Monday) and "Renews: {date}" (Saturday) as two rows, which are now different dates; and a cancelled plan's "Ends {time}" and "You keep access to {time}" must carry the covered-through time, not the Stripe period end instant (`endsOn` is `currentPeriodEnd` at `f23e4422`, `lib/billing/account.ts` line 128), or they will name a time before the access really ends.
+
 ## 6. Questions that are not words
 
 1. **The calendar fallback (scope, "One design choice").** If the calendar cannot be read at sign-in, the session ends 20:00 that calendar day, shorter than section 3 says. "Runs until" would then be too long in that rare case, so section 3 says "can run until", true as a ceiling either way. Billing to confirm whether the fallback exists; the words do not wait on it.
