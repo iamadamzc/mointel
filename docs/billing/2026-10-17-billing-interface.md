@@ -15,6 +15,7 @@ no live key works without `BILLING_LIVE_APPROVED=yes`.*
 | `lib/billing/checkout.ts` | Hosted Checkout. Daily on a trading day: pays day one and saves the card. Daily on a weekend or holiday: saves the card, charges nothing. Plans: a subscription in flexible billing mode. Prices are found by lookup key and checked against his ladder. Also opens the customer portal. |
 | `lib/billing/webhook.ts` | Signature check, then one action per event id. A finished Checkout writes the verified Google address to the allowlist (`invited_by 'stripe'`). A card update is the only thing that retries a decline. |
 | `lib/billing/lapse.ts` | A declined renewal whose hour has run out is cancelled in Stripe (no proration) and lapses to daily. |
+| `lib/billing/trialClock.ts` | The trial's end: 48 hours counted only inside paid days that end on a market day. A pure function. |
 | `lib/billing/calendar.ts` | The trading calendar from Alpaca, one fetch per month. It throws rather than guessing. |
 | `lib/billing/stripeClient.ts` | The key comes from `STRIPE_SECRET_KEY` only. A live key is refused unless `BILLING_LIVE_APPROVED` is exactly `yes`. |
 | `lib/billing/webhookRoute.ts` | The whole body of `POST /api/billing/webhook`, for Ops's route to call. |
@@ -121,7 +122,7 @@ WantedBy=mointel.target
 | `BILLING_LAPSED_DOOR` | See below. Unset means `charge_first`. |
 | `BILLING_PASS_MS` | Optional. Loop interval; defaults to 15000. |
 
-## BILLING_LAPSED_DOOR (his decision, open)
+## BILLING_LAPSED_DOOR (his ruling: charge_first)
 
 What the next paid day does after a lapsed hour, for a customer whose card is still failing:
 
@@ -130,13 +131,15 @@ What the next paid day does after a lapsed hour, for a customer whose card is st
 
 `openPaidDay` already returns which door applies. **What `charge_first` shows is not built yet.** The page has to hold the board until the charge row resolves, and the gate must not learn about payment. That piece is Web's and Design's surface. His answer came 2026-10-17: `charge_first` is the rule.
 
-## The free trial (his ruling, 2026-10-17)
+## The free trial (his rulings, 2026-10-17)
 
-A card is required to START a two-trading-day trial, and it is never charged.
-- `createTrialCheckoutSession`: hosted Checkout in setup mode, cards only, no charge. It is refused for an account that has trialled or has ever bought.
+A card is required to START the trial, and it is never charged. The trial is **48 hours from its start, counting only hours inside a paid day (20:00 to 20:00 ET) that ends on a market day** ("from session time +48 hours of trading days"). His confirmed example: started Thu 10:00 ET, it ends Mon 10:00 ET. Started on a Saturday, it ends Tue 20:00 ET.
+- `createTrialCheckoutSession`: Stripe's hosted Checkout by redirect, setup mode, cards only, no charge. It is refused for an account that has trialled or has ever bought.
 - The webhook reads the card's fingerprint and **detaches the card at once**. Stripe: detachment "is permanent and irreversible"; a detached card "can no longer be used for payments or re-attached". Only then does it record the trial (one per account, one per card fingerprint) and invite (`invited_by 'stripe-trial'`).
-- `openPaidDay` returns `trial` on a free trading day. A weekend sign-in does not use up a day. When the free days are spent, a person who never bought gets `buy_first`: show the buy screen, not the board. No charge row is written. The billing unit never sends a trial row to Stripe, and `chargeOne` refuses one a second time.
-- Kept by us: user, card fingerprint, start time. Kept by Stripe: its own record of the detached card (brand, last 4, expiry, fingerprint), under its privacy policy. The trial words on the page must say only what is true of both.
+- `trialEndsAt(start, calendar)` (`lib/billing/trialClock.ts`) is a pure function. The billing unit fills `ends_at` with it (`fillTrialEnds`, using Alpaca's calendar) and ends any live session at that instant. Until then the trial counts as running, and a calendar failure never guesses.
+- `openPaidDay` returns `trial` (with `endsAt`) while it runs, and holds the new session to the end. After the end, a person who never bought gets `buy_first`: show the buy screen, not the board. A trial writes no charge row at all.
+- **The fingerprint is kept forever** (his answer), even after an account closes. Nothing deletes a `billing_trials` row, and an account-deletion tidy-up must leave that table alone.
+- Kept by us: user, card fingerprint, start and end. Kept by Stripe: its own record of the detached card (brand, last 4, expiry, fingerprint), under its privacy policy, with no fixed period.
 
 ## Still to wire (owners)
 

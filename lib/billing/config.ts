@@ -25,8 +25,6 @@ export const RULED_AMOUNT_CENTS: Record<Purchase, number> = {
   annual: 89900,
 };
 
-/** Free trading days a trial gives (his ruling, 2026-10-17). Weekends and holidays do not use them. */
-export const TRIAL_TRADING_DAYS = 2;
 
 /** "1 hour. regardless of time." His ruling, 2026-09-28. */
 export const GRACE_MS = 60 * 60 * 1000;

@@ -22,13 +22,17 @@ import {
   markFailed,
   markIndeterminate,
   markNotCharged,
+  clampUserSessions,
   markSucceeded,
-  openTrialDay,
   paidDayOf,
   pendingCharges,
   planCovers,
+  setTrialEnd,
+  trialState,
+  trialsWithoutEnd,
   type ChargeRow,
 } from '@/lib/billing/store';
+import { trialCalendarMonths, trialEndsAt } from '@/lib/billing/trialClock';
 
 /**
  * Called at sign-in for an admitted user. Writes the day's PENDING row unless a
@@ -42,7 +46,7 @@ import {
 export type PaidDayOpening =
   | { kind: 'no_customer' }
   | { kind: 'plan' }
-  | { kind: 'trial' }
+  | { kind: 'trial'; endsAt: string | null }
   | { kind: 'buy_first' }
   | { kind: 'pending'; charge: ChargeRow; door: 'open' | LapsedDoor };
 
@@ -56,15 +60,18 @@ export function openPaidDay(
   const etDate = paidDayOf(now);
   if (planCovers(db, userId, etDate)) return { kind: 'plan' };
   /*
-   * THE TRIAL NEVER BECOMES A CHARGE. A trial day writes a 'trial' row that the
-   * billing unit never sends to Stripe. When the free days are spent, a person
-   * who never bought gets the buy screen and no charge row, because the trial
-   * card was detached and there is nothing to charge (his ruling: "we will not
-   * charge when the trial ends").
+   * THE TRIAL NEVER BECOMES A CHARGE. A trial writes no charge row at all. While
+   * it runs, the new session is held to its end; after it, a person who never
+   * bought gets the buy screen and no charge row, because the trial card was
+   * detached and there is nothing to charge (his ruling: "we will not charge
+   * when the trial ends").
    */
-  const trial = openTrialDay(db, userId, etDate, now);
-  if (trial === 'trial') return { kind: 'trial' };
-  if (trial === 'trial_over') return { kind: 'buy_first' };
+  const trial = trialState(db, userId, now);
+  if (trial.state === 'active') {
+    if (trial.endsAt) clampUserSessions(db, userId, trial.endsAt);
+    return { kind: 'trial', endsAt: trial.endsAt };
+  }
+  if (trial.state === 'over') return { kind: 'buy_first' };
   const charge = ensurePendingCharge(db, userId, etDate, now);
   const door = isCardFailing(db, userId) ? lapsedDoor(env) : 'open';
   return { kind: 'pending', charge, door };
@@ -133,9 +140,8 @@ async function defaultPaymentMethod(
 
 /** One off-session charge for one PENDING row. */
 export async function chargeOne(deps: ChargeDeps, charge: ChargeRow): Promise<ChargeOutcome> {
-  // A second guard, after runChargePass's: whatever calls this, a trial day
-  // never reaches Stripe.
-  if (charge.source === 'trial' || charge.amountCents <= 0) {
+  // Whatever calls this, a row with no amount never reaches Stripe.
+  if (charge.amountCents <= 0) {
     throw new Error(`refusing to charge ${charge.source} row ${charge.id}`);
   }
   const customerId = customerIdFor(deps.db, charge.userId);
@@ -203,12 +209,6 @@ export async function runChargePass(deps: ChargeDeps): Promise<PassSummary> {
       summary.notCharged += 1;
       continue;
     }
-    // A trial day is counted and never charged.
-    if (charge.source === 'trial') {
-      markNotCharged(deps.db, charge.id, 'trial_day', now());
-      summary.notCharged += 1;
-      continue;
-    }
     if (planCovers(deps.db, charge.userId, charge.etDate)) {
       markNotCharged(deps.db, charge.id, 'plan_covers_day', now());
       summary.notCharged += 1;
@@ -227,4 +227,29 @@ export async function runChargePass(deps: ChargeDeps): Promise<PassSummary> {
     }
   }
   return summary;
+}
+
+/**
+ * Compute the end of every trial that has none yet, from the market calendar,
+ * and end any live session at it. The billing unit runs this beside the charge
+ * pass, because only it has the calendar. A calendar failure leaves ends_at null
+ * (the trial keeps running) and is retried on the next pass; it never guesses.
+ */
+export async function fillTrialEnds(deps: {
+  db: IdentityDatabase;
+  loadCalendar: (months: string[]) => Promise<(etDate: string) => boolean>;
+}): Promise<number> {
+  let filled = 0;
+  for (const trial of trialsWithoutEnd(deps.db)) {
+    const start = new Date(trial.startedAt);
+    let isTradingDay: (etDate: string) => boolean;
+    try {
+      isTradingDay = await deps.loadCalendar(trialCalendarMonths(start));
+    } catch {
+      continue;
+    }
+    setTrialEnd(deps.db, trial.userId, trialEndsAt(start, isTradingDay));
+    filled += 1;
+  }
+  return filled;
 }

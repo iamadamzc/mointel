@@ -9,11 +9,11 @@
 
 import { sessionExpiry } from '@/lib/auth/expiry';
 import type { IdentityDatabase } from '@/lib/auth/store';
-import { GRACE_MS, RULED_AMOUNT_CENTS, TRIAL_TRADING_DAYS, type PlanKey } from '@/lib/billing/config';
+import { GRACE_MS, RULED_AMOUNT_CENTS, type PlanKey } from '@/lib/billing/config';
 import { sessionEndUtc } from '@/lib/market/session';
 
 export type ChargeState = 'PENDING' | 'SUCCEEDED' | 'FAILED' | 'NOT_CHARGED';
-export type ChargeSource = 'daily' | 'checkout' | 'trial';
+export type ChargeSource = 'daily' | 'checkout';
 
 export interface ChargeRow {
   id: number;
@@ -463,9 +463,9 @@ export function billingStatus(db: IdentityDatabase, userId: number, now: Date = 
  * Has this person ever bought? Any daily or Checkout charge row, IN ANY STATE,
  * or a plan. Any state on purpose: a daily buyer who saved a card on a weekend
  * (nothing charged) and was declined on the first trading day has bought, and
- * their card update must retry. A trial alone is not buying: trial rows are
- * source 'trial'. The trial is for people who never bought, and a card added by
- * someone who never bought has nothing to retry.
+ * their card update must retry. A trial alone is not buying: it writes no charge
+ * row. The trial is for people who never bought, and a card added by someone who
+ * never bought has nothing to retry.
  */
 export function hasBought(db: IdentityDatabase, userId: number): boolean {
   const charge = db
@@ -516,41 +516,55 @@ export function recordTrial(
   return apply();
 }
 
+export type TrialState =
+  | { state: 'none' }
+  | { state: 'active'; endsAt: string | null }
+  | { state: 'over'; endsAt: string };
+
 /**
- * Trial days already spent, not counting `etDate`: rows the billing unit
- * counted as a trading day, plus rows it has not judged yet. A weekend or
- * holiday row (decline_code 'not_a_trading_day') does not count.
+ * Where this person's trial stands. 'none' if they never had one or have bought
+ * since. 'active' until ends_at; ends_at is null for the few seconds before the
+ * billing unit computes it from the calendar (lib/billing/trialClock.ts), and
+ * the trial counts as running meanwhile. 'over' once ends_at has passed.
  */
-function trialDaysSpentBefore(db: IdentityDatabase, userId: number, etDate: string): number {
-  const row = db
-    .prepare(
-      `SELECT COUNT(*) AS n FROM billing_charges
-        WHERE user_id = ? AND source = 'trial' AND et_date <> ?
-          AND (state = 'PENDING' OR decline_code = 'trial_day')`,
-    )
-    .get(userId, etDate) as { n: number };
-  return row.n;
+export function trialState(db: IdentityDatabase, userId: number, now: Date = new Date()): TrialState {
+  const row = db.prepare('SELECT ends_at AS endsAt FROM billing_trials WHERE user_id = ?').get(userId) as
+    | { endsAt: string | null }
+    | undefined;
+  if (!row || hasBought(db, userId)) return { state: 'none' };
+  if (row.endsAt === null || Date.parse(row.endsAt) > now.getTime()) {
+    return { state: 'active', endsAt: row.endsAt };
+  }
+  return { state: 'over', endsAt: row.endsAt };
+}
+
+/** Trials whose end has not been computed yet: the billing unit's work list. */
+export function trialsWithoutEnd(db: IdentityDatabase): { userId: number; startedAt: string }[] {
+  return db
+    .prepare('SELECT user_id AS userId, started_at AS startedAt FROM billing_trials WHERE ends_at IS NULL')
+    .all() as { userId: number; startedAt: string }[];
 }
 
 /**
- * Is the paid day `etDate` a trial day? Yes if the person has a trial, has never
- * paid and has free days left, or if it already is one (a second sign-in the
- * same day). 'trial_over' when the free days are spent and nothing was bought.
+ * Shorten every live session this user holds to `until`, never lengthen one.
+ * The trial ends at an instant that may fall mid-day (Mon 10:00 ET in his
+ * example), and the session ends with it.
  */
-export function openTrialDay(
-  db: IdentityDatabase,
-  userId: number,
-  etDate: string,
-  now: Date = new Date(),
-): 'trial' | 'trial_over' | 'no_trial' {
-  if (!hasTrial(db, userId) || hasBought(db, userId)) return 'no_trial';
-  if (chargeFor(db, userId, etDate)?.source === 'trial') return 'trial';
-  if (trialDaysSpentBefore(db, userId, etDate) >= TRIAL_TRADING_DAYS) return 'trial_over';
+export function clampUserSessions(db: IdentityDatabase, userId: number, until: string): void {
   db.prepare(
-    `INSERT OR IGNORE INTO billing_charges (user_id, et_date, state, source, amount_cents, created_at)
-     VALUES (?, ?, 'PENDING', 'trial', 0, ?)`,
-  ).run(userId, etDate, now.toISOString());
-  return 'trial';
+    `UPDATE sessions SET expires_at = MIN(expires_at, ?) WHERE user_id = ? AND revoked_at IS NULL`,
+  ).run(until, userId);
+}
+
+/** Record the computed end, once, and end any live session at it. */
+export function setTrialEnd(db: IdentityDatabase, userId: number, endsAt: Date): void {
+  const apply = db.transaction(() => {
+    const result = db
+      .prepare('UPDATE billing_trials SET ends_at = ? WHERE user_id = ? AND ends_at IS NULL')
+      .run(endsAt.toISOString(), userId);
+    if (result.changes > 0) clampUserSessions(db, userId, endsAt.toISOString());
+  });
+  apply();
 }
 
 // ---------------------------------------------------------- daily billing history

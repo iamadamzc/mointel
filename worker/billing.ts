@@ -12,8 +12,8 @@
  */
 
 import { openIdentityStore } from '../lib/auth/store';
-import { tradingDayChecker } from '../lib/billing/calendar';
-import { runChargePass } from '../lib/billing/charge';
+import { loadTradingDays, tradingDayChecker } from '../lib/billing/calendar';
+import { fillTrialEnds, runChargePass } from '../lib/billing/charge';
 import { lapseExpiredPlans } from '../lib/billing/lapse';
 import { stripeFromEnv } from '../lib/billing/stripeClient';
 import { findAlpacaCredentials } from '../lib/market/credentials';
@@ -33,7 +33,9 @@ async function main() {
   const credentials = findAlpacaCredentials().credentials;
   if (!credentials) throw new Error('no Alpaca credentials: the trading calendar is required to charge');
   const alpaca = new AlpacaRestClient(credentials, { concurrency: 1, maxRetries: 2 });
-  const isTradingDay = tradingDayChecker((start, end) => alpaca.getCalendar(start, end));
+  const fetchMonth = (start: string, end: string) => alpaca.getCalendar(start, end);
+  const isTradingDay = tradingDayChecker(fetchMonth);
+  const loadCalendar = (months: string[]) => loadTradingDays(fetchMonth, months);
 
   log(`[billing] started, pass every ${PASS_MS} ms`);
   let stopping = false;
@@ -47,6 +49,8 @@ async function main() {
       if (summary.succeeded + summary.declined + summary.indeterminate + summary.notCharged > 0) {
         log(`[billing] pass ${JSON.stringify(summary)}`);
       }
+      const trialEnds = await fillTrialEnds({ db, loadCalendar });
+      if (trialEnds) log(`[billing] trial ends computed: ${trialEnds}`);
       const lapsed = await lapseExpiredPlans({ db, stripe });
       if (lapsed.length) log(`[billing] lapsed to daily: ${lapsed.join(', ')}`);
     } catch (error) {

@@ -2,16 +2,16 @@ import type Stripe from 'stripe';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { isUserInvited } from '@/lib/auth/store';
-import { openPaidDay, runChargePass, type ChargeDeps } from '@/lib/billing/charge';
+import { fillTrialEnds, openPaidDay, runChargePass, type ChargeDeps } from '@/lib/billing/charge';
 import { createTrialCheckoutSession, TrialNotAvailableError, type CheckoutDeps } from '@/lib/billing/checkout';
-import { canStartTrial, chargeFor, linkCustomer, recordTrial } from '@/lib/billing/store';
+import { canStartTrial, linkCustomer, recordTrial, trialState } from '@/lib/billing/store';
 import { handleStripeEvent, type WebhookDeps } from '@/lib/billing/webhook';
 
-import { MON_10_ET, cleanupStores, temporaryStore, verifiedUser } from './helpers';
+import { MON_10_ET, cleanupStores, sessionExpiries, signIn, temporaryStore, verifiedUser } from './helpers';
 
 afterEach(cleanupStores);
 
-// Mon 2026-10-19 .. Fri 2026-10-23 are trading days; Sat 24 and Sun 25 are not.
+// Mon 2026-10-19 .. Fri 2026-10-23 and Mon 26 are trading days; Sat 24 and Sun 25 are not.
 const at = (etDate: string) => new Date(`${etDate}T14:00:00.000Z`);
 const TRADING = new Set(['2026-10-19', '2026-10-20', '2026-10-21', '2026-10-22', '2026-10-23', '2026-10-26']);
 
@@ -155,45 +155,56 @@ describe('starting the trial', () => {
 });
 
 describe('the trial card is never charged', () => {
-  it('gives two free trading days, skips the weekend, then the buy screen, and never calls Stripe to charge', async () => {
+  const calendar = async () => (d: string) => TRADING.has(d);
+
+  it('runs 48 trading hours from its start, writes no charge row, then the buy screen; Stripe is never asked to charge', async () => {
     const db = temporaryStore();
     const userId = verifiedUser(db);
-    await startTrial(db, userId);
+    await startTrial(db, userId); // starts Mon 2026-10-19 10:00 ET
     const stripe = chargeStripe();
-    const deps = { db, stripe, isTradingDay: (d: string) => TRADING.has(d) };
 
-    // Thursday and Friday: the two free days.
-    expect(openPaidDay(db, userId, at('2026-10-22'))).toEqual({ kind: 'trial' });
-    await runChargePass({ ...deps, now: () => at('2026-10-22') });
-    expect(openPaidDay(db, userId, at('2026-10-22'))).toEqual({ kind: 'trial' });
-    expect(openPaidDay(db, userId, at('2026-10-23'))).toEqual({ kind: 'trial' });
-    await runChargePass({ ...deps, now: () => at('2026-10-23') });
+    signIn(db, userId, MON_10_ET);
+    expect(openPaidDay(db, userId, MON_10_ET)).toEqual({ kind: 'trial', endsAt: null });
 
-    // Saturday, after the two free days: the trial is over, so the buy screen.
-    expect(openPaidDay(db, userId, at('2026-10-24'))).toEqual({ kind: 'buy_first' });
+    // The billing unit computes the end: Mon 10 h + Tue 24 h + 14 h of Wed = Wed 10:00 ET.
+    expect(await fillTrialEnds({ db, loadCalendar: calendar })).toBe(1);
+    const ends = '2026-10-21T14:00:00.000Z';
+    expect(trialState(db, userId, MON_10_ET)).toEqual({ state: 'active', endsAt: ends });
 
-    // Monday: trial over, the buy screen, no charge row.
-    expect(openPaidDay(db, userId, at('2026-10-26'))).toEqual({ kind: 'buy_first' });
-    expect(chargeFor(db, userId, '2026-10-26')).toBeNull();
-    await runChargePass({ ...deps, now: () => at('2026-10-26') });
+    // A sign-in on Wednesday morning is held to the trial's end, not to 20:00.
+    const wed0900 = new Date('2026-10-21T13:00:00Z');
+    signIn(db, userId, wed0900);
+    expect(openPaidDay(db, userId, wed0900)).toEqual({ kind: 'trial', endsAt: ends });
+    expect(sessionExpiries(db, userId).at(-1)).toBe(ends);
 
+    // At the end: the buy screen, and still no charge row anywhere.
+    expect(openPaidDay(db, userId, new Date(ends))).toEqual({ kind: 'buy_first' });
+    expect(openPaidDay(db, userId, at('2026-10-22'))).toEqual({ kind: 'buy_first' });
+    await runChargePass({ db, stripe, isTradingDay: (d: string) => TRADING.has(d), now: () => at('2026-10-22') });
+    expect((db.prepare('SELECT COUNT(*) AS n FROM billing_charges').get() as { n: number }).n).toBe(0);
     expect(stripe.paymentIntents.create).not.toHaveBeenCalled();
-    expect(chargeFor(db, userId, '2026-10-22')).toMatchObject({ source: 'trial', state: 'NOT_CHARGED', amountCents: 0 });
   });
 
-  it('a weekend sign-in during the trial does not use up a free day', async () => {
+  it('a session already open when the end is computed is ended at the trial end, not at 20:00', async () => {
+    const db = temporaryStore();
+    const userId = verifiedUser(db);
+    await startTrial(db, userId); // Mon 10:00 ET; ends Wed 10:00 ET
+    const wed0900 = new Date('2026-10-21T13:00:00Z');
+    signIn(db, userId, wed0900);
+    expect(sessionExpiries(db, userId)).toEqual(['2026-10-22T00:00:00.000Z']);
+    await fillTrialEnds({ db, loadCalendar: calendar });
+    expect(sessionExpiries(db, userId)).toEqual(['2026-10-21T14:00:00.000Z']);
+  });
+
+  it('a calendar failure leaves the end unset and the trial running; it never guesses', async () => {
     const db = temporaryStore();
     const userId = verifiedUser(db);
     await startTrial(db, userId);
-    const deps = { db, stripe: chargeStripe(), isTradingDay: (d: string) => TRADING.has(d) };
-
-    expect(openPaidDay(db, userId, at('2026-10-23'))).toEqual({ kind: 'trial' });
-    await runChargePass({ ...deps, now: () => at('2026-10-23') });
-    expect(openPaidDay(db, userId, at('2026-10-24'))).toEqual({ kind: 'trial' });
-    await runChargePass({ ...deps, now: () => at('2026-10-24') });
-    expect(chargeFor(db, userId, '2026-10-24')).toMatchObject({ state: 'NOT_CHARGED', declineCode: 'not_a_trading_day' });
-    // Monday is still the second free day.
-    expect(openPaidDay(db, userId, at('2026-10-26'))).toEqual({ kind: 'trial' });
+    const failing = async () => {
+      throw new Error('alpaca down');
+    };
+    expect(await fillTrialEnds({ db, loadCalendar: failing })).toBe(0);
+    expect(trialState(db, userId, at('2026-10-26'))).toEqual({ state: 'active', endsAt: null });
   });
 
   it('a trial card attaching before it is detached cannot retry or pay anything', async () => {
@@ -210,23 +221,20 @@ describe('the trial card is never charged', () => {
     expect(stripe.invoices.pay).not.toHaveBeenCalled();
   });
 
-  it('after the trial, buying day one in Checkout ends the trial and the next day is an ordinary charge', async () => {
+  it('after the trial, buying day one in Checkout ends the trial state and the next day is an ordinary charge', async () => {
     const db = temporaryStore();
     const userId = verifiedUser(db);
     await startTrial(db, userId);
-    const deps = { db, stripe: chargeStripe(), isTradingDay: (d: string) => TRADING.has(d) };
-    openPaidDay(db, userId, at('2026-10-22'));
-    await runChargePass({ ...deps, now: () => at('2026-10-22') });
-    openPaidDay(db, userId, at('2026-10-23'));
-    await runChargePass({ ...deps, now: () => at('2026-10-23') });
-    expect(openPaidDay(db, userId, at('2026-10-26'))).toEqual({ kind: 'buy_first' });
+    await fillTrialEnds({ db, loadCalendar: calendar });
+    expect(openPaidDay(db, userId, at('2026-10-22'))).toEqual({ kind: 'buy_first' });
 
-    // Day one bought in Checkout (a NEW card), recorded by the webhook as the checkout day.
+    // Day one bought in Checkout (a NEW card), as the webhook records it.
     db.prepare(
       `INSERT INTO billing_charges (user_id, et_date, state, source, amount_cents, created_at, succeeded_at)
-       VALUES (?, '2026-10-26', 'SUCCEEDED', 'checkout', 550, ?, ?)`,
-    ).run(userId, at('2026-10-26').toISOString(), at('2026-10-26').toISOString());
+       VALUES (?, '2026-10-22', 'SUCCEEDED', 'checkout', 550, ?, ?)`,
+    ).run(userId, at('2026-10-22').toISOString(), at('2026-10-22').toISOString());
 
-    expect(openPaidDay(db, userId, at('2026-10-27'))).toMatchObject({ kind: 'pending', door: 'open' });
+    expect(trialState(db, userId, at('2026-10-23'))).toEqual({ state: 'none' });
+    expect(openPaidDay(db, userId, at('2026-10-23'))).toMatchObject({ kind: 'pending', door: 'open' });
   });
 });

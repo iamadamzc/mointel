@@ -43,9 +43,8 @@ CREATE TABLE IF NOT EXISTS billing_customers (
  * retry after a card update gets a fresh key while a retry after an outage
  * reuses the old one (lib/billing/charge.ts).
  *
- * source: 'daily' (charged off-session at sign-in), 'checkout' (day one, paid
- * in hosted Checkout before the desk opened) or 'trial' (a free trial day: never
- * charged, amount 0; decline_code 'trial_day' once it counts).
+ * source: 'daily' (charged off-session at sign-in) or 'checkout' (day one, paid
+ * in hosted Checkout before the desk opened). A free trial writes no row here.
  *
  * failed_at and grace_until are written ONCE, on the first PENDING -> FAILED
  * transition, and never moved by a retry that fails again; only a success
@@ -96,7 +95,7 @@ CREATE INDEX IF NOT EXISTS idx_billing_plans_user ON billing_plans(user_id);
 /*
  * THE FREE TRIAL, ONE ROW PER PERSON, AND THE CARD IS NOT HERE.
  *
- * His ruling, 2026-10-17: a card is required to START the two-day trial, "we
+ * His ruling, 2026-10-17: a card is required to START the trial, "we
  * will not charge when the trial ends, we do not store the information and it
  * is only to prevent trial cheating". So the card is checked in Stripe Checkout
  * (setup mode, no charge), its fingerprint is read, and the card is detached from
@@ -105,14 +104,27 @@ CREATE INDEX IF NOT EXISTS idx_billing_plans_user ON billing_plans(user_id);
  * payments or re-attached to a Customer."
  *
  * Kept: the user, the card's fingerprint (Stripe's identifier for a card number,
- * not the number) and when. UNIQUE on both, which is the whole rule: one trial
- * per account and one per card, for every sign-in method.
+ * not the number), when it started and when it ends. UNIQUE on both user and
+ * fingerprint, which is the whole rule: one trial per account and one per card,
+ * for every sign-in method.
+ *
+ * ends_at: "from session time +48 hours of trading days" (his ruling): 48 hours
+ * from started_at, counting only hours inside a paid day that ends on a market
+ * day (lib/billing/trialClock.ts). Null until the billing unit, which has the
+ * calendar, computes it; the trial runs meanwhile.
+ *
+ * KEPT FOREVER, AND NOTHING DELETES A ROW: his answer to how long the card code
+ * is kept was "forever". Integration's reading: as long as the trial is offered,
+ * EVEN AFTER THE ACCOUNT IS CLOSED. Deleting a row on account deletion would
+ * hand that card a second trial, so an account-deletion tidy-up must leave this
+ * table alone.
  */
 CREATE TABLE IF NOT EXISTS billing_trials (
   user_id          INTEGER PRIMARY KEY REFERENCES users(id),
   card_fingerprint TEXT    NOT NULL UNIQUE,
   setup_intent_id  TEXT,
-  started_at       TEXT    NOT NULL
+  started_at       TEXT    NOT NULL,
+  ends_at          TEXT
 );
 
 /*
