@@ -19,6 +19,7 @@ import {
   customerIdFor,
   ensurePendingCharge,
   cardFailingSince,
+  chargeFor,
   hasBought,
   hasCardOnFile,
   isCardRemoved,
@@ -91,7 +92,10 @@ export function openPaidDay(
   if (trial.state === 'over') return { kind: 'buy_first' };
   // The person removed their card: stopping, not a decline. The buy screen, and
   // no charge attempt, so no one-hour band either.
-  if (isCardRemoved(db, userId)) return { kind: 'buy_first' };
+  // A paid day already paid for stays paid: access runs to its end, as the removal
+  // confirmation promises ("If this paid day is already paid for, access ends at
+  // {endTime}"). Commercial's catch, 2026-10-17, commit e.
+  if (isCardRemoved(db, userId) && !paidFor(db, userId, etDate)) return { kind: 'buy_first' };
   // They cancelled their plan and it has run to its end: the buy screen, never an
   // automatic daily charge.
   if (planEndedByCancel(db, userId, etDate)) return { kind: 'buy_first' };
@@ -109,6 +113,11 @@ export function openPaidDay(
   if (hourSpent(charge, now)) return { kind: 'pending', charge, door: 'charge_first' };
   const door = cardFailedBeforeToday(db, userId, isMarketDay, now) ? lapsedDoor(env) : 'open';
   return { kind: 'pending', charge, door };
+}
+
+/** Is this paid day's daily charge already taken? */
+export function paidFor(db: IdentityDatabase, userId: number, etDate: string): boolean {
+  return chargeFor(db, userId, etDate)?.state === 'SUCCEEDED';
 }
 
 /**

@@ -16,7 +16,7 @@ import type Stripe from 'stripe';
 
 import type { IdentityDatabase } from '@/lib/auth/store';
 import type { MarketDays } from '@/lib/auth/expiry';
-import { cardFailedBeforeToday, hourSpent } from '@/lib/billing/charge';
+import { cardFailedBeforeToday, hourSpent, paidFor } from '@/lib/billing/charge';
 import { lapsedDoor, RULED_AMOUNT_CENTS, type PlanKey } from '@/lib/billing/config';
 import {
   billingStatus,
@@ -174,7 +174,8 @@ export function billingStateFor(
   } else if (!planCovers(db, userId, today)) {
     if (trial.state === 'active') door = 'trial';
     else if (trial.state === 'over') [door, buyCase] = ['buy_first', 'trial_ended'];
-    else if (isCardRemoved(db, userId)) [door, buyCase] = ['buy_first', 'card_removed'];
+    // Removed after paying for today: the board to the paid day's end (commit e).
+    else if (isCardRemoved(db, userId) && !paidFor(db, userId, today)) [door, buyCase] = ['buy_first', 'card_removed'];
     else if (planEndedByCancel(db, userId, today)) [door, buyCase] = ['buy_first', 'plan_ended'];
     else if (!hasBought(db, userId) && !hasCardOnFile(db, userId)) [door, buyCase] = ['buy_first', 'no_access'];
     else {
