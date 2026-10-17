@@ -23,6 +23,8 @@ import path from 'node:path';
 
 import Database from 'better-sqlite3';
 
+import { BILLING_SCHEMA } from '@/lib/billing/schema';
+
 export type IdentityDatabase = Database.Database;
 
 export const IDENTITY_SCHEMA_VERSION = 3;
@@ -269,6 +271,9 @@ export function openIdentityStore(file: string = DEFAULT_IDENTITY_PATH): Identit
   }
 
   db.exec(SCHEMA);
+  // Billing's tables live here too and are additive like entry_acceptances:
+  // no version bump, so a rollback still opens the store (lib/billing/schema.ts).
+  db.exec(BILLING_SCHEMA);
   db.pragma(`user_version = ${IDENTITY_SCHEMA_VERSION}`);
   return db;
 }
