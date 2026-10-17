@@ -55,6 +55,8 @@ Add after "Delete it. Ask, and we close the account and delete the record. This 
 
 **Proposed addition, not yet shown to him (ninth tenure, 2026-10-17, from Billing's deletion runbook question):** our own record of each charge and plan is not named above, so as approved a deletion request would leave rows the policy says are deleted. Add to the exceptions sentence: "and the record of each charge, for the period in section 6." Until his accountant sets that period (the [RECORDS] bracket in section 6), the runbook keeps the charge and plan rows in full. Changing approved text needs his yes and the attorney's read. [ATTORNEY: the same question as above, for the charge record.]
 
+**Question for his attorney (ninth tenure, read 172):** Stripe recommends redaction jobs, not deleting the customer, for consumer data deletion requests. The section 6 bullet "If you ask us to delete your account, we delete both" stays as approved, because it says only what we do (delete the Stripe customer and our link to it). [ATTORNEY: whether that answers a deletion request under the law that applies to each buyer, or whether a Stripe redaction is expected. A redaction cannot start on a paid customer's charges until 90 days after they were created, cannot be undone, and leaves those charges unrefundable and lost if disputed; it is in Stripe's public preview.]
+
 ## Section 8, where the service is, and who it is for
 
 Now: "**We do not offer it to the public anywhere.** Access is by invitation, which is how the scope above stays a fact rather than a sentence: we choose who is invited."
