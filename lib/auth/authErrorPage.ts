@@ -15,6 +15,8 @@
  * real door, not the wall that "try again" is on a refusal.
  */
 
+import { EMAIL_LINK_WORDS } from '@/lib/auth/emailLinkWords';
+
 interface ErrorCopy {
   heading: string;
   message: string;
@@ -33,6 +35,12 @@ const COPY: Record<number, ErrorCopy> = {
   500: {
     heading: 'Something went wrong on our side',
     message: 'This one is ours. Sign in again, and if it keeps happening, let us know.',
+  },
+  // Two existing accounts hold this verified address (his one-account rule):
+  // refused, never merged. The words are the email-link flow's, one source.
+  409: {
+    heading: EMAIL_LINK_WORDS.ambiguousHeading,
+    message: EMAIL_LINK_WORDS.ambiguousBody,
   },
 };
 

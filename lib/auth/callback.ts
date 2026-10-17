@@ -35,7 +35,7 @@ import {
   readIdToken,
   secretsMatch,
 } from '@/lib/auth/oauth';
-import { createSession, linkIdentity, type IdentityDatabase } from '@/lib/auth/store';
+import { createSession, linkIdentityJoiningVerifiedEmail, type IdentityDatabase } from '@/lib/auth/store';
 
 export interface CallbackDeps {
   url: URL;
@@ -130,7 +130,10 @@ export async function completeCallback(deps: CallbackDeps): Promise<CallbackResu
   }
 
   const now = deps.now ?? new Date();
-  const linked = linkIdentity(
+  // His one-account rule (store.ts linkIdentityJoiningVerifiedEmail, uuid
+  // 4264b641): a verified Google address joins the one user already holding it
+  // verified (an email-link user, say); two such users are refused, never merged.
+  const linked = linkIdentityJoiningVerifiedEmail(
     deps.db,
     {
       provider: 'google',
@@ -142,6 +145,10 @@ export async function completeCallback(deps: CallbackDeps): Promise<CallbackResu
     },
     now.toISOString(),
   );
+  if (!linked.ok) {
+    console.error('[auth/google] refused: more than one user holds this verified address');
+    return result(409);
+  }
 
   const expiry = sessionExpiry(now);
   const issued = createSession(deps.db, linked.userId, expiry, now);
