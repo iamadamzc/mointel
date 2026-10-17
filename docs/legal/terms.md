@@ -1,7 +1,8 @@
 ---
 title: Terms of service
 status: adopted
-adopted: 2026-09-11
+adopted: 2026-10-17
+
 drafted: 2026-09-11
 last_changed: 2026-10-17
 ---
@@ -16,6 +17,8 @@ last_changed: 2026-10-17
   left open in the draft -- the liability cap and arbitration -- he returned
   with "2, your rec.", so both are Web's recommendation adopted by him, and the
   reasoning for each is recorded in docs/web/README.md rather than here.
+
+  RE-ADOPTED BY THE TRADER 2026-10-17 for the purchase launch, his words, Integration chat bf3b407e, checked at his turn: "yes to all five" (uuid c7584eb1, 2026-10-17T13:00:25.931Z); "1, a. 2, 7 years. 3, adopt now." (uuid 5a0d0d6c, 13:20:44.136Z); "1, yes. 2, yes. 3, yes - bu tit has no audeince" (uuid 167c7bd1, 13:33:27.549Z). Adopted without an attorney's read, by his choice. Payment terms now exist: docs/legal/terms-of-sale.md (item 2 of the list below is done).
 
   IF THIS TEXT IS MATERIALLY REDRAFTED, `adopted` GOES BACK TO null AND THE
   BANNER RETURNS until he adopts again.
@@ -115,24 +118,22 @@ changed, nothing else did.
 equities: what is moving, what the filings underneath say, and what it does not
 know. That is the whole of what it does.
 
+What you pay and when is in the [Terms of sale](/terms-of-sale).
+
 ## 2. Who may use it
 
 - You must be **18 or older**.
-- **Access is by invitation.** There is no public sign-up, and an invitation is
-  ours to give and ours to withdraw.
+- **Access is by purchase or by the free trial.** You buy on our [terms of sale](/terms-of-sale), which also say how the free trial works. We can refuse a sale, and we can end access as section 9 says.
 - The desk covers the **US market** and is offered to people trading it. We do
   not market it anywhere else.
-- You sign in with a Google account. You need to be entitled to use that
-  account.
+- You sign in with a Google account, or with a link we email you. You need to be entitled to use that account or that email address.
 
 ## 3. Your account is yours alone
 
 **One person, one account.** Do not share your sign-in, and do not let anyone
-else use the desk through it. If you think someone else has reached your
-account, tell us.
+else use the desk through it. If you think someone else has reached your account, tell us. A sign-in link works for whoever opens it. Do not forward it.
 
-Your invitation was issued to an email address. It does not transfer to another
-person, another company, or another desk.
+Your access is tied to the email address you sign in with, whether by Google or by link. It does not transfer to another person, another company, or another desk.
 
 ## 4. What we ask of you
 
@@ -206,6 +207,8 @@ happens to your data then is in the [privacy policy](/privacy).
 **We may end your access at any time**, with or without a reason. Where we
 reasonably can, we will tell you first, except where the reason is a breach of
 section 5, where we may act immediately.
+
+If we end your access and the reason is not your breach of these terms, we will make it right for the part of a plan you paid for and did not get.
 
 ## 10. If something goes wrong
 

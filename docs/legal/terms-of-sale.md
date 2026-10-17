@@ -1,44 +1,22 @@
 ---
 title: Terms of sale
-status: DRAFT, not adopted
-adopted: null
+status: adopted
+adopted: 2026-10-17
 drafted: 2026-10-17
+last_changed: 2026-10-17
+
 ---
 
 <!--
-  DRAFT. NOT SERVED. This file is not in lib/legal/document.ts's FILES map, so
-  /terms-of-sale does not render it and nothing links to it. It goes live only on
-  his word, as one motion with the pointer sentence in terms.md and the
-  checkout link ("drafting and adoption are one motion", terms.md's own rule).
+  ADOPTED BY THE TRADER 2026-10-17, his words, Integration chat bf3b407e, checked at his turn: "yes to all five" (uuid c7584eb1, 2026-10-17T13:00:25.931Z); "1, a. 2, 7 years. 3, adopt now." (uuid 5a0d0d6c, 13:20:44.136Z); "1, yes. 2, yes. 3, yes - bu tit has no audeince" (uuid 167c7bd1, 13:33:27.549Z). Adopted without an attorney's read, by his choice.
 
-  REPLACES the held draft docs/legal/terms-of-sale-daily-pass.md (2026-09-30),
-  which covered the daily pass only. That file is kept, marked superseded.
+  Served at /terms-of-sale only while the purchase switch is open (app/terms-of-sale/page.tsx). Replaces the held
+  daily-pass draft docs/legal/terms-of-sale-daily-pass.md (2026-09-30).
 
-  DRAFTED 2026-10-17 by Commercial (7th tenure) from his rulings, read at his
-  turns through Integration and in this seat's session:
-    - daily $5.50; monthly $89; six months $499; annual $899
-    - the paid day runs 20:00 ET to 20:00 ET; charge at sign-in, in the
-      background; no charge for a paid day on which the US market is closed
-    - a failed charge gives one hour "regardless of time", counted once from
-      the first failure; retry only when the card is updated; a lapsed hour ends
-      only that day's session
-    - "yes auto renew, make easy cancel. plans renwe on their own. no refunds."
-    - "a month is as it is according to the market"
-    - the sentence "If a charge was made in error, or the service was
-      unavailable for a paid day through our own fault, contact
-      desk@tmitrader.com and we will make it right." stays (his "yes to
-      all", 2026-10-17T00:01:01.558Z, through Integration)
+  The sales tax blank: his ruling (a), prices include tax. Charge records are kept 7 years (privacy policy, section 6).
 
-  BRACKETED ITEMS ARE NOT DECIDED. Each says who decides. Nothing in brackets
-  ships as written.
-  [PRICE CHANGE NOTICE] ANSWERED 2026-10-17: 30 days (his "4, yes", uuid 6c3dc8f3,
-        2026-10-17T00:12:10.134Z, through Integration). No longer bracketed.
-  [TAX] his accountant: whether prices include or exclude sales tax and what the
-        checkout shows.
-  [MONTH] ANSWERED 2026-10-17: "3, a": from the day you buy (the 17th to the 17th).
-        No longer bracketed.
-  [RECORDS] his accountant: how long the record of each charge is kept.
-  [ATTORNEY] his attorney reads this whole file before it is adopted.
+  IF THIS TEXT IS MATERIALLY REDRAFTED, `adopted` GOES BACK TO null AND THE BANNER RETURNS until he adopts again
+  (the rule in terms.md and privacy-policy.md).
 -->
 
 # Terms of sale
@@ -57,25 +35,32 @@ Access to the desk, for a paid day or for a plan. Prices are in US dollars.
 | Monthly | $89 | one month |
 | Six months | $499 | six months |
 | Annual | $899 | one year |
+| Free trial | no charge | 48 hours, not counting weekends and market holidays, once |
 
-[TAX: his accountant decides whether these prices include sales tax and what
-the checkout shows.]
+Prices include any sales tax.
 
-A paid day runs from 8:00pm ET to 8:00pm ET the next day, the same window your
-session already uses. A plan covers every paid day in its period.
+A trading day is a day the US stock market is open. A paid day runs from 8:00pm
+ET after one trading day to 8:00pm ET after the next. Weekends and market
+holidays belong to the paid day that follows, so Monday's paid day runs from
+8:00pm ET Friday to 8:00pm ET Monday, and signing in on a Saturday is signing in
+on Monday's paid day. A plan covers every paid day in its period.
 
 A month is a calendar month counted from the day you buy it. A plan bought on
 the 17th runs to 8:00pm ET on the 17th of the next month. Six months and a
 year count the same way.
 
+If the last day of a plan falls on a weekend or a market holiday, your access
+runs to 8:00pm ET on the next trading day.
+
 ## 2. Daily: how the charge works
 
-You save a card the first time you sign in. From then on, each new paid day
+You save a card when you buy your first paid day. From then on, each new paid day
 you sign in on is charged automatically to that card. You are not asked to
-approve each charge. You pay only for the paid days you sign in on.
+approve each charge. You pay only for the paid days you sign in on, and only once
+for each: signing in again on the same paid day is not charged again.
 
-There is no charge for a paid day that ends on a day the US stock market is
-closed, such as a weekend or a market holiday.
+A paid day always ends on a trading day. If you sign in on a Saturday, a Sunday
+or a market holiday, you are charged for the paid day that follows.
 
 **You are given access before the charge is confirmed.** If the charge fails,
 you keep access for **one hour** from the failed attempt, whatever time of day
@@ -89,6 +74,11 @@ paid day tries the charge afresh.
 A plan renews automatically at the end of each period, for a period of the same
 length, and charges the card you saved. It keeps renewing until you cancel
 (section 4). While a plan is active you are not charged the daily price.
+
+A renewal is charged on the date your period ends. If that date is a weekend or
+a market holiday, your access for the period you paid for runs on to 8:00pm ET on
+the next trading day, and the new period still ends on its own date, so you do
+not pay twice for those days.
 
 Before you buy, the page shows the price, the date of the first renewal, and
 how to cancel.
@@ -144,3 +134,38 @@ your next paid day if you pay daily.
 
 TMI is developed and sold by Andromeda Genius LLC, of 5460 Babcock Rd, Suite 120 PMB 95234, San Antonio, TX
 78240, United States. You can reach a person at desk@tmitrader.com.
+
+## 9. The free trial
+
+You can try the desk free for 48 hours, not counting weekends and market
+holidays. The clock stops from 8:00pm ET on Friday until 8:00pm ET on Sunday, and for a market holiday from
+8:00pm ET the evening before until 8:00pm ET on the holiday. Each person can
+take the trial once, and each card can start a trial once.
+
+To start, you enter a card. We ask for a card only so the same card cannot
+start a second trial. **The trial never charges it.** As soon as it has been
+checked, we ask Stripe, our payment
+processor, to remove it from your account, so it cannot be charged. We do not
+see your card number and we do not keep your card. Stripe, which takes the
+card, keeps a record of it under Stripe's own privacy policy. Your bank may
+show a small pending amount while the card is checked. It is not a charge, and
+we never take it.
+
+We keep one code that identifies the card, Stripe's reference number for the
+check, and the time the trial started, with your account. We use them only to
+stop the same card starting a second trial. We keep them for as long as we
+offer the free trial, including after you close your account, because
+otherwise the same card could start a second trial.
+
+When the 48 hours end, your access ends. Nothing is charged and nothing
+renews. To keep using the desk, you buy a day or a plan and enter a card then.
+
+The 48 hours are counted from the moment the trial starts, and only while the
+clock is running, as set out above. In a week with no market holiday, a trial
+that starts on a Thursday at 10:00am ET ends on the Monday at 10:00am ET. We
+show you the end time when the trial starts.
+
+If the card cannot be checked, or has already been used for a trial, the trial
+does not start. A free trial is not available to an account that has already
+bought a day or a plan. We may refuse or end a trial if the same person is
+using more than one account.
