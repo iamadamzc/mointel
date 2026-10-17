@@ -1,6 +1,6 @@
 ---
 title: Terms of sale: daily pass
-status: DRAFT, held (not an active decision, see note below)
+status: SUPERSEDED 2026-10-17 by docs/legal/terms-of-sale.md (kept, not deleted; covers the daily pass only)
 drafted: 2026-09-30
 ---
 
