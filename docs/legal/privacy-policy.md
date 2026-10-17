@@ -1,7 +1,8 @@
 ---
 title: Privacy policy
 status: adopted
-adopted: 2026-09-11
+adopted: 2026-10-17
+
 drafted: 2026-09-10
 last_changed: 2026-10-17
 ---
@@ -16,6 +17,8 @@ last_changed: 2026-10-17
   ADOPTED BY THE TRADER 2026-09-11, his word: "1, approved." Recorded by Web on
   his instruction -- the adoption is his act, this line is only its record.
   `adopted:` now carries a date, so the page renders NO draft banner.
+
+  RE-ADOPTED BY THE TRADER 2026-10-17 for the purchase launch, his words, Integration chat bf3b407e, checked at his turn: "yes to all five" (uuid c7584eb1, 2026-10-17T13:00:25.931Z); "1, a. 2, 7 years. 3, adopt now." (uuid 5a0d0d6c, 13:20:44.136Z); "1, yes. 2, yes. 3, yes - bu tit has no audeince" (uuid 167c7bd1, 13:33:27.549Z). Adopted without an attorney's read, by his choice.
 
   IF THIS TEXT IS MATERIALLY REDRAFTED, `adopted` GOES BACK TO null AND THE
   BANNER RETURNS until he adopts again.
@@ -84,9 +87,7 @@ means the signed-in service at tmitrader.com.
 The service was called TMI Trader until 18 September 2026; the name
 changed, nothing else did.
 
-This policy covers tmitrader.com and the desk behind it. It does not cover
-what Google does with your Google account, which is governed by Google's own
-privacy policy.
+This policy covers tmitrader.com and the desk behind it. It does not cover what Google does with your Google account, or what your own email provider does with the emails we send you. Each is governed by its own policy.
 
 ## 2. What we collect
 
@@ -104,9 +105,17 @@ We ask Google for the scopes `openid`, `email` and `profile`. Those three are
 the smallest set that lets someone sign in at all, and we request nothing
 beyond them.
 
+**When you sign in by email link.** You type your email address and we send a link to it. Anyone can ask for a link to any address; only whoever can open that mailbox can use it. The link works once, and only for 15 minutes; asking for another link ends the earlier one. We never keep the link itself, only a one-way fingerprint of it. For each request we keep a record: the address typed, that fingerprint, the times it was made, used or replaced, and a scrambled, one-way form of the IP address it came from (we never store the address itself in these records), which we use only to limit how many links can be asked for at once. We keep this record for every address typed, whether or not it has an account, and delete it 30 days after the link was made. Your email address stays on your account for as long as you have one. We ask for no name and no picture. Whatever address you type, the page gives the same answer, so it never tells anyone whether an address has an account. Our emails carry no tracking pixels and no rewritten links.
+
 **When you use the desk.** We record which account you are and what you did
 (signing in, signing out, and the requests your browser makes) so that the
 service works and so that we can tell a fault from an attack.
+
+**When you pay.** Stripe, our payment processor, collects your card details and billing postal code on its own page. We never receive your card number. To take payment we create a customer record for you at Stripe, with your email address and our number for your account, and we keep a link to it with your account. Stripe gives us a customer reference, a payment-method reference, and the result of each charge: the date, the amount, the plan, and whether it was paid or declined. We keep those so the desk can show your billing history and run your plan.
+
+**When you start a free trial.** When you press Start free trial, we create a customer record for you at Stripe, with your email address and our number for your account, and we keep a link to it with your account. It exists even if you do not finish or the trial cannot start. You then enter a card on Stripe's page. Stripe checks it, and we ask Stripe to remove it from your account at once; the trial never charges it. We never receive your card number. Stripe gives us a code that identifies the card. We keep that code, Stripe's reference number for the check, and the time the trial started, with your account, so the same card cannot start a second trial. We keep them for as long as we offer the free trial, including after you close your account. Stripe keeps a record of the card, including its brand, last four digits and expiry date, under its own privacy policy.
+
+**If a free trial cannot start.** The card is still removed from your account at once, the trial never charges it, and we do not keep a code for it. We keep a short record of the attempt: Stripe's reference for the check, your account, the reason it could not start, and the time. We delete this record 30 days after the attempt. Your customer record at Stripe and our link to it are not part of this record; section 6 says how long they are kept.
 
 **In server logs.** Like every website, our servers write an access log. It
 contains your IP address, the address of the page requested, your browser's
@@ -117,10 +126,7 @@ user-agent string, and the time.
 - `mointel_session`: set when you sign in, and how the desk recognises you on
   your next request. **It ends at 20:00 New York time, the close of after-hours
   trading, rather than lasting a fixed number of days.** Sign in at 04:00 and it
-  covers the whole session; sign in at 19:00 and it covers an hour. A sign-in
-  after 20:00 runs until 20:00 the following day, because a session that has
-  already expired is not a session. It follows the calendar day rather than the
-  trading day, so a Saturday sign-in ends at 20:00 that Saturday.
+  covers the whole session; sign in at 19:00 and it covers an hour. A sign-in after 20:00 can run until 20:00 the next trading day, because a session that has already expired is not a session. It follows the trading day rather than the calendar day, so a sign-in on a Saturday, a Sunday or a market holiday can run until 20:00 on the next trading day: up to 72 hours over a weekend, and longer over a holiday weekend.
 - `mointel_oauth`: set when sign-in *starts*, before you have approved
   anything at Google. It holds two single-use random values that let us check
   that the reply coming back from Google belongs to the request you actually
@@ -144,20 +150,19 @@ which is why you were not asked to dismiss a banner.
 - We do not run advertising trackers, analytics scripts or third-party tag
   managers on this site. The pages load nothing from anyone else's servers:
   no fonts, no scripts, no images.
-- We do not ask for your date of birth, your address, your phone number, or
-  any government identifier.
+- We do not ask for your date of birth, your phone number, or any government identifier. When you pay, Stripe asks for your card details and billing postal code on its own page.
 - We do not knowingly collect anything from anyone under 18. The desk is not
   built for, or offered to, people under 18.
 
 ## 4. Why we hold it
 
-- **To let you in.** Your Google identifier and email are how we recognise
-  your account across sessions and devices.
+- **To let you in.** Your Google identifier, or your email address if you sign in by link, is how we recognise your account across sessions and devices.
 - **To run the service.** Logs and request records are how we find faults,
   restore service, and detect abuse of an account or of the server.
 - **To reach you about the service.** We may email you about access, outages,
-  material changes to this policy, or the end of the service. We do not send
-  marketing email.
+  material changes to this policy, or the end of the service. We do not send marketing email. The emails we send are sign-in links and notices about your access or your account.
+- **To take payment.** Stripe's references and the record of each charge are how we charge your card, show you what you paid, and end a plan when you cancel.
+- **To stop the free trial being taken twice.** The card code is kept for this and for nothing else.
 
 ## 5. Who else sees it
 
@@ -169,6 +174,10 @@ handled by us and by the companies that run the machinery underneath:
 | Google LLC | Your sign-in | It is the identity provider you chose when you clicked the button |
 | Amazon Web Services, Inc. | The server and its logs | It is where the service runs, in us-east-1 |
 | Google LLC | Email we exchange with you | Our mailbox runs on Google Workspace |
+| Stripe, Inc. | Your email address, your card details, billing postal code, the record of each charge, and the check of a card for a free trial | It is the payment processor. The card number never reaches our servers. |
+| Amazon Web Services, Inc. (Amazon SES) | Your email address and the sign-in link we send you | It sends the email for us, from signin@tmitrader.com |
+
+If an email to you bounces or is reported as spam, Amazon keeps your address on a list and stops sending to it. We do not read that list or keep a note of it.
 
 We will hand over data if we are legally required to: a court order, a
 lawful demand from an authority with the power to make one. If that happens
@@ -184,6 +193,11 @@ will tell you before it does.
 - **Server logs**: 14 days, then deleted.
 - **Email we exchanged with you**: we have not set a period; ask and we will
   tell you what we hold.
+- **The record of each charge**: kept for 7 years after the charge.
+- **A free trial that could not start**: deleted 30 days after the attempt. It holds Stripe's reference for the check, your account, the reason it could not start, and the time.
+- **The card code from a free trial**: kept for as long as we offer the free trial, including after you close your account.
+- **Your customer record at Stripe, and our link to it**: for as long as you have an account. If you ask us to delete your account, we delete both. Stripe keeps its record of each charge under its own privacy policy.
+- **Sign-in link records**: deleted 30 days after the link was made. They hold the email address typed, a one-way fingerprint of the link, the times, whether the link was used or replaced, and a scrambled form of the IP address.
 
 Backups are the honest exception. A full-server snapshot is kept for 7 days,
 so deleted data can survive that long in one. Server-log entries live 14 days,
@@ -196,10 +210,8 @@ data back.
 Whoever and wherever you are, you can:
 
 - **See what we hold.** Ask, and we will send you your account record.
-- **Correct it.** Your name and email come from Google; change them there and
-  they change here at your next sign-in.
-- **Delete it.** Ask, and we close the account and delete the record. This
-  cannot be undone, and it ends your access.
+- **Correct it.** If you sign in with Google, your name and email come from Google; change them there and they change here at your next sign-in. If you sign in by email link, your email address is the one you typed; to change it, write to us.
+- **Delete it.** Ask, and we close the account and delete the record. This cannot be undone, and it ends your access. The exceptions are the card code from a free trial, Stripe's reference for the check, and the date, which we keep for the reason in section 2: otherwise the same card could start a second trial. We also keep the record of each charge, for the period in section 6. Stripe keeps its own record of each charge under its own privacy policy.
 - **Take it with you.** Ask, and we will send it in a machine-readable file.
 - **Object, or ask us to restrict what we do.** Ask, and we will answer.
 
@@ -214,12 +226,9 @@ service for exercising any right on this list.
 ## 8. Where the service is, and who it is for
 
 The Momentum Intelligence Trading Desk is operated from the United States, by
-a US company, for people trading the US market. It runs on servers in us-east-1
-and your data is stored there.
+a US company, for people trading the US market. It runs on servers in us-east-1, and the data we hold about you is stored there.
 
-**We do not offer it to the public anywhere.** Access is by invitation, which is
-how the scope above stays a fact rather than a sentence: we choose who is
-invited.
+**It is for sale to the public.** It is made for people trading the US market.
 
 If you are outside the United States and your own country's law gives you rights
 over your data, write to us and we will honour them. We would rather do that
@@ -229,7 +238,7 @@ than argue about which law applies.
 
 Traffic to this site is encrypted in transit. Access to the server is limited
 to the people who run it. We do not store passwords, because there are none to
-store: sign-in is handled entirely by Google.
+store: you sign in with Google, or with a link we email you.
 
 No service is immune. If a breach affects your data we will tell you what
 happened, what was exposed and what to do, as quickly as we can establish the
