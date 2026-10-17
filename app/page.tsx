@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     'An intelligence desk for people who trade US small-cap momentum in the premarket: what is moving, why, where it sits in the cycle, what the share structure looks like from the filings, and what supply stands behind it.',
 };
 
-const INVITE = 'mailto:info@andromedagenius.com?subject=Invite%20request%3A%20TMI%20Trader';
+const INVITE = 'mailto:desk@tmitrader.com?subject=Invite%20request%3A%20TMI%20Trader';
 
 /**
  * Text and images share a row only when the row has an image ready; a section whose images
@@ -271,7 +271,7 @@ export default function LandingPage() {
           <nav className="flex flex-col md:flex-row md:gap-10">
             <Link href="/privacy" className="flex min-h-12 items-center border-t border-line text-base text-ink-1 hover:text-ink md:min-h-0 md:border-0 md:text-sm">Privacy</Link>
             <Link href="/terms" className="flex min-h-12 items-center border-t border-line text-base text-ink-1 hover:text-ink md:min-h-0 md:border-0 md:text-sm">Terms</Link>
-            <a href="mailto:info@andromedagenius.com" className="flex min-h-12 items-center border-t border-line text-base text-ink-1 hover:text-ink md:min-h-0 md:border-0 md:text-sm">Contact</a>
+            <a href="mailto:desk@tmitrader.com" className="flex min-h-12 items-center border-t border-line text-base text-ink-1 hover:text-ink md:min-h-0 md:border-0 md:text-sm">Contact</a>
             <Link href="/desk" className="flex min-h-12 items-center border-y border-line text-base text-ink-1 hover:text-ink md:min-h-0 md:border-0 md:text-sm">Open the desk</Link>
           </nav>
         </div>
@@ -282,7 +282,8 @@ export default function LandingPage() {
           Market data may be delayed, incomplete or wrong. Trading low-float small-cap equities carries a
           substantial risk of loss, and past movement indicates nothing about what happens next.
         </p>
-        <p className="text-[13px] text-ink-3">&copy; 2026 Andromeda Genius, Inc. All rights reserved.</p>
+        <p className="mb-1 text-[13px] text-ink-3">TMI is developed by Andromeda Genius LLC, San Antonio, Texas.</p>
+        <p className="text-[13px] text-ink-3">&copy; 2026 Andromeda Genius LLC. All rights reserved.</p>
       </footer>
     </div>
   );

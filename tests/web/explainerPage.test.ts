@@ -94,7 +94,7 @@ describe('ExplainerPage', () => {
     expect(markup).not.toContain('the name reads Cannot verify');
     for (let n = 1; n <= SECTIONS.length; n += 1) expect(markup).toContain(`href="#s${n}"`);
     expect(markup).toContain('TMI TRADER');
-    expect(markup).toContain('href="mailto:info@andromedagenius.com"');
+    expect(markup).toContain('href="mailto:desk@tmitrader.com"');
   });
 
   it('carries no adoption banner, dateline or ONE SOURCE box: it is not a legal text', () => {

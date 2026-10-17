@@ -32,12 +32,12 @@ export function SiteHeader() {
 export function SiteFooter() {
   return (
     <footer className="flex flex-col gap-6 border-t border-line bg-panel px-5 py-10 md:flex-row md:items-center md:justify-between md:px-24 md:py-10">
-      <p className="text-[13px] text-ink-3">© 2026 Andromeda Genius, Inc.</p>
+      <p className="text-[13px] text-ink-3">© 2026 Andromeda Genius LLC.</p>
       <nav className="flex gap-8">
         <Link href="/" className="text-sm text-ink-1 hover:text-ink">Home</Link>
         <Link href="/privacy" className="text-sm text-ink-1 hover:text-ink">Privacy</Link>
         <Link href="/terms" className="text-sm text-ink-1 hover:text-ink">Terms</Link>
-        <a href="mailto:info@andromedagenius.com" className="text-sm text-ink-1 hover:text-ink">Contact</a>
+        <a href="mailto:desk@tmitrader.com" className="text-sm text-ink-1 hover:text-ink">Contact</a>
       </nav>
     </footer>
   );

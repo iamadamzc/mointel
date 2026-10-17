@@ -275,7 +275,7 @@ export const ACCESS = {
   body: [
     'Access is by invitation. You sign in with Google on the address you were invited on, accept a short disclaimer once, and the desk opens.',
     'Built for small-cap momentum traders, with catalyst details and grades, float structure background, SEC filing information, and several additional information points that help you make decisions on what to trade.',
-    'Andromeda Genius, Inc., San Antonio, Texas.',
+    'TMI is developed by Andromeda Genius LLC, San Antonio, Texas.',
   ],
   /** After the body, to /privacy: his "add it" 2026-10-09T02:27:20.760Z; Commercial read 43a's words. */
   privacyLink: 'What we collect, and what we do not',
