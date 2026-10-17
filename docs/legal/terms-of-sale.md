@@ -70,8 +70,9 @@ read as a month that starts on the 1st.]
 
 ## 2. Daily: how the charge works
 
-You save a card the first time you sign in. From then on, each paid day is
-charged automatically to that card. You are not asked to approve each charge.
+You save a card the first time you sign in. From then on, each new paid day
+you sign in on is charged automatically to that card. You are not asked to
+approve each charge. You pay only for the paid days you sign in on.
 
 There is no charge for a paid day that ends on a day the US stock market is
 closed, such as a weekend or a market holiday.

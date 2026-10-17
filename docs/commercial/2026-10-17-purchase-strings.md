@@ -70,13 +70,13 @@ The privacy policy also says in section 1 that the service is "an information se
 
 ## 4. The sentences beside the pay button
 
-These are legal text, not page copy: the renewal and refund terms have to be stated in plain words next to the button, and the buyer has to tick a box that is not ticked by default. Marketing's page words surround them. Templates; the variables are filled from the plan.
+These are legal text, not page copy: the renewal and refund terms have to be stated in plain words next to the button, and the buyer has to tick a box that is not ticked by default. Marketing's page words surround them. Templates; the variables are filled from the plan: {amount} is the dollar figure ("$89"), {for} is "one month", "six months" or "one year", {every} is "month", "six months" or "year". Revised 2026-10-17 (read 149): the daily sentence now says the charge is on each new paid day the buyer signs in on, which is what the build does; the plan sentence carries the amount and its length.
 
 **Daily:**
-"You will be charged {price} now, and automatically for each paid day after this, on this card, until you stop. A paid day runs 8:00pm ET to 8:00pm ET. No refunds. You can stop in the desk at any time."
+"You will be charged {amount} now, and automatically on each new paid day you sign in on, on this card, until you stop. A paid day runs 8:00pm ET to 8:00pm ET. No refunds. You can stop in the desk at any time."
 
 **A plan:**
-"You will be charged {price} now, and again every {period} on {renewal date} at the price then in force, on this card, until you cancel. You can cancel in the desk at any time and keep access to the end of the period you paid for. No refunds."
+"You will be charged {amount} now for {for}, and again every {every} from {renewal date}, at the price then in force, on this card, until you cancel. You can cancel in the desk at any time and keep access to the end of the period you paid for. No refunds."
 
 **The box, unticked:** "I have read and agree to the [Terms of sale](/terms-of-sale) and the [Terms of service](/terms)."
 
