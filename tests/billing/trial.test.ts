@@ -195,7 +195,7 @@ function trialStripe(configuration: Record<string, unknown> | null) {
   const stripe = {
     customers: { create: vi.fn(async () => ({ id: 'cus_new' })) },
     prices: { list: vi.fn() },
-    checkout: { sessions: { create } },
+    checkout: { sessions: { create, list: vi.fn(async () => ({ data: [] })) } },
     billingPortal: { sessions: { create: vi.fn() } },
     paymentMethodConfigurations: { retrieve: vi.fn(async () => configuration) },
   } as unknown as CheckoutDeps['stripe'];
