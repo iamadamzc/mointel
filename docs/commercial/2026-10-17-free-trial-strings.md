@@ -4,19 +4,14 @@
 
 The words below are for the terms of sale, the privacy policy, the sentences beside the card field on the trial start screen, and the rules for the pricing page (Marketing writes those). Brackets are facts only Billing or he can fill.
 
-## NEEDS YOU
+## Answered, and two things left
 
-Three short questions for him.
+His answers, typed in this session (2026-10-17): to how long we remember a card that took a trial, "forever"; and for the trial's length, "from session time +48 hours of trading days".
 
-**How long do we remember a card that took a trial?** "Once per card" means remembering it. The privacy policy must say for how long.
-- Choices: (a) for as long as the account exists, then delete it; (b) for a fixed time after the trial, for example a year, after which the same card could take a trial again; (c) as long as the trial rule exists, stated plainly, including after the account is closed.
-- What changes: only (c) stops a person closing an account, opening a new one and taking a second trial on the same card. (a) and (b) let that happen. Under (c) the privacy policy must also say that a request to delete the account does not delete the code, and that is his attorney's to accept.
-- My lean: (c), stated in one plain sentence, because "once per card" cannot be true otherwise. His call and his attorney's.
-
-**What are the "two days"?** Two paid days (8:00pm ET to 8:00pm ET) that each end on a day the US market is open. The open question is how they are counted: (a) the first two such days after the trial starts, whether or not the person signs in; or (b) the first two such days the person signs in on, as with a daily buyer. A trial that starts on a Friday evening is Saturday's paid day, which is not a market day, so under either reading the two days are Monday's and Tuesday's.
-- My lean: (a). It gives the trial one end time, known when it starts, so the screens can say "Your free trial runs to {trialEnd}" and the terms can say it in one sentence. Under (b) the end depends on when the person next signs in, and every screen that names an end time would have to say "after your second day".
-
-**May a trial be refused or ended for using more than one account?** The draft says we may. It protects the rule he wants. His attorney reads it.
+- **The card code is kept for as long as the free trial exists, including after an account is closed.** That is the option I leaned to. The privacy sentences below say it in one plain line and say that deleting an account does not delete the code. I wrote "for as long as we offer the free trial" and not the word "forever": it is the same while the trial exists, and it says when the code goes if the trial is ever withdrawn. If he wants "forever" literally, it is a swap of those words. His attorney has to accept this, because the privacy policy otherwise promises deletion on request.
+- **The trial is 48 hours from the moment it starts, and hours on a day the US market is closed do not count.** An hour counts only if it falls inside a paid day (8:00pm ET to 8:00pm ET) that ends on a market day. Example: a trial that starts on a Thursday at 10:00am ET counts 10 hours to Thursday 8:00pm and 24 more through Friday 8:00pm, which is 34; the weekend does not count; Sunday 8:00pm to Monday 10:00am adds 14. It ends **Monday at 10:00am ET.** A trial that starts on a Saturday does not begin to count until Sunday 8:00pm and ends on Tuesday at 8:00pm ET. The end time is known when the trial starts, so the screens show it.
+- **One confirmation for him:** is Monday 10:00am the right end for the Thursday example? That is my reading of "from session time +48 hours of trading days".
+- **Still open:** may a trial be refused or ended for using more than one account? The draft says we may. His attorney reads it.
 
 ## 1. Where his phrase had to bend
 
@@ -37,7 +32,7 @@ Two more places where the words stay careful:
 This replaces the default I applied ("no free first day"). The terms of sale are approved text, so each change below needs his yes.
 
 **Section 1, the price table: add a row.**
-`| Free trial | no charge | two paid days, once |`
+`| Free trial | no charge | 48 hours, once |`
 
 **Section 2, first sentence.**
 - Now: "You save a card the first time you sign in."
@@ -47,22 +42,22 @@ This replaces the default I applied ("no free first day"). The terms of sale are
 
 "## 9. The free trial
 
-You can try the desk free for two paid days. Each person can take the trial once, and each card can start a trial once.
+You can try the desk free for 48 hours. The clock does not run on days the US market is closed. Each person can take the trial once, and each card can start a trial once.
 
 To start, you enter a card. We use it to check that it has not already been used for a trial. **We do not charge it, now or when the trial ends, and we never will.** As soon as it has been checked, we ask Stripe, our payment processor, to remove it from your account, so it cannot be charged. We do not see your card number and we do not keep your card. Stripe, which takes the card, keeps a record of it under Stripe's own privacy policy.
 
-We keep one code that identifies the card, Stripe's reference number for the check, and the time the trial started, with your account. We use them only to stop the same card starting a second trial. [FINGERPRINT RETENTION]
+We keep one code that identifies the card, Stripe's reference number for the check, and the time the trial started, with your account. We use them only to stop the same card starting a second trial. We keep them for as long as we offer the free trial, including after you close your account, because otherwise the same card could start a second trial.
 
-When the two days end, your access ends. Nothing is charged and nothing renews. To keep using the desk, you buy a day or a plan and enter a card then.
+When the 48 hours end, your access ends. Nothing is charged and nothing renews. To keep using the desk, you buy a day or a plan and enter a card then.
 
-[TRIAL DAYS: which two days count.]
+The 48 hours are counted from the moment the trial starts, and only on days the US market is open. A trial that starts on a Thursday at 10:00am ET ends on the Monday at 10:00am ET. We show you the end time when the trial starts.
 
 If the card cannot be checked, or has already been used for a trial, the trial does not start. We may refuse or end a trial if the same person is using more than one account."
 
 ## 3. Privacy policy: the changes
 
 **Section 2, after "When you pay." add a paragraph:**
-"**When you start a free trial.** You enter a card on Stripe's page. Stripe checks it, and we ask Stripe to remove it from your account at once; we never charge it. We never receive your card number. Stripe gives us a code that identifies the card. We keep that code, Stripe's reference number for the check, and the time the trial started, with your account, so the same card cannot start a second trial. [FINGERPRINT RETENTION] Stripe keeps a record of the card, including its brand, last four digits and expiry date, under its own privacy policy."
+"**When you start a free trial.** You enter a card on Stripe's page. Stripe checks it, and we ask Stripe to remove it from your account at once; we never charge it. We never receive your card number. Stripe gives us a code that identifies the card. We keep that code, Stripe's reference number for the check, and the time the trial started, with your account, so the same card cannot start a second trial. We keep them for as long as we offer the free trial, including after you close your account. Stripe keeps a record of the card, including its brand, last four digits and expiry date, under its own privacy policy."
 
 **Section 4 ("Why we hold it"), add a bullet:**
 "**To stop the free trial being taken twice.** The card code is kept for this and for nothing else."
@@ -72,15 +67,15 @@ If the card cannot be checked, or has already been used for a trial, the trial d
 - Replace with: "Your card details, billing postal code, the record of each charge, and the check of a card for a free trial"
 
 **Section 6, add a bullet:**
-"**The card code from a free trial**: [FINGERPRINT RETENTION]."
+"**The card code from a free trial**: kept for as long as we offer the free trial, including after you close your account."
 
-**Section 7 (your rights), "See what we hold" or deletion:** [ATTORNEY: whether a request to delete the account also deletes the card code. If he picks (c) above, the policy says it does not, and why, in one sentence.]
+**Section 7 (your rights), deletion.** Add: "If you ask us to delete your account, we delete it, except the card code from a free trial, Stripe's reference for the check, and the date, which we keep for the reason in section 2: otherwise the same card could start a second trial." [ATTORNEY: whether the policy may keep these after a deletion request, and whether it must name a legal basis.]
 
 ## 4. The sentences beside the card field on the trial start screen
 
 Legal text, with the box unticked. Marketing's page words surround them. Same position as the checkout sentences.
 
-"Free for two paid days. We use your card only to check that it has not been used for a trial before. We do not charge it, now or when the trial ends, and we do not keep it: we keep only a code that identifies it, so the same card cannot start a second trial. We ask Stripe to remove the card from your account at once, so it can never be charged. Stripe keeps a record of the card under its own privacy policy. When the trial ends, nothing is charged and your access ends. [STATEMENT]"
+"Free for 48 hours. The clock does not run on days the US market is closed. We use your card only to check that it has not been used for a trial before. We do not charge it, now or when the trial ends, and we do not keep it: we keep only a code that identifies it, so the same card cannot start a second trial. We ask Stripe to remove the card from your account at once, so it can never be charged. Stripe keeps a record of the card under its own privacy policy. When the trial ends, nothing is charged and your access ends. [STATEMENT]"
 
 "I have read and agree to the [Terms of sale](/terms-of-sale) and the [Terms of service](/terms)."
 
@@ -88,7 +83,7 @@ Legal text, with the box unticked. Marketing's page words surround them. Same po
 
 I read them against these. They replace the earlier rule "no free trial", which belonged to the beta.
 - The three points are on the page in plain words: no charge when the trial ends; we do not keep the card; the card is only to stop a second trial. Use the sentences above. Do not say "we store nothing", "nothing is kept", "no data" or "your card is deleted".
-- "Free for two paid days" says what a day is the first time it appears (a paid day runs 8:00pm ET to 8:00pm ET). It does not say "two days" alone.
+- The trial is "48 hours", with "the clock does not run on days the US market is closed" in the same place and the end time shown when it starts. It does not say "two days" or "two trading days" alone, which a reader counts differently.
 - No "risk-free", "no strings", "cancel anytime" (nothing renews, so there is nothing to cancel), "no commitment" or "try before you buy" as a promise of value. "Once per person and per card" is stated.
 - It does not say the trial can be taken again later. It does not name a bank, a network or a vendor other than Stripe where the privacy policy names it.
 - The trial is not "a plan". The pricing page lists it apart from the four prices.
@@ -106,7 +101,7 @@ I read them against these. They replace the earlier rule "no free trial", which 
 **Still unknown, and named as unknown in the words:**
 1. Whether the card check places a temporary authorization on the card. `[STATEMENT]`
 2. How long Stripe keeps its record of the card. (No sentence gives a period.)
-3. How the "two days" are counted (a fixed window from the start, or the days the person signs in on). Billing says they count on trading days only; the question of the window stays his.
+3. (Answered by him: 48 hours from the start, counted only on market days. Billing builds the clock to the rule in the Answered section.)
 4. Whether the card is taken on Stripe's own page (a redirect), which keeps the privacy line that our pages load nothing from anyone else's servers true, or in an embedded form, which does not.
 
 ## 7. Order
