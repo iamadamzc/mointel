@@ -12,8 +12,10 @@ import {
   markCardSaved,
   markFailed,
   markPlanPaid,
+  markRenewalFailed,
   markSucceeded,
   recordTrial,
+  requeueFailedCharge,
   setTrialEnd,
   upsertPlan,
 } from '@/lib/billing/store';
@@ -56,6 +58,7 @@ describe('billingStateFor', () => {
     expect(billingStateFor(db, userId, MON_10_ET)).toEqual({
       door: 'ok',
       grace: null,
+      endedAt: null,
       trial: null,
       plan: null,
       cardOnFile: false,
@@ -84,9 +87,47 @@ describe('billingStateFor', () => {
     expect(state.grace).toEqual({
       kind: 'daily',
       amountCents: 550,
+      declinedAgain: false,
       endsAt: new Date(MON_10_ET.getTime() + GRACE_MS).toISOString(),
     });
     expect(state.latestCharge).toMatchObject({ etDate: '2026-10-19', state: 'FAILED' });
+  });
+
+  it('a retry after a card update that is declined too: declinedAgain, and the original deadline', () => {
+    const db = temporaryStore();
+    const userId = buyer(db);
+    const row = ensurePendingCharge(db, userId, '2026-10-19', MON_10_ET);
+    markFailed(db, row.id, 'card_declined', null, MON_10_ET);
+    requeueFailedCharge(db, userId, '2026-10-19');
+    markFailed(db, row.id, 'insufficient_funds', null, new Date(MON_10_ET.getTime() + 20 * 60_000));
+    expect(billingStateFor(db, userId, new Date(MON_10_ET.getTime() + 21 * 60_000)).grace).toEqual({
+      kind: 'daily',
+      amountCents: 550,
+      declinedAgain: true,
+      endsAt: new Date(MON_10_ET.getTime() + GRACE_MS).toISOString(),
+    });
+  });
+
+  it('charge_first carries when the last lapsed hour ended the session', () => {
+    const db = temporaryStore();
+    const userId = buyer(db);
+    const monday = ensurePendingCharge(db, userId, '2026-10-19', MON_10_ET);
+    markFailed(db, monday.id, 'card_declined', null, MON_10_ET);
+    const state = billingStateFor(db, userId, TUE_10_ET);
+    expect(state.door).toBe('charge_first');
+    expect(state.endedAt).toBe(new Date(MON_10_ET.getTime() + GRACE_MS).toISOString());
+    // Not charge_first: no endedAt.
+    expect(billingStateFor(db, userId, TUE_10_ET, { BILLING_LAPSED_DOOR: 'one_hour' }).endedAt).toBeNull();
+  });
+
+  it('a plan renewal declined twice: declinedAgain on the plan band', () => {
+    const db = temporaryStore();
+    const userId = buyer(db);
+    monthly(db, userId);
+    markRenewalFailed(db, 'sub_1', MON_10_ET);
+    expect(billingStateFor(db, userId, MON_10_ET).grace).toMatchObject({ kind: 'plan', declinedAgain: false });
+    markRenewalFailed(db, 'sub_1', new Date(MON_10_ET.getTime() + 10 * 60_000));
+    expect(billingStateFor(db, userId, MON_10_ET).grace).toMatchObject({ kind: 'plan', declinedAgain: true });
   });
 
   it('a decline on an earlier day: the update-card screen until today is paid (his door rule)', () => {

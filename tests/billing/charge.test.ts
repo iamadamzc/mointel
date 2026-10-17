@@ -88,6 +88,7 @@ describe('the charge row', () => {
       state: 'grace',
       kind: 'daily',
       amountCents: 550,
+      declinedAgain: false,
       endsAt: new Date(MON_10_ET.getTime() + GRACE_MS).toISOString(),
     });
 

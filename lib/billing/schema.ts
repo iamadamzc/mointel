@@ -99,6 +99,7 @@ CREATE TABLE IF NOT EXISTS billing_plans (
   cancel_at_period_end   INTEGER NOT NULL DEFAULT 0,
   renewal_failed_at      TEXT,
   renewal_grace_until    TEXT,
+  renewal_failures       INTEGER NOT NULL DEFAULT 0,
   updated_at             TEXT    NOT NULL
 );
 

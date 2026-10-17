@@ -378,7 +378,8 @@ export function markPlanPaid(
     if (!plan) throw new Error(`no billing plan ${subscriptionId}`);
     db.prepare(
       `UPDATE billing_plans SET paid_through_et_date = MAX(paid_through_et_date, ?),
-         current_period_end = ?, renewal_failed_at = NULL, renewal_grace_until = NULL, updated_at = ?
+         current_period_end = ?, renewal_failed_at = NULL, renewal_grace_until = NULL, renewal_failures = 0,
+         updated_at = ?
        WHERE stripe_subscription_id = ?`,
     ).run(paidDayOf(periodEnd), periodEnd.toISOString(), now.toISOString(), subscriptionId);
     db.prepare('UPDATE billing_customers SET card_failing_since = NULL WHERE user_id = ?').run(plan.userId);
@@ -423,7 +424,8 @@ export function markRenewalFailed(
     const grace = new Date(now.getTime() + GRACE_MS).toISOString();
     db.prepare(
       `UPDATE billing_plans SET renewal_failed_at = COALESCE(renewal_failed_at, ?),
-         renewal_grace_until = COALESCE(renewal_grace_until, ?), updated_at = ?
+         renewal_grace_until = COALESCE(renewal_grace_until, ?), renewal_failures = renewal_failures + 1,
+         updated_at = ?
        WHERE stripe_subscription_id = ?`,
     ).run(at, grace, at, subscriptionId);
     const row = db
@@ -474,7 +476,7 @@ export function lapsePlan(db: IdentityDatabase, subscriptionId: string, now: Dat
 
 export type BillingStatus =
   | { state: 'ok' }
-  | { state: 'grace'; kind: 'daily' | 'plan'; endsAt: string; amountCents: number };
+  | { state: 'grace'; kind: 'daily' | 'plan'; endsAt: string; amountCents: number; declinedAgain: boolean };
 
 /**
  * What the desk shows. The band and both OS notifications read endsAt and
@@ -486,19 +488,35 @@ export function billingStatus(db: IdentityDatabase, userId: number, now: Date = 
   const at = now.toISOString();
   const charge = db
     .prepare(
-      `SELECT grace_until AS endsAt, amount_cents AS amountCents FROM billing_charges
+      `SELECT grace_until AS endsAt, amount_cents AS amountCents, attempts FROM billing_charges
         WHERE user_id = ? AND et_date = ? AND state = 'FAILED' AND grace_until > ?`,
     )
-    .get(userId, paidDayOf(now), at) as { endsAt: string; amountCents: number } | undefined;
-  if (charge) return { state: 'grace', kind: 'daily', endsAt: charge.endsAt, amountCents: charge.amountCents };
+    .get(userId, paidDayOf(now), at) as { endsAt: string; amountCents: number; attempts: number } | undefined;
+  if (charge) {
+    // attempts counts definite outcomes: 1 is the first decline, 2+ a retry
+    // after a card update that was declined too.
+    return {
+      state: 'grace',
+      kind: 'daily',
+      endsAt: charge.endsAt,
+      amountCents: charge.amountCents,
+      declinedAgain: charge.attempts >= 2,
+    };
+  }
   const plan = db
     .prepare(
-      `SELECT renewal_grace_until AS endsAt, plan FROM billing_plans
+      `SELECT renewal_grace_until AS endsAt, plan, renewal_failures AS failures FROM billing_plans
         WHERE user_id = ? AND renewal_grace_until > ? ORDER BY renewal_grace_until LIMIT 1`,
     )
-    .get(userId, at) as { endsAt: string; plan: PlanKey } | undefined;
+    .get(userId, at) as { endsAt: string; plan: PlanKey; failures: number } | undefined;
   if (plan) {
-    return { state: 'grace', kind: 'plan', endsAt: plan.endsAt, amountCents: RULED_AMOUNT_CENTS[plan.plan] };
+    return {
+      state: 'grace',
+      kind: 'plan',
+      endsAt: plan.endsAt,
+      amountCents: RULED_AMOUNT_CENTS[plan.plan],
+      declinedAgain: plan.failures >= 2,
+    };
   }
   return { state: 'ok' };
 }
@@ -706,6 +724,29 @@ export function markRefunded(db: IdentityDatabase, paymentIntentId: string): boo
     .prepare(`UPDATE billing_charges SET state = 'REFUNDED' WHERE payment_intent_id = ? AND state = 'SUCCEEDED'`)
     .run(paymentIntentId);
   return result.changes > 0;
+}
+
+/**
+ * When the most recent one-hour band that has already run out ended a session:
+ * the latest grace_until (daily) or renewal_grace_until (plan) before `before`.
+ * Null when no hour has lapsed.
+ */
+export function lastLapsedGraceBefore(db: IdentityDatabase, userId: number, before: Date): string | null {
+  const at = before.toISOString();
+  const daily = db
+    .prepare(
+      `SELECT MAX(grace_until) AS t FROM billing_charges
+        WHERE user_id = ? AND state = 'FAILED' AND grace_until IS NOT NULL AND grace_until <= ?`,
+    )
+    .get(userId, at) as { t: string | null };
+  const plan = db
+    .prepare(
+      `SELECT MAX(renewal_grace_until) AS t FROM billing_plans
+        WHERE user_id = ? AND renewal_grace_until IS NOT NULL AND renewal_grace_until <= ?`,
+    )
+    .get(userId, at) as { t: string | null };
+  const times = [daily.t, plan.t].filter((t): t is string => t !== null).sort();
+  return times.length ? times[times.length - 1] : null;
 }
 
 /** The newest charge row, any state, for the desk's billing page. */

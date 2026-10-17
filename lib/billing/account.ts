@@ -23,6 +23,7 @@ import {
   customerIdFor,
   hasCardOnFile,
   isCardRemoved,
+  lastLapsedGraceBefore,
   latestCharge,
   markCardRemoved,
   paidDayOf,
@@ -62,8 +63,17 @@ export interface DeskPlan {
 
 export interface DeskBillingState {
   door: DeskDoor;
-  /** The one-hour band, with what failed and how much, or null. */
-  grace: { kind: 'daily' | 'plan'; endsAt: string; amountCents: number } | null;
+  /**
+   * The one-hour band, with what failed and how much, or null. declinedAgain:
+   * a retry inside the same hour (after a card update) was declined too.
+   */
+  grace: { kind: 'daily' | 'plan'; endsAt: string; amountCents: number; declinedAgain: boolean } | null;
+  /**
+   * Set only when door is 'charge_first': when the last lapsed hour ended the
+   * person's session ("Your session ended at {time}..."). Null if no hour has
+   * lapsed, e.g. the card failed on an earlier day with no session open.
+   */
+  endedAt: string | null;
   trial: { endsAt: string | null } | null;
   plan: DeskPlan | null;
   cardOnFile: boolean;
@@ -101,7 +111,10 @@ export function billingStateFor(
 ): DeskBillingState {
   const today = paidDayOf(now);
   const status = billingStatus(db, userId, now);
-  const grace = status.state === 'grace' ? { kind: status.kind, endsAt: status.endsAt, amountCents: status.amountCents } : null;
+  const grace =
+    status.state === 'grace'
+      ? { kind: status.kind, endsAt: status.endsAt, amountCents: status.amountCents, declinedAgain: status.declinedAgain }
+      : null;
   const trial = trialState(db, userId, now);
   const customer = customerIdFor(db, userId) !== null;
 
@@ -122,6 +135,7 @@ export function billingStateFor(
   return {
     door,
     grace,
+    endedAt: door === 'charge_first' ? lastLapsedGraceBefore(db, userId, now) : null,
     trial: trial.state === 'active' ? { endsAt: trial.endsAt } : null,
     plan: displayPlan(db, userId, today),
     cardOnFile: hasCardOnFile(db, userId),

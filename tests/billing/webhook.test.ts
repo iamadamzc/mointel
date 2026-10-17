@@ -176,6 +176,7 @@ describe('a renewal declined, then the card updated', () => {
       state: 'grace',
       kind: 'plan',
       amountCents: 8900,
+      declinedAgain: false,
       endsAt: new Date(MON_10_ET.getTime() + GRACE_MS).toISOString(),
     });
 
