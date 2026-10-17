@@ -15,29 +15,46 @@
  */
 
 /**
- * PROVISIONAL: the state the desk reads. The shape is Billing's to define (billingStateFor); this is the consumer's
- * reading of Billing's openPaidDay and billingStatus at 4d73b60c, with the two gaps sent to Integration (2026-10-17):
- * the grace kind (daily or plan) and the amount. Align to Billing's type when it lands.
+ * THE STATE THE DESK READS: a MIRROR of Billing's DeskBillingState (lib/billing/account.ts on branch
+ * billing/stripe-v1-on-d772ba25, sent by Billing-tmi 2026-10-17, before its commit). Billing owns this shape; replace
+ * the mirror with `import type { DeskBillingState } from '@/lib/billing/account'` when that branch merges.
+ * `grace.declinedAgain` and `endedAt` are NOT in Billing's shape yet (asked 2026-10-17); absent, those two lines are
+ * omitted.
  */
-export type DeskBillingState =
-  /** No billing applies (review mode, the owner, or no customer yet): the board, nothing added. */
-  | { door: 'none' }
-  /** The free trial is running. */
-  | { door: 'trial'; trialEndsAt: string | null }
-  /** The trial is over and the person never bought: the buy screen instead of the board. */
-  | { door: 'buy_first' }
-  /**
-   * The day cannot open until a charge succeeds (BILLING_LAPSED_DOOR charge_first, his ruling): the update-your-card
-   * screen instead of the board. `resolving` while the charge row is still PENDING; `endedAt` when the previous
-   * day's hour ran out.
-   */
-  | { door: 'charge_first'; kind: 'daily' | 'plan'; amountCents: number | null; resolving: boolean; endedAt: string | null }
-  /** The day is open. `grace` while a decline's hour runs; `paid` just after a retried charge succeeded. */
-  | {
-      door: 'open';
-      grace: { kind: 'daily' | 'plan'; endsAt: string; retrying: boolean; secondDecline: boolean } | null;
-      paid: 'daily' | 'plan' | null;
-    };
+export type DeskDoor = 'ok' | 'trial' | 'buy_first' | 'charge_first';
+
+export interface DeskPlan {
+  kind: 'monthly' | 'six_month' | 'annual';
+  priceCents: number;
+  status: string;
+  paidThroughEtDate: string;
+  currentPeriodEnd: string;
+  cancelAtPeriodEnd: boolean;
+  renewsOn: string | null;
+  endsOn: string | null;
+}
+
+export interface DeskBillingState {
+  door: DeskDoor;
+  grace: { kind: 'daily' | 'plan'; endsAt: string; amountCents: number; declinedAgain?: boolean } | null;
+  trial: { endsAt: string | null } | null;
+  plan: DeskPlan | null;
+  cardOnFile: boolean;
+  customer: boolean;
+  latestCharge: {
+    etDate: string;
+    state: 'PENDING' | 'SUCCEEDED' | 'FAILED' | 'NOT_CHARGED' | 'REFUNDED';
+    source: 'daily' | 'checkout';
+    amountCents: number;
+  } | null;
+  /** Asked of Billing: when the previous session was ended by a lapsed hour (charge_first after the hour). */
+  endedAt?: string | null;
+}
+
+/** The desk's own memory between reads: the band saw a grace end with the charge succeeding. */
+export interface BillingMemory {
+  justPaid: 'daily' | 'plan' | null;
+}
 
 export const BILLING_WORDS = {
   // Section 2: the band.
@@ -141,11 +158,15 @@ function cardScreen(kind: 'daily' | 'plan', amountCents: number | null, endedAt:
 
 const NONE: BillingDeskView = { screen: 'board', band: null, titlePrefix: null, trialChip: null, card: null, buy: null };
 
-export function billingDeskView(state: DeskBillingState | null | undefined, nowMs: number): BillingDeskView {
-  if (!state || state.door === 'none') return NONE;
+export function billingDeskView(
+  state: DeskBillingState | null | undefined,
+  nowMs: number,
+  memory: BillingMemory = { justPaid: null },
+): BillingDeskView {
+  if (!state) return NONE;
 
   if (state.door === 'trial') {
-    const time = etTime(state.trialEndsAt);
+    const time = etTime(state.trial?.endsAt);
     return { ...NONE, trialChip: time ? PLACEHOLDER_WORDS.trialChip(time) : null };
   }
 
@@ -154,15 +175,19 @@ export function billingDeskView(state: DeskBillingState | null | undefined, nowM
   }
 
   if (state.door === 'charge_first') {
-    return { ...NONE, screen: 'card_required', card: cardScreen(state.kind, state.amountCents, state.endedAt, state.resolving) };
+    const kind = state.plan ? 'plan' : 'daily';
+    const amount = state.latestCharge?.amountCents ?? state.grace?.amountCents ?? null;
+    const resolving = state.latestCharge?.state === 'PENDING';
+    return { ...NONE, screen: 'card_required', card: cardScreen(kind, amount, state.endedAt ?? null, resolving) };
   }
 
-  // The day is open.
-  if (state.paid && !state.grace) {
-    return { ...NONE, band: { phase: 'paid', tone: 'pos', text: state.paid === 'plan' ? BILLING_WORDS.bandPaidPlan : BILLING_WORDS.bandPaidDaily, button: null } };
-  }
+  // door 'ok': the board, with the band while a decline's hour runs.
   const grace = state.grace;
-  if (!grace) return NONE;
+  if (!grace) {
+    return memory.justPaid
+      ? { ...NONE, band: { phase: 'paid', tone: 'pos', text: memory.justPaid === 'plan' ? BILLING_WORDS.bandPaidPlan : BILLING_WORDS.bandPaidDaily, button: null } }
+      : NONE;
+  }
   const time = etTime(grace.endsAt) ?? '';
   const left = secondsLeft(grace.endsAt, nowMs);
 
@@ -175,11 +200,11 @@ export function billingDeskView(state: DeskBillingState | null | undefined, nowM
   const red = minutes <= 10;
   const titlePrefix = left <= 60 ? `${WARN} ${clock(left)} ${DOT} payment` : `${WARN} ${minutes}m ${DOT} payment`;
 
-  if (grace.retrying) {
-    // The countdown keeps running while the retry is in flight (the clock stops on a confirmed success only).
+  if (state.latestCharge?.state === 'PENDING') {
+    // The retry is in flight: the countdown keeps running (the clock stops on a confirmed success only).
     return { ...NONE, band: { phase: 'checking', tone: red ? 'neg' : 'warn', text: BILLING_WORDS.bandChecking, button: null }, titlePrefix };
   }
-  if (grace.secondDecline) {
+  if (grace.declinedAgain) {
     return { ...NONE, band: { phase: 'second_decline', tone: red ? 'neg' : 'warn', text: BILLING_WORDS.bandSecondDecline(time), button: BILLING_WORDS.updateCard }, titlePrefix };
   }
   if (left <= 60) {
@@ -187,6 +212,17 @@ export function billingDeskView(state: DeskBillingState | null | undefined, nowM
   }
   const text = grace.kind === 'plan' ? BILLING_WORDS.bandPlan(time, minutes) : BILLING_WORDS.bandDaily(time, minutes);
   return { ...NONE, band: { phase: red ? 'red' : 'amber', tone: red ? 'neg' : 'warn', text, button: BILLING_WORDS.updateCard }, titlePrefix };
+}
+
+/**
+ * The desk's memory across reads: a grace that disappears while the latest charge reads SUCCEEDED is a payment that
+ * went through, shown green for a minute (Marketing section 2), then cleared by the caller.
+ */
+export function nextMemory(previous: DeskBillingState | null, next: DeskBillingState | null): BillingMemory {
+  if (previous?.door === 'ok' && previous.grace && next?.door === 'ok' && !next.grace && next.latestCharge?.state === 'SUCCEEDED') {
+    return { justPaid: previous.grace.kind };
+  }
+  return { justPaid: null };
 }
 
 /**
@@ -199,7 +235,7 @@ export function notificationsDue(
   nowMs: number,
   seen: ReadonlySet<string>,
 ): Array<{ key: string; title: string; body: string }> {
-  if (!state || state.door !== 'open' || !state.grace || state.grace.retrying) return [];
+  if (!state || state.door !== 'ok' || !state.grace || state.latestCharge?.state === 'PENDING') return [];
   const { endsAt, kind } = state.grace;
   const time = etTime(endsAt);
   const left = secondsLeft(endsAt, nowMs);

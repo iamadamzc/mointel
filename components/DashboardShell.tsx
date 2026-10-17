@@ -5,6 +5,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AssessmentSelector, AssessmentSnapshotBoard } from '@/components/AssessmentHistory';
 import { DashboardHeader } from '@/components/DashboardHeader';
+import { BillingBand } from '@/components/BillingBand';
+import { BuyScreen, CardRequiredScreen } from '@/components/BillingScreens';
 import { DeskEventFeed } from '@/components/DeskEventFeed';
 import { DiscoveryBoard } from '@/components/DiscoveryBoard';
 import { FilterBar } from '@/components/FilterBar';
@@ -45,6 +47,7 @@ import { chooseReportRange, reportTimeline } from '@/lib/dashboard/sessionReport
 import { editionIsRead, openOnLoad, reportMark, reportReadKey, tabTitle } from '@/lib/dashboard/reportNotice';
 import type { PriceRange } from '@/lib/dashboard/boardRange';
 import { useClock } from '@/lib/hooks/useClock';
+import { BUY_HREF, useDeskBilling } from '@/lib/hooks/useDeskBilling';
 import { useDashboard } from '@/lib/hooks/useDashboard';
 import { useFocus } from '@/lib/hooks/useFocus';
 import { useMarket } from '@/lib/hooks/useMarket';
@@ -294,6 +297,8 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
   const { now, mounted } = useClock();
 
   const merged = useMemo(() => mergeDesk(market.snapshot), [market.snapshot]);
+  // Desk billing (screens, band, title, notifications). Nothing here is reachable until the billing cut ships.
+  const billing = useDeskBilling();
 
   /*
    * The cycle a row is actually in, resolved from the computed history.
@@ -499,8 +504,19 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
         refreshing={feed.refreshing}
         failure={feed.failure}
         onRefresh={feed.refresh}
+        trialChip={billing.view.trialChip}
       />
 
+      {/* The failed-charge band: one row under the header, pushing the board down and covering none of it. */}
+      <BillingBand band={billing.view.band} onUpdateCard={billing.onUpdateCard} />
+
+      {/* A billing screen replaces the whole board area; nothing that looks live stays on screen. */}
+      {billing.view.screen === 'card_required' && billing.view.card ? (
+        <CardRequiredScreen card={billing.view.card} onUpdateCard={billing.onUpdateCard} />
+      ) : billing.view.screen === 'buy' && billing.view.buy ? (
+        <BuyScreen buy={billing.view.buy} buyHref={BUY_HREF} />
+      ) : (
+      <>
       {/* Counts and filters are one control surface, so they are one line. */}
       <MarketSummary
         counts={counts}
@@ -715,9 +731,12 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
         />
       ) : null}
       </div>
+      </>
+      )}
 
       <TickerDrawer
-        row={selectedRow}
+        // A billing screen replaces the board: a dossier left open would keep live data on screen.
+        row={billing.view.screen === 'board' ? selectedRow : null}
         morningRead={market.snapshot?.morningRead}
         focused={selectedTicker ? focus.isFocused(selectedTicker) : false}
         onToggleFocus={focus.toggle}

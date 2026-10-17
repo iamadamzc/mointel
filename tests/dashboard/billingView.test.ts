@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { BILLING_WORDS, billingDeskView, dollars, etTime, notificationsDue, secondsLeft, type DeskBillingState } from '@/lib/dashboard/billingView';
+import { BILLING_WORDS, billingDeskView, dollars, etTime, nextMemory, notificationsDue, secondsLeft, type DeskBillingState } from '@/lib/dashboard/billingView';
 
 /*
  * The desk's billing screens as one pure mapping (Integration 42nd's approved scope, 2026-10-17). Words: Marketing
@@ -9,11 +9,18 @@ import { BILLING_WORDS, billingDeskView, dollars, etTime, notificationsDue, seco
 
 const END = '2026-10-19T11:43:00.000Z'; // 07:43 ET
 const at = (minutesBefore: number, seconds = 0) => Date.parse(END) - minutesBefore * 60_000 - seconds * 1000;
-const grace = (over: Partial<{ kind: 'daily' | 'plan'; retrying: boolean; secondDecline: boolean }> = {}): DeskBillingState => ({
-  door: 'open',
-  grace: { kind: 'daily', endsAt: END, retrying: false, secondDecline: false, ...over },
-  paid: null,
+/** Billing's DeskBillingState (mirror), with nothing set. */
+const base = (over: Partial<DeskBillingState> = {}): DeskBillingState => ({
+  door: 'ok', grace: null, trial: null, plan: null, cardOnFile: true, customer: true, latestCharge: null, ...over,
 });
+const charge = (state: NonNullable<DeskBillingState['latestCharge']>['state'], amountCents = 550) =>
+  ({ etDate: '2026-10-19', state, source: 'daily' as const, amountCents });
+const grace = (over: Partial<{ kind: 'daily' | 'plan'; retrying: boolean; secondDecline: boolean }> = {}): DeskBillingState =>
+  base({
+    grace: { kind: over.kind ?? 'daily', endsAt: END, amountCents: 550, ...(over.secondDecline ? { declinedAgain: true } : {}) },
+    latestCharge: charge(over.retrying ? 'PENDING' : 'FAILED'),
+  });
+const PLAN = { kind: 'monthly' as const, priceCents: 8900, status: 'past_due', paidThroughEtDate: '2026-10-16', currentPeriodEnd: END, cancelAtPeriodEnd: false, renewsOn: END, endsOn: null };
 
 describe('the time and money helpers', () => {
   it('reads the server instant in ET and dollars from cents', () => {
@@ -28,7 +35,7 @@ describe('the time and money helpers', () => {
 
 describe('nothing billing-related changes the board when nothing applies', () => {
   it('none, null and an open day with no grace leave the board alone', () => {
-    for (const state of [null, undefined, { door: 'none' } as const, { door: 'open', grace: null, paid: null } as const]) {
+    for (const state of [null, undefined, base()]) {
       expect(billingDeskView(state, at(30))).toEqual({ screen: 'board', band: null, titlePrefix: null, trialChip: null, card: null, buy: null });
     }
   });
@@ -71,8 +78,12 @@ describe('the band (Marketing section 2, verbatim)', () => {
   });
 
   it('paid: green, no button', () => {
-    expect(billingDeskView({ door: 'open', grace: null, paid: 'daily' }, at(1)).band).toEqual({ phase: 'paid', tone: 'pos', text: "Payment received. You're set for today.", button: null });
-    expect(billingDeskView({ door: 'open', grace: null, paid: 'plan' }, at(1)).band?.text).toBe('Payment received. Your plan is renewed.');
+    expect(billingDeskView(base(), at(1), { justPaid: 'daily' }).band).toEqual({ phase: 'paid', tone: 'pos', text: "Payment received. You're set for today.", button: null });
+    expect(billingDeskView(base(), at(1), { justPaid: 'plan' }).band?.text).toBe('Payment received. Your plan is renewed.');
+    // The memory: a grace that disappears while the charge reads SUCCEEDED; anything else is no memory.
+    expect(nextMemory(grace({ kind: 'plan' }), base({ latestCharge: charge('SUCCEEDED') }))).toEqual({ justPaid: 'plan' });
+    expect(nextMemory(grace(), base({ latestCharge: charge('FAILED') }))).toEqual({ justPaid: null });
+    expect(nextMemory(base(), base({ latestCharge: charge('SUCCEEDED') }))).toEqual({ justPaid: null });
   });
 
   it('at zero the board is replaced by the update-your-card screen, never left frozen', () => {
@@ -85,7 +96,7 @@ describe('the band (Marketing section 2, verbatim)', () => {
 
 describe('the screens that replace the board', () => {
   it('charge_first: the update-your-card screen (section 3), with the amount and a checking line while the row resolves', () => {
-    const v = billingDeskView({ door: 'charge_first', kind: 'daily', amountCents: 550, resolving: true, endedAt: null }, at(30));
+    const v = billingDeskView(base({ door: 'charge_first', latestCharge: charge('PENDING') }), at(30));
     expect(v.screen).toBe('card_required');
     expect(v.card).toMatchObject({
       headline: 'Update your card to open the desk.',
@@ -94,22 +105,27 @@ describe('the screens that replace the board', () => {
       under: 'Your card is tried again as soon as you update it. No refunds.',
     });
     expect(v.card?.checking).toMatch(/^PLACEHOLDER/);
-    expect(billingDeskView({ door: 'charge_first', kind: 'plan', amountCents: 8900, resolving: false, endedAt: null }, at(30)).card?.lines).toEqual([
-      "Your plan's renewal of $89 didn't go through.",
+    const planned = billingDeskView(base({ door: 'charge_first', plan: PLAN, latestCharge: { ...charge('FAILED', 8900), source: 'checkout' } }), at(30)).card!;
+    expect(planned.lines).toEqual(["Your plan's renewal of $89 didn't go through."]);
+    expect(planned.checking).toBeNull();
+    // After the hour ran out (endedAt, asked of Billing): the ended line follows.
+    expect(billingDeskView(base({ door: 'charge_first', latestCharge: charge('FAILED'), endedAt: END }), at(30)).card?.lines).toEqual([
+      "Today's payment of $5.50 didn't go through.",
+      "Your session ended at 07:43 ET because the payment didn't go through.",
     ]);
   });
 
   it('buy_first: the buy screen (placeholder words until Marketing writes them)', () => {
-    const v = billingDeskView({ door: 'buy_first' }, at(30));
+    const v = billingDeskView(base({ door: 'buy_first', customer: false, cardOnFile: false }), at(30));
     expect(v.screen).toBe('buy');
     expect(v.buy?.headline).toMatch(/^PLACEHOLDER/);
   });
 
   it('trial: the board as normal plus the end chip', () => {
-    const v = billingDeskView({ door: 'trial', trialEndsAt: END }, at(30));
+    const v = billingDeskView(base({ door: 'trial', trial: { endsAt: END } }), at(30));
     expect(v.screen).toBe('board');
     expect(v.trialChip).toContain('07:43 ET');
-    expect(billingDeskView({ door: 'trial', trialEndsAt: null }, at(30)).trialChip).toBeNull();
+    expect(billingDeskView(base({ door: 'trial', trial: { endsAt: null } }), at(30)).trialChip).toBeNull();
   });
 });
 
@@ -126,6 +142,6 @@ describe('the OS notifications (only if permission was already granted; the call
   it('none while the retry runs, after the end, or when there is no grace', () => {
     expect(notificationsDue(grace({ retrying: true }), at(30), new Set())).toEqual([]);
     expect(notificationsDue(grace(), Date.parse(END) + 1, new Set())).toEqual([]);
-    expect(notificationsDue({ door: 'trial', trialEndsAt: END }, at(30), new Set())).toEqual([]);
+    expect(notificationsDue(base({ door: 'trial', trial: { endsAt: END } }), at(30), new Set())).toEqual([]);
   });
 });

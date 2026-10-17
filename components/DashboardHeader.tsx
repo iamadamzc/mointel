@@ -6,6 +6,7 @@ import { DataFreshness } from '@/components/DataFreshness';
 import { DeskAssessmentStatus } from '@/components/DeskAssessmentStatus';
 import { MarketStatus } from '@/components/MarketStatus';
 import { ResearchEngineStatus } from '@/components/ResearchEngineStatus';
+import { TrialChip } from '@/components/BillingScreens';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import type { AssessmentPanel } from '@/lib/desk/view';
 import type { DataSourceMeta } from '@/lib/data/types';
@@ -30,6 +31,8 @@ interface DashboardHeaderProps {
   refreshing: boolean;
   failure: FeedFailure | null;
   onRefresh: () => void;
+  /** The free trial's end (desk billing); null outside a trial. */
+  trialChip?: string | null;
 }
 
 export function DashboardHeader({
@@ -44,6 +47,7 @@ export function DashboardHeader({
   refreshing,
   failure,
   onRefresh,
+  trialChip = null,
 }: DashboardHeaderProps) {
   const clock = mounted ? formatEtClock(new Date(now)) : '--:--:--';
   const date = mounted ? formatEtDate(new Date(now)) : '';
@@ -96,6 +100,7 @@ export function DashboardHeader({
             discovery={discovery}
             mounted={mounted}
           />
+          <TrialChip text={trialChip} />
           <ResearchEngineStatus health={researchHealth} mounted={mounted} />
           <DataFreshness meta={meta} now={now} mounted={mounted} failure={failure} />
           <button
