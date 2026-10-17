@@ -262,22 +262,31 @@ export const HERO = {
   lead: 'It is 07:15, a name is running, and nothing you can find explains it.',
   body: 'This is the board for that moment. It takes the names already running and puts what the desk knows about each one next to the price: whether there is a catalyst and how old it is, where the name sits in its run, what the float can be at most, and what supply stands behind it. Where it has nothing, it says so. A float number is an estimate someone computed, unless a filing happens to state it. Here is how the TMI Float is made:',
   link: 'Are float quotes real?',
-  ctaPrimary: 'Ask for an invite',
+  /**
+   * The buttons, in this order (Start free trial, Open the desk, See pricing, so See pricing
+   * sits right above the line on a phone), and the line under them: his "yes, approved"
+   * (Integration chat bf3b407e, uuid 0d2b3467, 2026-10-17T11:34:11.460Z) to
+   * docs/integration/2026-10-17-free-trial-words-final-for-him.md @666038e6, "The front page".
+   */
+  ctaPrimary: 'Start free trial',
   ctaSecondary: 'Already have access? Open the desk',
-  accessLine: 'Access is by invite, and sign-in is handled by Google.',
+  ctaPricing: 'See pricing',
+  accessLine:
+    'Free for 48 hours, not counting weekends and market holidays. Or $5.50 for each day you sign in. Plans cost less per trading day. In US dollars · Sign in with Google or email · No brokerage connection',
 };
 
 export const BOUNDARIES_HEADING = { eyebrow: 'BOUNDARIES', heading: 'What it is not.' };
 
 export const ACCESS = {
   eyebrow: 'ACCESS',
-  heading: 'By invitation.',
+  /** Heading, first paragraph and button: the same yes (uuid 0d2b3467) to @666038e6, "Try it free". */
+  heading: 'Try it free for 48 hours, not counting weekends and market holidays.',
   body: [
-    'Access is by invitation. You sign in with Google on the address you were invited on, accept a short disclaimer once, and the desk opens.',
+    'Sign in and add a card to start the trial. We ask for a card only so the same card cannot start a second trial. The trial never charges it. Then the desk opens.',
     'Built for small-cap momentum traders, with catalyst details and grades, float structure background, SEC filing information, and several additional information points that help you make decisions on what to trade.',
     'TMI is developed by Andromeda Genius LLC, San Antonio, Texas.',
   ],
   /** After the body, to /privacy: his "add it" 2026-10-09T02:27:20.760Z; Commercial read 43a's words. */
   privacyLink: 'What we collect, and what we do not',
-  cta: 'Ask for an invite',
+  cta: 'Start free trial',
 };

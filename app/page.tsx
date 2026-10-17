@@ -41,7 +41,6 @@ export const metadata: Metadata = {
     'An intelligence desk for people who trade US small-cap momentum in the premarket: what is moving, why, where it sits in the cycle, what the share structure looks like from the filings, and what supply stands behind it.',
 };
 
-const INVITE = 'mailto:desk@tmitrader.com?subject=Invite%20request%3A%20TMI%20Trader';
 
 /**
  * Text and images share a row only when the row has an image ready; a section whose images
@@ -149,17 +148,24 @@ export default function LandingPage() {
 
           <div className="flex flex-col gap-3 md:items-start md:gap-4">
             <div className="flex flex-col gap-3 md:flex-row md:flex-wrap md:items-center md:gap-5">
-              <a
-                href={INVITE}
+              <Link
+                href="/trial"
                 className="flex h-[52px] items-center justify-center rounded bg-ink px-6 text-[17px] font-semibold text-desk md:inline-flex md:h-12 md:text-base"
               >
                 {HERO.ctaPrimary}
-              </a>
+              </Link>
               <Link
                 href="/desk"
                 className="flex h-12 items-center justify-center rounded border border-line-2 text-base font-medium text-ink md:inline-flex md:h-auto md:border-0 md:text-[15px] md:font-normal md:text-ink-1"
               >
                 {HERO.ctaSecondary} <span className="hidden md:inline">&nbsp;&rarr;</span>
+              </Link>
+              {/* Last, so it sits right above the line on a phone (Commercial read 162's condition). */}
+              <Link
+                href="/pricing"
+                className="flex h-12 items-center justify-center rounded border border-line-2 text-base font-medium text-ink md:inline-flex md:h-auto md:border-0 md:text-[15px] md:font-normal md:text-ink-1"
+              >
+                {HERO.ctaPricing} <span className="hidden md:inline">&nbsp;&rarr;</span>
               </Link>
             </div>
             <p className="max-w-[52ch] text-sm leading-normal text-ink-3">{HERO.accessLine}</p>
@@ -238,12 +244,12 @@ export default function LandingPage() {
                 {ACCESS.privacyLink}
               </Link>
             </p>
-            <a
-              href={INVITE}
+            <Link
+              href="/trial"
               className="flex h-[52px] items-center justify-center rounded bg-ink px-6 text-[17px] font-semibold text-desk md:inline-flex md:h-12 md:text-base"
             >
               {ACCESS.cta}
-            </a>
+            </Link>
           </div>
           {accessCols.images && (
             <div className={accessCols.images}>
