@@ -40,10 +40,14 @@ drafted: 2026-10-17
     - the trial's length in Marketing's wording (b3288fdc): "48 hours, not counting weekends
       and market holidays" (his turn, uuid 98d98873, rejected "of trading days"), and the exact
       stop times, which match lib/billing/trialClock.ts at f23e4422.
-  NOT YET REWORDED: the paid day. His ruling of 2026-10-17 (uuid 5c1bc71e) makes weekends
-  and holidays part of the next market day's paid day; sections 1 and 2 still carry the
-  old 8:00pm to 8:00pm text and the closed-day sentence until Billing's scope of the code
-  is in. Word against that scope, not ahead of it.
+  FOLDED 2026-10-17 (Commercial, 9th tenure), the paid day, from text he approved word for
+  word (Integration chat bf3b407e, uuid ebe864a6, "1, yes. 2, a.", 2026-10-17T12:15:21.014Z,
+  checked at his turn; file docs/commercial/2026-10-17-paid-day-for-him.md at b63d7235,
+  copied by Integration to docs/integration/ at 579acaee): section 1's paid-day paragraph and
+  the weekend plan-end sentence, section 2's pay-once sentence and the weekend sign-in
+  paragraph (replacing the closed-day sentence), and section 3's renewal paragraph. The
+  drafting list above ("the paid day runs 20:00 ET to 20:00 ET ... no charge for a paid day
+  on which the US market is closed") is history; the body now carries the ruling.
 
   BRACKETED ITEMS ARE NOT DECIDED. Each says who decides. Nothing in brackets
   ships as written.
@@ -78,21 +82,28 @@ Access to the desk, for a paid day or for a plan. Prices are in US dollars.
 [TAX: his accountant decides whether these prices include sales tax and what
 the checkout shows.]
 
-A paid day runs from 8:00pm ET to 8:00pm ET the next day, the same window your
-session already uses. A plan covers every paid day in its period.
+A trading day is a day the US stock market is open. A paid day runs from 8:00pm
+ET after one trading day to 8:00pm ET after the next. Weekends and market
+holidays belong to the paid day that follows, so Monday's paid day runs from
+8:00pm ET Friday to 8:00pm ET Monday, and signing in on a Saturday is signing in
+on Monday's paid day. A plan covers every paid day in its period.
 
 A month is a calendar month counted from the day you buy it. A plan bought on
 the 17th runs to 8:00pm ET on the 17th of the next month. Six months and a
 year count the same way.
 
+If the last day of a plan falls on a weekend or a market holiday, your access
+runs to 8:00pm ET on the next trading day.
+
 ## 2. Daily: how the charge works
 
 You save a card when you buy your first paid day. From then on, each new paid day
 you sign in on is charged automatically to that card. You are not asked to
-approve each charge. You pay only for the paid days you sign in on.
+approve each charge. You pay only for the paid days you sign in on, and only once
+for each: signing in again on the same paid day is not charged again.
 
-There is no charge for a paid day that ends on a day the US stock market is
-closed, such as a weekend or a market holiday.
+A paid day always ends on a trading day. If you sign in on a Saturday, a Sunday
+or a market holiday, you are charged for the paid day that follows.
 
 **You are given access before the charge is confirmed.** If the charge fails,
 you keep access for **one hour** from the failed attempt, whatever time of day
@@ -106,6 +117,11 @@ paid day tries the charge afresh.
 A plan renews automatically at the end of each period, for a period of the same
 length, and charges the card you saved. It keeps renewing until you cancel
 (section 4). While a plan is active you are not charged the daily price.
+
+A renewal is charged on the date your period ends. If that date is a weekend or
+a market holiday, your access for the period you paid for runs on to 8:00pm ET on
+the next trading day, and the new period still ends on its own date, so you do
+not pay twice for those days.
 
 Before you buy, the page shows the price, the date of the first renewal, and
 how to cancel.

@@ -4,7 +4,7 @@
 
 **One motion.** The adopted file says a material redraft sets `adopted` back to null and shows the draft banner until he adopts again, so these lines, the terms of sale, the pointer sentence in `terms.md` and the front page words are adopted together at go-live. Brackets are facts only he or his accountant or attorney can fill.
 
-**Two things this set does not yet cover, both waiting on Billing's scope of his paid-day ruling (uuid 5c1bc71e):** the session cookie sentence in section 2 ("a Saturday sign-in ends at 20:00 that Saturday"), and anything the new day changes in the charge text. I word those against the scope, not ahead of it.
+**The session cookie sentence, folded 2026-10-17 (ninth tenure)** from the text he approved word for word (Integration chat bf3b407e, uuid ebe864a6, "1, yes. 2, a.", 2026-10-17T12:15:21.014Z, checked at his turn; `docs/commercial/2026-10-17-paid-day-for-him.md` at `b63d7235`): see "Section 2, the session cookie" below. The charge text the new paid day changes is in the terms of sale (`docs/legal/terms-of-sale.md`, sections 1 to 3), not in this set.
 
 ## Section 2, what we collect
 
@@ -16,6 +16,12 @@
 
 **After that, a new paragraph:**
 "**If a free trial cannot start.** The card is still removed from your account at once, the trial never charges it, and we do not keep a code for it. We keep a short record of the attempt: Stripe's reference for the check, your account, the reason it could not start, and the time. We delete this record 30 days after the attempt. Your customer record at Stripe and our link to it are not part of this record; section 6 says how long they are kept."
+
+## Section 2, the session cookie (changes a sentence in the adopted policy)
+
+Now: "A sign-in after 20:00 runs until 20:00 the following day, because a session that has already expired is not a session. It follows the calendar day rather than the trading day, so a Saturday sign-in ends at 20:00 that Saturday."
+
+Becomes: "A sign-in after 20:00 can run until 20:00 the next trading day, because a session that has already expired is not a session. It follows the trading day rather than the calendar day, so a sign-in on a Saturday, a Sunday or a market holiday can run until 20:00 on the next trading day: up to 72 hours over a weekend, and longer over a holiday weekend."
 
 ## Section 3, what we do not collect
 
