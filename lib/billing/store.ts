@@ -7,7 +7,7 @@
  * gate goes on asking only "is this session valid and is this person invited".
  */
 
-import { sessionExpiry, type MarketDays } from '@/lib/auth/expiry';
+import { marketDayBefore, sessionExpiry, type MarketDays } from '@/lib/auth/expiry';
 import { userHasVerifiedEmail, type IdentityDatabase } from '@/lib/auth/store';
 import { GRACE_MS, OWNER_EMAIL_ENV, RULED_AMOUNT_CENTS, type PlanKey } from '@/lib/billing/config';
 import { sessionEndUtc } from '@/lib/market/session';
@@ -477,6 +477,58 @@ export function plansToLapse(db: IdentityDatabase, now: Date = new Date()): stri
   ).map((row) => row.id);
 }
 
+/**
+ * A declined plan renewal whose one hour ran out inside the paid day `etDate`,
+ * with the card still failing: that hour WAS this paid day's hour (Integration's
+ * ruling, 2026-10-17, commit d). Null otherwise. Instants are compared before any
+ * calendar question, so an old failure never asks about a month not loaded.
+ */
+export function spentRenewalHour(
+  db: IdentityDatabase,
+  userId: number,
+  etDate: string,
+  isMarketDay: MarketDays,
+  now: Date,
+): { failedAt: string; graceUntil: string } | null {
+  const failing = db
+    .prepare('SELECT card_failing_since AS since FROM billing_customers WHERE user_id = ?')
+    .get(userId) as { since: string | null } | undefined;
+  if (!failing?.since) return null;
+  const row = db
+    .prepare(
+      `SELECT renewal_failed_at AS failedAt, renewal_grace_until AS graceUntil FROM billing_plans
+        WHERE user_id = ? AND renewal_failed_at IS NOT NULL AND renewal_grace_until IS NOT NULL
+          AND renewal_grace_until <= ?
+        ORDER BY renewal_failed_at DESC LIMIT 1`,
+    )
+    .get(userId, now.toISOString()) as { failedAt: string; graceUntil: string } | undefined;
+  if (!row) return null;
+  const dayStart = sessionEndUtc(marketDayBefore(etDate, isMarketDay)).getTime();
+  return Date.parse(row.failedAt) >= dayStart ? row : null;
+}
+
+/**
+ * Today's daily row for a plan whose renewal hour is spent: FAILED with no
+ * attempt (attempts 0, decline_code 'plan_renewal_declined'), carrying the
+ * renewal's own failure time and hour. So the charge pass never tries the
+ * failing card for it, the desk shows the update-card screen (hourSpent), and a
+ * card update requeues it like any declined day (requeueFailedCharge). Writes
+ * nothing when the day already has a row.
+ */
+export function recordSpentRenewalDay(
+  db: IdentityDatabase,
+  userId: number,
+  etDate: string,
+  renewal: { failedAt: string; graceUntil: string },
+  now: Date,
+): void {
+  db.prepare(
+    `INSERT OR IGNORE INTO billing_charges
+       (user_id, et_date, state, source, amount_cents, created_at, attempts, decline_code, failed_at, grace_until)
+     VALUES (?, ?, 'FAILED', 'daily', ?, ?, 0, 'plan_renewal_declined', ?, ?)`,
+  ).run(userId, etDate, RULED_AMOUNT_CENTS.daily, now.toISOString(), renewal.failedAt, renewal.graceUntil);
+}
+
 /** When this plan's renewal first failed, for the calendar a lapse needs. */
 export function renewalFailedAt(db: IdentityDatabase, subscriptionId: string): string | null {
   const row = db
@@ -803,6 +855,8 @@ export function billingHistory(db: IdentityDatabase, userId: number, limit = 400
                 COALESCE(succeeded_at, attempted_at, created_at) AS chargedAt, receipt_url AS receiptUrl
            FROM billing_charges
           WHERE user_id = ? AND state IN ('SUCCEEDED', 'FAILED', 'PENDING', 'REFUNDED')
+            -- a day that was never tried (a spent plan-renewal hour) is not a declined charge
+            AND NOT (state = 'FAILED' AND attempts = 0)
           ORDER BY et_date DESC LIMIT ?`,
       )
       .all(userId, limit) as (Omit<BilledDay, 'state'> & { raw: string })[]

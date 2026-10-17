@@ -37,6 +37,7 @@ import {
   renewingPlanFor,
   setPlanCancelAtPeriodEnd,
   trialState,
+  spentRenewalHour,
   verifiedEmailFor,
   type ChargeSource,
   type ChargeState,
@@ -181,7 +182,7 @@ export function billingStateFor(
       // failure on an earlier paid day under his door rule.
       const todayRow = chargeFor(db, userId, today);
       const paidToday = todayRow?.state === 'SUCCEEDED';
-      if (hourSpent(todayRow, now)) {
+      if (hourSpent(todayRow, now) || (!todayRow && spentRenewalHour(db, userId, today, isMarketDay, now))) {
         door = 'charge_first';
       } else if (cardFailedBeforeToday(db, userId, isMarketDay, now) && !paidToday && lapsedDoor(env) === 'charge_first') {
         door = 'charge_first';

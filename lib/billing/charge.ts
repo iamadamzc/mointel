@@ -32,7 +32,9 @@ import {
   pendingCharges,
   planCovers,
   planEndedByCancel,
+  recordSpentRenewalDay,
   setTrialEnd,
+  spentRenewalHour,
   trialState,
   trialsWithoutEnd,
   type ChargeRow,
@@ -97,6 +99,10 @@ export function openPaidDay(
   // abandoned, a refused trial): the buy screen, never a charge attempt. A daily
   // buyer who saved a card on a weekend has a card on file and goes on.
   if (!hasBought(db, userId) && !hasCardOnFile(db, userId)) return { kind: 'buy_first' };
+  // A plan renewal declined today whose hour ran out: that was today's hour too.
+  // Recorded as a declined day so the failing card is not tried again.
+  const renewal = spentRenewalHour(db, userId, etDate, isMarketDay, now);
+  if (renewal) recordSpentRenewalDay(db, userId, etDate, renewal, now);
   const charge = ensurePendingCharge(db, userId, etDate, now);
   // The hour is once per paid day: spent today, a new sign-in gets the
   // update-card screen, whatever the lapsed-door switch says.
