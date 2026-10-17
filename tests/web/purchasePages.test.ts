@@ -200,7 +200,13 @@ describe('/pricing', () => {
     for (const line of ['$5.50 a day', '$89 a month', '$499 for six months', '$899 a year']) expect(page).toContain(line);
     expect(page).toContain('About 23% less than paying daily. About $4.26 a day.*');
     expect(page).toContain('*Against $5.50 for every trading day in the period');
-    expect(page).toContain('Try it free for 48 hours.');
+    expect(page).toContain('Try it free for 48 hours, not counting weekends and market holidays.');
+    expect(page).toContain('The clock stops from 8:00pm ET Friday to 8:00pm ET Sunday, and over a market holiday.');
+    expect(page).toContain('<caption');
+    expect(page).toContain('Saturday at 2:00pm ET');
+    expect(page).toContain('A start between 8:00pm ET Friday and 8:00pm ET Sunday counts from 8:00pm ET Sunday.');
+    expect(page).toContain('We ask for a card only so the same card cannot start a second trial.');
+    expect(page).not.toContain('The clock does not run on days the US market is closed.');
     expect(page).toContain('No refunds.');
     expect(page).toContain('href="/checkout?plan=six-months"');
     expect(page).toContain('href="/trial"');
@@ -283,7 +289,10 @@ describe('/trial and POST /trial/start', () => {
   it('shows the end time at the start, from the trading-hours clock', async () => {
     vi.setSystemTime(new Date('2026-10-15T14:00:00Z')); // Thursday 10:00 ET, his example
     const page = html(await TrialPage(params({})));
-    expect(page).toContain('Free for 48 hours. Your trial ends at 10:00am ET on Monday, October 19.');
+    expect(page).toContain(
+      'Free for 48 hours, not counting weekends and market holidays. Your trial ends around 10:00am ET on Monday, October 19.',
+    );
+    expect(page).toContain('a trial started on a Thursday at 10:00am ET ends on the Monday at 10:00am ET.');
     expect(page).toContain('Your bank may show a small pending amount while the card is checked.');
     expect(page).toContain('action="/trial/start"');
   });
@@ -335,6 +344,48 @@ describe('/welcome', () => {
     const page = html(await WelcomePage(params({ trial: '1', session_id: 'cs_t' })));
     expect(page).toContain('Your free trial ends at 10:00am ET on Monday, October 19. You will not be charged.');
     expect(page).not.toContain('No refunds.');
+  });
+
+  it('a refused trial: one message per reason, never charged, and the right buttons', async () => {
+    const reasons: Record<string, string> = {
+      card_used: 'so it can\'t start with this card.',
+      account_used: "You've already had your free trial.",
+      already_bought: "You've already bought on this account",
+      not_a_card: 'the payment method you used wasn\'t one.',
+    };
+    state.billing = { door: 'buy_first' };
+    for (const [reason, line] of Object.entries(reasons)) {
+      state.status = { state: 'trial_refused', reason };
+      const page = html(await WelcomePage(params({ trial: '1', session_id: 'cs_t' })));
+      expect(page, reason).toContain("We couldn't start your free trial.");
+      expect(page, reason).toContain(line);
+      expect(page, reason).toContain('You were not charged for this.');
+      // the bank line only where a card check ran: never for not_a_card
+      expect(page.includes('Your bank may show a small pending amount from the card check.'), reason).toBe(
+        reason !== 'not_a_card',
+      );
+      expect(page, reason).toContain('href="/pricing"');
+      expect(page.includes('href="/trial"'), reason).toBe(reason === 'not_a_card');
+      expect(page, reason).not.toContain('href="/desk"');
+    }
+  });
+
+  it('already bought with current access: Open the desk instead of pricing (door ok or trial)', async () => {
+    state.status = { state: 'trial_refused', reason: 'already_bought' };
+    for (const door of ['ok', 'trial']) {
+      state.billing = { door };
+      const page = html(await WelcomePage(params({ trial: '1', session_id: 'cs_t' })));
+      expect(page, door).toContain('href="/desk"');
+      expect(page, door).not.toContain('href="/pricing"');
+    }
+  });
+
+  it('a refused trial with the switch closed is still 404, before any billing read', async () => {
+    delete process.env.PURCHASE_PAGES;
+    state.status = { state: 'trial_refused', reason: 'card_used' };
+    await expect(WelcomePage(params({ trial: '1', session_id: 'cs_t' }))).rejects.toThrow('NOT_FOUND');
+    expect(billingReads.calls).toBe(0);
+    expect(outside.calls).toEqual([]);
   });
 
   it('a session id that is not this user\'s goes to /pricing', async () => {

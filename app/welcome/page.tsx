@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 
-import { PaymentPending } from '@/components/NotAdmitted';
+import { PaymentPending, RefusedTrial } from '@/components/NotAdmitted';
 import { SiteFooter, SiteHeader } from '@/components/SiteChrome';
 import { getIdentityDb } from '@/lib/auth/db';
 import { marketDaysOrFallback } from '@/lib/auth/expiry';
@@ -30,8 +30,8 @@ import { paidDayCalendarSources, purchaseCalendar, purchaseStripe } from '@/lib/
  * - recording: paid at Stripe, not admitted yet (the webhook is seconds behind): the
  *   "payment not confirmed yet" screen, whose Reload asks again;
  * - not ours, still open, expired: back to /pricing;
- * - a refused trial (the card or account already had one): back to /pricing. No words
- *   for that case are approved yet; raised with Integration 2026-10-17.
+ * - a refused trial: the refused-trial page, one message per Billing reason
+ *   (components/NotAdmitted.tsx RefusedTrial).
  *
  * Words: lib/public/purchaseCopy.ts (purchase flow sections 1 and 6; free trial
  * section 3).
@@ -68,6 +68,10 @@ export default async function WelcomePage({
   if (!sessionId) redirect('/pricing');
 
   const status = await checkoutStatus({ db, stripe: purchaseStripe() }, admission.userId, sessionId);
+  if (status.state === 'trial_refused') {
+    const door = billingStateFor(db, admission.userId).door;
+    return <RefusedTrial reason={status.reason} deskOpen={door === 'ok' || door === 'trial'} />;
+  }
   if (status.state !== 'complete' && status.state !== 'recording') redirect('/pricing');
 
   const query = new URLSearchParams();

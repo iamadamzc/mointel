@@ -45,7 +45,30 @@ export default function PricingPage() {
           <h2 id="trial" className="text-xl font-semibold tracking-tight">
             {PRICING_TRIAL.headline}
           </h2>
-          <p className="mt-3 text-base leading-relaxed text-ink-1">{PRICING_TRIAL.line}</p>
+          <p className="mt-3 text-base leading-relaxed text-ink-1">{PRICING_TRIAL.clock}</p>
+          <table className="mt-4 w-full border-collapse text-left text-sm">
+            <caption className="mb-2 text-left text-sm text-ink-2">{PRICING_TRIAL.tableLead}</caption>
+            <thead>
+              <tr className="border-b border-line-2">
+                <th scope="col" className="py-2 pr-4 font-medium text-ink-2">
+                  {PRICING_TRIAL.tableHeads[0]}
+                </th>
+                <th scope="col" className="py-2 font-medium text-ink-2">
+                  {PRICING_TRIAL.tableHeads[1]}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {PRICING_TRIAL.examples.map(([start, end]) => (
+                <tr key={start} className="border-b border-line">
+                  <td className="py-2 pr-4 text-ink-1">{start}</td>
+                  <td className="py-2 text-ink-1">{end}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p className="mt-3 text-sm leading-relaxed text-ink-2">{PRICING_TRIAL.underTable}</p>
+          <p className="mt-3 text-base leading-relaxed text-ink-1">{PRICING_TRIAL.card}</p>
           <Link
             href="/trial"
             className="mt-5 inline-flex min-h-12 items-center justify-center rounded bg-ink px-6 text-base font-semibold text-desk md:h-12 md:text-[15px]"
