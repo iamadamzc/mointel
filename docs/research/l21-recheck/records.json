@@ -1,0 +1,280 @@
+[
+  {
+    "tag": "2026-10-16-INTO_RTH-l21",
+    "kind": "INTO_RTH",
+    "family": "v7",
+    "status": "PUBLISHED",
+    "error": null,
+    "summaryStruck": false,
+    "summaryStrikes": [],
+    "strikesByReason": {},
+    "freshPublished": [
+      {
+        "where": "line",
+        "ticker": "WSHP",
+        "text": "On August 24, 2026, the company released interim results showing a higher period-on-period net loss, increased sales and marketing and public-company costs, and approximately £4.4 million of gross proceeds from exercises of share-based incentive awards during the first half of 2026. No source identified a fresh company event contemporaneous with the observed session."
+      }
+    ],
+    "freshInDraft": 1,
+    "countWordPublished": "recent",
+    "countWordDraft": "recent",
+    "narrative": "GUTS ranked first in this range, down 48 percent from the prior close, with recent news in our sources: the company reported six-month REMAIN-1 results showing 80% retention of GLP-1-induced weight loss versus 67% for sham and said the co-primary endpoint was achieved with high statistical significance. ZTG was up 69 percent from the prior close, with only older or secondary news in our sources about a September 21 proposed acquisition of a controlling stake in an unnamed mainland China digital technology provider focused on AI and big data. XLAB was up 30 percent from the prior close, with recent news in our sources: an 8-K reported a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. Of the 12 names the desk covers, 4 had recent news in our sources.",
+    "draftSummary": "GUTS ranked first in this range, down 48 percent from the prior close, with recent news in our sources: the company reported six-month REMAIN-1 results showing 80% retention of GLP-1-induced weight loss versus 67% for sham and said the co-primary endpoint was achieved with high statistical significance. ZTG was up 69 percent from the prior close, with only older or secondary news in our sources about a September 21 proposed acquisition of a controlling stake in an unnamed mainland China digital technology provider focused on AI and big data. XLAB was up 30 percent from the prior close, with recent news in our sources: an 8-K reported a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB printed a new high of day since the previous checkpoint. Of the 12 names the desk covers, 4 had recent news in our sources.",
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "production": {
+      "status": "PUBLISHED",
+      "createdAt": "2026-10-16T13:26:10.597Z",
+      "versions": {
+        "writerPrompt": 13,
+        "checkerPrompt": 18,
+        "writerModel": "gpt-5.6-luna",
+        "checkerModel": "claude-opus-5-5",
+        "writerPromptFamily": "v7"
+      },
+      "narrative": "On October 16, 2026, GUTS ranked first in this range, down 48 percent from the prior close, with fresh news in our sources that the company reported six-month REMAIN-1 results showing 80% retention of GLP-1-induced weight loss versus 67% for sham and achievement of the co-primary endpoint with high statistical significance. ZTG was up 69 percent from the prior close with only older or secondary news in our sources: a September 21 proposed acquisition of a controlling stake in an unnamed mainland China digital technology provider focused on AI and big data, with terms subject to negotiation and no financial terms disclosed. XLAB was up 30 percent from the prior close, with fresh news in our sources that an 8-K reported a material definitive agreement with Sunon and secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. Of the 12 names the desk covers, 4 had fresh news in our sources.",
+      "summaryStruck": false,
+      "strikes": [
+        {
+          "id": "S1L3",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The 8-K source (EX-10.1 to 8-K) is dated 2026-10-14 ET, not October 15; only the secondary coverage is 06:19 ET on October 15.",
+          "text": "XLAB. On October 15, 2026, an 8-K reported entry into a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million."
+        }
+      ],
+      "freshHits": 2,
+      "countWord": "fresh"
+    },
+    "newReasons": [],
+    "costUsd": 0.16963920000000002,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5252,
+        "outputTokens": 1924,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 1015,
+        "durationMs": 18914,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 26280,
+        "outputTokens": 3058,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 3951,
+        "reasoningTokens": null,
+        "durationMs": 26885,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-16-INTO_POWER_HOUR-l21",
+    "kind": "INTO_POWER_HOUR",
+    "family": "v7",
+    "status": "PUBLISHED",
+    "error": null,
+    "summaryStruck": true,
+    "summaryStrikes": [
+      {
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "For XLAB, it says 'an October 15 report said an 8-K disclosed' the Sunon agreement. The research dates the 8-K exhibit October 14 and does not say the October 15 secondary report described the 8-K. For POAS, it dates the purchase agreement announcement to October 2, but the research does not say which filing (September 30 or October 2) disclosed the agreement. The counts, moves and 11.7% figure are supported."
+      }
+    ],
+    "strikesByReason": {
+      "UNSUPPORTED/model": 2
+    },
+    "freshPublished": [],
+    "freshInDraft": 0,
+    "countWordPublished": null,
+    "countWordDraft": "recent",
+    "narrative": null,
+    "draftSummary": "HUIZ ranked first in this range, up 22 percent from the prior close, with our research reached no conclusion. XLAB was up 89 percent from the prior close, with recent news in our sources: an October 15 report said an 8-K disclosed entry into a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB was up 11.7% since the previous checkpoint. POAS was up 19 percent from the prior close, with only older or secondary news in our sources: on October 2, the company announced a securities purchase agreement with High West Partners giving it the right, but not the obligation, to sell ordinary shares up to the greater of $10 million or the exchange cap, and separately announced a one-for-fifteen reverse stock split effective October 12, 2026. Of the 12 names the desk covers, 4 had recent news in our sources.",
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "production": {
+      "status": "PUBLISHED",
+      "createdAt": "2026-10-16T18:30:45.715Z",
+      "versions": {
+        "writerPrompt": 13,
+        "checkerPrompt": 18,
+        "writerModel": "gpt-5.6-luna",
+        "checkerModel": "claude-opus-5-5",
+        "writerPromptFamily": "v7"
+      },
+      "narrative": "HUIZ ranked first in this range, up 22 percent from the prior close, with our research reaching no conclusion. XLAB was up 89 percent from the prior close, with fresh news in our sources: an 8-K reported a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB was up 11.7% since the previous checkpoint. Of the 12 names the desk covers, 4 had fresh news in our sources.",
+      "summaryStruck": false,
+      "strikes": [
+        {
+          "id": "S1L8",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The research does not say which 6-K disclosed which item, so assigning the purchase agreement to September 30 and the reverse split to October 2 cannot be traced.",
+          "text": "On September 30, 2026, the company disclosed a securities purchase agreement with High West Partners giving it the right, but not the obligation, to sell ordinary shares up to the greater of $10 million or the exchange cap. On October 2, 2026, it announced a one-for-fifteen reverse stock split effective October 12, 2026."
+        }
+      ],
+      "freshHits": 2,
+      "countWord": "fresh"
+    },
+    "newReasons": [],
+    "costUsd": 0.1654714,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4917,
+        "outputTokens": 2110,
+        "cachedInputTokens": 2250,
+        "reasoningTokens": 1379,
+        "durationMs": 14992,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 22809,
+        "outputTokens": 3536,
+        "cachedInputTokens": 3951,
+        "cacheWriteInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 30645,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-16-AFTER_HOURS-l21",
+    "kind": "AFTER_HOURS",
+    "family": "v7",
+    "status": "PUBLISHED",
+    "error": null,
+    "summaryStruck": false,
+    "summaryStrikes": [],
+    "strikesByReason": {
+      "UNSUPPORTED/model": 1
+    },
+    "freshPublished": [],
+    "freshInDraft": 0,
+    "countWordPublished": "recent",
+    "countWordDraft": "recent",
+    "narrative": "HUIZ ranked first in this range, up 21 percent from the prior close, and our research reached no conclusion. XLAB was up 68 percent from the prior close, with recent news in our sources: an October 14 8-K reported entry into a material definitive agreement with Sunon, while October 15 secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. CTSO was up 34 percent from the prior close, with only older or secondary news in our sources, and printed a new high of day. Of the 12 names the desk covers, 4 had recent news in our sources.",
+    "draftSummary": "HUIZ ranked first in this range, up 21 percent from the prior close, and our research reached no conclusion. XLAB was up 68 percent from the prior close, with recent news in our sources: an October 14 8-K reported entry into a material definitive agreement with Sunon, while October 15 secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. CTSO was up 34 percent from the prior close, with only older or secondary news in our sources, and printed a new high of day. Of the 12 names the desk covers, 4 had recent news in our sources.",
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "production": {
+      "status": "PUBLISHED",
+      "createdAt": "2026-10-16T20:01:11.547Z",
+      "versions": {
+        "writerPrompt": 13,
+        "checkerPrompt": 18,
+        "writerModel": "gpt-5.6-luna",
+        "checkerModel": "claude-opus-5-5",
+        "writerPromptFamily": "v7"
+      },
+      "narrative": "HUIZ ranked first in this range, up 21 percent from the prior close, and our research reached no conclusion. XLAB was up 68 percent from the prior close, with fresh news in our sources: an 8-K reported a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. CTSO was up 34 percent from the prior close, with only older or secondary news, and printed a new high of day since the previous checkpoint. Of the 12 names the desk covers, 4 had fresh news in our sources.",
+      "summaryStruck": false,
+      "strikes": [
+        {
+          "id": "S1L2",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The 8-K source is dated 2026-10-14 in ET; October 15 (06:19 ET) is the secondary coverage's time, not the 8-K's.",
+          "text": "On October 15, 2026, an 8-K reported that Exascale Labs entered into a material definitive agreement with Sunon. Contemporaneous secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million."
+        }
+      ],
+      "freshHits": 2,
+      "countWord": "fresh"
+    },
+    "newReasons": [],
+    "costUsd": 0.1616994,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5195,
+        "outputTokens": 1497,
+        "cachedInputTokens": 2250,
+        "reasoningTokens": 841,
+        "durationMs": 11575,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 25786,
+        "outputTokens": 2786,
+        "cachedInputTokens": 3951,
+        "cacheWriteInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 23055,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-16-EVENING-l21",
+    "kind": "EVENING",
+    "family": "v6",
+    "status": "PUBLISHED",
+    "error": null,
+    "summaryStruck": false,
+    "summaryStrikes": [],
+    "strikesByReason": {},
+    "freshPublished": [
+      {
+        "where": "line",
+        "ticker": "SMX",
+        "text": "SMX published three company releases on October 2 concerning its Digital Material Passport and certified recycled plastic positioning, while secondary coverage reported a 38.47% after-hours rise tied to fresh company updates. The communications concerned SMX's material-verification platform, but the supplied evidence does not establish a contract, customer commitment, approval, revenue contribution, or other quantified commercial result."
+      },
+      {
+        "where": "line",
+        "ticker": "HUIZ",
+        "text": "Research did not establish a catalyst at this checkpoint. The latest located company-specific item was Huize's August 20, 2026 report of unaudited first-half 2026 financial results, but the available excerpt does not establish a fresh event or its directional operating details."
+      }
+    ],
+    "freshInDraft": 2,
+    "countWordPublished": "recent",
+    "countWordDraft": "recent",
+    "narrative": "Among the counted names, 5 ran at least 50 percent above the prior close, 2 gave the entire move back, and 1 kept at least half of the peak gain at the close; the desk covers 3 of those names. The two covered 50 percent movers with the highest peaks were XLAB, with recent news found in our sources: an 8-K reports entry into a material definitive agreement with Sunon, while contemporaneous secondary coverage reports a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million, and SMX, with only older or secondary news in our sources. After the close, FUFU added 22 percent. One of the 12 names the desk covers had recent news in our sources.",
+    "draftSummary": "Among the counted names, 5 ran at least 50 percent above the prior close, 2 gave the entire move back, and 1 kept at least half of the peak gain at the close; the desk covers 3 of those names. The two covered 50 percent movers with the highest peaks were XLAB, with recent news found in our sources: an 8-K reports entry into a material definitive agreement with Sunon, while contemporaneous secondary coverage reports a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million, and SMX, with only older or secondary news in our sources. After the close, FUFU added 22 percent. One of the 12 names the desk covers had recent news in our sources.",
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "production": {
+      "status": "PUBLISHED",
+      "createdAt": "2026-10-17T00:20:53.323Z",
+      "versions": {
+        "writerPrompt": 16,
+        "checkerPrompt": 18,
+        "writerModel": "gpt-5.6-luna",
+        "checkerModel": "claude-opus-5-5"
+      },
+      "narrative": "Among the counted names, 5 ran at least 50 percent above the prior close, 2 of them gave the entire move back, and 1 kept at least half of the peak gain at the close. The two covered 50 percent movers with the highest peaks were XLAB, with fresh news found in our sources: an 8-K reports entry into a material definitive agreement with Sunon, while contemporaneous secondary coverage reports a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million, and SMX, with only older or secondary news in our sources. After the close, FUFU added 22 percent. One of the 12 names the desk covers had fresh news in our sources.",
+      "summaryStruck": false,
+      "strikes": [],
+      "freshHits": 13,
+      "countWord": "fresh"
+    },
+    "newReasons": [],
+    "costUsd": 0.1410906,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5827,
+        "outputTokens": 2141,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 1154,
+        "durationMs": 15450,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 24914,
+        "outputTokens": 1885,
+        "cachedInputTokens": 3951,
+        "cacheWriteInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 14688,
+        "role": "checker"
+      }
+    ]
+  }
+]

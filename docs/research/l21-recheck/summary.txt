@@ -1,0 +1,19 @@
+store C:\Users\adshu\AppData\Local\Temp/claude/A--mointel/9688cc23-aa58-44e7-b577-9247cdb46222/scratchpad/l21-store.db: 168103936 bytes, mtime 2026-10-17T00:40:56.296Z
+clock fixed at 2026-10-17T00:41:48.740Z; range $1-$20; inputs 2026-10-16 INTO_RTH x1, 2026-10-16 INTO_POWER_HOUR x1, 2026-10-16 AFTER_HOURS x1, 2026-10-16 EVENING x1 (recap EVENING: production stored a PUBLISHED EVENING row)
+prompts v7 15, v6 17, checker V6 19; writer gpt-5.6-luna; checker claude-opus-5-5 (Tests-TMI key, no fallback); every raw reply kept
+stop $2: a report launches only if spend + its worst case ($0.8116) fits
+
+2026-10-16-INTO_RTH-l21 (v7): PUBLISHED; Summary published, production published; "fresh" PUBLISHED 1 (draft texts 1); count word published recent (draft recent); strikes none; production (2026-10-16T13:26:10.597Z) UNSUPPORTED/model 1; reasons production lacks []; $0.1696
+  fresh, line WSHP: On August 24, 2026, the company released interim results showing a higher period-on-period net loss, increased sales and marketing and public-company costs, and approximately £4.4 million of gross proceeds from exercises of share-based incentive awards during the first half of 2026. No source identified a fresh company event contemporaneous with the observed session.
+2026-10-16-INTO_POWER_HOUR-l21 (v7): PUBLISHED; Summary STRUCK (UNSUPPORTED/model), production published; "fresh" PUBLISHED 0 (draft texts 0); count word published none (draft recent); strikes UNSUPPORTED/model 2; production (2026-10-16T18:30:45.715Z) UNSUPPORTED/model 1; reasons production lacks []; $0.1655
+2026-10-16-AFTER_HOURS-l21 (v7): PUBLISHED; Summary published, production published; "fresh" PUBLISHED 0 (draft texts 0); count word published recent (draft recent); strikes UNSUPPORTED/model 1; production (2026-10-16T20:01:11.547Z) UNSUPPORTED/model 1; reasons production lacks []; $0.1617
+2026-10-16-EVENING-l21 (v6): PUBLISHED; Summary published, production published; "fresh" PUBLISHED 2 (draft texts 2); count word published recent (draft recent); strikes none; production (2026-10-17T00:20:53.323Z) none; reasons production lacks []; $0.1411
+  fresh, line SMX: SMX published three company releases on October 2 concerning its Digital Material Passport and certified recycled plastic positioning, while secondary coverage reported a 38.47% after-hours rise tied to fresh company updates. The communications concerned SMX's material-verification platform, but the supplied evidence does not establish a contract, customer commitment, approval, revenue contribution, or other quantified commercial result.
+  fresh, line HUIZ: Research did not establish a catalyst at this checkpoint. The latest located company-specific item was Huize's August 20, 2026 report of unaudited first-half 2026 financial results, but the available excerpt does not establish a fresh event or its directional operating details.
+
+1. "fresh" in published lines, Summaries and headings: 3 (draft texts 3)
+2. strike reasons production lacks on the same input: none
+3. Summaries struck: this run 1 of 4; production 0 of 4
+4. count sentence published 3 of 4, word recent none recent recent
+checker calls that threw 0
+TOTAL reports run 4 of 4; spend $0.6379

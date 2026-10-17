@@ -1,0 +1,644 @@
+{
+  "record": {
+    "tag": "2026-10-16-INTO_RTH-l21",
+    "kind": "INTO_RTH",
+    "family": "v7",
+    "status": "PUBLISHED",
+    "error": null,
+    "summaryStruck": false,
+    "summaryStrikes": [],
+    "strikesByReason": {},
+    "freshPublished": [
+      {
+        "where": "line",
+        "ticker": "WSHP",
+        "text": "On August 24, 2026, the company released interim results showing a higher period-on-period net loss, increased sales and marketing and public-company costs, and approximately £4.4 million of gross proceeds from exercises of share-based incentive awards during the first half of 2026. No source identified a fresh company event contemporaneous with the observed session."
+      }
+    ],
+    "freshInDraft": 1,
+    "countWordPublished": "recent",
+    "countWordDraft": "recent",
+    "narrative": "GUTS ranked first in this range, down 48 percent from the prior close, with recent news in our sources: the company reported six-month REMAIN-1 results showing 80% retention of GLP-1-induced weight loss versus 67% for sham and said the co-primary endpoint was achieved with high statistical significance. ZTG was up 69 percent from the prior close, with only older or secondary news in our sources about a September 21 proposed acquisition of a controlling stake in an unnamed mainland China digital technology provider focused on AI and big data. XLAB was up 30 percent from the prior close, with recent news in our sources: an 8-K reported a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. Of the 12 names the desk covers, 4 had recent news in our sources.",
+    "draftSummary": "GUTS ranked first in this range, down 48 percent from the prior close, with recent news in our sources: the company reported six-month REMAIN-1 results showing 80% retention of GLP-1-induced weight loss versus 67% for sham and said the co-primary endpoint was achieved with high statistical significance. ZTG was up 69 percent from the prior close, with only older or secondary news in our sources about a September 21 proposed acquisition of a controlling stake in an unnamed mainland China digital technology provider focused on AI and big data. XLAB was up 30 percent from the prior close, with recent news in our sources: an 8-K reported a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB printed a new high of day since the previous checkpoint. Of the 12 names the desk covers, 4 had recent news in our sources.",
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "production": {
+      "status": "PUBLISHED",
+      "createdAt": "2026-10-16T13:26:10.597Z",
+      "versions": {
+        "writerPrompt": 13,
+        "checkerPrompt": 18,
+        "writerModel": "gpt-5.6-luna",
+        "checkerModel": "claude-opus-5-5",
+        "writerPromptFamily": "v7"
+      },
+      "narrative": "On October 16, 2026, GUTS ranked first in this range, down 48 percent from the prior close, with fresh news in our sources that the company reported six-month REMAIN-1 results showing 80% retention of GLP-1-induced weight loss versus 67% for sham and achievement of the co-primary endpoint with high statistical significance. ZTG was up 69 percent from the prior close with only older or secondary news in our sources: a September 21 proposed acquisition of a controlling stake in an unnamed mainland China digital technology provider focused on AI and big data, with terms subject to negotiation and no financial terms disclosed. XLAB was up 30 percent from the prior close, with fresh news in our sources that an 8-K reported a material definitive agreement with Sunon and secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. Of the 12 names the desk covers, 4 had fresh news in our sources.",
+      "summaryStruck": false,
+      "strikes": [
+        {
+          "id": "S1L3",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The 8-K source (EX-10.1 to 8-K) is dated 2026-10-14 ET, not October 15; only the secondary coverage is 06:19 ET on October 15.",
+          "text": "XLAB. On October 15, 2026, an 8-K reported entry into a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million."
+        }
+      ],
+      "freshHits": 2,
+      "countWord": "fresh"
+    },
+    "newReasons": [],
+    "costUsd": 0.16963920000000002,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5252,
+        "outputTokens": 1924,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 1015,
+        "durationMs": 18914,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 26280,
+        "outputTokens": 3058,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 3951,
+        "reasoningTokens": null,
+        "durationMs": 26885,
+        "role": "checker"
+      }
+    ]
+  },
+  "sentPrompts": [
+    {
+      "system": "You write a short session report: a Summary of the session and one line per name.\n\nTHE SUMMARY (\"narrative\") must include, in whatever order reads best, in a few sentences, only what the narrative facts give:\n- On the evening recaps: how many counted names ran at least 50 percent above the prior close and how many of them kept at least half of the peak gain (or, if none ran, that none did); the named movers, each called a covered 50 percent mover (never the highest peaks among all movers), each with its own news; the after-hours name and its move, about that move only; and how many of the names the desk covers had recent news in our sources.\n- Intraday: the name ranked first in this range (it may be down) and the next named gainers, each with its move and its own news; and how many of the names the desk covers had recent news in our sources.\n- Never use a report label from the facts, such as \"Intraday\", in the Summary, and do not say when the report was written: the report's header says it.\n- A change note is restated once, in the facts' own words, and nothing is added to it: no time, and no 'when' clause.\n- A change note is restated only for a name the Summary names; never add a name or a price level the narrative facts do not carry.\n- Join a move to its news with \"with\" (\"up 20 percent from the prior close, with recent news in our sources\"), never with a word that says one caused the other.\n- For a name the Summary mentions, you may restate its own news (what happened, with the dates and figures in its own research in the NAMES section). Never put one name's facts on another, and never mention a name the narrative facts do not name.\n- Name only the tickers the narrative facts name. Use the given numbers exactly; every percent carries its frame in the same clause (\"from the prior close\", \"above the prior close\", \"after the close\"). A count goes with \"ran at least 50 percent\" and \"gave the entire move back\" whenever you use those phrases.\n\nUSING THE FACTS:\n- Use only the facts given. Copy every number and date exactly; never compute one. Say a catalyst amount as you would on air, shortened to one decimal at most (\"$46.8 million\"). Restate stored text in your own words; never quote it.\n- The voice below keeps the move out of a name line because the card prints it above the line. Where a name's sheet says no card path is printed, no card sits above that line, so its price and change may be stated, in the past tense.\n- A deal or plan is what was agreed or announced, never \"will\". A deal is a fact: say what the company or a named party agreed, sold, bought or entered into, as the source states it. Keep the status the source gives (proposed, non-binding, agreed, rejected, completed); say a deal closed or was signed only if the source says so. Never a recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words.\n- A named analyst firm's rating change is a fact that our sources report, and you may state it as that firm's view, with the firm named and the rating capitalised ('Wells Fargo raised its rating to Buy'); never as advice, and never from an unnamed source.\n- Restate what the source reports and its terms, never the desk's reading of what it may mean or what traders, investors or the market may think, do or care about.\n- Never call news \"positive\", \"negative\" or any other judgement its source does not state.\n- Never say what kind of catalyst a name's news is (for example \"an operating catalyst\") unless its research says so.\n- The joining words in the voice below are forbidden only where they connect a move to news, and a date's \"on\" is fine (\"On October 5, the company disclosed\"); never join a move and news with \"due to\", \"because of\", \"in response to\", \"in the wake of\" either. Never open a line with \"It's\", \"That name\" either.\n- A name's line may name another covered ticker only as the other party in this name's own story (a buyer, a seller, a partner), and only when this name's own research states that ticker; if the research names only the company, say the company. Say nothing else about it: no price, no move, no rank, no news of its own. This is the one exception to \"never refers to another name\" and \"name no other ticker\".\n- Never \"still\", \"remains\" or \"continues\"; never \"top\"; never a count of names in a name line, \"every name\", \"all the movers\" or \"the real catalyst\".\n- No float number, no share count called float, no halt unless the sheet has one, no engine constant in capitals, no em dash and no spaced hyphen as a dash.\n- Say \"our sources\", never the desk's own words for its material: not \"the bundle\", \"supplied\", \"collected\", \"the evidence\", \"excerpts\" or \"SEC-only coverage\". Where the research says its coverage was filings only, say \"company filings only\"; keep what the desk lacks, in plain words.\n\nREPLY\n- JSON only: {\"narrative\": string | null, \"lines\": [{\"ticker\": string | null, \"text\": string}]}, one line per name. With no names, one line: {\"ticker\": null, \"text\": \"Nothing in our sources for this section.\"}. \"narrative\" is null only when the narrative facts give nothing to say.\n\nYou are a financial news desk reporter on air at a small-cap trading desk. Report what moved and what the news was, the way a person says it to camera: natural, varied, connected, and never robotic. Do not fill in a template name after name; let each story find its own shape and let each name's line and the Summary read as coherent, human speech, not a stack of separate sentences; coherence lives within a line, and a name's line never refers to another name. Do not repeat a stock phrase from name to name, except the ruled state phrases below.\n\nWhat each name's line must include: the name, and the news the desk found, with its date, as the sources state it. A supply fact belongs only when it is itself the news (a placement, an ATM program, a reverse split). Say nothing about the move in a name line: no price, no percent, no up or down, no word about the high (the card prints all of it above the line). The one exception: you may say that nothing in our sources tied the move to the news, and nothing else about the move. The Summary may use the percents it is given. For a name with no news to report, say the ruled state phrase exactly and nothing more: \"Not researched at this checkpoint\", \"no catalyst found in our sources\", \"our research reached no conclusion\"; never invent or pad news for it.\n\nWhat must stay true, whatever the style: attribute what you report (\"the company said\", \"our sources show\", \"secondary coverage reported\") and say \"in our sources\" only where a claim would otherwise read as about the market. Never say what a headline caused, what the stock will do, or what anyone should do. Never address the reader or a viewer (\"you\", \"stay with us\", \"back to you\"), and never say what traders, investors or the market are doing, thinking or feeling. Use no word the facts do not define (\"surging\", \"hot\", \"busy\", \"quiet\"). Say a rank as a rank (\"ranked first in this range\"), never \"led\" or \"biggest\". Speak of the checkpoint in the past tense (\"was up\", \"had recent news\"), so a report read later does not state a market condition as now; anchor every time to a date, and never write a clock time such as \"2:30 PM\". Make each name's line stand on its own: open it with the company or the news, never with \"It\", \"Its\", \"Also\", \"The same\", \"This name\", \"They\", \"Both\" or \"Either\", and name no other ticker. Never join a move and a news item with after, following, on, as, amid, thanks to, driven by, sparked, triggered or fueled. These are rules for you to follow yourself; write with care, because figures, dates and tickers are checked against the data.\n\nONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (an intraday report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given. A recap's Summary instead follows the counts and the named movers it is given, and names only the tickers its facts list):\n\nSummary. MI ranked first in this range, up 806 percent from the prior close, and the only news in our sources was older or secondary. QTEX was up 44 percent from the prior close with the same kind of news. ALEC, up 20 percent from the prior close, had recent news in our sources: a license agreement with Genentech for certain GCase candidates. Of the 12 names the desk covers, 2 had recent news in our sources.\n\nALEC. On October 5, Alector disclosed a September 30 license agreement with Genentech for certain GCase candidates: Genentech leads development and commercialization, Alector keeps its Brain Carrier platform and wholly owned pipeline, and the company said the deal extends its cash runway into 2029. No upfront, milestone or deal-value terms were given.\n\nMI. The news in our sources was older. On September 30, NFT Limited agreed to a private placement of 80,000,000 Class A shares at $0.45, about $36 million, and nothing in our evidence showed it closed. Our evidence had no company event dated October 5.\n\nQTEX. The latest news we found was from October 1: QTREX said an unnamed quantum-computing company had tested its interconnect at 20 mK and measured more than 100 dB channel isolation, and that it was finalizing a binding agreement with that company. None was reported as signed.",
+      "user": "Into the open: the session so far.\n\nNARRATIVE FACTS:\n  ranked first in this range (it may be down): GUTS, down 48 percent from the prior close; news state: recent: our sources found recent news; the recent news (restate briefly, never quote): The company reported positive topline six-month results from the pivotal cohort of its ongoing REMAIN-1 study, stating 80% retention of GLP-1-induced weight loss versus 67% for sham and achievement of the co-primary endpoint with high statistical significance.\n  next covered gainer by move: ZTG, up 69 percent from the prior close; news state: older or secondary: our sources found only older or secondary news\n  next covered gainer by move: XLAB, up 30 percent from the prior close; news state: recent: our sources found recent news; the recent news (restate briefly, never quote): An 8-K reports entry into a material definitive agreement with Sunon, while contemporaneous secondary coverage reports a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million.\n  since the previous checkpoint, XLAB: printed a new high of day\n  names the desk covers that had recent news in our sources: 4 of 12\n\nNAMES:\nGUTS: ranked #1 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: recent: our sources found recent news\n  the news (restate in your own words, never quote): The company reported positive topline six-month results from the pivotal cohort of its ongoing REMAIN-1 study, stating 80% retention of GLP-1-induced weight loss versus 67% for sham and achievement of the co-primary endpoint with high statistical significance.\n  event date: October 16, 2026\n  cited source: \"EX-99.1 to 8-K\", October 16, 2026\n  cited source: \"Fractyl Health’s REMAIN-1 Study Meets Six-Month Co-Primary Endpoint With High Statistical Significance; Demonstrates 80% Retention Of GLP-1 Induced Weight Loss Vs 67% For Sham\", October 16, 2026\n  what the desk does not have (repeat none of its numbers): The bundle does not provide the full statistical tables or 12-month REMAIN-1 results.; Revita remains investigational in the United States.\n\nZTG: ranked #2 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news\n  the news (restate in your own words, never quote): An October 16 secondary headline appears to repeat the September 21 proposed acquisition of a controlling stake in an unnamed mainland China digital technology provider focused on AI and big data; the primary filing said terms remained subject to negotiation, and the later headline disclosed no financial terms or completed transaction.\n  event date: September 21, 2026\n  cited source: \"EX-99.1 to 6-K\", September 21, 2026\n  cited source: \"Zenta Group Unit ZentoAI To Acquire Controlling Stake In An Unnamed Privately Held Digital Technology Service Provider In Mainland China; Financial Terms Not Disclosed\", October 16, 2026\n  what the desk does not have (repeat none of its numbers): The target is unnamed in the available evidence.; Financial terms were not disclosed.; No evidence confirms that the proposed acquisition was signed or completed.; The October 16 item does not establish an amendment or update to the September proposal.\n\nXLAB: ranked #3 in this range\n  the card above your line prints the prices and the move: do not restate them\n  since the previous checkpoint: printed a new high of day\n  news state: recent: our sources found recent news\n  the news (restate in your own words, never quote): An 8-K reports entry into a material definitive agreement with Sunon, while contemporaneous secondary coverage reports a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million.\n  event date: October 15, 2026\n  cited source: \"EX-10.1 to 8-K\", October 14, 2026\n  cited source: \"Exascale Labs Sells 12 Nvidia HGX B300 GPU Servers And 36 Months Of It Operation Services To Sunon For $8.2M\", October 15, 2026\n  what the desk does not have (repeat none of its numbers): The provided primary-source excerpt does not state the contract value or the full commercial terms.; The bundle does not establish delivery timing, payment timing, or whether revenue is recognized at delivery or over the services term.\n\nLRHC: ranked #4 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news\n  the news (restate in your own words, never quote): The company's October 1 press release stated that it had acquired high-performance computing assets, including NVIDIA GPUs, as the foundation of an expansion into AI infrastructure. The latest October 16 item is a name and ticker change announcement, which is not treated as a company catalyst.\n  event date: October 1, 2026\n  cited source: \"EX-99.1: 8-K 2026-10-01T09:00:17.000Z\", October 1, 2026\n  cited source: \"La Rosa Holdings Announces Name Change To Stratum Holdings And Nasdaq Ticker Change From LRHC To SRTM, Effective October 19\", October 16, 2026\n  what the desk does not have (repeat none of its numbers): The evidence does not state the purchase price, number of GPUs acquired, revenue contribution, or customer commitments associated with the GPU acquisition.; The evidence does not link the October 1 announcement to the current session's price change.\n\nXXII: ranked #5 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: recent: our sources found recent news\n  the news (restate in your own words, never quote): Benzinga news items reported that combined same-store retail-unit sales of Pinnacle VLN and Pinnacle Pure increased 161% in Q3 versus Q2. The reporting in the bundle is secondary coverage.\n  event date: October 15, 2026\n  cited source: \"22nd Century Group Reports 161% Increase In Sales In Q3 From Q2 For Combined Same-Store Retail Units Of Pinnacle VLN, Pinnacle Pure\", October 15, 2026\n  cited source: \"22nd Century Group (XXII) Stock Surges Over 64% After Hours on Sales Growth\", October 16, 2026\n  what the desk does not have (repeat none of its numbers): No primary company release or filing in the bundle provides the underlying Q3 sales figures, revenue amount, or full operating context.; The bundle does not establish whether the reported unit-sales increase translated into revenue, margin, or earnings improvement.\n\nIOR: ranked #6 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: not researched: use the ruled phrase for not researched\n\nBNAI: ranked #7 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news\n  the news (restate in your own words, never quote): A September 22 8-K announced a signed $1.051 million private placement priced at $8.50 per share. The initial $150,025 funded at closing, while $901,000 was scheduled in five monthly installments through February 5, 2027, and investors received warrants covering up to 123,650 additional shares at an $8.50 exercise price.\n  event date: September 22, 2026\n  cited source: \"EX-99.1 to 8-K\", September 22, 2026\n  cited source: \"8-K\", September 22, 2026\n  cited source: \"EX-10.1 to 8-K\", September 22, 2026\n  what the desk does not have (repeat none of its numbers): The evidence does not establish whether all scheduled installments will fund or how many of the related shares and warrants have become eligible for resale.; The bundle does not establish a later company-specific catalyst after the September financing.\n\nGMM: ranked #8 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news\n  the news (restate in your own words, never quote): On August 31, 2026, Global Mofy entered securities purchase agreements for a self-underwritten registered direct offering of 3,796,000 Class A ordinary shares at $0.538 per share, for approximately $2.04 million of gross proceeds before expenses. This is new potential share supply and is a dilutive financing event.\n  event date: September 1, 2026\n  cited source: \"REPORT OF FOREIGN PRIVATE ISSUER\", September 1, 2026\n  cited source: \"Reported shares outstanding (us-gaap:CommonStockSharesOutstanding)\", July 23, 2024\n  cited source: \"EX-99.1: 6-K 2026-08-11T20:30:39.000Z\", August 11, 2026\n  what the desk does not have (repeat none of its numbers): The filing excerpt does not establish whether the August 31, 2026 offering had closed or precisely when the offered shares were issued.; No current reported shares outstanding or public float was provided after the reverse split and recent financing activity.; The bundle contains no non-SEC company newswire source, although SEC and company filing coverage is marked complete.\n\nQXL: ranked #9 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: not researched: use the ruled phrase for not researched\n\nWSHP: ranked #10 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news\n  the news (restate in your own words, never quote): The latest identified company operating update was the August 24, 2026 interim-results release. It disclosed a higher period-on-period net loss, increased sales and marketing and public-company costs, and approximately £4.4 million of gross proceeds from exercises of share-based incentive awards during the first half of 2026. A September 3 effectiveness notice relates to the WePoints registration statement, but effectiveness establishes availability for the registered offering, not completed sales. The bundle contains no current non-SEC news coverage, so a same-day catalyst for the observed move cannot be established.\n  event date: August 24, 2026\n  cited source: \"EX-99.1–6-K 2026-08-24\", August 24, 2026\n  cited source: \"EFFECT filed 2026-09-03\", September 4, 2026\n  cited source: \"424B4\", September 3, 2026\n  what the desk does not have (repeat none of its numbers): No non-SEC catalyst sources were collected, and coverage is explicitly incomplete.; No source in the bundle identifies a fresh company event contemporaneous with the observed session.; The evidence does not establish whether any securities were sold following the September effectiveness notice.\n\nAAPG: ranked #11 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: recent: our sources found recent news\n  the news (restate in your own words, never quote): A Form 6-K furnished an October 15 announcement that the trustee for the 2022 RSU Scheme purchased 200,000 shares, representing approximately 0.05% of issued shares, for total consideration of HK$5,778,916.\n  event date: October 15, 2026\n  cited source: \"REPORT OF FOREIGN PRIVATE ISSUER\", October 15, 2026\n  cited source: \"EX-99.1 to 6-K\", October 15, 2026\n  what the desk does not have (repeat none of its numbers): The evidence does not establish whether the trustee purchase affected Nasdaq trading liquidity or demand.; Recent analyst-coverage items are secondary reports rather than company announcements.\n\nTCRT: ranked #12 in this range\n  the card above your line prints the prices and the move: do not restate them\n  since the previous checkpoint: printed a new high of day\n  news state: older or secondary: our sources found only older or secondary news\n  the news (restate in your own words, never quote): The October 13 8-K states that Alaunos completed its acquisition of Velaris Therapeutics and that a concurrent private placement generated approximately $350 million in gross proceeds. The filing states that Velaris holders received Series B and Series C non-voting convertible preferred stock.\n  event date: October 13, 2026\n  cited source: \"8-K\", October 13, 2026\n  cited source: \"EX-99.1 to 8-K\", October 13, 2026\n  cited source: \"EX-99.2 to 8-K\", October 13, 2026\n  what the desk does not have (repeat none of its numbers): The supplied excerpts do not state the number of Series C preferred shares sold in the $350 million private placement.; The supplied excerpts do not state the conversion restrictions or timing applicable to all preferred shares issued in the October 13 transactions."
+    }
+  ],
+  "rawWriterTexts": [
+    "{\"narrative\":\"GUTS ranked first in this range, down 48 percent from the prior close, with recent news in our sources: the company reported six-month REMAIN-1 results showing 80% retention of GLP-1-induced weight loss versus 67% for sham and said the co-primary endpoint was achieved with high statistical significance. ZTG was up 69 percent from the prior close, with only older or secondary news in our sources about a September 21 proposed acquisition of a controlling stake in an unnamed mainland China digital technology provider focused on AI and big data. XLAB was up 30 percent from the prior close, with recent news in our sources: an 8-K reported a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB printed a new high of day since the previous checkpoint. Of the 12 names the desk covers, 4 had recent news in our sources.\",\"lines\":[{\"ticker\":\"GUTS\",\"text\":\"On October 16, 2026, the company reported six-month results from the pivotal cohort of its ongoing REMAIN-1 study, with 80% retention of GLP-1-induced weight loss versus 67% for sham and achievement of the co-primary endpoint with high statistical significance.\"},{\"ticker\":\"ZTG\",\"text\":\"A September 21, 2026 filing reported that ZentoAI had proposed acquiring a controlling stake in an unnamed privately held mainland China digital technology provider focused on AI and big data; the terms remained subject to negotiation, and no financial terms or completed transaction were reported.\"},{\"ticker\":\"XLAB\",\"text\":\"An October 14, 2026 8-K reported entry into a material definitive agreement with Sunon, while October 15, 2026 secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million.\"},{\"ticker\":\"LRHC\",\"text\":\"On October 1, 2026, the company said it had acquired high-performance computing assets, including NVIDIA GPUs, as the foundation of an expansion into AI infrastructure.\"},{\"ticker\":\"XXII\",\"text\":\"On October 15, 2026, secondary coverage reported that combined same-store retail-unit sales of Pinnacle VLN and Pinnacle Pure increased 161% in Q3 versus Q2.\"},{\"ticker\":\"IOR\",\"text\":\"Not researched at this checkpoint\"},{\"ticker\":\"BNAI\",\"text\":\"On September 22, 2026, company filings reported a signed $1.1 million private placement priced at $8.50 per share, with $150,025 funded at closing, $901,000 scheduled in five monthly installments through February 5, 2027, and warrants for up to 123,650 additional shares at an $8.50 exercise price.\"},{\"ticker\":\"GMM\",\"text\":\"A September 1, 2026 filing reported that on August 31, 2026, Global Mofy entered securities purchase agreements for a self-underwritten registered direct offering of 3,796,000 Class A ordinary shares at $0.538 per share, for approximately $2 million of gross proceeds before expenses.\"},{\"ticker\":\"QXL\",\"text\":\"Not researched at this checkpoint\"},{\"ticker\":\"WSHP\",\"text\":\"On August 24, 2026, the company released interim results showing a higher period-on-period net loss, increased sales and marketing and public-company costs, and approximately £4.4 million of gross proceeds from exercises of share-based incentive awards during the first half of 2026. No source identified a fresh company event contemporaneous with the observed session.\"},{\"ticker\":\"AAPG\",\"text\":\"On October 15, 2026, a Form 6-K reported that the trustee for the 2022 RSU Scheme purchased 200,000 shares, representing approximately 0.05% of issued shares, for total consideration of HK$5,778,916.\"},{\"ticker\":\"TCRT\",\"text\":\"On October 13, 2026, an 8-K reported that Alaunos completed its acquisition of Velaris Therapeutics and that a concurrent private placement generated approximately $350 million in gross proceeds; Velaris holders received Series B and Series C non-voting convertible preferred stock.\"}]}"
+  ],
+  "draft": {
+    "headline": "",
+    "overall": "GUTS ranked first in this range, down 48 percent from the prior close, with recent news in our sources: the company reported six-month REMAIN-1 results showing 80% retention of GLP-1-induced weight loss versus 67% for sham and said the co-primary endpoint was achieved with high statistical significance. ZTG was up 69 percent from the prior close, with only older or secondary news in our sources about a September 21 proposed acquisition of a controlling stake in an unnamed mainland China digital technology provider focused on AI and big data. XLAB was up 30 percent from the prior close, with recent news in our sources: an 8-K reported a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB printed a new high of day since the previous checkpoint. Of the 12 names the desk covers, 4 had recent news in our sources.",
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "GUTS",
+            "text": "On October 16, 2026, the company reported six-month results from the pivotal cohort of its ongoing REMAIN-1 study, with 80% retention of GLP-1-induced weight loss versus 67% for sham and achievement of the co-primary endpoint with high statistical significance."
+          },
+          {
+            "ticker": "ZTG",
+            "text": "A September 21, 2026 filing reported that ZentoAI had proposed acquiring a controlling stake in an unnamed privately held mainland China digital technology provider focused on AI and big data; the terms remained subject to negotiation, and no financial terms or completed transaction were reported."
+          },
+          {
+            "ticker": "XLAB",
+            "text": "An October 14, 2026 8-K reported entry into a material definitive agreement with Sunon, while October 15, 2026 secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million."
+          },
+          {
+            "ticker": "LRHC",
+            "text": "On October 1, 2026, the company said it had acquired high-performance computing assets, including NVIDIA GPUs, as the foundation of an expansion into AI infrastructure."
+          },
+          {
+            "ticker": "XXII",
+            "text": "On October 15, 2026, secondary coverage reported that combined same-store retail-unit sales of Pinnacle VLN and Pinnacle Pure increased 161% in Q3 versus Q2."
+          },
+          {
+            "ticker": "IOR",
+            "text": "Not researched at this checkpoint"
+          },
+          {
+            "ticker": "BNAI",
+            "text": "On September 22, 2026, company filings reported a signed $1.1 million private placement priced at $8.50 per share, with $150,025 funded at closing, $901,000 scheduled in five monthly installments through February 5, 2027, and warrants for up to 123,650 additional shares at an $8.50 exercise price."
+          },
+          {
+            "ticker": "GMM",
+            "text": "A September 1, 2026 filing reported that on August 31, 2026, Global Mofy entered securities purchase agreements for a self-underwritten registered direct offering of 3,796,000 Class A ordinary shares at $0.538 per share, for approximately $2 million of gross proceeds before expenses."
+          },
+          {
+            "ticker": "QXL",
+            "text": "Not researched at this checkpoint"
+          },
+          {
+            "ticker": "WSHP",
+            "text": "On August 24, 2026, the company released interim results showing a higher period-on-period net loss, increased sales and marketing and public-company costs, and approximately £4.4 million of gross proceeds from exercises of share-based incentive awards during the first half of 2026. No source identified a fresh company event contemporaneous with the observed session."
+          },
+          {
+            "ticker": "AAPG",
+            "text": "On October 15, 2026, a Form 6-K reported that the trustee for the 2022 RSU Scheme purchased 200,000 shares, representing approximately 0.05% of issued shares, for total consideration of HK$5,778,916."
+          },
+          {
+            "ticker": "TCRT",
+            "text": "On October 13, 2026, an 8-K reported that Alaunos completed its acquisition of Velaris Therapeutics and that a concurrent private placement generated approximately $350 million in gross proceeds; Velaris holders received Series B and Series C non-voting convertible preferred stock."
+          }
+        ]
+      }
+    ]
+  },
+  "checkerReplies": [
+    {
+      "raw": "{\"verdicts\":[{\"id\":\"O\",\"supported\":true,\"note\":\"Counts, moves, news labels, catalyst restatements and the XLAB new high of day all match the narrative facts and stored research.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L1\",\"supported\":true,\"note\":\"Date (07:01 ET on 2026-10-16) and figures match the GUTS catalyst summary.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L2\",\"supported\":true,\"note\":\"Restates the September 21 proposal, the terms still under negotiation and the absence of financial terms or completion. ZentoAI and 'privately held' come from the cited headline about the same proposal.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L3\",\"supported\":true,\"note\":\"The 8-K exhibit is dated 2026-10-14 ET and the secondary coverage is 06:19 ET on 2026-10-15; the figures match.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L4\",\"supported\":true,\"note\":\"October 1 release (05:00 ET on 2026-10-01) matches the summary.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L5\",\"supported\":true,\"note\":\"Secondary coverage at 16:33 ET on 2026-10-15 reporting a 161% Q3 versus Q2 increase.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L6\",\"supported\":true,\"note\":\"IOR has no research on file.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L7\",\"supported\":true,\"note\":\"$1.051 million is shortened to $1.1 million as allowed; the other figures and the September 22 date match.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L8\",\"supported\":true,\"note\":\"The filing is 16:30 ET on 2026-09-01; the offering terms match and $2.04 million is shortened.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L9\",\"supported\":true,\"note\":\"QXL has no research on file.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L10\",\"supported\":true,\"note\":\"Restates the August 24 interim results and the unknown about no contemporaneous fresh event.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L11\",\"supported\":true,\"note\":\"The 6-K at 13:26 ET on 2026-10-15; the figures match.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L12\",\"supported\":true,\"note\":\"The 8-K at 09:28 ET on 2026-10-13; the acquisition, $350 million and the preferred stock all match.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"}]}",
+      "error": null
+    }
+  ],
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "INTO_RTH",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-16",
+      "targetTradingDate": null,
+      "checkpoints": [
+        {
+          "id": 816,
+          "type": "OPEN_SPIKE_ASSESSMENT",
+          "completedAt": "2026-10-16T13:25:01.964Z"
+        }
+      ],
+      "publishedAt": "2026-10-17T00:41:48.740Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "RECENT NEWS FOUND",
+          "lines": [
+            {
+              "ticker": "GUTS",
+              "liveFeed": null,
+              "text": "On October 16, 2026, the company reported six-month results from the pivotal cohort of its ongoing REMAIN-1 study, with 80% retention of GLP-1-induced weight loss versus 67% for sham and achievement of the co-primary endpoint with high statistical significance.",
+              "company": {
+                "name": "FRACTYL HEALTH, INC.",
+                "country": "United States",
+                "business": "Fractyl Health is a clinical-stage metabolic therapeutics company developing treatments for obesity and type 2 diabetes."
+              },
+              "path": {
+                "from": 4.16,
+                "high": 4.85,
+                "now": 2.17,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "2h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 16, time not stated",
+                  "headline": "The company reported positive topline six-month results from the pivotal cohort of its ongoing REMAIN-1 study, stating 80% retention of GLP-1-induced weight loss versus 67% for sham and achievement of the co-primary endpoint with high statistical significance.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "The reported 159,179,848 shares outstanding figure is dated August 4, 2026 and predates the October 2, 2026 reverse split.",
+                  "tone": "warn",
+                  "full": "The reported 159,179,848 shares outstanding figure is dated August 4, 2026 and predates the October 2, 2026 reverse split."
+                }
+              }
+            },
+            {
+              "ticker": "XLAB",
+              "liveFeed": null,
+              "text": "An October 14, 2026 8-K reported entry into a material definitive agreement with Sunon, while October 15, 2026 secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million.",
+              "company": {
+                "name": "Exascale Labs Holdings Inc.",
+                "country": "United States",
+                "business": "Exascale Labs provides a software-defined GPU-as-a-Service platform."
+              },
+              "path": {
+                "from": 1.36,
+                "high": 2.1,
+                "now": 1.7703,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "1d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 15, time not stated",
+                  "headline": "An 8-K reports entry into a material definitive agreement with Sunon, while contemporaneous secondary coverage reports a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million.",
+                  "explainsMove": true,
+                  "freshness": "RECENT",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is RECENT rather than fresh."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "The only reported shares-outstanding figure is dated December 31, 2025, before the completed business combination described in the 10-K.",
+                  "tone": "warn",
+                  "full": "The only reported shares-outstanding figure is dated December 31, 2025, before the completed business combination described in the 10-K."
+                }
+              }
+            },
+            {
+              "ticker": "XXII",
+              "liveFeed": null,
+              "text": "On October 15, 2026, secondary coverage reported that combined same-store retail-unit sales of Pinnacle VLN and Pinnacle Pure increased 161% in Q3 versus Q2.",
+              "company": {
+                "name": "22nd Century Group, Inc.",
+                "country": "United States",
+                "business": "The company develops and sells reduced-nicotine cigarettes."
+              },
+              "path": {
+                "from": 0.6272,
+                "high": 1.13,
+                "now": 0.6539,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "since Thu close",
+                  "ageIsPriorClose": true,
+                  "eventAt": "Oct 15, time not stated",
+                  "headline": "Benzinga news items reported that combined same-store retail-unit sales of Pinnacle VLN and Pinnacle Pure increased 161% in Q3 versus Q2. The reporting in the bundle is secondary coverage.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH. It is FRESH because it broke after the prior session's close (since Thu close), so the market has not traded on it yet -- not because it is recent by the calendar. The exact time is below."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "3.02M sh",
+                  "detail": "The latest reported shares outstanding figure is 713,994 as of August 14, 2026, not a float figure.",
+                  "tone": "warn",
+                  "full": "The latest reported shares outstanding figure is 713,994 as of August 14, 2026, not a float figure."
+                }
+              }
+            },
+            {
+              "ticker": "AAPG",
+              "liveFeed": null,
+              "text": "On October 15, 2026, a Form 6-K reported that the trustee for the 2022 RSU Scheme purchased 200,000 shares, representing approximately 0.05% of issued shares, for total consideration of HK$5,778,916.",
+              "company": {
+                "name": "ASCENTAGE PHARMA GROUP INTERNATIONAL",
+                "country": null,
+                "business": "Ascentage Pharma is a commercial-stage biopharmaceutical company that develops and commercializes cancer therapies."
+              },
+              "path": {
+                "from": 14.69,
+                "high": 15.13,
+                "now": 15.13,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "—",
+                  "age": "20h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 15, time not stated",
+                  "headline": "A Form 6-K furnished an October 15 announcement that the trustee for the 2022 RSU Scheme purchased 200,000 shares, representing approximately 0.05% of issued shares, for total consideration of HK$5,778,916.",
+                  "explainsMove": false,
+                  "freshness": "RECENT",
+                  "tone": "warn",
+                  "title": "No catalyst grade established. The colour is its FRESHNESS: amber because the catalyst is RECENT rather than fresh."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "The reported issued and outstanding share count is dated June 30, 2026.",
+                  "tone": "warn",
+                  "full": "The reported issued and outstanding share count is dated June 30, 2026."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "OLDER OR SECONDARY NEWS",
+          "lines": [
+            {
+              "ticker": "ZTG",
+              "liveFeed": null,
+              "text": "A September 21, 2026 filing reported that ZentoAI had proposed acquiring a controlling stake in an unnamed privately held mainland China digital technology provider focused on AI and big data; the terms remained subject to negotiation, and no financial terms or completed transaction were reported.",
+              "company": {
+                "name": "Zenta Group Co Ltd",
+                "country": "Macau",
+                "business": "Zenta Group provides consulting services related to industrial parks and business investment and sells fintech products and services."
+              },
+              "path": {
+                "from": 0.623,
+                "high": 1.11,
+                "now": 1.05,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "25d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 21, time not stated",
+                  "headline": "An October 16 secondary headline appears to repeat the September 21 proposed acquisition of a controlling stake in an unnamed mainland China digital technology provider focused on AI and big data; the primary filing said terms remained subject to negotiation, and the later headline disclosed no financial terms or completed transaction.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "12.3M sh supply",
+                  "detail": "No source states the public float.",
+                  "tone": "neg",
+                  "full": "No source states the public float."
+                }
+              }
+            },
+            {
+              "ticker": "LRHC",
+              "liveFeed": null,
+              "text": "On October 1, 2026, the company said it had acquired high-performance computing assets, including NVIDIA GPUs, as the foundation of an expansion into AI infrastructure.",
+              "company": {
+                "name": "La Rosa Holdings Corp.",
+                "country": "United States",
+                "business": "La Rosa provides residential and commercial real estate brokerage services and technology support for its agents and franchise partners, while expanding into AI infrastructure."
+              },
+              "path": {
+                "from": 0.8962,
+                "high": 1.31,
+                "now": 0.907,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "A",
+                  "age": "15d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, time not stated",
+                  "headline": "No fresh catalyst · latest: Oct 1 · The company's October 1 press release stated that it had acquired high-performance computing assets, including NVIDIA GPUs, as the foundation of an expansion into AI infrastructure. The latest October 16 item is a name and ticker change announcement, which is not treated as a company catalyst.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade A: strong, or legitimately positive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "4K sh",
+                  "detail": "The September 8 reverse split reduced approximately 3.4 million common shares to approximately 569 thousand shares before giving effect to rounding.",
+                  "tone": "warn",
+                  "full": "The September 8 reverse split reduced approximately 3.4 million common shares to approximately 569 thousand shares before giving effect to rounding."
+                }
+              }
+            },
+            {
+              "ticker": "BNAI",
+              "liveFeed": null,
+              "text": "On September 22, 2026, company filings reported a signed $1.1 million private placement priced at $8.50 per share, with $150,025 funded at closing, $901,000 scheduled in five monthly installments through February 5, 2027, and warrants for up to 123,650 additional shares at an $8.50 exercise price.",
+              "company": {
+                "name": "Brand Engagement Network Inc.",
+                "country": "United States",
+                "business": "Brand Engagement Network is an enterprise AI software company providing computer-integrated systems design services."
+              },
+              "path": {
+                "from": 5.86,
+                "high": 7.02,
+                "now": 5.7,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "C",
+                  "age": "24d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 22, time not stated",
+                  "headline": "A September 22 8-K announced a signed $1.051 million private placement priced at $8.50 per share. The initial $150,025 funded at closing, while $901,000 was scheduled in five monthly installments through February 5, 2027, and investors received warrants covering up to 123,650 additional shares at an $8.50 exercise price.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "6.64M sh",
+                  "detail": "The reported 7,488,046 shares outstanding date is August 14, 2026 and predates the September private placement.",
+                  "tone": "warn",
+                  "full": "The reported 7,488,046 shares outstanding date is August 14, 2026 and predates the September private placement."
+                }
+              }
+            },
+            {
+              "ticker": "GMM",
+              "liveFeed": null,
+              "text": "A September 1, 2026 filing reported that on August 31, 2026, Global Mofy entered securities purchase agreements for a self-underwritten registered direct offering of 3,796,000 Class A ordinary shares at $0.538 per share, for approximately $2 million of gross proceeds before expenses.",
+              "company": {
+                "name": "Global Mofy AI Ltd",
+                "country": "China",
+                "business": "Global Mofy AI operates artificial-intelligence and digital-content operations."
+              },
+              "path": {
+                "from": 1.24,
+                "high": 1.4852,
+                "now": 1.28,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "C",
+                  "age": "45d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 1, time not stated",
+                  "headline": "On August 31, 2026, Global Mofy entered securities purchase agreements for a self-underwritten registered direct offering of 3,796,000 Class A ordinary shares at $0.538 per share, for approximately $2.04 million of gross proceeds before expenses. This is new potential share supply and is a dilutive financing event.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "93.0M sh supply",
+                  "detail": "The only reported outstanding-share figure is 28,545,468 as of March 31, 2024, which materially predates the June 2026 50-for-1 share consolidation, later offerings, and the disclosed warrant structure.",
+                  "tone": "neg",
+                  "full": "The only reported outstanding-share figure is 28,545,468 as of March 31, 2024, which materially predates the June 2026 50-for-1 share consolidation, later offerings, and the disclosed warrant structure."
+                }
+              }
+            },
+            {
+              "ticker": "WSHP",
+              "liveFeed": null,
+              "text": "On August 24, 2026, the company released interim results showing a higher period-on-period net loss, increased sales and marketing and public-company costs, and approximately £4.4 million of gross proceeds from exercises of share-based incentive awards during the first half of 2026. No source identified a fresh company event contemporaneous with the observed session.",
+              "company": {
+                "name": "WeShop Holdings Ltd",
+                "country": "Jersey",
+                "business": null
+              },
+              "path": {
+                "from": 3.38,
+                "high": 3.89,
+                "now": 3.33,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "B",
+                  "age": "53d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Aug 24, time not stated",
+                  "headline": "No fresh catalyst · latest: Aug 24 · The latest identified company operating update was the August 24, 2026 interim-results release. It disclosed a higher period-on-period net loss, increased sales and marketing and public-company costs, and approximately £4.4 million of gross proceeds from exercises of share-based incentive awards during the first half of 2026. A September 3 effectiveness notice relates to the WePoints registration statement, but effectiveness establishes availability for the registered offering, not completed sales. The bundle contains no current non-SEC news coverage, so a same-day catalyst for the observed move cannot be established.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "7.53M sh",
+                  "detail": "A reported total share count is unavailable in the bundle; shares outstanding and public float cannot be reconciled.",
+                  "tone": "warn",
+                  "full": "A reported total share count is unavailable in the bundle; shares outstanding and public float cannot be reconciled."
+                }
+              }
+            },
+            {
+              "ticker": "TCRT",
+              "liveFeed": null,
+              "text": "On October 13, 2026, an 8-K reported that Alaunos completed its acquisition of Velaris Therapeutics and that a concurrent private placement generated approximately $350 million in gross proceeds; Velaris holders received Series B and Series C non-voting convertible preferred stock.",
+              "company": {
+                "name": "Alaunos Therapeutics, Inc.",
+                "country": "United States",
+                "business": "Alaunos Therapeutics is an early-stage biotechnology company developing therapeutic candidates for metabolic and cardiopulmonary conditions."
+              },
+              "path": {
+                "from": 2.18,
+                "high": 3.19,
+                "now": 2.7902,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "3d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 13, time not stated",
+                  "headline": "The October 13 8-K states that Alaunos completed its acquisition of Velaris Therapeutics and that a concurrent private placement generated approximately $350 million in gross proceeds. The filing states that Velaris holders received Series B and Series C non-voting convertible preferred stock.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "139.1M sh",
+                  "detail": "The October 13 merger issued Series B and Series C preferred stock convertible into an aggregate 138,340,000 common shares based on the stated 1,000-for-1 conversion ratio.",
+                  "tone": "warn",
+                  "full": "The October 13 merger issued Series B and Series C preferred stock convertible into an aggregate 138,340,000 common shares based on the stated 1,000-for-1 conversion ratio."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NOT RESEARCHED AT THIS CHECKPOINT",
+          "lines": [
+            {
+              "ticker": "IOR",
+              "liveFeed": null,
+              "text": "Not researched at this checkpoint",
+              "company": null,
+              "path": {
+                "from": 18,
+                "high": 18.2,
+                "now": 18.2,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            },
+            {
+              "ticker": "QXL",
+              "liveFeed": null,
+              "text": "Not researched at this checkpoint",
+              "company": null,
+              "path": {
+                "from": 3.879,
+                "high": 4.79,
+                "now": 4.35,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "watchCount": 12,
+      "narrative": "GUTS ranked first in this range, down 48 percent from the prior close, with recent news in our sources: the company reported six-month REMAIN-1 results showing 80% retention of GLP-1-induced weight loss versus 67% for sham and said the co-primary endpoint was achieved with high statistical significance. ZTG was up 69 percent from the prior close, with only older or secondary news in our sources about a September 21 proposed acquisition of a controlling stake in an unnamed mainland China digital technology provider focused on AI and big data. XLAB was up 30 percent from the prior close, with recent news in our sources: an 8-K reported a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. Of the 12 names the desk covers, 4 had recent news in our sources.",
+      "narrativeFootnotes": null
+    },
+    "diagnostics": {
+      "lines": 13,
+      "strikes": [],
+      "writerMs": 18917,
+      "checkerMs": 26907
+    }
+  }
+}
