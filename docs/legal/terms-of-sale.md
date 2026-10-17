@@ -29,6 +29,18 @@ drafted: 2026-10-17
       desk@tmitrader.com and we will make it right." stays (his "yes to
       all", 2026-10-17T00:01:01.558Z, through Integration)
 
+  FOLDED 2026-10-17 (Commercial, 8th tenure), from text he approved word for word
+  (Integration chat bf3b407e, uuid 622497ba, "1, yes", 2026-10-17T11:04:55.669Z):
+    - the free trial row in section 1's table, section 2's first sentence, and section 9
+      (docs/commercial/2026-10-17-free-trial-strings.md section 2), with the sentence
+      "A free trial is not available to an account that has already bought a day or a plan."
+    - the trial's length in Marketing's wording (fe2b21ac): "48 hours of trading days", and
+      the exact stop times, which match lib/billing/trialClock.ts at f23e4422.
+  NOT YET REWORDED: the paid day. His ruling of 2026-10-17 (uuid 5c1bc71e) makes weekends
+  and holidays part of the next market day's paid day; sections 1 and 2 still carry the
+  old 8:00pm to 8:00pm text and the closed-day sentence until Billing's scope of the code
+  is in. Word against that scope, not ahead of it.
+
   BRACKETED ITEMS ARE NOT DECIDED. Each says who decides. Nothing in brackets
   ships as written.
   [PRICE CHANGE NOTICE] ANSWERED 2026-10-17: 30 days (his "4, yes", uuid 6c3dc8f3,
@@ -57,6 +69,7 @@ Access to the desk, for a paid day or for a plan. Prices are in US dollars.
 | Monthly | $89 | one month |
 | Six months | $499 | six months |
 | Annual | $899 | one year |
+| Free trial | no charge | 48 hours of trading days, once |
 
 [TAX: his accountant decides whether these prices include sales tax and what
 the checkout shows.]
@@ -70,7 +83,7 @@ year count the same way.
 
 ## 2. Daily: how the charge works
 
-You save a card the first time you sign in. From then on, each new paid day
+You save a card when you buy your first paid day. From then on, each new paid day
 you sign in on is charged automatically to that card. You are not asked to
 approve each charge. You pay only for the paid days you sign in on.
 
@@ -144,3 +157,38 @@ your next paid day if you pay daily.
 
 TMI is developed and sold by Andromeda Genius LLC, of 5460 Babcock Rd, Suite 120 PMB 95234, San Antonio, TX
 78240, United States. You can reach a person at desk@tmitrader.com.
+
+## 9. The free trial
+
+You can try the desk free for 48 hours of trading days. The clock stops from
+8:00pm ET on Friday until 8:00pm ET on Sunday, and for a market holiday from
+8:00pm ET the evening before until 8:00pm ET on the holiday. Each person can
+take the trial once, and each card can start a trial once.
+
+To start, you enter a card. We use it to check that it has not already been
+used for a trial. **We do not charge it, now or when the trial ends, and we
+never will.** As soon as it has been checked, we ask Stripe, our payment
+processor, to remove it from your account, so it cannot be charged. We do not
+see your card number and we do not keep your card. Stripe, which takes the
+card, keeps a record of it under Stripe's own privacy policy. Your bank may
+show a small pending amount while the card is checked. It is not a charge, and
+we never take it.
+
+We keep one code that identifies the card, Stripe's reference number for the
+check, and the time the trial started, with your account. We use them only to
+stop the same card starting a second trial. We keep them for as long as we
+offer the free trial, including after you close your account, because
+otherwise the same card could start a second trial.
+
+When the 48 hours end, your access ends. Nothing is charged and nothing
+renews. To keep using the desk, you buy a day or a plan and enter a card then.
+
+The 48 hours are counted from the moment the trial starts, and only while the
+clock is running, as set out above. In a week with no market holiday, a trial
+that starts on a Thursday at 10:00am ET ends on the Monday at 10:00am ET. We
+show you the end time when the trial starts.
+
+If the card cannot be checked, or has already been used for a trial, the trial
+does not start. A free trial is not available to an account that has already
+bought a day or a plan. We may refuse or end a trial if the same person is
+using more than one account.
