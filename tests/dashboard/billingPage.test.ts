@@ -57,7 +57,7 @@ describe('the billing page', () => {
 describe('the confirmations (section 5)', () => {
   it('say what happened, with the end time', () => {
     expect(W.cancelledConfirm('Nov 16, 9:00 PM ET')).toBe('Your plan is cancelled. It will not renew. You keep access to Nov 16, 9:00 PM ET. No refunds.');
-    expect(W.removedDaily('Oct 19, 8:00 PM ET')).toBe('Your card is removed. You will not be charged again. If you have already paid for today, access ends at Oct 19, 8:00 PM ET.');
+    expect(W.removedDaily('Oct 19, 8:00 PM ET')).toBe('Your card is removed. You will not be charged again. If this paid day is already paid for, access ends at Oct 19, 8:00 PM ET.');
     expect(W.removedCancelledPlan('Nov 16, 9:00 PM ET')).toBe('Your card is removed. You will not be charged again. You keep access to Nov 16, 9:00 PM ET.');
   });
 });

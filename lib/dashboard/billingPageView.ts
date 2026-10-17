@@ -40,7 +40,7 @@ export const BILLING_PAGE_WORDS = {
   // Section 5: the confirmations.
   cancelledConfirm: (time: string) => `Your plan is cancelled. It will not renew. You keep access to ${time}. No refunds.`,
   removedDaily: (time: string | null) =>
-    time ? `Your card is removed. You will not be charged again. If you have already paid for today, access ends at ${time}.` : 'Your card is removed. You will not be charged again.',
+    time ? `Your card is removed. You will not be charged again. If this paid day is already paid for, access ends at ${time}.` : 'Your card is removed. You will not be charged again.',
   removedCancelledPlan: (time: string) => `Your card is removed. You will not be charged again. You keep access to ${time}.`,
   // The billing history page.
   historyHeadline: 'Billing history',

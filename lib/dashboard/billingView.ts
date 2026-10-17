@@ -29,22 +29,24 @@ export interface BillingMemory {
 
 export const BILLING_WORDS = {
   // Section 2: the band.
-  bandDaily: (time: string, minutes: number) => `Today's payment didn't go through. Your session ends at ${time}, ${minutes} min left.`,
+  // Paid-day words (docs/integration/2026-10-17-paid-day-for-him.md @ 579acaee, his yes 2026-10-17T12:15:21.014Z): no
+  // day word, because a failed payment's screen can be seen on a later calendar day.
+  bandDaily: (time: string, minutes: number) => `Your payment didn't go through. Your session ends at ${time}, ${minutes} min left.`,
   bandPlan: (time: string, minutes: number) => `Your plan's renewal didn't go through. Your session ends at ${time}, ${minutes} min left.`,
   bandLastMinute: (clock: string) => `Your session ends in ${clock}. Update your card to stay signed in.`,
   bandChecking: 'Checking your card...',
-  bandPaidDaily: "Payment received. You're set for today.",
+  bandPaidDaily: "Payment received. You're set for this paid day.",
   bandPaidPlan: 'Payment received. Your plan is renewed.',
   bandSecondDecline: (time: string) => `That card was declined too. Your session ends at ${time}.`,
   updateCard: 'Update card',
   // Section 2: the two OS notifications (title TMI).
   notifyTitle: 'TMI',
-  notifyFailureDaily: (time: string) => `Today's payment didn't go through. Your session ends at ${time}.`,
+  notifyFailureDaily: (time: string) => `Your payment didn't go through. Your session ends at ${time}.`,
   notifyFailurePlan: (time: string) => `Your plan's renewal didn't go through. Your session ends at ${time}.`,
   notifyTenMinutes: (time: string) => `Your session ends at ${time}. Update your card to stay signed in.`,
   // Section 3: the update-your-card screen.
   cardHeadline: 'Update your card to open the desk.',
-  cardLineDaily: (amount: string) => `Today's payment of ${amount} didn't go through.`,
+  cardLineDaily: (amount: string) => `Your payment of ${amount} didn't go through.`,
   cardLinePlan: (amount: string) => `Your plan's renewal of ${amount} didn't go through.`,
   cardLineEnded: (time: string) => `Your session ended at ${time} because the payment didn't go through.`,
   cardUnderButton: 'Your card is tried again as soon as you update it. No refunds.',

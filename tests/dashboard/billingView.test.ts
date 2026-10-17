@@ -45,7 +45,7 @@ describe('the band (Marketing section 2, verbatim)', () => {
   it('amber from 60 to 11 minutes, with the absolute end time first', () => {
     const v = billingDeskView(grace(), at(52));
     expect(v.screen).toBe('board');
-    expect(v.band).toEqual({ phase: 'amber', tone: 'warn', text: "Today's payment didn't go through. Your session ends at 07:43 ET, 52 min left.", button: 'Update card' });
+    expect(v.band).toEqual({ phase: 'amber', tone: 'warn', text: "Your payment didn't go through. Your session ends at 07:43 ET, 52 min left.", button: 'Update card' });
     expect(v.titlePrefix).toBe('⚠ 52m · payment');
   });
 
@@ -57,7 +57,7 @@ describe('the band (Marketing section 2, verbatim)', () => {
     const at11 = billingDeskView(grace(), at(11)).band!;
     const at10 = billingDeskView(grace(), at(10)).band!;
     expect([at11.phase, at10.phase]).toEqual(['amber', 'red']);
-    expect(at10.text).toBe("Today's payment didn't go through. Your session ends at 07:43 ET, 10 min left.");
+    expect(at10.text).toBe("Your payment didn't go through. Your session ends at 07:43 ET, 10 min left.");
   });
 
   it('the last minute changes the words, not the layout', () => {
@@ -78,7 +78,7 @@ describe('the band (Marketing section 2, verbatim)', () => {
   });
 
   it('paid: green, no button', () => {
-    expect(billingDeskView(base(), at(1), { justPaid: 'daily' }).band).toEqual({ phase: 'paid', tone: 'pos', text: "Payment received. You're set for today.", button: null });
+    expect(billingDeskView(base(), at(1), { justPaid: 'daily' }).band).toEqual({ phase: 'paid', tone: 'pos', text: "Payment received. You're set for this paid day.", button: null });
     expect(billingDeskView(base(), at(1), { justPaid: 'plan' }).band?.text).toBe('Payment received. Your plan is renewed.');
     // The memory: a grace that disappears while the charge reads SUCCEEDED; anything else is no memory.
     expect(nextMemory(grace({ kind: 'plan' }), base({ latestCharge: charge('SUCCEEDED') }))).toEqual({ justPaid: 'plan' });
@@ -100,7 +100,7 @@ describe('the screens that replace the board', () => {
     expect(v.screen).toBe('card_required');
     expect(v.card).toEqual({
       headline: 'Update your card to open the desk.',
-      lines: ["Today's payment of $5.50 didn't go through."],
+      lines: ["Your payment of $5.50 didn't go through."],
       button: 'Update card',
       under: 'Your card is tried again as soon as you update it. No refunds.',
     });
@@ -108,7 +108,7 @@ describe('the screens that replace the board', () => {
     expect(planned.lines).toEqual(["Your plan's renewal of $89 didn't go through."]);
     // After the hour ran out (Billing's endedAt): the ended line follows.
     expect(billingDeskView(base({ door: 'charge_first', latestCharge: charge('FAILED'), endedAt: END }), at(30)).card?.lines).toEqual([
-      "Today's payment of $5.50 didn't go through.",
+      "Your payment of $5.50 didn't go through.",
       "Your session ended at 07:43 ET because the payment didn't go through.",
     ]);
   });
@@ -163,7 +163,7 @@ describe('the screens that replace the board', () => {
 describe('the OS notifications (only if permission was already granted; the caller checks)', () => {
   it('one at the failure, one at ten minutes, each once per grace', () => {
     const first = notificationsDue(grace(), at(52), new Set());
-    expect(first).toEqual([{ key: `${END}:failure`, title: 'TMI', body: "Today's payment didn't go through. Your session ends at 07:43 ET." }]);
+    expect(first).toEqual([{ key: `${END}:failure`, title: 'TMI', body: "Your payment didn't go through. Your session ends at 07:43 ET." }]);
     expect(notificationsDue(grace(), at(40), new Set([first[0]!.key]))).toEqual([]);
     const ten = notificationsDue(grace(), at(10), new Set([first[0]!.key]));
     expect(ten).toEqual([{ key: `${END}:ten`, title: 'TMI', body: BILLING_WORDS.notifyTenMinutes('07:43 ET') }]);
