@@ -22,12 +22,14 @@ import type { PlanKey } from '@/lib/billing/config';
 import {
   billingPlanFor,
   chargeFor,
+  hasBought,
   linkCustomer,
   markPlanPaid,
   markRenewalFailed,
   paidDayOf,
   recordCheckoutDay,
   recordDispute,
+  recordTrial,
   recordWebhookEvent,
   requeueFailedCharge,
   upsertPlan,
@@ -37,7 +39,10 @@ import {
 
 export interface WebhookDeps {
   db: IdentityDatabase;
-  stripe: Pick<Stripe, 'customers' | 'paymentIntents' | 'setupIntents' | 'subscriptions' | 'invoices'>;
+  stripe: Pick<
+    Stripe,
+    'customers' | 'paymentIntents' | 'paymentMethods' | 'setupIntents' | 'subscriptions' | 'invoices'
+  >;
   now?: () => Date;
   log?: (line: string) => void;
 }
@@ -111,6 +116,8 @@ async function onCheckoutCompleted(deps: WebhookDeps, session: Stripe.Checkout.S
 
   linkCustomer(deps.db, userId, customerId, now);
 
+  if (session.metadata?.purchase === 'trial') return onTrialCheckout(deps, session, userId, email, now);
+
   if (session.mode === 'payment') {
     const intentId = idOf(session.payment_intent);
     const intent = intentId
@@ -145,6 +152,45 @@ async function onCheckoutCompleted(deps: WebhookDeps, session: Stripe.Checkout.S
   }
   inviteEmail(deps.db, email, 'stripe', now);
   return `paid (${session.mode}), invited`;
+}
+
+/**
+ * A finished trial Checkout. His ruling: the card is only to prevent trial
+ * cheating, we do not keep it and we never charge it. So, in this order:
+ * read the card's fingerprint, DETACH the card (Stripe: "Detachment is permanent
+ * and irreversible"), and only then record the trial and invite. The card is
+ * never made a default, and it is detached whatever the outcome, so a refused
+ * second trial leaves nothing behind either.
+ */
+async function onTrialCheckout(
+  deps: WebhookDeps,
+  session: Stripe.Checkout.Session,
+  userId: number,
+  email: string,
+  now: Date,
+): Promise<string> {
+  if (session.mode !== 'setup') throw new Error(`trial checkout ${session.id} is not in setup mode`);
+  const setupId = idOf(session.setup_intent);
+  if (!setupId) throw new Error(`trial checkout ${session.id} has no setup intent`);
+  const setup = await deps.stripe.setupIntents.retrieve(setupId);
+  const paymentMethodId = idOf(setup.payment_method);
+  if (!paymentMethodId) throw new Error(`trial checkout ${session.id} has no card`);
+
+  const pm = await deps.stripe.paymentMethods.retrieve(paymentMethodId);
+  // Detach first. A redelivered event finds it already detached (customer null).
+  if (pm.customer) await deps.stripe.paymentMethods.detach(paymentMethodId);
+  const fingerprint = pm.type === 'card' ? (pm.card?.fingerprint ?? null) : null;
+  if (!fingerprint) return 'trial refused: not a card with a fingerprint; card detached';
+
+  const outcome = recordTrial(deps.db, userId, fingerprint, setupId, now);
+  if (outcome !== 'started') return `trial refused: ${outcome}; card detached`;
+
+  if (verifiedEmailFor(deps.db, userId) !== email.toLowerCase().trim()) {
+    deps.log?.(`billing: trial ${session.id} started but ${userId}'s verified address changed; not invited`);
+    return 'trial started, NOT invited: address no longer verified for this user';
+  }
+  inviteEmail(deps.db, email, 'stripe-trial', now);
+  return 'trial started, card detached, invited';
 }
 
 /** The subscription an invoice belongs to, in the dahlia shape. */
@@ -202,6 +248,10 @@ async function onSubscriptionChanged(deps: WebhookDeps, subscription: Stripe.Sub
 async function onCardUpdated(deps: WebhookDeps, customerId: string, paymentMethodId: string | null, now: Date) {
   const userId = userIdForCustomer(deps.db, customerId);
   if (userId === null) return 'ignored: unknown customer';
+  // Someone who never paid has nothing to retry. This is also what keeps a
+  // trial card, which attaches before the trial webhook detaches it, from ever
+  // being used to pay anything.
+  if (!hasBought(deps.db, userId)) return 'ignored: never bought, nothing to retry';
   const results: string[] = [];
 
   const today = paidDayOf(now);
@@ -269,6 +319,10 @@ export async function handleStripeEvent(deps: WebhookDeps, event: Stripe.Event):
     case 'payment_method.attached': {
       const pm = event.data.object;
       const customerId = idOf(pm.customer);
+      // No fingerprint check here: a buyer may later save the same physical card
+      // as a NEW payment method, and that one is theirs to use. The trial's own
+      // payment method is detached and can never attach again; the never-paid
+      // guard in onCardUpdated covers the moment before it is detached.
       result = customerId ? await onCardUpdated(deps, customerId, pm.id, now) : 'ignored: no customer';
       break;
     }

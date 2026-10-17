@@ -43,8 +43,9 @@ CREATE TABLE IF NOT EXISTS billing_customers (
  * retry after a card update gets a fresh key while a retry after an outage
  * reuses the old one (lib/billing/charge.ts).
  *
- * source: 'daily' (charged off-session at sign-in) or 'checkout' (day one, paid
- * in hosted Checkout before the desk opened).
+ * source: 'daily' (charged off-session at sign-in), 'checkout' (day one, paid
+ * in hosted Checkout before the desk opened) or 'trial' (a free trial day: never
+ * charged, amount 0; decline_code 'trial_day' once it counts).
  *
  * failed_at and grace_until are written ONCE, on the first PENDING -> FAILED
  * transition, and never moved by a retry that fails again; only a success
@@ -91,6 +92,28 @@ CREATE TABLE IF NOT EXISTS billing_plans (
 );
 
 CREATE INDEX IF NOT EXISTS idx_billing_plans_user ON billing_plans(user_id);
+
+/*
+ * THE FREE TRIAL, ONE ROW PER PERSON, AND THE CARD IS NOT HERE.
+ *
+ * His ruling, 2026-10-17: a card is required to START the two-day trial, "we
+ * will not charge when the trial ends, we do not store the information and it
+ * is only to prevent trial cheating". So the card is checked in Stripe Checkout
+ * (setup mode, no charge), its fingerprint is read, and the card is detached from
+ * the customer at once. Stripe's API reference: "Detachment is permanent and
+ * irreversible, once detached, a PaymentMethod can no longer be used for
+ * payments or re-attached to a Customer."
+ *
+ * Kept: the user, the card's fingerprint (Stripe's identifier for a card number,
+ * not the number) and when. UNIQUE on both, which is the whole rule: one trial
+ * per account and one per card, for every sign-in method.
+ */
+CREATE TABLE IF NOT EXISTS billing_trials (
+  user_id          INTEGER PRIMARY KEY REFERENCES users(id),
+  card_fingerprint TEXT    NOT NULL UNIQUE,
+  setup_intent_id  TEXT,
+  started_at       TEXT    NOT NULL
+);
 
 /*
  * Every Stripe event id we have acted on. Stripe redelivers; an event already

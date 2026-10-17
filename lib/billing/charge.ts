@@ -23,6 +23,7 @@ import {
   markIndeterminate,
   markNotCharged,
   markSucceeded,
+  openTrialDay,
   paidDayOf,
   pendingCharges,
   planCovers,
@@ -41,6 +42,8 @@ import {
 export type PaidDayOpening =
   | { kind: 'no_customer' }
   | { kind: 'plan' }
+  | { kind: 'trial' }
+  | { kind: 'buy_first' }
   | { kind: 'pending'; charge: ChargeRow; door: 'open' | LapsedDoor };
 
 export function openPaidDay(
@@ -52,6 +55,16 @@ export function openPaidDay(
   if (!customerIdFor(db, userId)) return { kind: 'no_customer' };
   const etDate = paidDayOf(now);
   if (planCovers(db, userId, etDate)) return { kind: 'plan' };
+  /*
+   * THE TRIAL NEVER BECOMES A CHARGE. A trial day writes a 'trial' row that the
+   * billing unit never sends to Stripe. When the free days are spent, a person
+   * who never bought gets the buy screen and no charge row, because the trial
+   * card was detached and there is nothing to charge (his ruling: "we will not
+   * charge when the trial ends").
+   */
+  const trial = openTrialDay(db, userId, etDate, now);
+  if (trial === 'trial') return { kind: 'trial' };
+  if (trial === 'trial_over') return { kind: 'buy_first' };
   const charge = ensurePendingCharge(db, userId, etDate, now);
   const door = isCardFailing(db, userId) ? lapsedDoor(env) : 'open';
   return { kind: 'pending', charge, door };
@@ -120,6 +133,11 @@ async function defaultPaymentMethod(
 
 /** One off-session charge for one PENDING row. */
 export async function chargeOne(deps: ChargeDeps, charge: ChargeRow): Promise<ChargeOutcome> {
+  // A second guard, after runChargePass's: whatever calls this, a trial day
+  // never reaches Stripe.
+  if (charge.source === 'trial' || charge.amountCents <= 0) {
+    throw new Error(`refusing to charge ${charge.source} row ${charge.id}`);
+  }
   const customerId = customerIdFor(deps.db, charge.userId);
   if (!customerId) return { kind: 'declined', code: 'no_customer', paymentIntentId: null };
   try {
@@ -182,6 +200,12 @@ export async function runChargePass(deps: ChargeDeps): Promise<PassSummary> {
     }
     if (!trading) {
       markNotCharged(deps.db, charge.id, 'not_a_trading_day', now());
+      summary.notCharged += 1;
+      continue;
+    }
+    // A trial day is counted and never charged.
+    if (charge.source === 'trial') {
+      markNotCharged(deps.db, charge.id, 'trial_day', now());
       summary.notCharged += 1;
       continue;
     }

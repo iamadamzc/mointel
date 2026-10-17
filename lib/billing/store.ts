@@ -9,11 +9,11 @@
 
 import { sessionExpiry } from '@/lib/auth/expiry';
 import type { IdentityDatabase } from '@/lib/auth/store';
-import { GRACE_MS, RULED_AMOUNT_CENTS, type PlanKey } from '@/lib/billing/config';
+import { GRACE_MS, RULED_AMOUNT_CENTS, TRIAL_TRADING_DAYS, type PlanKey } from '@/lib/billing/config';
 import { sessionEndUtc } from '@/lib/market/session';
 
 export type ChargeState = 'PENDING' | 'SUCCEEDED' | 'FAILED' | 'NOT_CHARGED';
-export type ChargeSource = 'daily' | 'checkout';
+export type ChargeSource = 'daily' | 'checkout' | 'trial';
 
 export interface ChargeRow {
   id: number;
@@ -455,6 +455,102 @@ export function billingStatus(db: IdentityDatabase, userId: number, now: Date = 
     .get(userId, at) as { endsAt: string } | undefined;
   if (plan) return { state: 'grace', endsAt: plan.endsAt };
   return { state: 'ok' };
+}
+
+// --------------------------------------------------------------------- trial
+
+/**
+ * Has this person ever bought? Any daily or Checkout charge row, IN ANY STATE,
+ * or a plan. Any state on purpose: a daily buyer who saved a card on a weekend
+ * (nothing charged) and was declined on the first trading day has bought, and
+ * their card update must retry. A trial alone is not buying: trial rows are
+ * source 'trial'. The trial is for people who never bought, and a card added by
+ * someone who never bought has nothing to retry.
+ */
+export function hasBought(db: IdentityDatabase, userId: number): boolean {
+  const charge = db
+    .prepare(
+      `SELECT 1 AS ok FROM billing_charges
+        WHERE user_id = ? AND source IN ('daily', 'checkout') LIMIT 1`,
+    )
+    .get(userId);
+  if (charge) return true;
+  return db.prepare('SELECT 1 AS ok FROM billing_plans WHERE user_id = ? LIMIT 1').get(userId) !== undefined;
+}
+
+export function hasTrial(db: IdentityDatabase, userId: number): boolean {
+  return db.prepare('SELECT 1 AS ok FROM billing_trials WHERE user_id = ?').get(userId) !== undefined;
+}
+
+export function isTrialFingerprint(db: IdentityDatabase, fingerprint: string): boolean {
+  return db.prepare('SELECT 1 AS ok FROM billing_trials WHERE card_fingerprint = ?').get(fingerprint) !== undefined;
+}
+
+/** May this person start a trial now? Never trialled and never paid. */
+export function canStartTrial(db: IdentityDatabase, userId: number): boolean {
+  return !hasTrial(db, userId) && !hasBought(db, userId);
+}
+
+export type TrialStart = 'started' | 'account_used' | 'card_used' | 'already_bought';
+
+/**
+ * Record a trial start, or say why not. One transaction, and the two UNIQUE
+ * columns are the rule, so two webhooks racing cannot both start one.
+ */
+export function recordTrial(
+  db: IdentityDatabase,
+  userId: number,
+  fingerprint: string,
+  setupIntentId: string | null,
+  now: Date = new Date(),
+): TrialStart {
+  const apply = db.transaction((): TrialStart => {
+    if (hasTrial(db, userId)) return 'account_used';
+    if (isTrialFingerprint(db, fingerprint)) return 'card_used';
+    if (hasBought(db, userId)) return 'already_bought';
+    db.prepare(
+      'INSERT INTO billing_trials (user_id, card_fingerprint, setup_intent_id, started_at) VALUES (?, ?, ?, ?)',
+    ).run(userId, fingerprint, setupIntentId, now.toISOString());
+    return 'started';
+  });
+  return apply();
+}
+
+/**
+ * Trial days already spent, not counting `etDate`: rows the billing unit
+ * counted as a trading day, plus rows it has not judged yet. A weekend or
+ * holiday row (decline_code 'not_a_trading_day') does not count.
+ */
+function trialDaysSpentBefore(db: IdentityDatabase, userId: number, etDate: string): number {
+  const row = db
+    .prepare(
+      `SELECT COUNT(*) AS n FROM billing_charges
+        WHERE user_id = ? AND source = 'trial' AND et_date <> ?
+          AND (state = 'PENDING' OR decline_code = 'trial_day')`,
+    )
+    .get(userId, etDate) as { n: number };
+  return row.n;
+}
+
+/**
+ * Is the paid day `etDate` a trial day? Yes if the person has a trial, has never
+ * paid and has free days left, or if it already is one (a second sign-in the
+ * same day). 'trial_over' when the free days are spent and nothing was bought.
+ */
+export function openTrialDay(
+  db: IdentityDatabase,
+  userId: number,
+  etDate: string,
+  now: Date = new Date(),
+): 'trial' | 'trial_over' | 'no_trial' {
+  if (!hasTrial(db, userId) || hasBought(db, userId)) return 'no_trial';
+  if (chargeFor(db, userId, etDate)?.source === 'trial') return 'trial';
+  if (trialDaysSpentBefore(db, userId, etDate) >= TRIAL_TRADING_DAYS) return 'trial_over';
+  db.prepare(
+    `INSERT OR IGNORE INTO billing_charges (user_id, et_date, state, source, amount_cents, created_at)
+     VALUES (?, ?, 'PENDING', 'trial', 0, ?)`,
+  ).run(userId, etDate, now.toISOString());
+  return 'trial';
 }
 
 // ---------------------------------------------------------- daily billing history

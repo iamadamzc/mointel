@@ -128,7 +128,15 @@ What the next paid day does after a lapsed hour, for a customer whose card is st
 - `charge_first`: the board waits for the charge. A decline shows the update-card screen, not the board. This is Integration's recommendation, and the default, so a typo never hands out free hours.
 - `one_hour`: the day starts the ordinary way, so a failing card gets one admitted hour each day.
 
-`openPaidDay` already returns which door applies. **What `charge_first` shows is not built yet.** The page has to hold the board until the charge row resolves, and the gate must not learn about payment. That piece is Web's and Design's surface, and it waits on his answer.
+`openPaidDay` already returns which door applies. **What `charge_first` shows is not built yet.** The page has to hold the board until the charge row resolves, and the gate must not learn about payment. That piece is Web's and Design's surface. His answer came 2026-10-17: `charge_first` is the rule.
+
+## The free trial (his ruling, 2026-10-17)
+
+A card is required to START a two-trading-day trial, and it is never charged.
+- `createTrialCheckoutSession`: hosted Checkout in setup mode, cards only, no charge. It is refused for an account that has trialled or has ever bought.
+- The webhook reads the card's fingerprint and **detaches the card at once**. Stripe: detachment "is permanent and irreversible"; a detached card "can no longer be used for payments or re-attached". Only then does it record the trial (one per account, one per card fingerprint) and invite (`invited_by 'stripe-trial'`).
+- `openPaidDay` returns `trial` on a free trading day. A weekend sign-in does not use up a day. When the free days are spent, a person who never bought gets `buy_first`: show the buy screen, not the board. No charge row is written. The billing unit never sends a trial row to Stripe, and `chargeOne` refuses one a second time.
+- Kept by us: user, card fingerprint, start time. Kept by Stripe: its own record of the detached card (brand, last 4, expiry, fingerprint), under its privacy policy. The trial words on the page must say only what is true of both.
 
 ## Still to wire (owners)
 

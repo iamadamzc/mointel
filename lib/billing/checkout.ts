@@ -18,7 +18,7 @@ import type Stripe from 'stripe';
 
 import type { IdentityDatabase } from '@/lib/auth/store';
 import { PRICE_LOOKUP_KEYS, RULED_AMOUNT_CENTS, type Purchase } from '@/lib/billing/config';
-import { customerIdFor, linkCustomer, paidDayOf, verifiedEmailFor } from '@/lib/billing/store';
+import { canStartTrial, customerIdFor, linkCustomer, paidDayOf, verifiedEmailFor } from '@/lib/billing/store';
 
 export interface CheckoutDeps {
   db: IdentityDatabase;
@@ -131,6 +131,44 @@ export async function createCheckoutSession(
   const session = await deps.stripe.checkout.sessions.create(params);
   if (!session.url) throw new Error('Stripe returned a Checkout Session with no url');
   return { id: session.id, url: session.url, mode: params.mode! };
+}
+
+export class TrialNotAvailableError extends Error {
+  constructor() {
+    super('this account has already had a trial or has already bought');
+  }
+}
+
+/**
+ * Start the free trial: a hosted Checkout in setup mode that checks a card and
+ * charges nothing. Cards only (no Link), because a card has the fingerprint that
+ * enforces one trial per card. The webhook reads the fingerprint and detaches the
+ * card at once (lib/billing/webhook.ts); the card is never made a default and is
+ * never charged.
+ */
+export async function createTrialCheckoutSession(
+  deps: CheckoutDeps,
+  userId: number,
+  urls: CheckoutUrls,
+): Promise<{ id: string; url: string }> {
+  const email = verifiedEmailFor(deps.db, userId);
+  if (!email) throw new NoVerifiedEmailError();
+  if (!canStartTrial(deps.db, userId)) throw new TrialNotAvailableError();
+  const customer = await ensureCustomer(deps, userId, email);
+  const metadata = { app: 'mointel', user_id: String(userId), email, purchase: 'trial' };
+  const session = await deps.stripe.checkout.sessions.create({
+    customer,
+    client_reference_id: String(userId),
+    success_url: urls.successUrl,
+    cancel_url: urls.cancelUrl,
+    mode: 'setup',
+    currency: 'usd',
+    payment_method_types: ['card'],
+    setup_intent_data: { metadata },
+    metadata,
+  });
+  if (!session.url) throw new Error('Stripe returned a Checkout Session with no url');
+  return { id: session.id, url: session.url };
 }
 
 /**
