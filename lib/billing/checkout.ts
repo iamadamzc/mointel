@@ -136,7 +136,7 @@ export async function createCheckoutSession(
 /**
  * The Stripe customer portal: cancel at period end, update the card, see
  * invoices. Its settings are the default configuration in the account
- * (sandbox: bpc_1URLCJAh2qhlsuTWyHrgzmbn). Null when the user has never bought.
+ * (sandbox acct_1URMIKB5yil73Emz: bpc_1URMJYB5yil73EmzXoR7ua09). Null when the user has never bought.
  */
 export async function createPortalSession(
   deps: Pick<CheckoutDeps, 'db' | 'stripe'>,

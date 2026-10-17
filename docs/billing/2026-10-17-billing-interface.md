@@ -1,7 +1,8 @@
 # Billing v1: what the branch holds, and what each owner wires
 
-*Billing-tmi, 2026-10-17 (UTC). Branch `billing/stripe-v1-on-d772ba25`, off production `d772ba25`. Built in the
-Stripe sandbox `acct_1URKyNAh2qhlsuTW` only. Nothing here is reachable: there is no route, no unit and no page, and
+*Billing-tmi, 2026-10-17 (UTC). Branch `billing/stripe-v1-on-d772ba25`, off production `d772ba25`. Built against
+the sandbox of the Andromeda Genius LLC account (`acct_1URMIKB5yil73Emz`; the first sandbox, `acct_1URKyNAh2qhlsuTW`,
+belonged to an account set up as an individual and is left as it is). Nothing here is reachable: there is no route, no unit and no page, and
 no live key works without `BILLING_LIVE_APPROVED=yes`.*
 
 ## What is built (library and tests only)
