@@ -16,6 +16,10 @@
  *   the buy screen, for a day they paid for).
  * - deskOnly: the desk's row says SUCCEEDED, but Stripe shows no succeeded
  *   PaymentIntent for it.
+ * - refunded: a succeeded PaymentIntent whose charge was refunded in full. It is
+ *   listed, so a refunded duplicate stays visible, but it no longer counts toward
+ *   doubleCharged or stripeOnly: the money is back (Integration's ruling, 43rd,
+ *   2026-10-17, after walkthrough part 2 kept flagging a refunded duplicate).
  *
  * Plans are not here: their charges are invoices, and Stripe's own records are
  * the source for them.
@@ -32,6 +36,8 @@ export interface ReconcileReport {
   doubleCharged: { userId: number; etDate: string; paymentIntentIds: string[] }[];
   stripeOnly: { userId: number; etDate: string; paymentIntentId: string }[];
   deskOnly: { userId: number; etDate: string; paymentIntentId: string | null }[];
+  /** Refunded in full: shown, never a mismatch on its own. */
+  refunded: { userId: number; etDate: string; paymentIntentId: string }[];
 }
 
 type IntentList = AsyncIterable<Stripe.PaymentIntent>;
@@ -51,15 +57,21 @@ export async function reconcileDailyCharges(
   since: Date,
 ): Promise<ReconcileReport> {
   const succeeded = new Map<string, { userId: number; etDate: string; ids: string[] }>();
+  const refunded: ReconcileReport['refunded'] = [];
   let checkedIntents = 0;
   for await (const pi of deps.stripe.paymentIntents.list({
     created: { gte: Math.floor(since.getTime() / 1000) },
     limit: 100,
+    expand: ['data.latest_charge'],
   })) {
     checkedIntents += 1;
     if (pi.status !== 'succeeded') continue;
     const key = dailyKey(pi);
     if (!key) continue;
+    if (refundedInFull(pi)) {
+      refunded.push({ ...key, paymentIntentId: pi.id });
+      continue;
+    }
     const k = `${key.userId}|${key.etDate}`;
     const entry = succeeded.get(k) ?? { ...key, ids: [] };
     entry.ids.push(pi.id);
@@ -82,6 +94,7 @@ export async function reconcileDailyCharges(
     doubleCharged: [],
     stripeOnly: [],
     deskOnly: [],
+    refunded,
   };
 
   for (const [k, entry] of succeeded) {
@@ -106,6 +119,16 @@ export async function reconcileDailyCharges(
     }
   }
   return report;
+}
+
+/**
+ * The PaymentIntent's charge was refunded in full. A partial refund still counts
+ * as a charge taken. The charge is expanded in the list call; an unexpanded id
+ * (a caller that did not expand) counts as not refunded, the conservative side.
+ */
+function refundedInFull(pi: Stripe.PaymentIntent): boolean {
+  const charge = pi.latest_charge;
+  return typeof charge === 'object' && charge !== null && charge.refunded === true;
 }
 
 /** True when the report has nothing a person needs to look at. */
