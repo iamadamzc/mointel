@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { inviteEmail } from '@/lib/auth/store';
 import { checkoutStatus } from '@/lib/billing/checkoutStatus';
-import { recordTrial, recordTrialRefusal } from '@/lib/billing/store';
+import { pruneTrialRefusals, recordTrial, recordTrialRefusal, trialRefusalFor } from '@/lib/billing/store';
 
 import { MON_10_ET, cleanupStores, temporaryStore, verifiedUser } from './helpers';
 
@@ -32,6 +32,33 @@ function session(userId: number, extra: Record<string, unknown> = {}) {
     ...extra,
   };
 }
+
+describe('refused-trial records', () => {
+  it('are deleted 30 days after the refusal, and not before', () => {
+    const db = temporaryStore();
+    const userId = verifiedUser(db);
+    const refusedAt = new Date('2026-10-17T12:00:00Z');
+    recordTrialRefusal(db, 'seti_old', userId, 'card_used', refusedAt);
+    recordTrialRefusal(db, 'seti_new', userId, 'account_used', new Date('2026-11-10T12:00:00Z'));
+
+    // 29 days 23 h later: still kept.
+    expect(pruneTrialRefusals(db, new Date('2026-11-16T11:00:00Z'))).toBe(0);
+    expect(trialRefusalFor(db, 'seti_old')).toBe('card_used');
+
+    // Just past 30 days: the old one goes, the newer one stays.
+    expect(pruneTrialRefusals(db, new Date('2026-11-16T12:00:01Z'))).toBe(1);
+    expect(trialRefusalFor(db, 'seti_old')).toBeNull();
+    expect(trialRefusalFor(db, 'seti_new')).toBe('account_used');
+  });
+
+  it('pruning never touches the trial card codes in billing_trials', () => {
+    const db = temporaryStore();
+    const userId = verifiedUser(db);
+    recordTrial(db, userId, 'fp_kept', 'seti_t', new Date('2026-01-01T00:00:00Z'));
+    pruneTrialRefusals(db, new Date('2027-01-01T00:00:00Z'));
+    expect(db.prepare('SELECT card_fingerprint AS fp FROM billing_trials').get()).toEqual({ fp: 'fp_kept' });
+  });
+});
 
 describe('checkoutStatus: what the page after Stripe shows', () => {
   it('paid, webhook not landed yet: recording (the "Reload" case); then complete once invited', async () => {

@@ -143,7 +143,12 @@ CREATE TABLE IF NOT EXISTS billing_trials (
 /*
  * A trial Checkout that was refused, keyed by its SetupIntent, so the page the
  * buyer returns to can say why ("that card has already had a trial"). The card
- * was detached either way. Kept forever with billing_trials.
+ * was detached either way, and its fingerprint is NOT kept here.
+ *
+ * DELETED 30 DAYS AFTER refused_at (Integration's ruling, 2026-10-17), by the
+ * billing unit's daily pass (pruneTrialRefusals): the same period as the
+ * email-link records, and nothing here is needed once the person has seen the
+ * page. Not his "forever", which was the trial card code in billing_trials.
  */
 CREATE TABLE IF NOT EXISTS billing_trial_refusals (
   setup_intent_id TEXT    PRIMARY KEY,

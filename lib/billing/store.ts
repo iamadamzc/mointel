@@ -642,6 +642,15 @@ export function recordTrialRefusal(
   ).run(setupIntentId, userId, reason, now.toISOString());
 }
 
+/** How long a refused-trial record is kept (Integration's ruling, 2026-10-17). */
+export const TRIAL_REFUSAL_KEEP_MS = 30 * 24 * 60 * 60 * 1000;
+
+/** Delete refused-trial records older than 30 days. Returns how many went. */
+export function pruneTrialRefusals(db: IdentityDatabase, now: Date = new Date()): number {
+  const cutoff = new Date(now.getTime() - TRIAL_REFUSAL_KEEP_MS).toISOString();
+  return db.prepare('DELETE FROM billing_trial_refusals WHERE refused_at < ?').run(cutoff).changes;
+}
+
 export function trialRefusalFor(db: IdentityDatabase, setupIntentId: string): TrialRefusal | null {
   const row = db
     .prepare('SELECT reason FROM billing_trial_refusals WHERE setup_intent_id = ?')

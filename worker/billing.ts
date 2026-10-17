@@ -16,6 +16,7 @@ import { loadTradingDays, tradingDayChecker } from '../lib/billing/calendar';
 import { fillTrialEnds, runChargePass } from '../lib/billing/charge';
 import { lapseExpiredPlans } from '../lib/billing/lapse';
 import { reconcileClean, reconcileDailyCharges } from '../lib/billing/reconcile';
+import { pruneTrialRefusals } from '../lib/billing/store';
 import { stripeFromEnv } from '../lib/billing/stripeClient';
 import { findAlpacaCredentials } from '../lib/market/credentials';
 import { AlpacaRestClient } from '../lib/market/alpaca/rest';
@@ -61,6 +62,8 @@ async function main() {
       if (reconciledOn !== todayUtc) {
         const report = await reconcileDailyCharges({ db, stripe }, new Date(Date.now() - 3 * 24 * 3600 * 1000));
         reconciledOn = todayUtc;
+        const pruned = pruneTrialRefusals(db);
+        if (pruned) log(`[billing] refused-trial records deleted (30 days): ${pruned}`);
         log(
           reconcileClean(report)
             ? `[billing] reconcile clean: ${report.checkedIntents} intents, ${report.checkedRows} rows`
