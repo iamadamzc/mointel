@@ -3,7 +3,12 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { isUserInvited } from '@/lib/auth/store';
 import { fillTrialEnds, openPaidDay, runChargePass, type ChargeDeps } from '@/lib/billing/charge';
-import { createTrialCheckoutSession, TrialNotAvailableError, type CheckoutDeps } from '@/lib/billing/checkout';
+import {
+  createTrialCheckoutSession,
+  TrialNotAvailableError,
+  TrialPaymentMethodsError,
+  type CheckoutDeps,
+} from '@/lib/billing/checkout';
 import { canStartTrial, linkCustomer, recordTrial, trialRefusalFor, trialState } from '@/lib/billing/store';
 import { handleStripeEvent, type WebhookDeps } from '@/lib/billing/webhook';
 
@@ -135,31 +140,67 @@ describe('starting the trial', () => {
     expect(again).toMatchObject({ result: 'trial refused: account_used; card detached' });
   });
 
-  it('opens a setup-mode, card-only Checkout that charges nothing', async () => {
+  it('opens a setup-mode, cards-only Checkout that charges nothing', async () => {
     const db = temporaryStore();
     const userId = verifiedUser(db);
-    const create = vi.fn(async () => ({ id: 'cs_t', url: 'https://checkout.stripe.com/c/cs_t' }));
-    const stripe = {
-      customers: { create: vi.fn(async () => ({ id: 'cus_new' })) },
-      prices: { list: vi.fn() },
-      checkout: { sessions: { create } },
-      billingPortal: { sessions: { create: vi.fn() } },
-    } as unknown as CheckoutDeps['stripe'];
-    await createTrialCheckoutSession({ db, stripe }, userId, {
-      successUrl: 'https://tmitrader.com/x?s={CHECKOUT_SESSION_ID}',
-      cancelUrl: 'https://tmitrader.com/pricing',
-    });
+    const { stripe, create } = trialStripe(cardsOnly);
+    await createTrialCheckoutSession({ db, stripe, env: TRIAL_ENV }, userId, URLS_T);
     const params = (create.mock.calls[0] as unknown as [Record<string, unknown>])[0];
     expect(params).toMatchObject({
       mode: 'setup',
-      payment_method_types: ['card'],
+      payment_method_configuration: 'pmc_trial',
       managed_payments: { enabled: false },
       metadata: { purchase: 'trial' },
     });
+    // Not payment_method_types: with it, Stripe shows Link next to the card.
+    expect(params.payment_method_types).toBeUndefined();
     expect(params.line_items).toBeUndefined();
     expect(params.payment_intent_data).toBeUndefined();
   });
+
+  /*
+   * THE TRIAL OFFERS CARDS ONLY (Integration's ruling, 43rd, 2026-10-17). A
+   * configuration that is unset, inactive, or offers Link or anything besides the
+   * card refuses the trial before a customer or a session is made.
+   */
+  it('refuses the trial unless the configuration offers exactly the card', async () => {
+    const cases: [string, Record<string, unknown> | null, Record<string, string | undefined>][] = [
+      ['unset', cardsOnly, {}],
+      ['Link on', { ...cardsOnly, link: on }, TRIAL_ENV],
+      ['a bank on', { ...cardsOnly, us_bank_account: on }, TRIAL_ENV],
+      ['card off', { ...cardsOnly, card: off }, TRIAL_ENV],
+      ['inactive', { ...cardsOnly, active: false }, TRIAL_ENV],
+    ];
+    for (const [label, configuration, env] of cases) {
+      const db = temporaryStore();
+      const userId = verifiedUser(db);
+      const { stripe, create } = trialStripe(configuration);
+      await expect(createTrialCheckoutSession({ db, stripe, env }, userId, URLS_T), label).rejects.toBeInstanceOf(
+        TrialPaymentMethodsError,
+      );
+      expect(create, label).not.toHaveBeenCalled();
+      expect(stripe.customers.create, label).not.toHaveBeenCalled();
+    }
+  });
 });
+
+const on = { display_preference: { value: 'on' } };
+const off = { display_preference: { value: 'off' } };
+const cardsOnly = { id: 'pmc_trial', active: true, card: on, link: off, apple_pay: off, us_bank_account: off };
+const TRIAL_ENV = { BILLING_TRIAL_PAYMENT_METHODS: 'pmc_trial' };
+const URLS_T = { successUrl: 'https://tmitrader.com/x?s={CHECKOUT_SESSION_ID}', cancelUrl: 'https://tmitrader.com/pricing' };
+
+function trialStripe(configuration: Record<string, unknown> | null) {
+  const create = vi.fn(async () => ({ id: 'cs_t', url: 'https://checkout.stripe.com/c/cs_t' }));
+  const stripe = {
+    customers: { create: vi.fn(async () => ({ id: 'cus_new' })) },
+    prices: { list: vi.fn() },
+    checkout: { sessions: { create } },
+    billingPortal: { sessions: { create: vi.fn() } },
+    paymentMethodConfigurations: { retrieve: vi.fn(async () => configuration) },
+  } as unknown as CheckoutDeps['stripe'];
+  return { stripe, create };
+}
 
 describe('the trial card is never charged', () => {
   const calendar = async () => (d: string) => TRADING.has(d);
