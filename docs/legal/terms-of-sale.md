@@ -142,5 +142,5 @@ your next paid day if you pay daily.
 
 ## 8. Who you are buying from
 
-Andromeda Genius LLC, of 5460 Babcock Rd, Suite 120 PMB 95234, San Antonio, TX
+TMI is developed and sold by Andromeda Genius LLC, of 5460 Babcock Rd, Suite 120 PMB 95234, San Antonio, TX
 78240, United States. You can reach a person at desk@tmitrader.com.
