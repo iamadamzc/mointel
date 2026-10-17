@@ -97,19 +97,36 @@ export function emailFlowPage(heading: string, body: string): string {
 }
 
 const back = `<a class="back" href="/signin">&larr; ${escapeHtml(W.backToSignIn)}</a>`;
-const messagePage = (heading: string, message: string, withBack = true) =>
-  emailFlowPage(heading, `<p>${escapeHtml(message)}</p>${withBack ? back : ''}`);
+const messagePage = (heading: string, message: string | null, withBack = true) =>
+  emailFlowPage(heading, `${message === null ? '' : `<p>${escapeHtml(message)}</p>`}${withBack ? back : ''}`);
 
 const page = (status: number, html: string): FlowResponse => ({ status, html, setCookies: [] });
 
 /** The send-failed page, for the route's own failures (not configured, unexpected). Same for any address. */
 export function sendFailedResponse(status: number): FlowResponse {
-  return page(status, messagePage(W.sendFailedHeading, W.sendFailedMessage));
+  return page(status, messagePage(W.sendFailedHeading, W.sendFailedBody));
 }
 
 /** The sign-in URL the email carries. */
 export function confirmUrl(origin: string, token: string): string {
   return `${origin.replace(/\/+$/, '')}/auth/email/confirm?t=${encodeURIComponent(token)}`;
+}
+
+/**
+ * The "check your email" screen. It echoes the address the person typed (so it
+ * is the same for a known and an unknown address apart from that echo), and
+ * offers "Send another link" (the same address, posted again, still subject to
+ * the limits) and "Use a different email".
+ */
+function sentPage(email: string): string {
+  const body = `<p>${escapeHtml(W.sentBody).replace('{email}', `<strong>${escapeHtml(email)}</strong>`)}</p>
+  <p>${escapeHtml(W.sentSpam)}</p>
+  <form method="post" action="/auth/start/email">
+    <input type="hidden" name="email" value="${escapeHtml(email)}">
+    <button type="submit">${escapeHtml(W.sendAnother)}</button>
+  </form>
+  <a class="back" href="/signin">${escapeHtml(W.differentEmail)}</a>`;
+  return emailFlowPage(W.sentHeading, body);
 }
 
 export interface StartDeps {
@@ -125,7 +142,7 @@ export interface StartDeps {
 export async function startEmailSignIn(deps: StartDeps): Promise<FlowResponse> {
   const log = deps.log ?? ((line: string) => console.log(line));
   const raw = deps.rawEmail ?? '';
-  if (!looksLikeEmail(raw)) return page(400, messagePage(W.badAddressHeading, W.badAddressMessage));
+  if (!looksLikeEmail(raw)) return page(400, messagePage(W.badAddress, null));
 
   const request = requestEmailLink(deps.db, { email: raw, ipHash: deps.ipHash, now: deps.now });
   if (request.kind === 'rate_limited') {
@@ -143,21 +160,23 @@ export async function startEmailSignIn(deps: StartDeps): Promise<FlowResponse> {
   if (!sent.ok) {
     // The reason is for the server log only; the page is the same for any address and any cause.
     log(`[auth/email] send failed: ${sent.reason}`);
-    return page(503, messagePage(W.sendFailedHeading, W.sendFailedMessage));
+    return page(503, messagePage(W.sendFailedHeading, W.sendFailedBody));
   }
-  return page(200, messagePage(W.sentHeading, W.sentMessage));
+  return page(200, sentPage(request.email));
 }
 
 function invalidPage(reason: string): FlowResponse {
-  const message = reason === 'superseded' ? W.supersededMessage : W.invalidMessage;
-  return page(400, messagePage(W.invalidHeading, message));
+  return reason === 'superseded'
+    ? page(400, messagePage(W.supersededHeading, W.supersededBody))
+    : page(400, messagePage(W.invalidHeading, W.invalidBody));
 }
 
 export function showConfirm(deps: { db: IdentityDatabase; token: string | null; now?: Date }): FlowResponse {
   if (!deps.token) return invalidPage('unknown');
   const state = peekEmailLink(deps.db, deps.token, deps.now);
   if (!state.ok) return invalidPage(state.reason);
-  const body = `<form method="post" action="/auth/email/confirm">
+  const body = `<p>${escapeHtml(W.confirmBody)}</p>
+  <form method="post" action="/auth/email/confirm">
     <input type="hidden" name="t" value="${escapeHtml(deps.token)}">
     <button type="submit">${escapeHtml(W.confirmButton)}</button>
   </form>
@@ -183,7 +202,7 @@ export function completeEmailSignIn(deps: {
   const resolved = resolveEmailSignIn(deps.db, state.email, now);
   if (!resolved.ok) {
     log('[auth/email] refused: more than one user holds this verified address');
-    return page(409, messagePage(W.ambiguousHeading, W.ambiguousMessage));
+    return page(409, messagePage(W.ambiguousHeading, W.ambiguousBody));
   }
 
   const expiry = sessionExpiry(now);

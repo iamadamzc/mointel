@@ -52,18 +52,19 @@ describe('email flow: requesting a link', () => {
     const { result, box } = await start(db, 'Someone@Example.com');
     expect(result.status).toBe(200);
     expect(box.sent).toHaveLength(1);
-    expect(box.sent[0]).toMatchObject({ from: 'signin@tmitrader.com', to: 'someone@example.com', replyTo: 'desk@tmitrader.com' });
+    expect(box.sent[0]).toMatchObject({ from: 'TMI <signin@tmitrader.com>', to: 'someone@example.com', replyTo: 'desk@tmitrader.com', subject: 'Your sign-in link for TMI' });
+    expect(box.sent[0].text.startsWith('Open this link, then press Sign in:')).toBe(true);
     expect(box.sent[0].text).toContain(`${ORIGIN}/auth/email/confirm?t=`);
   });
 
-  it('gives a known address and an unknown address byte-identical pages', async () => {
+  it('gives a known address and an unknown address identical pages apart from echoing the typed address', async () => {
     const db = temporaryStore();
     inviteEmail(db, 'known@example.com');
     linkIdentity(db, { provider: 'google', subject: 'g1', email: 'known@example.com', emailVerified: true });
     const known = (await start(db, 'known@example.com')).result;
     const unknown = (await start(db, 'nobody@example.com', outbox(), '198.51.100.2')).result;
     expect(unknown.status).toBe(known.status);
-    expect(unknown.html).toBe(known.html);
+    expect(unknown.html?.split('nobody@example.com').join('X')).toBe(known.html?.split('known@example.com').join('X'));
   });
 
   it('gives the same send-failed page for any address, and logs only the reason', async () => {
@@ -74,7 +75,8 @@ describe('email flow: requesting a link', () => {
     const b = await startEmailSignIn({ db, rawEmail: 'b@example.com', ipHash: hashIp('1.1.1.2', 'k'), origin: ORIGIN, send: failing.send, now: NOW, log: () => {} });
     expect(a.status).toBe(503);
     expect(a.html).toBe(b.html);
-    expect(a.html).toContain('We couldn’t send the email');
+    expect(a.html).toContain("We couldn&#39;t send the email.".replace('&#39;', "'"));
+    expect(a.html).toContain('Try again, or sign in with Google.');
     expect(lines).toEqual(['[auth/email] send failed: ses answered 500']);
   });
 
@@ -91,7 +93,8 @@ describe('email flow: requesting a link', () => {
     const { result, box } = await start(db, 'a@example.com');
     expect(result.status).toBe(429);
     expect(box.sent).toHaveLength(0);
-    expect(result.html).toContain('There have been too many link requests. You can ask again in 15 minutes.');
+    expect(result.html).toContain('There have been too many link requests.');
+    expect(result.html).toContain('You can ask again in 15 minutes.');
   });
 
   it('builds the confirm URL without a doubled slash', () => {
@@ -138,7 +141,8 @@ describe('email flow: the confirm page and the button', () => {
     await start(db, 'a@example.com');
     const result = showConfirm({ db, token: tokenFrom(first.box.sent[0]), now: NOW });
     expect(result.status).toBe(400);
-    expect(result.html).toContain('A newer link was sent to this address.');
+    expect(result.html).toContain('Use the newest link.');
+    expect(result.html).toContain('A newer sign-in link was sent to this address. Open the newest email and use that link.');
   });
 
   it('escapes the token in the form', () => {

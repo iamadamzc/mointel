@@ -1,67 +1,81 @@
 /**
  * EVERY WORD the email-link sign-in shows or sends, in one place.
  *
- * PLACEHOLDERS. The approved wording comes from Marketing's file
- * (docs/marketing/email-link-signin-words-2026-10-17.md) once Commercial has
- * passed it and he has approved it verbatim; it replaces these values in a
- * single later commit. Nothing ships with these placeholders: the release that
- * carries this feature waits on his verbatim yes.
+ * APPROVED VERBATIM: his yes (Integration chat, uuid 91dfe64b,
+ * 2026-10-17T03:54:19.866Z) to Marketing's docs/marketing/email-link-signin-words-2026-10-17.md
+ * at b227a882 (sections 2, 3 and 4 are these pages and the email; section 1,
+ * the sign-in page itself, is Web's) with Commercial's strings at 60caccb5.
  *
- * Two lines are already settled by Commercial read 152a and Marketing a163817c
- * and are marked SETTLED; the rest are PLACEHOLDER.
+ * DO NOT EDIT A STRING HERE WITHOUT A NEW YES. Where a page needs a heading and
+ * the approved text is two sentences, the split is at the full stop; no word
+ * changes.
  */
 
-export const EMAIL_LINK_SENDER = 'signin@tmitrader.com';
+export const EMAIL_LINK_SENDER = 'TMI <signin@tmitrader.com>';
 /** His support mailbox (his word 2026-10-17T02:05:50Z via Integration). */
 export const EMAIL_LINK_REPLY_TO = 'desk@tmitrader.com';
 
 export const EMAIL_LINK_WORDS = {
-  /** PLACEHOLDER */
-  emailSubject: 'Your TMI sign-in link',
-  /** PLACEHOLDER. {link} is replaced with the sign-in URL. */
-  emailText:
-    'Use this link to sign in to TMI. It works once and expires in 15 minutes.\n\n{link}\n\n' +
-    'If you did not ask for this, you can ignore this email.',
+  // Section 3: the email.
+  emailSubject: 'Your sign-in link for TMI',
+  /** {link} is replaced with the sign-in URL. */
+  emailText: [
+    'Open this link, then press Sign in:',
+    '',
+    '{link}',
+    '',
+    'It works once and expires in 15 minutes. If you ask for another link, only the newest one works.',
+    '',
+    "Don't forward it: anyone who opens it can sign in as you.",
+    '',
+    "If you didn't ask for this, ignore this email. Nothing happens unless you open the link and press Sign in.",
+    '',
+    'TMI, The Momentum Intelligence Trading Desk',
+    'Questions: desk@tmitrader.com',
+  ].join('\n'),
 
-  /** PLACEHOLDER: the page after a request is accepted. */
-  sentHeading: 'Check your email',
-  sentMessage: 'If that address can sign in, we have sent a link to it. The link works once and expires in 15 minutes.',
+  // Section 2: the "check your email" screen. {email} is replaced (escaped).
+  sentHeading: 'Check your email.',
+  sentBody: "If that address can sign in, we've sent a link to {email}. It works once and expires in 15 minutes. Only the newest link works.",
+  sentSpam: 'If it does not arrive, check your spam folder.',
+  sendAnother: 'Send another link',
+  differentEmail: 'Use a different email',
 
-  /** SETTLED (Marketing a163817c): the send call itself failed. Identical for any address. */
-  sendFailedHeading: 'We couldn’t send the email',
-  /** PLACEHOLDER */
-  sendFailedMessage: 'Give it a moment and try again.',
-
-  /** SETTLED (Commercial 152a, Marketing a163817c): N is 1. */
-  rateLimitedOne: 'There have been too many link requests. You can ask again in 1 minute.',
-  /** SETTLED (Commercial 152a, Marketing a163817c): N is 2 or more; {n} is replaced. */
-  rateLimitedMany: 'There have been too many link requests. You can ask again in {n} minutes.',
-  /** PLACEHOLDER */
-  rateLimitedHeading: 'Please wait a moment',
-
-  /** PLACEHOLDER: the one-button confirm page. */
+  // Section 4: the one-button page.
   confirmHeading: 'Sign in to TMI',
+  confirmBody: 'Press the button to finish signing in.',
   confirmButton: 'Sign in',
-  /** SETTLED (Marketing a163817c): under the button; the two links are added by the page. */
+  /** The two links are added by the page (read 152a). */
   confirmTerms: 'By signing in you agree to the terms and the privacy policy.',
 
-  /** PLACEHOLDER: a link that is unknown, expired or already used. */
-  invalidHeading: 'That sign-in link didn’t work',
-  invalidMessage: 'It may have expired or already been used. Ask for a new link from the sign-in screen.',
-  /** PLACEHOLDER: a link replaced by a newer one. */
-  supersededMessage: 'A newer link was sent to this address. Use the newest one, or ask for another.',
+  // Section 4: an older link.
+  supersededHeading: 'Use the newest link.',
+  supersededBody: 'A newer sign-in link was sent to this address. Open the newest email and use that link.',
 
-  /** PLACEHOLDER: two existing accounts share the address; never merged. */
-  ambiguousHeading: 'We need to sort out your account',
-  ambiguousMessage: 'More than one account uses this email address. Write to desk@tmitrader.com and we will fix it.',
-
-  /** PLACEHOLDER: the address did not look like one. */
-  badAddressHeading: 'Check the email address',
-  badAddressMessage: 'That doesn’t look like an email address. Go back and try again.',
+  // Section 4: an expired or used link (the email link's own page).
+  invalidHeading: 'That link has expired or was already used.',
+  invalidBody: 'Go back to sign in and ask for a new link.',
 
   backToSignIn: 'Back to sign in',
+
+  // Section 4: too many requests. Split at the full stop for the page heading.
+  rateLimitedHeading: 'There have been too many link requests.',
+  rateLimitedOne: 'You can ask again in 1 minute.',
+  rateLimitedMany: 'You can ask again in {n} minutes.',
+
+  // Section 4: an address that is not an address.
+  badAddress: 'Enter a valid email address.',
+
+  // Section 4: the send failed. Split at the full stop for the page heading.
+  sendFailedHeading: "We couldn't send the email.",
+  sendFailedBody: 'Try again, or sign in with Google.',
+
+  // Section 4: two accounts on one address.
+  ambiguousHeading: 'We need to sort out your account.',
+  ambiguousBody: "More than one account uses this address, so we can't sign you in yet. Email desk@tmitrader.com and we will sort it out with you.",
 } as const;
 
+/** The second sentence of the rate-limit line, by N (whole minutes, rounded up). */
 export function rateLimitedMessage(waitMinutes: number): string {
   return waitMinutes <= 1
     ? EMAIL_LINK_WORDS.rateLimitedOne

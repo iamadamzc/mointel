@@ -40,7 +40,7 @@ const COPY: Record<number, ErrorCopy> = {
   // refused, never merged. The words are the email-link flow's, one source.
   409: {
     heading: EMAIL_LINK_WORDS.ambiguousHeading,
-    message: EMAIL_LINK_WORDS.ambiguousMessage,
+    message: EMAIL_LINK_WORDS.ambiguousBody,
   },
 };
 
