@@ -53,6 +53,8 @@ Becomes: "A sign-in after 20:00 can run until 20:00 the next trading day, becaus
 Add after "Delete it. Ask, and we close the account and delete the record. This cannot be undone, and it ends your access.":
 "The exceptions are the card code from a free trial, Stripe's reference for the check, and the date, which we keep for the reason in section 2: otherwise the same card could start a second trial. Stripe keeps its own record of each charge under its own privacy policy." [ATTORNEY: whether the policy may keep these after a deletion request, and whether it must name a legal basis.]
 
+**Proposed addition, not yet shown to him (ninth tenure, 2026-10-17, from Billing's deletion runbook question):** our own record of each charge and plan is not named above, so as approved a deletion request would leave rows the policy says are deleted. Add to the exceptions sentence: "and the record of each charge, for the period in section 6." Until his accountant sets that period (the [RECORDS] bracket in section 6), the runbook keeps the charge and plan rows in full. Changing approved text needs his yes and the attorney's read. [ATTORNEY: the same question as above, for the charge record.]
+
 ## Section 8, where the service is, and who it is for
 
 Now: "**We do not offer it to the public anywhere.** Access is by invitation, which is how the scope above stays a fact rather than a sentence: we choose who is invited."
