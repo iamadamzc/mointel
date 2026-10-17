@@ -555,6 +555,26 @@ export function renewingPlanFor(db: IdentityDatabase, userId: number): PlanRow |
   return plansFor(db, userId).find((p) => p.status !== 'canceled' && !p.cancelAtPeriodEnd) ?? null;
 }
 
+/**
+ * Did the person's plan end because THEY cancelled it, with nothing bought
+ * since? Then the next sign-in is the buy screen, not a daily charge: cancelling
+ * is stopping (his "easy cancel"), and his approved buy-screen strings have a
+ * case for exactly this. A plan that lapsed after a failed renewal is different:
+ * it was never cancelled (cancel_at_period_end 0) and lapses to daily, his
+ * default.
+ */
+export function planEndedByCancel(db: IdentityDatabase, userId: number, etDate: string): boolean {
+  const latest = plansFor(db, userId)[0];
+  if (!latest || !latest.cancelAtPeriodEnd || latest.paidThroughEtDate >= etDate) return false;
+  const boughtSince = db
+    .prepare(
+      `SELECT 1 AS ok FROM billing_charges
+        WHERE user_id = ? AND source IN ('daily', 'checkout') AND et_date > ? LIMIT 1`,
+    )
+    .get(userId, latest.paidThroughEtDate);
+  return boughtSince === undefined;
+}
+
 export function setPlanCancelAtPeriodEnd(db: IdentityDatabase, subscriptionId: string, now: Date = new Date()): void {
   db.prepare(
     'UPDATE billing_plans SET cancel_at_period_end = 1, updated_at = ? WHERE stripe_subscription_id = ?',

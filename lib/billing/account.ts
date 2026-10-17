@@ -22,16 +22,19 @@ import {
   chargeFor,
   customerIdFor,
   hasCardOnFile,
+  hasTrial,
   isCardRemoved,
   lastLapsedGraceBefore,
   latestCharge,
   markCardRemoved,
   paidDayOf,
   planCovers,
+  planEndedByCancel,
   plansFor,
   renewingPlanFor,
   setPlanCancelAtPeriodEnd,
   trialState,
+  verifiedEmailFor,
   type ChargeSource,
   type ChargeState,
 } from '@/lib/billing/store';
@@ -47,6 +50,19 @@ import { sessionEndUtc } from '@/lib/market/session';
  *   update-card screen, not the board).
  */
 export type DeskDoor = 'ok' | 'trial' | 'buy_first' | 'charge_first';
+
+/**
+ * Which buy screen, when door is 'buy_first' (Marketing's four cases, his
+ * verbatim yes, 1b11c496). The rule lives here, not in the page.
+ * - trial_ended: the free trial ran out and nothing was bought.
+ * - plan_ended: they cancelled their plan and it ran to its end.
+ * - card_removed: a daily buyer removed their card.
+ * - no_access: never bought and never trialled. NOT produced by billingStateFor
+ *   today: such a person either is not invited (the gate refuses them before the
+ *   desk) or was invited by hand, which is a policy question for him. Kept in the
+ *   type so the page can be built for it.
+ */
+export type BuyCase = 'trial_ended' | 'plan_ended' | 'card_removed' | 'no_access';
 
 export interface DeskPlan {
   kind: PlanKey;
@@ -64,6 +80,12 @@ export interface DeskPlan {
 
 export interface DeskBillingState {
   door: DeskDoor;
+  /** Set only when door is 'buy_first'. */
+  buyCase: BuyCase | null;
+  /** A trial was ever taken on this account, running or ended. */
+  trialTaken: boolean;
+  /** The verified address purchases on this account are for ("You are signed in as {email}"). */
+  email: string | null;
   /**
    * The one-hour band, with what failed and how much, or null. declinedAgain:
    * a retry inside the same hour (after a card update) was declined too.
@@ -126,10 +148,12 @@ export function billingStateFor(
   const customer = customerIdFor(db, userId) !== null;
 
   let door: DeskDoor = 'ok';
+  let buyCase: BuyCase | null = null;
   if (customer && !planCovers(db, userId, today)) {
     if (trial.state === 'active') door = 'trial';
-    else if (trial.state === 'over') door = 'buy_first';
-    else if (isCardRemoved(db, userId)) door = 'buy_first';
+    else if (trial.state === 'over') [door, buyCase] = ['buy_first', 'trial_ended'];
+    else if (isCardRemoved(db, userId)) [door, buyCase] = ['buy_first', 'card_removed'];
+    else if (planEndedByCancel(db, userId, today)) [door, buyCase] = ['buy_first', 'plan_ended'];
     else {
       // The same rule openPaidDay uses: from the paid day AFTER the first failure.
       const paidToday = chargeFor(db, userId, today)?.state === 'SUCCEEDED';
@@ -141,6 +165,9 @@ export function billingStateFor(
 
   return {
     door,
+    buyCase,
+    trialTaken: hasTrial(db, userId),
+    email: verifiedEmailFor(db, userId),
     grace,
     endedAt: door === 'charge_first' ? lastLapsedGraceBefore(db, userId, now) : null,
     trial: trial.state === 'active' ? { endsAt: trial.endsAt } : null,

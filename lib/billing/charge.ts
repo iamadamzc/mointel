@@ -28,6 +28,7 @@ import {
   paidDayOf,
   pendingCharges,
   planCovers,
+  planEndedByCancel,
   previousEtDate,
   setTrialEnd,
   trialState,
@@ -78,6 +79,9 @@ export function openPaidDay(
   // The person removed their card: stopping, not a decline. The buy screen, and
   // no charge attempt, so no one-hour band either.
   if (isCardRemoved(db, userId)) return { kind: 'buy_first' };
+  // They cancelled their plan and it has run to its end: the buy screen, never an
+  // automatic daily charge.
+  if (planEndedByCancel(db, userId, etDate)) return { kind: 'buy_first' };
   const charge = ensurePendingCharge(db, userId, etDate, now);
   const door = cardFailedBeforeToday(db, userId, now) ? lapsedDoor(env) : 'open';
   return { kind: 'pending', charge, door };

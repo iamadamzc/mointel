@@ -57,6 +57,9 @@ describe('billingStateFor', () => {
     const userId = verifiedUser(db);
     expect(billingStateFor(db, userId, MON_10_ET)).toEqual({
       door: 'ok',
+      buyCase: null,
+      trialTaken: false,
+      email: 'buyer@example.com',
       grace: null,
       endedAt: null,
       trial: null,
@@ -183,7 +186,12 @@ describe('billingStateFor', () => {
     expect(billingStateFor(db, userId, MON_10_ET)).toMatchObject({ door: 'trial', trial: { endsAt: null }, cardOnFile: false });
     setTrialEnd(db, userId, new Date('2026-10-21T14:00:00Z'));
     expect(billingStateFor(db, userId, TUE_10_ET)).toMatchObject({ door: 'trial', trial: { endsAt: '2026-10-21T14:00:00.000Z' } });
-    expect(billingStateFor(db, userId, new Date('2026-10-21T14:00:00Z'))).toMatchObject({ door: 'buy_first', trial: null });
+    expect(billingStateFor(db, userId, new Date('2026-10-21T14:00:00Z'))).toMatchObject({
+      door: 'buy_first',
+      buyCase: 'trial_ended',
+      trialTaken: true,
+      trial: null,
+    });
   });
 
   it('a plan: name, price, paid-through, renews-on; the board even with a failing card', () => {
@@ -204,6 +212,43 @@ describe('billingStateFor', () => {
       renewsOn: '2026-11-19T14:00:00.000Z',
       endsOn: null,
     });
+  });
+});
+
+describe('a plan that ends', () => {
+  it('cancelled and run to its end: the buy screen, and never an automatic daily charge', async () => {
+    const db = temporaryStore();
+    const userId = buyer(db);
+    monthly(db, userId);
+    const stripe = { subscriptions: { update: vi.fn(async () => ({})) } } as unknown as Pick<Stripe, 'subscriptions'>;
+    await cancelAtPeriodEnd({ db, stripe, now: () => MON_10_ET }, userId);
+    // Still covered on its last paid day.
+    expect(billingStateFor(db, userId, new Date('2026-11-19T14:00:00Z')).door).toBe('ok');
+    // The day after: the buy screen, and sign-in writes no charge row.
+    const after = new Date('2026-11-20T15:00:00Z');
+    expect(billingStateFor(db, userId, after)).toMatchObject({ door: 'buy_first', buyCase: 'plan_ended' });
+    expect(openPaidDay(db, userId, after)).toEqual({ kind: 'buy_first' });
+    expect(chargeFor(db, userId, '2026-11-20')).toBeNull();
+  });
+
+  it('a renewal that lapsed (never cancelled) falls to daily, his default: an ordinary charge', () => {
+    const db = temporaryStore();
+    const userId = buyer(db);
+    monthly(db, userId);
+    const after = new Date('2026-11-20T15:00:00Z');
+    expect(billingStateFor(db, userId, after)).toMatchObject({ door: 'ok', buyCase: null });
+    expect(openPaidDay(db, userId, after)).toMatchObject({ kind: 'pending' });
+  });
+
+  it('after a cancelled plan ends, buying a day in Checkout puts them back on ordinary daily charging', async () => {
+    const db = temporaryStore();
+    const userId = buyer(db);
+    monthly(db, userId, { cancel: true });
+    db.prepare(
+      `INSERT INTO billing_charges (user_id, et_date, state, source, amount_cents, created_at, succeeded_at)
+       VALUES (?, '2026-11-20', 'SUCCEEDED', 'checkout', 550, ?, ?)`,
+    ).run(userId, '2026-11-20T15:00:00.000Z', '2026-11-20T15:00:00.000Z');
+    expect(openPaidDay(db, userId, new Date('2026-11-23T15:00:00Z'))).toMatchObject({ kind: 'pending', door: 'open' });
   });
 });
 
@@ -297,7 +342,13 @@ describe('removeDefaultCard', () => {
 
     expect(openPaidDay(db, userId, TUE_10_ET)).toEqual({ kind: 'buy_first' });
     expect(chargeFor(db, userId, '2026-10-20')).toBeNull();
-    expect(billingStateFor(db, userId, TUE_10_ET)).toMatchObject({ door: 'buy_first', cardOnFile: false, grace: null });
+    expect(billingStateFor(db, userId, TUE_10_ET)).toMatchObject({
+      door: 'buy_first',
+      buyCase: 'card_removed',
+      trialTaken: false,
+      cardOnFile: false,
+      grace: null,
+    });
   });
 
   it('is idempotent: with no default card left it reports no_card and detaches nothing', async () => {
