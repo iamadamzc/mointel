@@ -53,7 +53,8 @@ export default function PricingPage() {
           </Link>
           {/* Closed by default; a native disclosure, so it opens with no script. */}
           <details className="mt-5 border-t border-line pt-4">
-            <summary className="flex min-h-11 cursor-pointer items-center text-base font-medium text-ink-1">
+            {/* Keeps the browser's own disclosure triangle (display: list-item), so it reads as a toggle. */}
+            <summary className="cursor-pointer py-2.5 text-base font-medium text-ink-1">
               {PRICING_TRIAL.moreLabel}
             </summary>
             <p className="mt-3 text-base leading-relaxed text-ink-1">{PRICING_TRIAL.clock}</p>

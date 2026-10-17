@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 
 import { SiteFooter, SiteHeader } from '@/components/SiteChrome';
+import { SubmitOnceButton, SubmitOnceForm } from '@/components/SubmitOnce';
 import { SESSION_COOKIE } from '@/lib/auth/cookie';
 import { admissionForSession } from '@/lib/auth/requestGate';
 import { AGREE, CHECKOUT, PLANS, UNAVAILABLE } from '@/lib/public/purchaseCopy';
@@ -82,7 +83,7 @@ export default async function CheckoutPage({
             </dd>
           </dl>
 
-          <form method="post" action="/checkout/start" className="flex flex-col gap-5">
+          <SubmitOnceForm action="/checkout/start" className="flex flex-col gap-5">
             <input type="hidden" name="plan" value={PLAN_SLUGS[purchase]} />
 
             <div className="flex flex-col gap-1">
@@ -113,13 +114,10 @@ export default async function CheckoutPage({
               </p>
             ) : null}
 
-            <button
-              type="submit"
-              className="flex min-h-12 items-center justify-center rounded bg-ink px-6 text-base font-semibold text-desk md:h-12 md:text-[15px]"
-            >
+            <SubmitOnceButton className="flex min-h-12 items-center justify-center rounded bg-ink px-6 text-base font-semibold text-desk md:h-12 md:text-[15px]">
               {plan.pay}
-            </button>
-          </form>
+            </SubmitOnceButton>
+          </SubmitOnceForm>
         </div>
       </main>
 

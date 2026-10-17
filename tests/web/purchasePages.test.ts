@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import { createElement, type ReactElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -111,7 +111,8 @@ import TermsOfSalePage from '@/app/terms-of-sale/page';
 import TrialPage from '@/app/trial/page';
 import { POST as trialStart } from '@/app/trial/start/route';
 import WelcomePage from '@/app/welcome/page';
-import { PRICING_TRIAL } from '@/lib/public/purchaseCopy';
+import { SubmitOnceButton, SubmitPending, submitGate } from '@/components/SubmitOnce';
+import { PLANS, PRICING_TRIAL, TRIAL_START } from '@/lib/public/purchaseCopy';
 import { etEndTime, longEtDate, renewalEtDate } from '@/lib/public/purchaseFormat';
 import { purchaseOpen } from '@/lib/public/purchaseOpen';
 
@@ -229,6 +230,9 @@ describe('/pricing', () => {
     // Closed by default: no `open` attribute on the tag, in any attribute order.
     const tag = page.slice(details, page.indexOf('>', details) + 1);
     expect(tag).not.toMatch(/\sopen(=|\s|>)/);
+    // The browser's disclosure triangle shows only while the summary keeps display: list-item.
+    const summaryTag = /<summary[^>]*>/.exec(page.slice(details))?.[0] ?? '';
+    expect(summaryTag).not.toMatch(/class="[^"]*\b(flex|grid|block|inline-flex)\b/);
     // Every approved line sits inside the fold, after the label.
     const end = at('</details>');
     const folded = [
@@ -333,6 +337,53 @@ describe('POST /checkout/start', () => {
     vi.setSystemTime(new Date('2026-10-17T15:00:00Z')); // Sat 11:00 ET
     res = await checkoutStart(form({ plan: 'daily', agree: 'yes' }));
     expect(res.headers.get('location')).toBe('https://checkout.stripe.com/c/pay/cs_2');
+  });
+});
+
+/*
+ * The buy buttons post once (his "the button to actually buy does not react", Ops chat 38cd4446,
+ * uuid d8da7d02; Integration 43rd's ruling): a repeat click aborted Stripe's page load and made
+ * another Checkout Session. No new words: the busy button keeps its approved label.
+ */
+describe('the Stripe forms post once', () => {
+  const formTag = (page: string, action: string) =>
+    new RegExp(`<form[^>]*action="${action.replace(/\//g, '\\/')}"[^>]*>`).exec(page)?.[0] ?? '';
+
+  it('the gate lets the first submit through and stops every later one, until a reset', () => {
+    const gate = submitGate();
+    const events = [0, 1, 2].map(() => ({ preventDefault: vi.fn() }));
+    expect(events.map((e) => gate.submit(e))).toEqual([true, false, false]);
+    expect(events.map((e) => e.preventDefault.mock.calls.length)).toEqual([0, 1, 1]);
+    gate.reset();
+    const again = { preventDefault: vi.fn() };
+    expect(gate.submit(again)).toBe(true);
+    expect(again.preventDefault).not.toHaveBeenCalled();
+  });
+
+  it('/checkout and /trial: still a plain POST form, not busy, an enabled button with only its label', async () => {
+    const checkout = html(await CheckoutPage(params({ plan: 'monthly' })));
+    vi.setSystemTime(new Date('2026-10-15T14:00:00Z'));
+    const trial = html(await TrialPage(params({})));
+    for (const [page, action, label] of [
+      [checkout, '/checkout/start', PLANS.monthly.pay],
+      [trial, '/trial/start', TRIAL_START.button],
+    ] as const) {
+      const tag = formTag(page, action);
+      for (const attr of ['method="post"', 'aria-busy="false"']) expect(tag, action).toContain(attr);
+      const button = /<button[^>]*type="submit"[^>]*>([\s\S]*?)<\/button>/.exec(page.slice(page.indexOf(tag)));
+      expect(button?.[0], action).not.toMatch(/\sdisabled(=|\s|>)/);
+      expect(button?.[1], action).toBe(label);
+    }
+  });
+
+  it('busy: the button is disabled, shows a spinner hidden from readers, and keeps exactly its label', () => {
+    const busy = renderToStaticMarkup(
+      createElement(SubmitPending.Provider, { value: true }, createElement(SubmitOnceButton, { className: 'x' }, 'Pay $89 a month')),
+    );
+    const tag = /<button[^>]*>/.exec(busy)?.[0] ?? '';
+    expect(tag).toMatch(/\sdisabled(=|\s|>)/);
+    expect(busy).toContain('aria-hidden="true"');
+    expect(busy.replace(/<[^>]*>/g, '')).toBe('Pay $89 a month');
   });
 });
 

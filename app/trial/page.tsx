@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 
 import { SiteFooter, SiteHeader } from '@/components/SiteChrome';
+import { SubmitOnceButton, SubmitOnceForm } from '@/components/SubmitOnce';
 import { getIdentityDb } from '@/lib/auth/db';
 import { SESSION_COOKIE } from '@/lib/auth/cookie';
 import { admissionForSession } from '@/lib/auth/requestGate';
@@ -69,7 +70,7 @@ export default async function TrialPage({
             {trialEnd ? <p className="text-[17px] leading-relaxed text-ink-1">{TRIAL_START.underHeadline(trialEnd)}</p> : null}
           </div>
 
-          <form method="post" action="/trial/start" className="flex flex-col gap-5">
+          <SubmitOnceForm action="/trial/start" className="flex flex-col gap-5">
             <p className="text-sm leading-relaxed text-ink-1">{TRIAL_START.sentence}</p>
 
             <label className="flex items-start gap-3 text-sm leading-relaxed text-ink-1">
@@ -93,13 +94,10 @@ export default async function TrialPage({
               </p>
             ) : null}
 
-            <button
-              type="submit"
-              className="flex min-h-12 items-center justify-center rounded bg-ink px-6 text-base font-semibold text-desk md:h-12 md:text-[15px]"
-            >
+            <SubmitOnceButton className="flex min-h-12 items-center justify-center rounded bg-ink px-6 text-base font-semibold text-desk md:h-12 md:text-[15px]">
               {TRIAL_START.button}
-            </button>
-          </form>
+            </SubmitOnceButton>
+          </SubmitOnceForm>
         </div>
       </main>
 
