@@ -12,7 +12,7 @@ His answers, typed in this session (2026-10-17): to how long we remember a card 
 - **The trial is 48 hours from the moment it starts, and hours on a day the US market is closed do not count.** An hour counts only if it falls inside a paid day (8:00pm ET to 8:00pm ET) that ends on a market day. Example: a trial that starts on a Thursday at 10:00am ET counts 10 hours to Thursday 8:00pm and 24 more through Friday 8:00pm, which is 34; the weekend does not count; Sunday 8:00pm to Monday 10:00am adds 14. It ends **Monday at 10:00am ET.** A trial that starts on a Saturday does not begin to count until Sunday 8:00pm and ends on Tuesday at 8:00pm ET. The end time is known when the trial starts, so the screens show it.
 - **One confirmation for him:** is Monday 10:00am the right end for the Thursday example? That is my reading of "from session time +48 hours of trading days".
 - **A trial may be refused or ended for using more than one account: yes** (his typed answer, 2026-10-17). The sentence in section 9 stays as drafted. His attorney reads it with the rest.
-- **Still open, with Billing:** is a temporary hold on the card necessary for the check? He does not know and asked Billing. Until Billing answers, no sentence says anything about a bank statement, and the trial start screen waits on it (`[STATEMENT]`).
+- **Billing answered his question about a temporary hold** (relayed): possible, not necessary to promise away. Stripe's docs do not say whether a US bank shows it or for how long, and hosted Checkout has no setting to avoid the check. The sentence is now: "Your bank may show a small pending amount while the card is checked. It is not a charge, and we never take it." It is in the terms of sale section 9 and beside the card field. The wording needs his yes with the rest. The trial start screen no longer waits on a fact; it waits on his approval of the words and of the terms of sale changes.
 
 ## 1. Where his phrase had to bend
 
@@ -26,7 +26,7 @@ His three points, and what is literally true. I kept his meaning and changed the
 
 Two more places where the words stay careful:
 - **"Detached" is not "deleted".** Billing reports from Stripe's API reference (relayed by Integration; I did not open it): detaching a card from a customer is permanent, so the card can no longer be used for payments or be attached again; and Stripe keeps a record of the detached card (its brand, last four digits, expiry, country, type and the code) under Stripe's own privacy policy. Billing found no statement that detaching deletes that record. So no sentence says the card is deleted or that nobody keeps the card details. The sentences say we ask Stripe to remove the card from the account at once, so it can never be charged, and that Stripe keeps a record under its own policy.
-- **"No charge" and a bank statement.** Billing has not read whether the card check places a temporary hold or authorization on the card, and Stripe's retention period is unread too. Both are unknown, so no sentence says anything about a bank statement or about how long Stripe keeps its record. If the check does place a hold, one line has to say so before launch, because "no charge" is true and a pending amount is still something a person would call us about. Billing can find out with one real card of his own (his action). `[STATEMENT]`
+- **"No charge" and a bank statement.** Billing read Stripe's pages today (relayed; I did not open them): saving a card "is similar to a payment, but no charge is created", and it "may be necessary to ... check the card's validity with the customer's bank". Stripe's support answers, which are not documentation, say a $0 or rarely $1 validation that is "not always performed". Stripe's docs do not say whether a US bank shows it or for how long; the only page that addresses it is for a French card and says the temporary amount is reversed almost immediately. Billing found no setting in hosted Checkout that chooses $0 over $1 or turns the bank check off; the only way to skip it is our own card form, which puts Stripe's script on our pages, which Web's rule forbids. So it is possible that some banks show a small pending line, and nobody can say how long. The true sentence allows the possibility without promising it or a duration: **"Your bank may show a small pending amount while the card is checked. It is not a charge, and we never take it."** It is in the terms of sale and beside the card field. Only a real card at a real bank shows what one bank displays, and that is his action, never a seat's.
 
 ## 2. Terms of sale: the changes
 
@@ -45,7 +45,7 @@ This replaces the default I applied ("no free first day"). The terms of sale are
 
 You can try the desk free for 48 hours. The clock does not run on days the US market is closed. Each person can take the trial once, and each card can start a trial once.
 
-To start, you enter a card. We use it to check that it has not already been used for a trial. **We do not charge it, now or when the trial ends, and we never will.** As soon as it has been checked, we ask Stripe, our payment processor, to remove it from your account, so it cannot be charged. We do not see your card number and we do not keep your card. Stripe, which takes the card, keeps a record of it under Stripe's own privacy policy.
+To start, you enter a card. We use it to check that it has not already been used for a trial. **We do not charge it, now or when the trial ends, and we never will.** As soon as it has been checked, we ask Stripe, our payment processor, to remove it from your account, so it cannot be charged. We do not see your card number and we do not keep your card. Stripe, which takes the card, keeps a record of it under Stripe's own privacy policy. Your bank may show a small pending amount while the card is checked. It is not a charge, and we never take it.
 
 We keep one code that identifies the card, Stripe's reference number for the check, and the time the trial started, with your account. We use them only to stop the same card starting a second trial. We keep them for as long as we offer the free trial, including after you close your account, because otherwise the same card could start a second trial.
 
@@ -76,7 +76,7 @@ If the card cannot be checked, or has already been used for a trial, the trial d
 
 Legal text, with the box unticked. Marketing's page words surround them. Same position as the checkout sentences.
 
-"Free for 48 hours. The clock does not run on days the US market is closed. We use your card only to check that it has not been used for a trial before. We do not charge it, now or when the trial ends, and we do not keep it: we keep only a code that identifies it, so the same card cannot start a second trial. We ask Stripe to remove the card from your account at once, so it can never be charged. Stripe keeps a record of the card under its own privacy policy. When the trial ends, nothing is charged and your access ends. [STATEMENT]"
+"Free for 48 hours. The clock does not run on days the US market is closed. We use your card only to check that it has not been used for a trial before. We do not charge it, now or when the trial ends, and we do not keep it: we keep only a code that identifies it, so the same card cannot start a second trial. We ask Stripe to remove the card from your account at once, so it can never be charged. Stripe keeps a record of the card under its own privacy policy. When the trial ends, nothing is charged and your access ends. Your bank may show a small pending amount while the card is checked. It is not a charge, and we never take it."
 
 "I have read and agree to the [Terms of sale](/terms-of-sale) and the [Terms of service](/terms)."
 
@@ -100,10 +100,10 @@ I read them against these. They replace the earlier rule "no free trial", which 
 - Trial days count only on trading days.
 
 **Still unknown, and named as unknown in the words:**
-1. Whether the card check places a temporary authorization on the card. `[STATEMENT]`
-2. How long Stripe keeps its record of the card. (No sentence gives a period.)
+1. (Answered by Billing, today: possible, not promised; the sentence above.) How long a bank shows it is unknown and not claimed.
+2. How long Stripe keeps its record of the card: Billing read Stripe's privacy policy (section 5, all but the last 2,700 of 102,700 characters): no fixed period; Stripe keeps personal data while it provides services and after, for legal obligations, fraud prevention and tax. No sentence of ours gives a period; it says Stripe keeps a record under its own policy.
 3. (Answered by him: 48 hours from the start, counted only on market days. Billing builds the clock to the rule in the Answered section.)
-4. Whether the card is taken on Stripe's own page (a redirect), which keeps the privacy line that our pages load nothing from anyone else's servers true, or in an embedded form, which does not.
+4. (Answered by Billing: the card is taken on Stripe's own hosted page by redirect, on checkout.stripe.com; no card field is on our pages. The privacy line that our pages load nothing from anyone else's servers stays true.)
 
 ## 7. Order
 
