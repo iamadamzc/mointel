@@ -183,6 +183,39 @@ export function withDeadline<T>(promise: Promise<T>, ms: number, what: string): 
   return Promise.race([promise, late]).finally(() => clearTimeout(timer));
 }
 
+/**
+ * A logger that writes each distinct line at most once per `windowMs`, per
+ * process. marketDaysOrFallback runs on every sign-in and every desk billing
+ * read, and the desk polls; without a cap, a market.db with no calendar would
+ * log one line per poll (Ops, 2026-10-17). A line that changes (another cause,
+ * another date) is a new line and is written at once: the first occurrence of
+ * any line is never held back.
+ *
+ * BOUNDED: the causes carry error messages and dates, so the set of lines is
+ * open-ended. At most `maxLines` are remembered; past that, the oldest is
+ * forgotten, which can only let a line through again, never hold one back.
+ */
+export function capLog(
+  sink: (line: string) => void,
+  windowMs = 60 * 60 * 1000,
+  clock: () => number = Date.now,
+  maxLines = 64,
+): (line: string) => void {
+  const last = new Map<string, number>();
+  return (line) => {
+    const now = clock();
+    const at = last.get(line);
+    if (at !== undefined && now - at < windowMs) return;
+    last.delete(line);
+    last.set(line, now);
+    while (last.size > maxLines) last.delete(last.keys().next().value as string);
+    sink(line);
+  };
+}
+
+/** The paid-day log, capped: each distinct line at most once an hour per process. */
+const PAID_DAY_LOG = capLog((line) => console.error(line));
+
 /** Where the paid day's calendar can come from, tried in this order. */
 export interface CalendarSources {
   /** The worker's cached calendar (a local read), or null when there is none. */
@@ -212,7 +245,7 @@ const why = (error: unknown) => (error instanceof Error ? error.message : String
 export async function marketDaysOrFallback(
   now: Date,
   sources: CalendarSources,
-  log: (line: string) => void = (line) => console.error(line),
+  log: (line: string) => void = PAID_DAY_LOG,
   deadlineMs: number = CALENDAR_DEADLINE_MS,
 ): Promise<MarketDays> {
   const causes: string[] = [];
