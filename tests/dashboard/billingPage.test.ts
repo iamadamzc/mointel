@@ -9,7 +9,7 @@ import type { DeskBillingState, DeskPlan } from '@/lib/dashboard/billingView';
  */
 
 const base = (over: Partial<DeskBillingState> = {}): DeskBillingState => ({
-  door: 'ok', grace: null, trial: null, plan: null, cardOnFile: true, customer: true, latestCharge: null, endedAt: null, paidThroughAt: null, ...over,
+  door: 'ok', grace: null, trial: null, plan: null, cardOnFile: true, customer: true, latestCharge: null, endedAt: null, paidThroughAt: null, buyCase: null, trialTaken: false, email: null, ...over,
 });
 const plan = (over: Partial<DeskPlan> = {}): DeskPlan => ({
   kind: 'monthly', priceCents: 8900, status: 'active', paidThroughEtDate: '2026-11-16', currentPeriodEnd: '2026-11-17T01:00:00.000Z',
@@ -20,10 +20,10 @@ describe('the billing page', () => {
   it('a renewing plan: plan, price, paid through, renews; Cancel plan; NEVER Remove card (read 150)', () => {
     const v = billingPageView(base({ plan: plan() }), null);
     expect(v.rows).toEqual([
-      { label: 'Plan', value: W.planName.monthly },
+      { label: 'Plan', value: 'Monthly' },
       { label: 'Price', value: '$89 a month' },
-      { label: 'Paid through', value: 'Nov 16, 2026' },
-      { label: 'Renews', value: 'Nov 16, 2026, at the price then in force' },
+      { label: 'Paid through', value: 'November 16' },
+      { label: 'Renews', value: 'November 16, at the price then in force' },
     ]);
     expect(v.canCancel).toBe(true);
     expect(v.canRemoveCard).toBe(false);
@@ -33,7 +33,7 @@ describe('the billing page', () => {
   it('a cancelled plan: the ends line, no Cancel, and now Remove card with its line', () => {
     const v = billingPageView(base({ plan: plan({ cancelAtPeriodEnd: true, renewsOn: null, endsOn: '2026-11-17T01:00:00.000Z' }) }), null);
     // 01:00Z on Nov 17 is 8:00 PM ET: Eastern is on standard time (UTC-5) after Nov 1.
-    expect(v.rows.at(-1)).toEqual({ label: 'Renews', value: 'Ends Nov 16, 8:00 PM ET. It will not renew.' });
+    expect(v.rows.at(-1)).toEqual({ label: 'Renews', value: 'Ends 8:00pm ET on Monday, November 16. It will not renew.' });
     expect(v.canCancel).toBe(false);
     expect(v.canRemoveCard).toBe(true);
     expect(v.removeCardLine).toBe(W.removeCardLine);
@@ -44,7 +44,7 @@ describe('the billing page', () => {
     expect(v.rows).toEqual([
       { label: 'Plan', value: 'Daily' },
       { label: 'Price', value: '$5.50 a day' },
-      { label: 'Paid through', value: 'Oct 19, 8:00 PM ET' },
+      { label: 'Paid through', value: '8:00pm ET on Monday, October 19' },
       { label: 'Next charge', value: 'The next paid day you sign in on' },
     ]);
     expect(v.canRemoveCard).toBe(true);
@@ -66,7 +66,7 @@ describe('the billing history', () => {
   const day = (state: BilledDay['state']): BilledDay => ({ etDate: '2026-10-19', amountCents: 550, source: 'daily', state, chargedAt: '2026-10-19T00:05:00.000Z', receiptUrl: 'https://pay.stripe.com/receipts/x' });
 
   it('one row per charge, the receipt link on paid rows only', () => {
-    expect(historyRow(day('paid'))).toEqual({ date: 'Oct 19, 2026', amount: '$5.50', covers: 'One paid day', status: 'Paid', receiptUrl: 'https://pay.stripe.com/receipts/x' });
+    expect(historyRow(day('paid'))).toEqual({ date: 'October 19', amount: '$5.50', covers: 'One paid day', status: 'Paid', receiptUrl: 'https://pay.stripe.com/receipts/x' });
     for (const state of ['declined', 'pending', 'refunded'] as const) {
       expect(historyRow(day(state)).receiptUrl, state).toBeNull();
     }

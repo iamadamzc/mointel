@@ -10,13 +10,14 @@
  * The band never covers the board: it is one row under the header, and only the two screens replace the board, each
  * when the server says the day cannot open. Nothing here is reachable until the billing cut ships on his go.
  *
- * WORDS: Marketing's purchase-flow words (docs/marketing/purchase-flow-words-2026-10-17.md @ b227a882; his verbatim
- * yes pending on that file). Strings with no written words yet are PLACEHOLDER_ constants, for Marketing, then him.
+ * WORDS, HIS VERBATIM YES (Integration chat, uuid 3f2e06b4, 2026-10-17T03:11:47.893Z, "1, yes", to "the in-desk
+ * purchase screens" and "the desk lines"): Marketing's purchase-flow words (b227a882) and desk strings (1b11c496).
  */
 
 /**
  * THE STATE THE DESK READS: a MIRROR of Billing's DeskBillingState (lib/billing/account.ts on branch
- * billing/stripe-v1-on-d772ba25 at e369b538, which added grace.declinedAgain, endedAt and paidThroughAt at Design's ask). Billing
+ * billing/stripe-v1-on-d772ba25 at 9a12ebfe, which added grace.declinedAgain, endedAt, paidThroughAt, buyCase, trialTaken and
+ * email at Design's ask). Billing
  * owns this shape; replace the mirror with `import type { DeskBillingState } from '@/lib/billing/account'` when that
  * branch merges.
  */
@@ -51,6 +52,12 @@ export interface DeskBillingState {
   endedAt: string | null;
   /** The instant the current paid day ends (20:00 ET), only when today's DAILY charge succeeded; else null. */
   paidThroughAt: string | null;
+  /** Set only on buy_first: which buy screen. Billing's precedence: trial_ended, then card_removed, then plan_ended. */
+  buyCase: BuyCase | null;
+  /** A trial was ever taken on the account, running or ended: "Start free trial" only when false. */
+  trialTaken: boolean;
+  /** The verified address the account's purchases are for. */
+  email: string | null;
 }
 
 /** The desk's own memory between reads: the band saw a grace end with the charge succeeding. */
@@ -83,25 +90,30 @@ export const BILLING_WORDS = {
   contactAddress: 'desk@tmitrader.com',
 } as const;
 
-/** Strings with no written words yet (Integration asked Marketing, 2026-10-17). Never ship these as they are. */
-export const PLACEHOLDER_WORDS = {
-  trialChip: (time: string) => `PLACEHOLDER trial ends ${time}`,
-  buyHeadline: 'PLACEHOLDER buy screen headline',
-  buyLine: 'PLACEHOLDER buy screen line',
-  buyButton: 'PLACEHOLDER buy button',
-} as const;
-
-/**
- * Words from Marketing 1b11c496 as Integration relayed them (Commercial reads 155/155a), NOT YET HIS VERBATIM YES:
- * the checking line (shown ONLY on the charge_first door, never on an ordinary sign-in, which keeps terms of sale s2
- * true) and case D, a daily buyer who removed their card.
- */
-export const PENDING_WORDS = {
+/** Marketing desk strings 1b11c496, his verbatim yes: the trial chip, the buy screen (four cases), the checking screen. */
+export const DESK_WORDS = {
+  trialChip: (trialEnd: string) => `Free trial ends ${trialEnd}`,
+  trialHover: (trialEnd: string) => `Your free trial ends at ${trialEnd}. You will not be charged.`,
+  // A: the trial has ended and the person did not buy.
+  trialEndedHeadline: 'Your free trial has ended.',
+  trialEndedLine: 'You were not charged. We do not keep your card, only a code that identifies it. To keep using TMI, choose a day or a plan. You will enter a card again.',
+  // B: a plan that was cancelled and has run to its end.
+  planEndedHeadline: 'Your plan has ended.',
+  planEndedLine: 'To keep using TMI, choose a day or a plan.',
+  // D: a daily buyer who removed the card.
+  cardRemovedHeadline: 'Add a card to open the desk.',
+  cardRemovedLine: 'You removed your card, so nothing was charged today. A paid day costs $5.50. Add a card to continue. No refunds.',
+  // C: never bought and never took a trial.
+  noAccessHeadline: 'This account has no access yet.',
+  noAccessLine: (email: string) => `You are signed in as ${email}. Access is by purchase, and is tied to the email address you sign in with.`,
+  seePricing: 'See pricing',
+  startTrial: 'Start free trial',
+  addCard: 'Add card',
+  signOut: 'Sign out',
+  // The checking screen: ONLY on the charge_first door (terms of sale s2). No button.
   checkingDaily: "Checking today's payment...",
   checkingPlan: "Checking your plan's renewal...",
-  addCardHeadline: 'Add a card to open the desk.',
-  addCardButton: 'Add card',
-  signOut: 'Sign out',
+  checkingLine: 'The desk opens when the payment is confirmed.',
 } as const;
 
 const ET_CLOCK = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', hour12: false });
@@ -112,6 +124,17 @@ export function etTime(iso: string | null | undefined): string | null {
   const at = Date.parse(iso);
   if (!Number.isFinite(at)) return null;
   return `${ET_CLOCK.format(new Date(at)).replace(/^24:/, '00:')} ET`;
+}
+
+const TRIAL_PARTS = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'short', hour: 'numeric', minute: '2-digit', hour12: true });
+
+/** The chip's short form, "Mon 10:00am ET" (Marketing 1b11c496). */
+export function trialEndShort(iso: string | null | undefined): string | null {
+  if (!iso) return null;
+  const at = Date.parse(iso);
+  if (!Number.isFinite(at)) return null;
+  const parts = Object.fromEntries(TRIAL_PARTS.formatToParts(new Date(at)).map((p) => [p.type, p.value]));
+  return `${parts.weekday} ${parts.hour}:${parts.minute}${String(parts.dayPeriod).toLowerCase()} ET`;
 }
 
 export function dollars(cents: number | null | undefined): string | null {
@@ -132,15 +155,20 @@ export interface BandView {
 
 export interface BillingDeskView {
   /** What replaces the board, or 'board' when nothing does. */
-  screen: 'board' | 'card_required' | 'buy';
+  screen: 'board' | 'card_required' | 'buy' | 'checking';
   band: BandView | null;
   /** Prefix for document.title, e.g. "⚠ 52m · payment", or null. */
   titlePrefix: string | null;
-  trialChip: string | null;
-  card: { headline: string; lines: string[]; button: string; under: string; checking: string | null } | null;
-  /** The buy screen, or case D (a daily buyer with no card): the same layout, its own words and actions. */
-  buy: { variant: 'buy' | 'add_card'; headline: string; line: string | null; button: string; signOut: string | null } | null;
+  trialChip: { text: string; hover: string } | null;
+  card: { headline: string; lines: string[]; button: string; under: string } | null;
+  /** The checking screen (charge_first while the charge resolves): a headline and a line, no button. */
+  checking: { headline: string; line: string } | null;
+  /** The buy screen, four cases, one layout (Marketing 1b11c496 section 2). */
+  buy: { variant: BuyCase; headline: string; line: string; buttons: Array<{ action: BuyAction; label: string }> } | null;
 }
+
+export type BuyCase = 'trial_ended' | 'plan_ended' | 'no_access' | 'card_removed';
+export type BuyAction = 'pricing' | 'trial' | 'add_card' | 'sign_out';
 
 const WARN = String.fromCharCode(0x26a0);
 const DOT = String.fromCharCode(0x00b7);
@@ -155,7 +183,7 @@ function clock(seconds: number): string {
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
 }
 
-function cardScreen(kind: 'daily' | 'plan', amountCents: number | null, endedAt: string | null, resolving: boolean): BillingDeskView['card'] {
+function cardScreen(kind: 'daily' | 'plan', amountCents: number | null, endedAt: string | null): BillingDeskView['card'] {
   const amount = dollars(amountCents);
   const ended = etTime(endedAt);
   const lines = [
@@ -167,11 +195,43 @@ function cardScreen(kind: 'daily' | 'plan', amountCents: number | null, endedAt:
     lines,
     button: BILLING_WORDS.updateCard,
     under: BILLING_WORDS.cardUnderButton,
-    checking: resolving ? (kind === 'plan' ? PENDING_WORDS.checkingPlan : PENDING_WORDS.checkingDaily) : null,
   };
 }
 
-const NONE: BillingDeskView = { screen: 'board', band: null, titlePrefix: null, trialChip: null, card: null, buy: null };
+const NONE: BillingDeskView = { screen: 'board', band: null, titlePrefix: null, trialChip: null, card: null, checking: null, buy: null };
+
+/**
+ * Which buy-screen case (Marketing 1b11c496). Billing decides it (buyCase, set on buy_first); the desk only renders
+ * it. If a state ever arrives on buy_first without one, the desk reads the case that offers the least: a former
+ * customer as plan_ended (or card_removed with no card), anyone else as trial_ended, never no_access (which offers a
+ * trial).
+ */
+export function buyCase(state: DeskBillingState): BuyCase {
+  if (state.buyCase) return state.buyCase;
+  if (state.customer) return !state.cardOnFile && !state.plan ? 'card_removed' : 'plan_ended';
+  return 'trial_ended';
+}
+
+function buyScreen(state: DeskBillingState): NonNullable<BillingDeskView['buy']> {
+  const W = DESK_WORDS;
+  const signOut = { action: 'sign_out' as const, label: W.signOut };
+  const pricing = { action: 'pricing' as const, label: W.seePricing };
+  const variant = buyCase(state);
+  if (variant === 'card_removed') {
+    return { variant, headline: W.cardRemovedHeadline, line: W.cardRemovedLine, buttons: [{ action: 'add_card', label: W.addCard }, signOut] };
+  }
+  if (variant === 'plan_ended') return { variant, headline: W.planEndedHeadline, line: W.planEndedLine, buttons: [pricing, signOut] };
+  if (variant === 'no_access') {
+    return {
+      variant,
+      headline: W.noAccessHeadline,
+      line: W.noAccessLine(state.email ?? ''),
+      // "Start free trial" only when no trial was ever taken (read 153; Billing's trialTaken).
+      buttons: state.trialTaken ? [pricing, signOut] : [{ action: 'trial', label: W.startTrial }, pricing, signOut],
+    };
+  }
+  return { variant, headline: W.trialEndedHeadline, line: W.trialEndedLine, buttons: [pricing, signOut] };
+}
 
 export function billingDeskView(
   state: DeskBillingState | null | undefined,
@@ -181,27 +241,20 @@ export function billingDeskView(
   if (!state) return NONE;
 
   if (state.door === 'trial') {
-    const time = etTime(state.trial?.endsAt);
-    return { ...NONE, trialChip: time ? PLACEHOLDER_WORDS.trialChip(time) : null };
+    const end = trialEndShort(state.trial?.endsAt);
+    return { ...NONE, trialChip: end ? { text: DESK_WORDS.trialChip(end), hover: DESK_WORDS.trialHover(end) } : null };
   }
 
-  if (state.door === 'buy_first') {
-    // Case D: a daily buyer who removed their card (Integration 42nd, 2026-10-17).
-    if (state.customer && !state.cardOnFile && !state.plan) {
-      return {
-        ...NONE,
-        screen: 'buy',
-        buy: { variant: 'add_card', headline: PENDING_WORDS.addCardHeadline, line: null, button: PENDING_WORDS.addCardButton, signOut: PENDING_WORDS.signOut },
-      };
-    }
-    return { ...NONE, screen: 'buy', buy: { variant: 'buy', headline: PLACEHOLDER_WORDS.buyHeadline, line: PLACEHOLDER_WORDS.buyLine, button: PLACEHOLDER_WORDS.buyButton, signOut: null } };
-  }
+  if (state.door === 'buy_first') return { ...NONE, screen: 'buy', buy: buyScreen(state) };
 
   if (state.door === 'charge_first') {
     const kind = state.plan ? 'plan' : 'daily';
     const amount = state.latestCharge?.amountCents ?? state.grace?.amountCents ?? null;
-    const resolving = state.latestCharge?.state === 'PENDING';
-    return { ...NONE, screen: 'card_required', card: cardScreen(kind, amount, state.endedAt, resolving) };
+    // The checking screen shows only here, on charge_first, while that day's charge resolves (terms of sale s2).
+    if (state.latestCharge?.state === 'PENDING') {
+      return { ...NONE, screen: 'checking', checking: { headline: kind === 'plan' ? DESK_WORDS.checkingPlan : DESK_WORDS.checkingDaily, line: DESK_WORDS.checkingLine } };
+    }
+    return { ...NONE, screen: 'card_required', card: cardScreen(kind, amount, state.endedAt) };
   }
 
   // door 'ok': the board, with the band while a decline's hour runs.
@@ -216,7 +269,7 @@ export function billingDeskView(
 
   // The hour has run out on this page before the server's next read: the board is replaced, never left frozen.
   if (left === 0) {
-    return { ...NONE, screen: 'card_required', card: cardScreen(grace.kind, null, grace.endsAt, false) };
+    return { ...NONE, screen: 'card_required', card: cardScreen(grace.kind, null, grace.endsAt) };
   }
 
   const minutes = Math.ceil(left / 60);

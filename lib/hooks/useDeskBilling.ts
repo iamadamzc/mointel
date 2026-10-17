@@ -7,8 +7,9 @@ import { billingDeskView, nextMemory, notificationsDue, type BillingDeskView, ty
 import { useBillingClock, useBillingState } from '@/lib/hooks/useBillingState';
 import { useDeskMode } from '@/lib/hooks/useDeskMode';
 
-/** Web's pricing page, where buying happens (Integration's split). Web to confirm the path. */
-export const BUY_HREF = '/pricing';
+/** Web's pricing page and trial start page (Integration's split). Web to confirm both paths. */
+export const PRICING_HREF = '/pricing';
+export const TRIAL_START_HREF = '/trial';
 
 /** The green "payment received" band collapses after a minute (Marketing section 2). */
 const PAID_BAND_MS = 60_000;

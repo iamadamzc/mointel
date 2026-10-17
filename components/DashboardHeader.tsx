@@ -8,6 +8,7 @@ import { MarketStatus } from '@/components/MarketStatus';
 import { ResearchEngineStatus } from '@/components/ResearchEngineStatus';
 import { TrialChip } from '@/components/BillingScreens';
 import { BILLING_PAGE_WORDS } from '@/lib/dashboard/billingPageView';
+import type { BillingDeskView } from '@/lib/dashboard/billingView';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import type { AssessmentPanel } from '@/lib/desk/view';
 import type { DataSourceMeta } from '@/lib/data/types';
@@ -33,7 +34,7 @@ interface DashboardHeaderProps {
   failure: FeedFailure | null;
   onRefresh: () => void;
   /** The free trial's end (desk billing); null outside a trial. */
-  trialChip?: string | null;
+  trialChip?: BillingDeskView['trialChip'];
   /** Opens the desk's billing page; absent where billing does not apply (review mode, no billing state). */
   onOpenBilling?: () => void;
 }
@@ -104,7 +105,7 @@ export function DashboardHeader({
             discovery={discovery}
             mounted={mounted}
           />
-          <TrialChip text={trialChip} />
+          <TrialChip chip={trialChip} onOpen={onOpenBilling} />
           <ResearchEngineStatus health={researchHealth} mounted={mounted} />
           <DataFreshness meta={meta} now={now} mounted={mounted} failure={failure} />
           <button

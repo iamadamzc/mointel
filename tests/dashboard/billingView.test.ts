@@ -11,7 +11,7 @@ const END = '2026-10-19T11:43:00.000Z'; // 07:43 ET
 const at = (minutesBefore: number, seconds = 0) => Date.parse(END) - minutesBefore * 60_000 - seconds * 1000;
 /** Billing's DeskBillingState (mirror), with nothing set. */
 const base = (over: Partial<DeskBillingState> = {}): DeskBillingState => ({
-  door: 'ok', grace: null, trial: null, plan: null, cardOnFile: true, customer: true, latestCharge: null, endedAt: null, paidThroughAt: null, ...over,
+  door: 'ok', grace: null, trial: null, plan: null, cardOnFile: true, customer: true, latestCharge: null, endedAt: null, paidThroughAt: null, buyCase: null, trialTaken: false, email: null, ...over,
 });
 const charge = (state: NonNullable<DeskBillingState['latestCharge']>['state'], amountCents = 550) =>
   ({ etDate: '2026-10-19', state, source: 'daily' as const, amountCents });
@@ -95,50 +95,67 @@ describe('the band (Marketing section 2, verbatim)', () => {
 });
 
 describe('the screens that replace the board', () => {
-  it('charge_first: the update-your-card screen (section 3), with the amount and a checking line while the row resolves', () => {
-    const v = billingDeskView(base({ door: 'charge_first', latestCharge: charge('PENDING') }), at(30));
+  it('charge_first: the update-your-card screen (section 3), with the amount', () => {
+    const v = billingDeskView(base({ door: 'charge_first', latestCharge: charge('FAILED') }), at(30));
     expect(v.screen).toBe('card_required');
-    expect(v.card).toMatchObject({
+    expect(v.card).toEqual({
       headline: 'Update your card to open the desk.',
       lines: ["Today's payment of $5.50 didn't go through."],
       button: 'Update card',
       under: 'Your card is tried again as soon as you update it. No refunds.',
     });
-    // The checking line shows ONLY on the charge_first door (never an ordinary sign-in: terms of sale s2).
-    expect(v.card?.checking).toBe("Checking today's payment...");
     const planned = billingDeskView(base({ door: 'charge_first', plan: PLAN, latestCharge: { ...charge('FAILED', 8900), source: 'checkout' } }), at(30)).card!;
     expect(planned.lines).toEqual(["Your plan's renewal of $89 didn't go through."]);
-    expect(planned.checking).toBeNull();
-    // After the hour ran out (endedAt, asked of Billing): the ended line follows.
+    // After the hour ran out (Billing's endedAt): the ended line follows.
     expect(billingDeskView(base({ door: 'charge_first', latestCharge: charge('FAILED'), endedAt: END }), at(30)).card?.lines).toEqual([
       "Today's payment of $5.50 didn't go through.",
       "Your session ended at 07:43 ET because the payment didn't go through.",
     ]);
   });
 
-  it('buy_first: the buy screen (placeholder words until Marketing writes them)', () => {
-    const v = billingDeskView(base({ door: 'buy_first', customer: false, cardOnFile: false }), at(30));
-    expect(v.screen).toBe('buy');
-    expect(v.buy).toMatchObject({ variant: 'buy', signOut: null });
-    expect(v.buy?.headline).toMatch(/^PLACEHOLDER/);
+  it('the checking screen: ONLY on charge_first while the charge resolves (terms of sale s2), daily or plan words, no button', () => {
+    const daily = billingDeskView(base({ door: 'charge_first', latestCharge: charge('PENDING') }), at(30));
+    expect(daily.screen).toBe('checking');
+    expect(daily.checking).toEqual({ headline: "Checking today's payment...", line: 'The desk opens when the payment is confirmed.' });
+    expect(daily.card).toBeNull();
+    const plan = billingDeskView(base({ door: 'charge_first', plan: PLAN, latestCharge: { ...charge('PENDING', 8900), source: 'checkout' } }), at(30));
+    expect(plan.checking?.headline).toBe("Checking your plan's renewal...");
+    // Control: an ordinary open day with a PENDING charge never shows the checking screen.
+    expect(billingDeskView(base({ latestCharge: charge('PENDING') }), at(30)).screen).toBe('board');
   });
 
-  it('case D: a daily buyer who removed their card gets Add a card, with Sign out; a plan holder never does', () => {
-    const v = billingDeskView(base({ door: 'buy_first', customer: true, cardOnFile: false }), at(30));
-    expect(v.buy).toEqual({ variant: 'add_card', headline: 'Add a card to open the desk.', line: null, button: 'Add card', signOut: 'Sign out' });
-    expect(billingDeskView(base({ door: 'buy_first', customer: true, cardOnFile: false, plan: PLAN }), at(30)).buy?.variant).toBe('buy');
+  it('the buy screen, four cases (Marketing 1b11c496, his yes)', () => {
+    const view = (over: Partial<DeskBillingState>) => billingDeskView(base({ door: 'buy_first', ...over }), at(30)).buy!;
+    expect(view({ buyCase: 'trial_ended', customer: false, cardOnFile: false, trialTaken: true })).toEqual({
+      variant: 'trial_ended',
+      headline: 'Your free trial has ended.',
+      line: 'You were not charged. We do not keep your card, only a code that identifies it. To keep using TMI, choose a day or a plan. You will enter a card again.',
+      buttons: [{ action: 'pricing', label: 'See pricing' }, { action: 'sign_out', label: 'Sign out' }],
+    });
+    expect(view({ buyCase: 'plan_ended', customer: true, cardOnFile: true })).toMatchObject({ variant: 'plan_ended', headline: 'Your plan has ended.', line: 'To keep using TMI, choose a day or a plan.' });
+    expect(view({ buyCase: 'card_removed', customer: true, cardOnFile: false })).toEqual({
+      variant: 'card_removed',
+      headline: 'Add a card to open the desk.',
+      line: 'You removed your card, so nothing was charged today. A paid day costs $5.50. Add a card to continue. No refunds.',
+      buttons: [{ action: 'add_card', label: 'Add card' }, { action: 'sign_out', label: 'Sign out' }],
+    });
+    expect(view({ buyCase: 'no_access', customer: false, cardOnFile: false, trialTaken: false, email: 'a@b.co' })).toEqual({
+      variant: 'no_access',
+      headline: 'This account has no access yet.',
+      line: 'You are signed in as a@b.co. Access is by purchase, and is tied to the email address you sign in with.',
+      buttons: [{ action: 'trial', label: 'Start free trial' }, { action: 'pricing', label: 'See pricing' }, { action: 'sign_out', label: 'Sign out' }],
+    });
+    // Case C after a trial: no "Start free trial" (Billing's trialTaken).
+    expect(view({ buyCase: 'no_access', trialTaken: true, email: 'a@b.co' }).buttons.map((b) => b.action)).toEqual(['pricing', 'sign_out']);
+    // Billing decides the case; a state with none reads as the case that offers least, never no_access.
+    expect(view({ customer: false, cardOnFile: false }).variant).toBe('trial_ended');
+    expect(view({ buyCase: 'plan_ended', customer: false }).variant).toBe('plan_ended');
   });
 
-  it('the checking line names a plan renewal for a plan', () => {
-    expect(billingDeskView(base({ door: 'charge_first', plan: PLAN, latestCharge: { ...charge('PENDING', 8900), source: 'checkout' } }), at(30)).card?.checking).toBe(
-      "Checking your plan's renewal...",
-    );
-  });
-
-  it('trial: the board as normal plus the end chip', () => {
-    const v = billingDeskView(base({ door: 'trial', trial: { endsAt: END } }), at(30));
+  it('trial: the board as normal plus the chip, short form, with the hover sentence', () => {
+    const v = billingDeskView(base({ door: 'trial', trial: { endsAt: '2026-10-19T14:00:00.000Z' } }), at(30));
     expect(v.screen).toBe('board');
-    expect(v.trialChip).toContain('07:43 ET');
+    expect(v.trialChip).toEqual({ text: 'Free trial ends Mon 10:00am ET', hover: 'Your free trial ends at Mon 10:00am ET. You will not be charged.' });
     expect(billingDeskView(base({ door: 'trial', trial: { endsAt: null } }), at(30)).trialChip).toBeNull();
   });
 });

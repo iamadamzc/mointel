@@ -6,7 +6,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 
 import { BillingBand } from '@/components/BillingBand';
-import { BuyScreen, CardRequiredScreen, TrialChip } from '@/components/BillingScreens';
+import { BuyScreen, CardRequiredScreen, CheckingScreen, TrialChip } from '@/components/BillingScreens';
 import { billingDeskView, type DeskBillingState } from '@/lib/dashboard/billingView';
 
 /*
@@ -15,7 +15,7 @@ import { billingDeskView, type DeskBillingState } from '@/lib/dashboard/billingV
 
 const END = '2026-10-19T11:43:00.000Z';
 const base = (over: Partial<DeskBillingState> = {}): DeskBillingState => ({
-  door: 'ok', grace: null, trial: null, plan: null, cardOnFile: true, customer: true, latestCharge: null, endedAt: null, paidThroughAt: null, ...over,
+  door: 'ok', grace: null, trial: null, plan: null, cardOnFile: true, customer: true, latestCharge: null, endedAt: null, paidThroughAt: null, buyCase: null, trialTaken: false, email: null, ...over,
 });
 const noop = () => {};
 
@@ -41,26 +41,33 @@ describe('the screens that replace the board', () => {
     expect(html.match(/<button/g)?.length).toBe(1);
   });
 
-  it('while the charge row resolves the button is replaced by the checking line', () => {
+  it('the checking screen: headline and line, no button', () => {
     const view = billingDeskView(base({ door: 'charge_first', latestCharge: { etDate: '2026-10-19', state: 'PENDING', source: 'daily', amountCents: 550 } }), Date.parse(END));
-    const html = renderToStaticMarkup(createElement(CardRequiredScreen, { card: view.card!, onUpdateCard: noop }));
+    const html = renderToStaticMarkup(createElement(CheckingScreen, { checking: view.checking! }));
     expect(html).not.toContain('<button');
-    expect(html).toContain('role="status"');
+    expect(html).toContain('Checking today&#x27;s payment...');
+    expect(html).toContain('The desk opens when the payment is confirmed.');
   });
 
-  it('the buy screen links to the pricing page; the trial chip renders only with a time', () => {
-    const view = billingDeskView(base({ door: 'buy_first', customer: false }), Date.parse(END));
-    expect(renderToStaticMarkup(createElement(BuyScreen, { buy: view.buy!, buyHref: '/pricing', onAddCard: noop }))).toContain('href="/pricing"');
+  it('the buy screen: each case its own buttons; the trial chip renders only with a time', () => {
+    const a = billingDeskView(base({ door: 'buy_first', buyCase: 'trial_ended', customer: false, cardOnFile: false, trialTaken: true }), Date.parse(END));
+    const aHtml = renderToStaticMarkup(createElement(BuyScreen, { buy: a.buy!, pricingHref: '/pricing', trialHref: '/trial', onAddCard: noop }));
+    expect(aHtml).toContain('href="/pricing"');
+    expect(aHtml).not.toContain('href="/trial"');
+    const c = billingDeskView(base({ door: 'buy_first', buyCase: 'no_access', customer: false, cardOnFile: false, trialTaken: false, email: 'a@b.co' }), Date.parse(END));
+    expect(renderToStaticMarkup(createElement(BuyScreen, { buy: c.buy!, pricingHref: '/pricing', trialHref: '/trial', onAddCard: noop }))).toContain('href="/trial"');
     // Case D: a button that opens the card portal, and Sign out as a form POST.
-    const d = billingDeskView(base({ door: 'buy_first', customer: true, cardOnFile: false }), Date.parse(END));
-    const html = renderToStaticMarkup(createElement(BuyScreen, { buy: d.buy!, buyHref: '/pricing', onAddCard: noop }));
-    expect(html).toContain('data-billing-screen="add_card"');
+    const d = billingDeskView(base({ door: 'buy_first', buyCase: 'card_removed', customer: true, cardOnFile: false }), Date.parse(END));
+    const html = renderToStaticMarkup(createElement(BuyScreen, { buy: d.buy!, pricingHref: '/pricing', trialHref: '/trial', onAddCard: noop }));
+    expect(html).toContain('data-billing-screen="card_removed"');
     expect(html).toContain('>Add card</button>');
     expect(html).toMatch(/<form[^>]*action="\/auth\/signout"/);
     expect(html).toMatch(/<form[^>]*method="post"/);
     expect(html).not.toContain('href="/pricing"');
-    expect(renderToStaticMarkup(createElement(TrialChip, { text: null }))).toBe('');
-    expect(renderToStaticMarkup(createElement(TrialChip, { text: 'x' }))).toContain('data-billing-trial');
+    expect(renderToStaticMarkup(createElement(TrialChip, { chip: null }))).toBe('');
+    const chip = renderToStaticMarkup(createElement(TrialChip, { chip: { text: 'Free trial ends Mon 10:00am ET', hover: 'h' } }));
+    expect(chip).toContain('data-billing-trial');
+    expect(chip).toContain('>Free trial ends Mon 10:00am ET</button>');
   });
 });
 

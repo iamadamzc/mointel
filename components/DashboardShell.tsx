@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AssessmentSelector, AssessmentSnapshotBoard } from '@/components/AssessmentHistory';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { BillingBand } from '@/components/BillingBand';
-import { BuyScreen, CardRequiredScreen } from '@/components/BillingScreens';
+import { BuyScreen, CardRequiredScreen, CheckingScreen } from '@/components/BillingScreens';
 import { BillingPanel } from '@/components/BillingPanel';
 import { DeskEventFeed } from '@/components/DeskEventFeed';
 import { DiscoveryBoard } from '@/components/DiscoveryBoard';
@@ -48,7 +48,7 @@ import { chooseReportRange, reportTimeline } from '@/lib/dashboard/sessionReport
 import { editionIsRead, openOnLoad, reportMark, reportReadKey, tabTitle } from '@/lib/dashboard/reportNotice';
 import type { PriceRange } from '@/lib/dashboard/boardRange';
 import { useClock } from '@/lib/hooks/useClock';
-import { BUY_HREF, useDeskBilling } from '@/lib/hooks/useDeskBilling';
+import { PRICING_HREF, TRIAL_START_HREF, useDeskBilling } from '@/lib/hooks/useDeskBilling';
 import { useDashboard } from '@/lib/hooks/useDashboard';
 import { useFocus } from '@/lib/hooks/useFocus';
 import { useMarket } from '@/lib/hooks/useMarket';
@@ -516,8 +516,10 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
       {/* A billing screen replaces the whole board area; nothing that looks live stays on screen. */}
       {billing.view.screen === 'card_required' && billing.view.card ? (
         <CardRequiredScreen card={billing.view.card} onUpdateCard={billing.onUpdateCard} />
+      ) : billing.view.screen === 'checking' && billing.view.checking ? (
+        <CheckingScreen checking={billing.view.checking} />
       ) : billing.view.screen === 'buy' && billing.view.buy ? (
-        <BuyScreen buy={billing.view.buy} buyHref={BUY_HREF} onAddCard={billing.onUpdateCard} />
+        <BuyScreen buy={billing.view.buy} pricingHref={PRICING_HREF} trialHref={TRIAL_START_HREF} onAddCard={billing.onUpdateCard} />
       ) : (
       <>
       {/* Counts and filters are one control surface, so they are one line. */}

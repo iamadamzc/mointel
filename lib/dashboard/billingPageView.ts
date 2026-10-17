@@ -2,7 +2,9 @@
  * THE DESK'S BILLING PAGE AND BILLING HISTORY, AS PURE MAPPINGS (Integration 42nd's approved scope, 2026-10-17).
  *
  * Words: Marketing's purchase-flow words sections 4 and 5 (docs/marketing/purchase-flow-words-2026-10-17.md @
- * b227a882; his verbatim yes pending on that file). The plan and history shapes are Billing's (lib/billing/account.ts
+ * b227a882), HIS VERBATIM YES (Integration chat, uuid 3f2e06b4, 2026-10-17T03:11:47.893Z). Its variables fix the
+ * formats: {plan} "Daily" / "Monthly" / "Six months" / "Annual"; {endTime} "8:00pm ET on Friday, October 17";
+ * {date} "November 17". The plan and history shapes are Billing's (lib/billing/account.ts
  * DeskPlan, lib/billing/store.ts BilledDay), mirrored here until that branch merges.
  *
  * Read 150's rule is built in: there is no Remove card on a plan that still renews (a buyer who removed the card would
@@ -61,25 +63,35 @@ export const BILLING_PAGE_WORDS = {
   unreachable: 'If you cannot use this page, email desk@tmitrader.com and we will do it for you.',
 } as const;
 
-const ET_DAY = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', year: 'numeric' });
-const ET_STAMP = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true });
-const CALENDAR = new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', year: 'numeric' });
+const ET_PARTS = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'America/New_York',
+  weekday: 'long',
+  month: 'long',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+  hour12: true,
+});
+const ET_DATE = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'long', day: 'numeric' });
+const CALENDAR = new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', month: 'long', day: 'numeric' });
 
-/** "Oct 19, 8:00 PM ET" for an instant. */
+/** {endTime}: "8:00pm ET on Friday, October 17" for an instant (Marketing b227a882's variable). */
 export function etStamp(iso: string | null | undefined): string | null {
   if (!iso) return null;
   const at = Date.parse(iso);
-  return Number.isFinite(at) ? `${ET_STAMP.format(new Date(at))} ET` : null;
+  if (!Number.isFinite(at)) return null;
+  const p = Object.fromEntries(ET_PARTS.formatToParts(new Date(at)).map((part) => [part.type, part.value]));
+  return `${p.hour}:${p.minute}${String(p.dayPeriod).toLowerCase()} ET on ${p.weekday}, ${p.month} ${p.day}`;
 }
 
-/** "Oct 19, 2026" for an instant's ET day. */
+/** {date}: "November 17" for an instant's ET day. */
 export function etDay(iso: string | null | undefined): string | null {
   if (!iso) return null;
   const at = Date.parse(iso);
-  return Number.isFinite(at) ? ET_DAY.format(new Date(at)) : null;
+  return Number.isFinite(at) ? ET_DATE.format(new Date(at)) : null;
 }
 
-/** "Oct 19, 2026" for a calendar date "2026-10-19", read as written. */
+/** {date}: "November 16" for a calendar date "2026-11-16", read as written. */
 export function calendarDay(date: string | null | undefined): string | null {
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
   return CALENDAR.format(new Date(`${date}T12:00:00Z`));
