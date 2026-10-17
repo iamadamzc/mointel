@@ -348,6 +348,32 @@ describe('/welcome', () => {
     expect(page).toContain('Your payment has not been confirmed yet.');
     expect(page).toContain('You are signed in as buyer@example.com. Reload this page to check again.');
     expect(page).toContain('href="/welcome?session_id=cs_9"');
+    expect(page).toContain('Ask about your payment');
+    expect(page).toContain('href="mailto:desk@tmitrader.com?subject=Payment"');
+    expect(page).not.toContain('free trial');
+  });
+
+  it('a free trial not recorded yet, or with no end yet: the trial headline and link (his yes, 488c74b5 s3)', async () => {
+    for (const status of [
+      { state: 'recording', purchase: 'trial' },
+      { state: 'complete', purchase: 'trial' }, // trialState 'none' and no row without an end: no end yet
+    ]) {
+      state.status = status;
+      const page = html(await WelcomePage(params({ trial: '1', session_id: 'cs_t' })));
+      expect(page, status.state).toContain('Your free trial has not been confirmed yet.');
+      expect(page, status.state).toContain('You are signed in as buyer@example.com. Reload this page to check again.');
+      expect(page, status.state).toContain('Ask about your trial');
+      expect(page, status.state).toContain('href="mailto:desk@tmitrader.com?subject=Trial"');
+      expect(page, status.state).not.toContain('Your payment has not been confirmed yet.');
+      expect(page, status.state).not.toContain('Ask about your payment');
+    }
+  });
+
+  it('the trial screen follows Billing\'s record, not the URL: a paid purchase with ?trial=1 keeps the payment words', async () => {
+    state.status = { state: 'recording', purchase: 'monthly' };
+    const page = html(await WelcomePage(params({ trial: '1', session_id: 'cs_m' })));
+    expect(page).toContain('Your payment has not been confirmed yet.');
+    expect(page).not.toContain('Your free trial has not been confirmed yet.');
   });
 
   it('a Daily bought on a Saturday: the end is Billing\'s folded paid day (Monday 8:00pm ET), read with the market calendar', async () => {

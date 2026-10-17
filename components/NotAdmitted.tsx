@@ -63,14 +63,25 @@ export function NotAdmitted({
 }
 
 /**
- * Back from Stripe, paid, and the webhook has not admitted them yet (Billing's
- * checkoutStatus 'recording'). Rendered by /welcome, which a reload re-asks.
+ * Back from Stripe, and the webhook has not admitted them yet (Billing's checkoutStatus
+ * 'recording'), or a trial whose end is not known yet. Rendered by /welcome, which a
+ * reload re-asks. A free trial is not a payment, so it has its own headline and link.
  */
-export function PaymentPending({ email, reloadHref }: { email: string; reloadHref: `/welcome?${string}` }) {
+export function PaymentPending({
+  email,
+  reloadHref,
+  trial,
+}: {
+  email: string;
+  reloadHref: `/welcome?${string}`;
+  trial: boolean;
+}) {
   return (
     <RefusalShell>
       <div className="flex flex-col gap-3.5">
-        <h1 className="text-[28px] font-semibold leading-[1.15] tracking-tight md:text-[32px]">{REFUSAL.pending.headline}</h1>
+        <h1 className="text-[28px] font-semibold leading-[1.15] tracking-tight md:text-[32px]">
+          {trial ? REFUSAL.pending.trialHeadline : REFUSAL.pending.headline}
+        </h1>
         <p className="text-base leading-relaxed text-ink-2">{REFUSAL.pending.body(email)}</p>
       </div>
       <div className="flex flex-col gap-3">
@@ -82,8 +93,11 @@ export function PaymentPending({ email, reloadHref }: { email: string; reloadHre
           {REFUSAL.pending.reload}
         </a>
         <SignOutButton label={REFUSAL.pending.signOut} />
-        <a href="mailto:desk@tmitrader.com?subject=Payment" className="text-sm text-ink-1 underline hover:text-ink">
-          {REFUSAL.pending.ask}
+        <a
+          href={trial ? 'mailto:desk@tmitrader.com?subject=Trial' : 'mailto:desk@tmitrader.com?subject=Payment'}
+          className="text-sm text-ink-1 underline hover:text-ink"
+        >
+          {trial ? REFUSAL.pending.trialAsk : REFUSAL.pending.ask}
         </a>
       </div>
     </RefusalShell>

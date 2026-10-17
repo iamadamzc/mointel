@@ -83,10 +83,12 @@ export default async function WelcomePage({
   const query = new URLSearchParams();
   if (params.trial === '1') query.set('trial', '1');
   query.set('session_id', sessionId);
+  // From Billing's record of the session, never from the URL's ?trial=1.
+  const isTrial = status.purchase === 'trial';
   const pending = () => {
     const email = verifiedEmailFor(db, admission.userId);
     if (!email) redirect('/desk');
-    return <PaymentPending email={email} reloadHref={`/welcome?${query.toString()}`} />;
+    return <PaymentPending email={email} reloadHref={`/welcome?${query.toString()}`} trial={isTrial} />;
   };
   if (status.state === 'recording') return pending();
 
