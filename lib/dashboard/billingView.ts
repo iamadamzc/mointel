@@ -16,10 +16,9 @@
 
 /**
  * THE STATE THE DESK READS: a MIRROR of Billing's DeskBillingState (lib/billing/account.ts on branch
- * billing/stripe-v1-on-d772ba25, sent by Billing-tmi 2026-10-17, before its commit). Billing owns this shape; replace
- * the mirror with `import type { DeskBillingState } from '@/lib/billing/account'` when that branch merges.
- * `grace.declinedAgain` and `endedAt` are NOT in Billing's shape yet (asked 2026-10-17); absent, those two lines are
- * omitted.
+ * billing/stripe-v1-on-d772ba25 at e369b538, which added grace.declinedAgain, endedAt and paidThroughAt at Design's ask). Billing
+ * owns this shape; replace the mirror with `import type { DeskBillingState } from '@/lib/billing/account'` when that
+ * branch merges.
  */
 export type DeskDoor = 'ok' | 'trial' | 'buy_first' | 'charge_first';
 
@@ -36,7 +35,8 @@ export interface DeskPlan {
 
 export interface DeskBillingState {
   door: DeskDoor;
-  grace: { kind: 'daily' | 'plan'; endsAt: string; amountCents: number; declinedAgain?: boolean } | null;
+  /** The hour; endsAt never moves on a second decline (declinedAgain). */
+  grace: { kind: 'daily' | 'plan'; endsAt: string; amountCents: number; declinedAgain: boolean } | null;
   trial: { endsAt: string | null } | null;
   plan: DeskPlan | null;
   cardOnFile: boolean;
@@ -47,8 +47,10 @@ export interface DeskBillingState {
     source: 'daily' | 'checkout';
     amountCents: number;
   } | null;
-  /** Asked of Billing: when the previous session was ended by a lapsed hour (charge_first after the hour). */
-  endedAt?: string | null;
+  /** Set only on charge_first: when the most recent lapsed hour ended the session; null otherwise. */
+  endedAt: string | null;
+  /** The instant the current paid day ends (20:00 ET), only when today's DAILY charge succeeded; else null. */
+  paidThroughAt: string | null;
 }
 
 /** The desk's own memory between reads: the band saw a grace end with the charge succeeding. */
@@ -87,7 +89,19 @@ export const PLACEHOLDER_WORDS = {
   buyHeadline: 'PLACEHOLDER buy screen headline',
   buyLine: 'PLACEHOLDER buy screen line',
   buyButton: 'PLACEHOLDER buy button',
-  cardChecking: 'PLACEHOLDER checking the charge',
+} as const;
+
+/**
+ * Words from Marketing 1b11c496 as Integration relayed them (Commercial reads 155/155a), NOT YET HIS VERBATIM YES:
+ * the checking line (shown ONLY on the charge_first door, never on an ordinary sign-in, which keeps terms of sale s2
+ * true) and case D, a daily buyer who removed their card.
+ */
+export const PENDING_WORDS = {
+  checkingDaily: "Checking today's payment...",
+  checkingPlan: "Checking your plan's renewal...",
+  addCardHeadline: 'Add a card to open the desk.',
+  addCardButton: 'Add card',
+  signOut: 'Sign out',
 } as const;
 
 const ET_CLOCK = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', hour12: false });
@@ -124,7 +138,8 @@ export interface BillingDeskView {
   titlePrefix: string | null;
   trialChip: string | null;
   card: { headline: string; lines: string[]; button: string; under: string; checking: string | null } | null;
-  buy: { headline: string; line: string; button: string } | null;
+  /** The buy screen, or case D (a daily buyer with no card): the same layout, its own words and actions. */
+  buy: { variant: 'buy' | 'add_card'; headline: string; line: string | null; button: string; signOut: string | null } | null;
 }
 
 const WARN = String.fromCharCode(0x26a0);
@@ -152,7 +167,7 @@ function cardScreen(kind: 'daily' | 'plan', amountCents: number | null, endedAt:
     lines,
     button: BILLING_WORDS.updateCard,
     under: BILLING_WORDS.cardUnderButton,
-    checking: resolving ? PLACEHOLDER_WORDS.cardChecking : null,
+    checking: resolving ? (kind === 'plan' ? PENDING_WORDS.checkingPlan : PENDING_WORDS.checkingDaily) : null,
   };
 }
 
@@ -171,14 +186,22 @@ export function billingDeskView(
   }
 
   if (state.door === 'buy_first') {
-    return { ...NONE, screen: 'buy', buy: { headline: PLACEHOLDER_WORDS.buyHeadline, line: PLACEHOLDER_WORDS.buyLine, button: PLACEHOLDER_WORDS.buyButton } };
+    // Case D: a daily buyer who removed their card (Integration 42nd, 2026-10-17).
+    if (state.customer && !state.cardOnFile && !state.plan) {
+      return {
+        ...NONE,
+        screen: 'buy',
+        buy: { variant: 'add_card', headline: PENDING_WORDS.addCardHeadline, line: null, button: PENDING_WORDS.addCardButton, signOut: PENDING_WORDS.signOut },
+      };
+    }
+    return { ...NONE, screen: 'buy', buy: { variant: 'buy', headline: PLACEHOLDER_WORDS.buyHeadline, line: PLACEHOLDER_WORDS.buyLine, button: PLACEHOLDER_WORDS.buyButton, signOut: null } };
   }
 
   if (state.door === 'charge_first') {
     const kind = state.plan ? 'plan' : 'daily';
     const amount = state.latestCharge?.amountCents ?? state.grace?.amountCents ?? null;
     const resolving = state.latestCharge?.state === 'PENDING';
-    return { ...NONE, screen: 'card_required', card: cardScreen(kind, amount, state.endedAt ?? null, resolving) };
+    return { ...NONE, screen: 'card_required', card: cardScreen(kind, amount, state.endedAt, resolving) };
   }
 
   // door 'ok': the board, with the band while a decline's hour runs.

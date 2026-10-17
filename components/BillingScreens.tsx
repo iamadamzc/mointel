@@ -42,19 +42,42 @@ export function CardRequiredScreen({ card, onUpdateCard }: { card: NonNullable<B
   );
 }
 
-export function BuyScreen({ buy, buyHref }: { buy: NonNullable<BillingDeskView['buy']>; buyHref: string }) {
+const PRIMARY =
+  'mt-5 inline-block rounded-sm border border-accent/50 bg-accent/15 px-4 py-2 text-[12px] font-semibold tracking-wide text-accent uppercase hover:bg-accent/25';
+
+export function BuyScreen({
+  buy,
+  buyHref,
+  onAddCard,
+}: {
+  buy: NonNullable<BillingDeskView['buy']>;
+  buyHref: string;
+  onAddCard: () => void;
+}) {
   return (
-    <main className="flex min-h-0 flex-1 items-center justify-center bg-desk px-6" data-billing-screen="buy">
+    <main className="flex min-h-0 flex-1 items-center justify-center bg-desk px-6" data-billing-screen={buy.variant}>
       <div className="max-w-md text-center">
         <h2 className="text-[17px] font-semibold text-ink">{buy.headline}</h2>
-        <p className="mt-2 text-[13px] leading-relaxed text-ink-2">{buy.line}</p>
-        {/* A plain link to Web's pricing page: buying happens there (Integration's split). */}
-        <a
-          href={buyHref}
-          className="mt-5 inline-block rounded-sm border border-accent/50 bg-accent/15 px-4 py-2 text-[12px] font-semibold tracking-wide text-accent uppercase hover:bg-accent/25"
-        >
-          {buy.button}
-        </a>
+        {buy.line ? <p className="mt-2 text-[13px] leading-relaxed text-ink-2">{buy.line}</p> : null}
+        {buy.variant === 'add_card' ? (
+          // Case D: the card is added through the same portal Update card opens.
+          <button type="button" onClick={onAddCard} className={PRIMARY}>
+            {buy.button}
+          </button>
+        ) : (
+          // A plain link to Web's pricing page: buying happens there (Integration's split).
+          <a href={buyHref} className={PRIMARY}>
+            {buy.button}
+          </a>
+        )}
+        {buy.signOut ? (
+          // A form POST, as on the refusal screen: /auth/signout is a POST so a cross-site request cannot sign anyone out.
+          <form method="post" action="/auth/signout" className="mt-3">
+            <button type="submit" className="text-[12px] text-ink-2 hover:text-ink">
+              {buy.signOut}
+            </button>
+          </form>
+        ) : null}
       </div>
     </main>
   );

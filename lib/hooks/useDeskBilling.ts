@@ -18,7 +18,12 @@ const PAID_BAND_MS = 60_000;
  * OS notifications. Notifications are shown ONLY when the browser's permission is already "granted": the desk never
  * asks for permission because of a failure (Design's band design, section 3).
  */
-export function useDeskBilling(): { view: BillingDeskView; onUpdateCard: () => void } {
+export function useDeskBilling(): {
+  view: BillingDeskView;
+  state: DeskBillingState | null;
+  refresh: () => void;
+  onUpdateCard: () => void;
+} {
   const { apiBase } = useDeskMode();
   const { state, refresh } = useBillingState();
   const [memory, setMemory] = useState<BillingMemory>({ justPaid: null });
@@ -64,5 +69,5 @@ export function useDeskBilling(): { view: BillingDeskView; onUpdateCard: () => v
       .finally(refresh);
   }, [apiBase, refresh]);
 
-  return { view, onUpdateCard };
+  return { view, state, refresh, onUpdateCard };
 }

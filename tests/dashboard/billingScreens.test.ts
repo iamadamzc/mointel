@@ -15,13 +15,13 @@ import { billingDeskView, type DeskBillingState } from '@/lib/dashboard/billingV
 
 const END = '2026-10-19T11:43:00.000Z';
 const base = (over: Partial<DeskBillingState> = {}): DeskBillingState => ({
-  door: 'ok', grace: null, trial: null, plan: null, cardOnFile: true, customer: true, latestCharge: null, ...over,
+  door: 'ok', grace: null, trial: null, plan: null, cardOnFile: true, customer: true, latestCharge: null, endedAt: null, paidThroughAt: null, ...over,
 });
 const noop = () => {};
 
 describe('the band', () => {
   it('one row with the words and one button; nothing when there is no band', () => {
-    const view = billingDeskView(base({ grace: { kind: 'daily', endsAt: END, amountCents: 550 }, latestCharge: { etDate: '2026-10-19', state: 'FAILED', source: 'daily', amountCents: 550 } }), Date.parse(END) - 52 * 60_000);
+    const view = billingDeskView(base({ grace: { kind: 'daily', endsAt: END, amountCents: 550, declinedAgain: false }, latestCharge: { etDate: '2026-10-19', state: 'FAILED', source: 'daily', amountCents: 550 } }), Date.parse(END) - 52 * 60_000);
     const html = renderToStaticMarkup(createElement(BillingBand, { band: view.band, onUpdateCard: noop }));
     expect(html).toContain('data-billing-band="amber"');
     expect(html).toContain("Today&#x27;s payment didn&#x27;t go through. Your session ends at 07:43 ET, 52 min left.");
@@ -50,7 +50,15 @@ describe('the screens that replace the board', () => {
 
   it('the buy screen links to the pricing page; the trial chip renders only with a time', () => {
     const view = billingDeskView(base({ door: 'buy_first', customer: false }), Date.parse(END));
-    expect(renderToStaticMarkup(createElement(BuyScreen, { buy: view.buy!, buyHref: '/pricing' }))).toContain('href="/pricing"');
+    expect(renderToStaticMarkup(createElement(BuyScreen, { buy: view.buy!, buyHref: '/pricing', onAddCard: noop }))).toContain('href="/pricing"');
+    // Case D: a button that opens the card portal, and Sign out as a form POST.
+    const d = billingDeskView(base({ door: 'buy_first', customer: true, cardOnFile: false }), Date.parse(END));
+    const html = renderToStaticMarkup(createElement(BuyScreen, { buy: d.buy!, buyHref: '/pricing', onAddCard: noop }));
+    expect(html).toContain('data-billing-screen="add_card"');
+    expect(html).toContain('>Add card</button>');
+    expect(html).toMatch(/<form[^>]*action="\/auth\/signout"/);
+    expect(html).toMatch(/<form[^>]*method="post"/);
+    expect(html).not.toContain('href="/pricing"');
     expect(renderToStaticMarkup(createElement(TrialChip, { text: null }))).toBe('');
     expect(renderToStaticMarkup(createElement(TrialChip, { text: 'x' }))).toContain('data-billing-trial');
   });

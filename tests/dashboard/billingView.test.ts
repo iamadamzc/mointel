@@ -11,13 +11,13 @@ const END = '2026-10-19T11:43:00.000Z'; // 07:43 ET
 const at = (minutesBefore: number, seconds = 0) => Date.parse(END) - minutesBefore * 60_000 - seconds * 1000;
 /** Billing's DeskBillingState (mirror), with nothing set. */
 const base = (over: Partial<DeskBillingState> = {}): DeskBillingState => ({
-  door: 'ok', grace: null, trial: null, plan: null, cardOnFile: true, customer: true, latestCharge: null, ...over,
+  door: 'ok', grace: null, trial: null, plan: null, cardOnFile: true, customer: true, latestCharge: null, endedAt: null, paidThroughAt: null, ...over,
 });
 const charge = (state: NonNullable<DeskBillingState['latestCharge']>['state'], amountCents = 550) =>
   ({ etDate: '2026-10-19', state, source: 'daily' as const, amountCents });
 const grace = (over: Partial<{ kind: 'daily' | 'plan'; retrying: boolean; secondDecline: boolean }> = {}): DeskBillingState =>
   base({
-    grace: { kind: over.kind ?? 'daily', endsAt: END, amountCents: 550, ...(over.secondDecline ? { declinedAgain: true } : {}) },
+    grace: { kind: over.kind ?? 'daily', endsAt: END, amountCents: 550, declinedAgain: Boolean(over.secondDecline) },
     latestCharge: charge(over.retrying ? 'PENDING' : 'FAILED'),
   });
 const PLAN = { kind: 'monthly' as const, priceCents: 8900, status: 'past_due', paidThroughEtDate: '2026-10-16', currentPeriodEnd: END, cancelAtPeriodEnd: false, renewsOn: END, endsOn: null };
@@ -104,7 +104,8 @@ describe('the screens that replace the board', () => {
       button: 'Update card',
       under: 'Your card is tried again as soon as you update it. No refunds.',
     });
-    expect(v.card?.checking).toMatch(/^PLACEHOLDER/);
+    // The checking line shows ONLY on the charge_first door (never an ordinary sign-in: terms of sale s2).
+    expect(v.card?.checking).toBe("Checking today's payment...");
     const planned = billingDeskView(base({ door: 'charge_first', plan: PLAN, latestCharge: { ...charge('FAILED', 8900), source: 'checkout' } }), at(30)).card!;
     expect(planned.lines).toEqual(["Your plan's renewal of $89 didn't go through."]);
     expect(planned.checking).toBeNull();
@@ -118,7 +119,20 @@ describe('the screens that replace the board', () => {
   it('buy_first: the buy screen (placeholder words until Marketing writes them)', () => {
     const v = billingDeskView(base({ door: 'buy_first', customer: false, cardOnFile: false }), at(30));
     expect(v.screen).toBe('buy');
+    expect(v.buy).toMatchObject({ variant: 'buy', signOut: null });
     expect(v.buy?.headline).toMatch(/^PLACEHOLDER/);
+  });
+
+  it('case D: a daily buyer who removed their card gets Add a card, with Sign out; a plan holder never does', () => {
+    const v = billingDeskView(base({ door: 'buy_first', customer: true, cardOnFile: false }), at(30));
+    expect(v.buy).toEqual({ variant: 'add_card', headline: 'Add a card to open the desk.', line: null, button: 'Add card', signOut: 'Sign out' });
+    expect(billingDeskView(base({ door: 'buy_first', customer: true, cardOnFile: false, plan: PLAN }), at(30)).buy?.variant).toBe('buy');
+  });
+
+  it('the checking line names a plan renewal for a plan', () => {
+    expect(billingDeskView(base({ door: 'charge_first', plan: PLAN, latestCharge: { ...charge('PENDING', 8900), source: 'checkout' } }), at(30)).card?.checking).toBe(
+      "Checking your plan's renewal...",
+    );
   });
 
   it('trial: the board as normal plus the end chip', () => {

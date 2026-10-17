@@ -7,6 +7,7 @@ import { AssessmentSelector, AssessmentSnapshotBoard } from '@/components/Assess
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { BillingBand } from '@/components/BillingBand';
 import { BuyScreen, CardRequiredScreen } from '@/components/BillingScreens';
+import { BillingPanel } from '@/components/BillingPanel';
 import { DeskEventFeed } from '@/components/DeskEventFeed';
 import { DiscoveryBoard } from '@/components/DiscoveryBoard';
 import { FilterBar } from '@/components/FilterBar';
@@ -299,6 +300,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
   const merged = useMemo(() => mergeDesk(market.snapshot), [market.snapshot]);
   // Desk billing (screens, band, title, notifications). Nothing here is reachable until the billing cut ships.
   const billing = useDeskBilling();
+  const [billingOpen, setBillingOpen] = useState(false);
 
   /*
    * The cycle a row is actually in, resolved from the computed history.
@@ -505,6 +507,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
         failure={feed.failure}
         onRefresh={feed.refresh}
         trialChip={billing.view.trialChip}
+        onOpenBilling={billing.state ? () => setBillingOpen(true) : undefined}
       />
 
       {/* The failed-charge band: one row under the header, pushing the board down and covering none of it. */}
@@ -514,7 +517,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
       {billing.view.screen === 'card_required' && billing.view.card ? (
         <CardRequiredScreen card={billing.view.card} onUpdateCard={billing.onUpdateCard} />
       ) : billing.view.screen === 'buy' && billing.view.buy ? (
-        <BuyScreen buy={billing.view.buy} buyHref={BUY_HREF} />
+        <BuyScreen buy={billing.view.buy} buyHref={BUY_HREF} onAddCard={billing.onUpdateCard} />
       ) : (
       <>
       {/* Counts and filters are one control surface, so they are one line. */}
@@ -733,6 +736,16 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
       </div>
       </>
       )}
+
+      {billingOpen && billing.state ? (
+        <BillingPanel
+          state={billing.state}
+          paidThroughDaily={billing.state.paidThroughAt}
+          onClose={() => setBillingOpen(false)}
+          onChanged={billing.refresh}
+          onPortal={billing.onUpdateCard}
+        />
+      ) : null}
 
       <TickerDrawer
         // A billing screen replaces the board: a dossier left open would keep live data on screen.
