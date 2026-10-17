@@ -218,6 +218,9 @@ export function narrativeFootnoteLines(footnotes: SessionReport['narrativeFootno
         : split === 1
           ? '1 row was left out of the move counts and the named leaders because the data suggested a stock split. The check can also leave out a real move of the same size.'
           : `${split} rows were left out of the move counts and the named leaders because the data suggested a stock split. The check can also leave out a real move of the same size.`,
+    // His "approved all" (Commercial's chat, 2026-10-17T03:17:46.629Z; Commercial read 156a, Marketing e1938514): only
+    // on a recap that stored the prior-or-close marker; recaps stored before it print nothing new.
+    ...(footnotes.basis === 'prior_or_close' ? ["Counted names are those that started or ended the day inside this report's price range."] : []),
   ];
 }
 

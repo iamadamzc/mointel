@@ -70,6 +70,22 @@ describe("the recap's footnotes, Marketing v5 (65951e69) verbatim", () => {
     }
   });
 
+  it("a recap that stored the prior-or-close marker prints the third footnote last, verbatim, with no number", () => {
+    // His "approved all" (Commercial's chat, 2026-10-17T03:17:46.629Z; Commercial read 156a, Marketing e1938514).
+    const lines = narrativeFootnoteLines({ noClose: 3, splitExcluded: 2, basis: 'prior_or_close' });
+    expect(lines).toHaveLength(3);
+    expect(lines[2]).toBe("Counted names are those that started or ended the day inside this report's price range.");
+    expect(lines[2]).not.toMatch(/[0-9]/);
+    expect(narrativeFootnoteLines({ noClose: null, splitExcluded: null, basis: 'prior_or_close' })[2]).toBe(lines[2]);
+  });
+
+  it('a recap stored before the marker, or with any other value in its place, prints nothing new', () => {
+    expect(narrativeFootnoteLines({ noClose: 3, splitExcluded: 2 })).toHaveLength(2);
+    for (const other of ['official_close', 'PRIOR_OR_CLOSE', '', null, true]) {
+      expect(narrativeFootnoteLines({ noClose: 3, splitExcluded: 2, basis: other as unknown as 'prior_or_close' })).toHaveLength(2);
+    }
+  });
+
   it('no footnotes field (an intraday kind, or a report from before step 4) prints none', () => {
     expect(narrativeFootnoteLines(null)).toEqual([]);
     expect(narrativeFootnoteLines(undefined)).toEqual([]);
@@ -93,6 +109,16 @@ describe('the block, server-rendered', () => {
     expect(html).toContain('No names had volume but no recorded regular-session close.');
     expect(html).toContain('2 rows were left out');
     expect(html).not.toContain(OPENING_WORDS.none);
+  });
+
+  it('the third footnote renders under the other two on a marked recap', () => {
+    const html = render({
+      opening: { kind: 'NARRATIVE', text: 'ABCD, up 85.5% from the prior close.' },
+      footnotes: narrativeFootnoteLines({ noClose: 0, splitExcluded: 2, basis: 'prior_or_close' }),
+    });
+    // React escapes the apostrophe in static markup; a browser shows "report's".
+    const third = html.indexOf('Counted names are those that started or ended the day inside this report&#x27;s price range.');
+    expect(third).toBeGreaterThan(html.indexOf('2 rows were left out'));
   });
 
   it('no narrative: the label and the designed line, and the footnotes still print (independent of the strike)', () => {

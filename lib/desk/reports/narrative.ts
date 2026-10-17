@@ -196,8 +196,11 @@ export function isRecap(kind: ReportKind): boolean {
  */
 export function narrativeFootnotes(facts: Pick<NarrativeFacts, 'noClose' | 'splitExcluded'>): NarrativeFootnotes | null {
   if (facts.noClose === null && facts.splitExcluded === null) return null;
-  return { noClose: facts.noClose, splitExcluded: facts.splitExcluded };
+  return { noClose: facts.noClose, splitExcluded: facts.splitExcluded, basis: RECAP_BASIS };
 }
+
+/** The recap's population (the header and `readRecapCounts`): names in range by the prior close or the official close. */
+export const RECAP_BASIS = 'prior_or_close' as const;
 
 /* ------------------------------------------------------------ split check */
 
