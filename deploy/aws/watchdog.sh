@@ -31,13 +31,22 @@
 # LIMIT: this runs ON the box. It cannot report that the box itself is down.
 #
 # Environment overrides exist so the suite can drive every branch against
-# stubs: WATCHDOG_STATE_DIR, WATCHDOG_HEALTH_URL, WATCHDOG_UNITS, WATCHDOG_NOW,
+# stubs: WATCHDOG_STATE_DIR, WATCHDOG_HEALTH_URL, WATCHDOG_UNITS, WATCHDOG_OPTIONAL_UNITS, WATCHDOG_NOW,
 # WATCHDOG_NOTIFIER and the thresholds named below.
 set -uo pipefail
 
 STATE_DIR="${WATCHDOG_STATE_DIR:-/var/lib/mointel-watchdog}"
 HEALTH_URL="${WATCHDOG_HEALTH_URL:-http://127.0.0.1:3000/api/health}"
 UNITS="${WATCHDOG_UNITS:-mointel-web mointel-research mointel-assess mointel-market}"
+# Units watched only while ENABLED. deploy.sh enables mointel-billing only once
+# STRIPE_SECRET_KEY is on the box; before that it is installed, disabled and
+# inactive by design, and watching it would alert on every tick. Once enabled,
+# a stopped or crash-looping billing worker means charges are not being made,
+# so it is watched exactly like the others.
+OPTIONAL_UNITS="${WATCHDOG_OPTIONAL_UNITS:-mointel-billing}"
+for unit in $OPTIONAL_UNITS; do
+  if [ "$(systemctl is-enabled "$unit" 2>/dev/null || true)" = "enabled" ]; then UNITS="$UNITS $unit"; fi
+done
 NOTIFIER="${WATCHDOG_NOTIFIER:-/opt/mointel/current/deploy/aws/notify-telegram.sh}"
 COOLDOWN="${WATCHDOG_COOLDOWN_SECONDS:-1800}"
 LOOP_RESTARTS="${WATCHDOG_LOOP_RESTARTS:-3}"
