@@ -15,6 +15,7 @@ import {
 import { handleStripeEvent, verifyStripeEvent, type WebhookDeps } from '@/lib/billing/webhook';
 
 import { MON_10_ET, cleanupStores, temporaryStore, verifiedUser } from './helpers';
+import { MARKET_DAYS } from '@/tests/auth/marketDays';
 
 afterEach(cleanupStores);
 
@@ -74,7 +75,7 @@ describe('a finished Checkout', () => {
     const stripe = fakeStripe();
     expect(isUserInvited(db, userId)).toBe(false);
 
-    const handled = await handleStripeEvent({ db, stripe, now: () => MON_10_ET }, event('evt_1', 'checkout.session.completed', dailyCheckout(userId)));
+    const handled = await handleStripeEvent({ db, stripe, loadCalendar: async () => MARKET_DAYS, now: () => MON_10_ET }, event('evt_1', 'checkout.session.completed', dailyCheckout(userId)));
 
     expect(handled).toEqual({ duplicate: false, result: 'paid (payment), invited' });
     expect(isUserInvited(db, userId)).toBe(true);
@@ -96,7 +97,7 @@ describe('a finished Checkout', () => {
     const db = temporaryStore();
     const userId = verifiedUser(db);
     const stripe = fakeStripe();
-    const deps = { db, stripe, now: () => MON_10_ET };
+    const deps = { db, stripe, loadCalendar: async () => MARKET_DAYS, now: () => MON_10_ET };
     await handleStripeEvent(deps, event('evt_1', 'checkout.session.completed', dailyCheckout(userId)));
     const again = await handleStripeEvent(deps, event('evt_1', 'checkout.session.completed', dailyCheckout(userId)));
     expect(again).toEqual({ duplicate: true });
@@ -107,7 +108,7 @@ describe('a finished Checkout', () => {
     const db = temporaryStore();
     const userId = verifiedUser(db);
     const handled = await handleStripeEvent(
-      { db, stripe: fakeStripe(), now: () => MON_10_ET },
+      { db, stripe: fakeStripe(), loadCalendar: async () => MARKET_DAYS, now: () => MON_10_ET },
       event('evt_1', 'checkout.session.completed', dailyCheckout(userId, 'someone-else@example.com')),
     );
     expect(handled).toMatchObject({ result: expect.stringContaining('NOT invited') });
@@ -119,7 +120,7 @@ describe('a finished Checkout', () => {
     const db = temporaryStore();
     const userId = verifiedUser(db);
     const handled = await handleStripeEvent(
-      { db, stripe: fakeStripe(), now: () => MON_10_ET },
+      { db, stripe: fakeStripe(), loadCalendar: async () => MARKET_DAYS, now: () => MON_10_ET },
       event('evt_1', 'checkout.session.completed', dailyCheckout(userId, 'buyer@example.com', { metadata: { app: 'meo' } })),
     );
     expect(handled).toMatchObject({ result: expect.stringContaining('ignored') });
@@ -132,7 +133,7 @@ describe('a finished Checkout', () => {
     expect(userId).toBe(1);
     const stripe = fakeStripe();
     await handleStripeEvent(
-      { db, stripe, now: () => MON_10_ET },
+      { db, stripe, loadCalendar: async () => MARKET_DAYS, now: () => MON_10_ET },
       event('evt_1', 'checkout.session.completed', {
         ...dailyCheckout(userId),
         mode: 'subscription',
@@ -145,7 +146,7 @@ describe('a finished Checkout', () => {
     // Covered only once the invoice is paid.
     expect(planCovers(db, userId, '2026-10-19')).toBe(false);
     await handleStripeEvent(
-      { db, stripe, now: () => MON_10_ET },
+      { db, stripe, loadCalendar: async () => MARKET_DAYS, now: () => MON_10_ET },
       event('evt_2', 'invoice.paid', {
         id: 'in_1',
         billing_reason: 'subscription_create',
@@ -163,7 +164,7 @@ describe('a renewal declined, then the card updated', () => {
     const userId = verifiedUser(db);
     linkCustomer(db, userId, 'cus_1', MON_10_ET);
     const stripe = fakeStripe();
-    const deps = { db, stripe, now: () => MON_10_ET };
+    const deps = { db, stripe, loadCalendar: async () => MARKET_DAYS, now: () => MON_10_ET };
     const renewal = {
       id: 'in_renewal',
       billing_reason: 'subscription_cycle',
@@ -172,7 +173,7 @@ describe('a renewal declined, then the card updated', () => {
     };
 
     await handleStripeEvent(deps, event('evt_f', 'invoice.payment_failed', renewal));
-    expect(billingStatus(db, userId, MON_10_ET)).toEqual({
+    expect(billingStatus(db, userId, MARKET_DAYS, MON_10_ET)).toEqual({
       state: 'grace',
       kind: 'plan',
       amountCents: 8900,
@@ -184,14 +185,14 @@ describe('a renewal declined, then the card updated', () => {
     expect(stripe.invoices.pay).toHaveBeenCalledWith('in_renewal', { payment_method: 'pm_new' });
 
     await handleStripeEvent(deps, event('evt_p', 'invoice.paid', renewal));
-    expect(billingStatus(db, userId, MON_10_ET)).toEqual({ state: 'ok' });
+    expect(billingStatus(db, userId, MARKET_DAYS, MON_10_ET)).toEqual({ state: 'ok' });
   });
 
   it('ignores the first invoice failing: Checkout shows that decline itself', async () => {
     const db = temporaryStore();
     verifiedUser(db);
     const handled = await handleStripeEvent(
-      { db, stripe: fakeStripe(), now: () => MON_10_ET },
+      { db, stripe: fakeStripe(), loadCalendar: async () => MARKET_DAYS, now: () => MON_10_ET },
       event('evt_f', 'invoice.payment_failed', {
         id: 'in_1',
         billing_reason: 'subscription_create',
@@ -210,7 +211,7 @@ describe('a daily decline, then the card updated', () => {
     linkCustomer(db, userId, 'cus_1', MON_10_ET);
     const row = ensurePendingCharge(db, userId, '2026-10-19', MON_10_ET);
     markFailed(db, row.id, 'card_declined', null, MON_10_ET);
-    const deps = { db, stripe: fakeStripe(), now: () => MON_10_ET };
+    const deps = { db, stripe: fakeStripe(), loadCalendar: async () => MARKET_DAYS, now: () => MON_10_ET };
 
     await handleStripeEvent(deps, event('evt_a', 'customer.updated', { id: 'cus_1', invoice_settings: {} }, { name: 'x' }));
     expect(chargeFor(db, userId, '2026-10-19')!.state).toBe('FAILED');

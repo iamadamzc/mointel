@@ -81,6 +81,20 @@ vi.mock('@/lib/public/purchaseServer', () => ({
     outside.calls.push('calendar');
     return async () => state.trading;
   },
+  // The paid day's calendar (Billing's fold, 2026-10-17): every weekday trades.
+  purchaseMarketDays: () => {
+    outside.calls.push('calendar');
+    return async () => (etDate: string) => {
+      const day = new Date(`${etDate}T12:00:00Z`).getUTCDay();
+      return day !== 0 && day !== 6;
+    };
+  },
+  paidDayCalendarSources: () => ({
+    load: async () => (etDate: string) => {
+      const day = new Date(`${etDate}T12:00:00Z`).getUTCDay();
+      return day !== 0 && day !== 6;
+    },
+  }),
   // Every weekday trades; the trial clock's own tests cover holidays.
   purchaseCalendar: async () => {
     outside.calls.push('calendar');
@@ -216,12 +230,18 @@ describe('/checkout', () => {
     expect(page).toContain('href="/terms-of-sale"');
   });
 
-  it('daily on a trading day: the daily sentence; on a non-trading day it is not offered', async () => {
-    const page = html(await CheckoutPage(params({ plan: 'daily' })));
+  /*
+   * The fold (his ruling, 2026-10-17): a weekend belongs to Monday's paid day, so
+   * Daily is offered on a Saturday too. Before it, a closed day redirected to
+   * /pricing; that branch is now unreachable and Web removes it.
+   */
+  it('daily: the daily sentence, on a weekday and on a Saturday alike', async () => {
+    let page = html(await CheckoutPage(params({ plan: 'daily' })));
     expect(page).toContain('Each new paid day you sign in on');
     expect(page).toContain('You will be charged $5.50 now, and automatically on each new paid day you sign in on');
-    state.trading = false;
-    await expect(CheckoutPage(params({ plan: 'daily' }))).rejects.toThrow('REDIRECT /pricing');
+    vi.setSystemTime(new Date('2026-10-17T15:00:00Z')); // Sat 11:00 ET
+    page = html(await CheckoutPage(params({ plan: 'daily' })));
+    expect(page).toContain('You will be charged $5.50 now');
   });
 });
 
@@ -248,13 +268,14 @@ describe('POST /checkout/start', () => {
     });
   });
 
-  it('Stripe unreachable -> back with e=unavailable; daily on a non-trading day -> /pricing', async () => {
+  it('Stripe unreachable -> back with e=unavailable; daily on a Saturday -> Stripe (the fold)', async () => {
     createCheckoutSession.mockRejectedValue(new Error('down'));
     let res = await checkoutStart(form({ plan: 'monthly', agree: 'yes' }));
     expect(res.headers.get('location')).toBe('/checkout?plan=monthly&e=unavailable');
-    state.trading = false;
+    createCheckoutSession.mockResolvedValue({ id: 'cs_2', url: 'https://checkout.stripe.com/c/pay/cs_2', mode: 'payment' });
+    vi.setSystemTime(new Date('2026-10-17T15:00:00Z')); // Sat 11:00 ET
     res = await checkoutStart(form({ plan: 'daily', agree: 'yes' }));
-    expect(res.headers.get('location')).toBe('/pricing');
+    expect(res.headers.get('location')).toBe('https://checkout.stripe.com/c/pay/cs_2');
   });
 });
 

@@ -211,7 +211,7 @@ export function completeEmailSignIn(deps: {
   const expiry = sessionExpiry(now, deps.marketDays);
   const issued = createSession(deps.db, resolved.userId, expiry, now);
   // Open the paid day (lib/auth/signInHook.ts); never blocks the sign-in.
-  afterSignIn(deps.db, resolved.userId, now);
+  afterSignIn(deps.db, resolved.userId, deps.marketDays, now);
   const maxAge = Math.max(1, Math.floor((expiry.expiresAt.getTime() - now.getTime()) / 1000));
   return {
     status: 303,

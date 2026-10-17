@@ -5,12 +5,13 @@ import { notFound, redirect } from 'next/navigation';
 
 import { SiteFooter, SiteHeader } from '@/components/SiteChrome';
 import { SESSION_COOKIE } from '@/lib/auth/cookie';
+import { marketMonthsFor } from '@/lib/auth/expiry';
 import { admissionForSession } from '@/lib/auth/requestGate';
 import { paidDayOf } from '@/lib/billing/store';
 import { AGREE, CHECKOUT, PLANS, UNAVAILABLE } from '@/lib/public/purchaseCopy';
 import { etDateOf, longEtDate, PLAN_SLUGS, purchaseFromSlug, renewalEtDate } from '@/lib/public/purchaseFormat';
 import { purchaseOpen } from '@/lib/public/purchaseOpen';
-import { purchaseIsTradingDay } from '@/lib/public/purchaseServer';
+import { purchaseMarketDays } from '@/lib/public/purchaseServer';
 
 /**
  * /checkout?plan=<slug>: the summary and the consent, on our page, before the card is
@@ -55,7 +56,8 @@ export default async function CheckoutPage({
   if (purchase === 'daily') {
     let trading = true;
     try {
-      trading = await purchaseIsTradingDay()(paidDayOf(now));
+      const isMarketDay = await purchaseMarketDays()(marketMonthsFor(now));
+      trading = isMarketDay(paidDayOf(now, isMarketDay));
     } catch {
       calendarFailed = true;
     }

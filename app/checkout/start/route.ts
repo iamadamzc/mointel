@@ -17,12 +17,13 @@
  */
 
 import { getIdentityDb } from '@/lib/auth/db';
+import { marketMonthsFor } from '@/lib/auth/expiry';
 import { admissionForSession, sessionIdFromCookieHeader } from '@/lib/auth/requestGate';
 import { createCheckoutSession } from '@/lib/billing/checkout';
 import { paidDayOf } from '@/lib/billing/store';
 import { PLAN_SLUGS, purchaseFromSlug } from '@/lib/public/purchaseFormat';
 import { purchaseOpen } from '@/lib/public/purchaseOpen';
-import { purchaseIsTradingDay, purchaseOrigin, purchaseStripe } from '@/lib/public/purchaseServer';
+import { purchaseMarketDays, purchaseOrigin, purchaseStripe } from '@/lib/public/purchaseServer';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -51,11 +52,12 @@ export async function POST(request: Request): Promise<Response> {
   if (form?.get('agree') !== 'yes') return seeOther(back);
 
   try {
-    const isTradingDay = purchaseIsTradingDay();
-    if (purchase === 'daily' && !(await isTradingDay(paidDayOf(new Date())))) return seeOther('/pricing');
+    const now = new Date();
+    const marketDays = await purchaseMarketDays()(marketMonthsFor(now));
+    if (purchase === 'daily' && !marketDays(paidDayOf(now, marketDays))) return seeOther('/pricing');
 
     const origin = purchaseOrigin();
-    const session = await createCheckoutSession({ db, stripe: purchaseStripe(), isTradingDay }, admission.userId, purchase, {
+    const session = await createCheckoutSession({ db, stripe: purchaseStripe(), marketDays, now: () => now }, admission.userId, purchase, {
       successUrl: `${origin}/welcome?session_id={CHECKOUT_SESSION_ID}`,
       cancelUrl: `${origin}/pricing`,
     });

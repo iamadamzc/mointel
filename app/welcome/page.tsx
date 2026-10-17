@@ -6,6 +6,7 @@ import { notFound, redirect } from 'next/navigation';
 import { PaymentPending } from '@/components/NotAdmitted';
 import { SiteFooter, SiteHeader } from '@/components/SiteChrome';
 import { getIdentityDb } from '@/lib/auth/db';
+import { marketDaysOrFallback } from '@/lib/auth/expiry';
 import { SESSION_COOKIE } from '@/lib/auth/cookie';
 import { admissionForSession } from '@/lib/auth/requestGate';
 import { billingStateFor } from '@/lib/billing/account';
@@ -16,7 +17,7 @@ import { sessionEndUtc } from '@/lib/market/session';
 import { PLANS, YOU_ARE_IN } from '@/lib/public/purchaseCopy';
 import { etEndTime } from '@/lib/public/purchaseFormat';
 import { purchaseOpen } from '@/lib/public/purchaseOpen';
-import { purchaseCalendar, purchaseStripe } from '@/lib/public/purchaseServer';
+import { paidDayCalendarSources, purchaseCalendar, purchaseStripe } from '@/lib/public/purchaseServer';
 
 /**
  * /welcome?session_id=...: where Stripe sends the buyer back ("you are in"). One button,
@@ -86,7 +87,8 @@ export default async function WelcomePage({
     if (end) line = YOU_ARE_IN.trial(etEndTime(end));
     noRefunds = false;
   } else {
-    const state = billingStateFor(db, admission.userId);
+    const now = new Date();
+    const state = billingStateFor(db, admission.userId, await marketDaysOrFallback(now, paidDayCalendarSources()), now);
     const plan = PLANS[status.purchase];
     if (status.purchase === 'daily') {
       if (state.paidThroughAt) line = YOU_ARE_IN.daily(plan.amount, etEndTime(new Date(state.paidThroughAt)));

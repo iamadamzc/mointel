@@ -32,12 +32,12 @@ import {
   pendingCharges,
   planCovers,
   planEndedByCancel,
-  previousEtDate,
   setTrialEnd,
   trialState,
   trialsWithoutEnd,
   type ChargeRow,
 } from '@/lib/billing/store';
+import { marketDayBefore, type MarketDays } from '@/lib/auth/expiry';
 import { trialCalendarMonths, trialEndsAt } from '@/lib/billing/trialClock';
 import { sessionEndUtc } from '@/lib/market/session';
 
@@ -60,6 +60,7 @@ export type PaidDayOpening =
 export function openPaidDay(
   db: IdentityDatabase,
   userId: number,
+  isMarketDay: MarketDays,
   now: Date = new Date(),
   env: Readonly<Record<string, string | undefined>> = process.env,
 ): PaidDayOpening {
@@ -71,7 +72,7 @@ export function openPaidDay(
    * invited by hand or not. No Stripe customer means nothing was ever bought.
    */
   if (!customerIdFor(db, userId)) return { kind: 'buy_first' };
-  const etDate = paidDayOf(now);
+  const etDate = paidDayOf(now, isMarketDay);
   if (planCovers(db, userId, etDate)) return { kind: 'plan' };
   /*
    * THE TRIAL NEVER BECOMES A CHARGE. A trial writes no charge row at all. While
@@ -97,7 +98,7 @@ export function openPaidDay(
   // buyer who saved a card on a weekend has a card on file and goes on.
   if (!hasBought(db, userId) && !hasCardOnFile(db, userId)) return { kind: 'buy_first' };
   const charge = ensurePendingCharge(db, userId, etDate, now);
-  const door = cardFailedBeforeToday(db, userId, now) ? lapsedDoor(env) : 'open';
+  const door = cardFailedBeforeToday(db, userId, isMarketDay, now) ? lapsedDoor(env) : 'open';
   return { kind: 'pending', charge, door };
 }
 
@@ -105,11 +106,18 @@ export function openPaidDay(
  * Did the card first fail on an EARLIER paid day? The lapsed-hour door applies
  * only then: on the day of the failure itself the person has the hour, and the
  * band shows it. billingStateFor (lib/billing/account.ts) reads the same rule.
+ * Today's paid day starts at 20:00 ET on the market day before it: a Saturday
+ * decline is inside Monday's paid day, so a Sunday sign-in is the same day.
  */
-export function cardFailedBeforeToday(db: IdentityDatabase, userId: number, now: Date = new Date()): boolean {
+export function cardFailedBeforeToday(
+  db: IdentityDatabase,
+  userId: number,
+  isMarketDay: MarketDays,
+  now: Date = new Date(),
+): boolean {
   const since = cardFailingSince(db, userId);
   if (since === null) return false;
-  const todayStart = sessionEndUtc(previousEtDate(paidDayOf(now))).getTime();
+  const todayStart = sessionEndUtc(marketDayBefore(paidDayOf(now, isMarketDay), isMarketDay)).getTime();
   return Date.parse(since) < todayStart;
 }
 

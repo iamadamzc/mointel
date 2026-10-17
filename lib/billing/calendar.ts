@@ -8,8 +8,15 @@
  * neither charges a holiday nor writes off a trading day.
  */
 
+import { marketMonthsFor } from '@/lib/auth/expiry';
+
 export interface CalendarDay {
   date: string;
+}
+
+/** Every month a paid-day question about these instants can touch, sorted. */
+export function marketMonthsForAll(...instants: Date[]): string[] {
+  return [...new Set(instants.flatMap((instant) => marketMonthsFor(instant)))].sort();
 }
 
 /**

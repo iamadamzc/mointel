@@ -8,6 +8,7 @@ import { openPaidDay } from '@/lib/billing/charge';
 import { GRACE_MS, OWNER_EMAIL_ENV } from '@/lib/billing/config';
 import {
   billingHistory,
+  paidDayOf,
   chargeFor,
   ensurePendingCharge,
   linkCustomer,
@@ -24,6 +25,7 @@ import {
 import { handleStripeEvent, type WebhookDeps } from '@/lib/billing/webhook';
 
 import { MON_10_ET, cleanupStores, sessionExpiries, signIn, temporaryStore, verifiedUser } from './helpers';
+import { MARKET_DAYS } from '@/tests/auth/marketDays';
 
 afterEach(cleanupStores);
 
@@ -45,8 +47,15 @@ function monthly(db: ReturnType<typeof temporaryStore>, userId: number, opts: { 
     currentPeriodEnd: new Date('2026-11-19T14:00:00Z'),
     cancelAtPeriodEnd: opts.cancel ?? false,
   });
-  markPlanPaid(db, 'sub_1', new Date('2026-11-19T14:00:00Z'), MON_10_ET);
+  markPlanPaid(db, 'sub_1', new Date('2026-11-19T14:00:00Z'), paidDayOf(new Date('2026-11-19T14:00:00Z'), MARKET_DAYS), MARKET_DAYS, MON_10_ET);
 }
+
+/*
+ * When access ends, not the Stripe period end (Commercial's catch, 2026-10-17):
+ * the period ends Thu 2026-11-19 10:00 EST and access runs to 20:00 EST that
+ * day, 2026-11-20T01:00Z.
+ */
+const ACCESS_END = '2026-11-20T01:00:00.000Z';
 
 function rowCounts(db: ReturnType<typeof temporaryStore>) {
   const n = (sql: string) => (db.prepare(sql).get() as { n: number }).n;
@@ -57,7 +66,7 @@ describe('billingStateFor', () => {
   it('someone who never bought: the buy screen (his ruling: only the owner is free)', () => {
     const db = temporaryStore();
     const userId = verifiedUser(db);
-    expect(billingStateFor(db, userId, MON_10_ET, {})).toEqual({
+    expect(billingStateFor(db, userId, MARKET_DAYS, MON_10_ET, {})).toEqual({
       door: 'buy_first',
       buyCase: 'no_access',
       trialTaken: false,
@@ -78,8 +87,8 @@ describe('billingStateFor', () => {
     const userId = buyer(db);
     signIn(db, userId, MON_10_ET);
     const before = [rowCounts(db), sessionExpiries(db, userId)];
-    billingStateFor(db, userId, MON_10_ET);
-    billingStateFor(db, userId, TUE_10_ET);
+    billingStateFor(db, userId, MARKET_DAYS, MON_10_ET);
+    billingStateFor(db, userId, MARKET_DAYS, TUE_10_ET);
     expect([rowCounts(db), sessionExpiries(db, userId)]).toEqual(before);
   });
 
@@ -88,7 +97,7 @@ describe('billingStateFor', () => {
     const userId = buyer(db);
     const row = ensurePendingCharge(db, userId, '2026-10-19', MON_10_ET);
     markFailed(db, row.id, 'card_declined', null, MON_10_ET);
-    const state = billingStateFor(db, userId, new Date(MON_10_ET.getTime() + 60_000));
+    const state = billingStateFor(db, userId, MARKET_DAYS, new Date(MON_10_ET.getTime() + 60_000));
     expect(state.door).toBe('ok');
     expect(state.grace).toEqual({
       kind: 'daily',
@@ -106,7 +115,7 @@ describe('billingStateFor', () => {
     markFailed(db, row.id, 'card_declined', null, MON_10_ET);
     requeueFailedCharge(db, userId, '2026-10-19');
     markFailed(db, row.id, 'insufficient_funds', null, new Date(MON_10_ET.getTime() + 20 * 60_000));
-    expect(billingStateFor(db, userId, new Date(MON_10_ET.getTime() + 21 * 60_000)).grace).toEqual({
+    expect(billingStateFor(db, userId, MARKET_DAYS, new Date(MON_10_ET.getTime() + 21 * 60_000)).grace).toEqual({
       kind: 'daily',
       amountCents: 550,
       declinedAgain: true,
@@ -120,7 +129,7 @@ describe('billingStateFor', () => {
     const row = ensurePendingCharge(db, userId, '2026-10-19', MON_10_ET);
     markFailed(db, row.id, 'card_declined', null, MON_10_ET);
     requeueFailedCharge(db, userId, '2026-10-19');
-    const state = billingStateFor(db, userId, new Date(MON_10_ET.getTime() + 5 * 60_000));
+    const state = billingStateFor(db, userId, MARKET_DAYS, new Date(MON_10_ET.getTime() + 5 * 60_000));
     expect(state.latestCharge).toMatchObject({ state: 'PENDING' });
     expect(state.grace).toEqual({
       kind: 'daily',
@@ -135,21 +144,21 @@ describe('billingStateFor', () => {
     const userId = buyer(db);
     const monday = ensurePendingCharge(db, userId, '2026-10-19', MON_10_ET);
     markFailed(db, monday.id, 'card_declined', null, MON_10_ET);
-    const state = billingStateFor(db, userId, TUE_10_ET);
+    const state = billingStateFor(db, userId, MARKET_DAYS, TUE_10_ET);
     expect(state.door).toBe('charge_first');
     expect(state.endedAt).toBe(new Date(MON_10_ET.getTime() + GRACE_MS).toISOString());
     // Not charge_first: no endedAt.
-    expect(billingStateFor(db, userId, TUE_10_ET, { BILLING_LAPSED_DOOR: 'one_hour' }).endedAt).toBeNull();
+    expect(billingStateFor(db, userId, MARKET_DAYS, TUE_10_ET, { BILLING_LAPSED_DOOR: 'one_hour' }).endedAt).toBeNull();
   });
 
   it('a plan renewal declined twice: declinedAgain on the plan band', () => {
     const db = temporaryStore();
     const userId = buyer(db);
     monthly(db, userId);
-    markRenewalFailed(db, 'sub_1', MON_10_ET);
-    expect(billingStateFor(db, userId, MON_10_ET).grace).toMatchObject({ kind: 'plan', declinedAgain: false });
-    markRenewalFailed(db, 'sub_1', new Date(MON_10_ET.getTime() + 10 * 60_000));
-    expect(billingStateFor(db, userId, MON_10_ET).grace).toMatchObject({ kind: 'plan', declinedAgain: true });
+    markRenewalFailed(db, 'sub_1', MARKET_DAYS, MON_10_ET);
+    expect(billingStateFor(db, userId, MARKET_DAYS, MON_10_ET).grace).toMatchObject({ kind: 'plan', declinedAgain: false });
+    markRenewalFailed(db, 'sub_1', MARKET_DAYS, new Date(MON_10_ET.getTime() + 10 * 60_000));
+    expect(billingStateFor(db, userId, MARKET_DAYS, MON_10_ET).grace).toMatchObject({ kind: 'plan', declinedAgain: true });
   });
 
   it('a decline on an earlier day: the update-card screen until today is paid (his door rule)', () => {
@@ -158,16 +167,16 @@ describe('billingStateFor', () => {
     const monday = ensurePendingCharge(db, userId, '2026-10-19', MON_10_ET);
     markFailed(db, monday.id, 'card_declined', null, MON_10_ET);
 
-    expect(billingStateFor(db, userId, TUE_10_ET).door).toBe('charge_first');
-    expect(openPaidDay(db, userId, TUE_10_ET)).toMatchObject({ kind: 'pending', door: 'charge_first' });
-    expect(billingStateFor(db, userId, TUE_10_ET, { BILLING_LAPSED_DOOR: 'one_hour' }).door).toBe('ok');
+    expect(billingStateFor(db, userId, MARKET_DAYS, TUE_10_ET).door).toBe('charge_first');
+    expect(openPaidDay(db, userId, MARKET_DAYS, TUE_10_ET)).toMatchObject({ kind: 'pending', door: 'charge_first' });
+    expect(billingStateFor(db, userId, MARKET_DAYS, TUE_10_ET, { BILLING_LAPSED_DOOR: 'one_hour' }).door).toBe('ok');
 
-    expect(billingStateFor(db, userId, TUE_10_ET).paidThroughAt).toBeNull();
+    expect(billingStateFor(db, userId, MARKET_DAYS, TUE_10_ET).paidThroughAt).toBeNull();
     const tuesday = chargeFor(db, userId, '2026-10-20')!;
     markSucceeded(db, tuesday.id, 'pi_ok', TUE_10_ET);
-    expect(billingStateFor(db, userId, TUE_10_ET).door).toBe('ok');
+    expect(billingStateFor(db, userId, MARKET_DAYS, TUE_10_ET).door).toBe('ok');
     // Paid through the end of Tuesday's paid day, 20:00 ET (EDT) = 00:00Z.
-    expect(billingStateFor(db, userId, TUE_10_ET).paidThroughAt).toBe('2026-10-21T00:00:00.000Z');
+    expect(billingStateFor(db, userId, MARKET_DAYS, TUE_10_ET).paidThroughAt).toBe('2026-10-21T00:00:00.000Z');
   });
 
   it('on the day the card first fails, sign-in and the state agree: the hour, not charge_first', () => {
@@ -176,8 +185,8 @@ describe('billingStateFor', () => {
     const row = ensurePendingCharge(db, userId, '2026-10-19', MON_10_ET);
     markFailed(db, row.id, 'card_declined', null, MON_10_ET);
     const later = new Date(MON_10_ET.getTime() + 10 * 60_000);
-    expect(openPaidDay(db, userId, later)).toMatchObject({ door: 'open' });
-    expect(billingStateFor(db, userId, later).door).toBe('ok');
+    expect(openPaidDay(db, userId, MARKET_DAYS, later)).toMatchObject({ door: 'open' });
+    expect(billingStateFor(db, userId, MARKET_DAYS, later).door).toBe('ok');
   });
 
   it('a trial: the board while it runs, the buy screen after', () => {
@@ -185,10 +194,10 @@ describe('billingStateFor', () => {
     const userId = verifiedUser(db);
     linkCustomer(db, userId, 'cus_1', MON_10_ET);
     recordTrial(db, userId, 'fp_a', null, MON_10_ET);
-    expect(billingStateFor(db, userId, MON_10_ET)).toMatchObject({ door: 'trial', trial: { endsAt: null }, cardOnFile: false });
+    expect(billingStateFor(db, userId, MARKET_DAYS, MON_10_ET)).toMatchObject({ door: 'trial', trial: { endsAt: null }, cardOnFile: false });
     setTrialEnd(db, userId, new Date('2026-10-21T14:00:00Z'));
-    expect(billingStateFor(db, userId, TUE_10_ET)).toMatchObject({ door: 'trial', trial: { endsAt: '2026-10-21T14:00:00.000Z' } });
-    expect(billingStateFor(db, userId, new Date('2026-10-21T14:00:00Z'))).toMatchObject({
+    expect(billingStateFor(db, userId, MARKET_DAYS, TUE_10_ET)).toMatchObject({ door: 'trial', trial: { endsAt: '2026-10-21T14:00:00.000Z' } });
+    expect(billingStateFor(db, userId, MARKET_DAYS, new Date('2026-10-21T14:00:00Z'))).toMatchObject({
       door: 'buy_first',
       buyCase: 'trial_ended',
       trialTaken: true,
@@ -202,7 +211,7 @@ describe('billingStateFor', () => {
     monthly(db, userId);
     const monday = ensurePendingCharge(db, userId, '2026-10-19', MON_10_ET);
     markFailed(db, monday.id, 'card_declined', null, MON_10_ET);
-    const state = billingStateFor(db, userId, TUE_10_ET);
+    const state = billingStateFor(db, userId, MARKET_DAYS, TUE_10_ET);
     expect(state.door).toBe('ok');
     expect(state.plan).toEqual({
       kind: 'monthly',
@@ -223,8 +232,8 @@ describe('the desk owner', () => {
   it('with no Stripe customer at all: still the board, and no charge row', () => {
     const db = temporaryStore();
     const userId = verifiedUser(db); // buyer@example.com, never bought
-    expect(openPaidDay(db, userId, TUE_10_ET, OWNER)).toEqual({ kind: 'owner' });
-    expect(billingStateFor(db, userId, TUE_10_ET, OWNER)).toMatchObject({ door: 'ok', buyCase: null });
+    expect(openPaidDay(db, userId, MARKET_DAYS, TUE_10_ET, OWNER)).toEqual({ kind: 'owner' });
+    expect(billingStateFor(db, userId, MARKET_DAYS, TUE_10_ET, OWNER)).toMatchObject({ door: 'ok', buyCase: null });
     expect((db.prepare('SELECT COUNT(*) AS n FROM billing_charges').get() as { n: number }).n).toBe(0);
   });
 
@@ -232,23 +241,23 @@ describe('the desk owner', () => {
     const db = temporaryStore();
     const userId = verifiedUser(db, 'invited@example.com', 'sub-inv');
     inviteEmail(db, 'invited@example.com', 'adam', MON_10_ET);
-    expect(openPaidDay(db, userId, TUE_10_ET, OWNER)).toEqual({ kind: 'buy_first' });
-    expect(billingStateFor(db, userId, TUE_10_ET, OWNER)).toMatchObject({ door: 'buy_first', buyCase: 'no_access' });
+    expect(openPaidDay(db, userId, MARKET_DAYS, TUE_10_ET, OWNER)).toEqual({ kind: 'buy_first' });
+    expect(billingStateFor(db, userId, MARKET_DAYS, TUE_10_ET, OWNER)).toMatchObject({ door: 'buy_first', buyCase: 'no_access' });
   });
 
   it('a customer who never bought and has no card (an abandoned Checkout) gets the buy screen, no charge', () => {
     const db = temporaryStore();
     const userId = verifiedUser(db, 'abandoned@example.com', 'sub-ab');
     linkCustomer(db, userId, 'cus_ab', MON_10_ET);
-    expect(openPaidDay(db, userId, TUE_10_ET, {})).toEqual({ kind: 'buy_first' });
-    expect(billingStateFor(db, userId, TUE_10_ET, {})).toMatchObject({ door: 'buy_first', buyCase: 'no_access' });
+    expect(openPaidDay(db, userId, MARKET_DAYS, TUE_10_ET, {})).toEqual({ kind: 'buy_first' });
+    expect(billingStateFor(db, userId, MARKET_DAYS, TUE_10_ET, {})).toMatchObject({ door: 'buy_first', buyCase: 'no_access' });
     expect(chargeFor(db, userId, '2026-10-20')).toBeNull();
   });
 
   it('a daily buyer who saved a card on a weekend (nothing charged yet) is charged as normal', () => {
     const db = temporaryStore();
     const userId = buyer(db); // card saved, no charge rows
-    expect(openPaidDay(db, userId, TUE_10_ET, {})).toMatchObject({ kind: 'pending', door: 'open' });
+    expect(openPaidDay(db, userId, MARKET_DAYS, TUE_10_ET, {})).toMatchObject({ kind: 'pending', door: 'open' });
   });
 
   it('is never charged and never shown a buy or update-card screen', () => {
@@ -259,20 +268,20 @@ describe('the desk owner', () => {
     recordTrial(db, userId, 'fp_owner', null, MON_10_ET);
     setTrialEnd(db, userId, MON_10_ET);
 
-    expect(openPaidDay(db, userId, TUE_10_ET, OWNER)).toEqual({ kind: 'owner' });
+    expect(openPaidDay(db, userId, MARKET_DAYS, TUE_10_ET, OWNER)).toEqual({ kind: 'owner' });
     expect(chargeFor(db, userId, '2026-10-20')).toBeNull();
-    expect(billingStateFor(db, userId, TUE_10_ET, OWNER)).toMatchObject({ door: 'ok', buyCase: null });
+    expect(billingStateFor(db, userId, MARKET_DAYS, TUE_10_ET, OWNER)).toMatchObject({ door: 'ok', buyCase: null });
   });
 
   it('fails closed like the retry-research rule: unset, blank or an unverified address is nobody', () => {
     const db = temporaryStore();
     const userId = buyer(db);
-    expect(openPaidDay(db, userId, TUE_10_ET, {})).toMatchObject({ kind: 'pending' });
-    expect(openPaidDay(db, userId, TUE_10_ET, { DESK_OWNER_EMAIL: '  ' })).toMatchObject({ kind: 'pending' });
+    expect(openPaidDay(db, userId, MARKET_DAYS, TUE_10_ET, {})).toMatchObject({ kind: 'pending' });
+    expect(openPaidDay(db, userId, MARKET_DAYS, TUE_10_ET, { DESK_OWNER_EMAIL: '  ' })).toMatchObject({ kind: 'pending' });
     const other = linkIdentity(db, { provider: 'google', subject: 'sub-u', email: 'owner@example.com', emailVerified: false }).userId;
     linkCustomer(db, other, 'cus_2', MON_10_ET);
     markCardSaved(db, 'cus_2', MON_10_ET); // a paying customer, so only the owner match is under test
-    expect(openPaidDay(db, other, TUE_10_ET, { DESK_OWNER_EMAIL: 'owner@example.com' })).toMatchObject({ kind: 'pending' });
+    expect(openPaidDay(db, other, MARKET_DAYS, TUE_10_ET, { DESK_OWNER_EMAIL: 'owner@example.com' })).toMatchObject({ kind: 'pending' });
   });
 
   it('reads the same variable as the retry-research owner rule', () => {
@@ -288,11 +297,11 @@ describe('a plan that ends', () => {
     const stripe = { subscriptions: { update: vi.fn(async () => ({})) } } as unknown as Pick<Stripe, 'subscriptions'>;
     await cancelAtPeriodEnd({ db, stripe, now: () => MON_10_ET }, userId);
     // Still covered on its last paid day.
-    expect(billingStateFor(db, userId, new Date('2026-11-19T14:00:00Z')).door).toBe('ok');
+    expect(billingStateFor(db, userId, MARKET_DAYS, new Date('2026-11-19T14:00:00Z')).door).toBe('ok');
     // The day after: the buy screen, and sign-in writes no charge row.
     const after = new Date('2026-11-20T15:00:00Z');
-    expect(billingStateFor(db, userId, after)).toMatchObject({ door: 'buy_first', buyCase: 'plan_ended' });
-    expect(openPaidDay(db, userId, after)).toEqual({ kind: 'buy_first' });
+    expect(billingStateFor(db, userId, MARKET_DAYS, after)).toMatchObject({ door: 'buy_first', buyCase: 'plan_ended' });
+    expect(openPaidDay(db, userId, MARKET_DAYS, after)).toEqual({ kind: 'buy_first' });
     expect(chargeFor(db, userId, '2026-11-20')).toBeNull();
   });
 
@@ -301,8 +310,8 @@ describe('a plan that ends', () => {
     const userId = buyer(db);
     monthly(db, userId);
     const after = new Date('2026-11-20T15:00:00Z');
-    expect(billingStateFor(db, userId, after)).toMatchObject({ door: 'ok', buyCase: null });
-    expect(openPaidDay(db, userId, after)).toMatchObject({ kind: 'pending' });
+    expect(billingStateFor(db, userId, MARKET_DAYS, after)).toMatchObject({ door: 'ok', buyCase: null });
+    expect(openPaidDay(db, userId, MARKET_DAYS, after)).toMatchObject({ kind: 'pending' });
   });
 
   it('after a cancelled plan ends, buying a day in Checkout puts them back on ordinary daily charging', async () => {
@@ -313,7 +322,7 @@ describe('a plan that ends', () => {
       `INSERT INTO billing_charges (user_id, et_date, state, source, amount_cents, created_at, succeeded_at)
        VALUES (?, '2026-11-20', 'SUCCEEDED', 'checkout', 550, ?, ?)`,
     ).run(userId, '2026-11-20T15:00:00.000Z', '2026-11-20T15:00:00.000Z');
-    expect(openPaidDay(db, userId, new Date('2026-11-23T15:00:00Z'))).toMatchObject({ kind: 'pending', door: 'open' });
+    expect(openPaidDay(db, userId, MARKET_DAYS, new Date('2026-11-23T15:00:00Z'))).toMatchObject({ kind: 'pending', door: 'open' });
   });
 });
 
@@ -329,18 +338,32 @@ describe('cancelAtPeriodEnd', () => {
     const stripe = subsStripe();
     expect(await cancelAtPeriodEnd({ db, stripe, now: () => MON_10_ET }, userId)).toEqual({
       kind: 'cancelled',
-      endsOn: '2026-11-19T14:00:00.000Z',
+      endsOn: ACCESS_END,
     });
     expect(stripe.subscriptions.update).toHaveBeenCalledWith(
       'sub_1',
       { cancel_at_period_end: true },
       { idempotencyKey: 'tmi-cancel-sub_1' },
     );
-    expect(billingStateFor(db, userId, MON_10_ET).plan).toMatchObject({
+    expect(billingStateFor(db, userId, MARKET_DAYS, MON_10_ET).plan).toMatchObject({
       cancelAtPeriodEnd: true,
       renewsOn: null,
-      endsOn: '2026-11-19T14:00:00.000Z',
+      endsOn: ACCESS_END,
     });
+  });
+
+  it('a period ending on a Saturday: cancelled, it ends Monday 20:00 ET, when access does', async () => {
+    const db = temporaryStore();
+    const userId = buyer(db);
+    const saturday = new Date('2026-11-14T15:00:00Z'); // Sat 10:00 EST
+    upsertPlan(db, { subscriptionId: 'sub_1', userId, plan: 'monthly', status: 'active', currentPeriodEnd: saturday, cancelAtPeriodEnd: false });
+    markPlanPaid(db, 'sub_1', saturday, paidDayOf(saturday, MARKET_DAYS), MARKET_DAYS, MON_10_ET);
+    const monday20 = '2026-11-17T01:00:00.000Z'; // Mon 2026-11-16 20:00 EST
+    expect(await cancelAtPeriodEnd({ db, stripe: subsStripe(), now: () => MON_10_ET }, userId)).toEqual({
+      kind: 'cancelled',
+      endsOn: monday20,
+    });
+    expect(billingStateFor(db, userId, MARKET_DAYS, MON_10_ET).plan).toMatchObject({ endsOn: monday20, renewsOn: null });
   });
 
   it('is idempotent: a second call reports already and does not call Stripe', async () => {
@@ -351,7 +374,7 @@ describe('cancelAtPeriodEnd', () => {
     await cancelAtPeriodEnd({ db, stripe, now: () => MON_10_ET }, userId);
     expect(await cancelAtPeriodEnd({ db, stripe, now: () => MON_10_ET }, userId)).toEqual({
       kind: 'already',
-      endsOn: '2026-11-19T14:00:00.000Z',
+      endsOn: ACCESS_END,
     });
     expect(stripe.subscriptions.update).toHaveBeenCalledTimes(1);
   });
@@ -387,7 +410,7 @@ describe('removeDefaultCard', () => {
     expect(await removeDefaultCard({ db, stripe }, userId)).toEqual({ kind: 'refused_live_plan' });
     expect(stripe.customers.retrieve).not.toHaveBeenCalled();
     expect(stripe.paymentMethods.detach).not.toHaveBeenCalled();
-    expect(billingStateFor(db, userId, MON_10_ET).cardOnFile).toBe(true);
+    expect(billingStateFor(db, userId, MARKET_DAYS, MON_10_ET).cardOnFile).toBe(true);
   });
 
   it('is allowed once the plan is set to end, because nothing will charge it again', async () => {
@@ -405,9 +428,9 @@ describe('removeDefaultCard', () => {
     expect(stripe.customers.update).toHaveBeenCalledWith('cus_1', { invoice_settings: { default_payment_method: '' } });
     expect(stripe.paymentMethods.detach).toHaveBeenCalledWith('pm_1');
 
-    expect(openPaidDay(db, userId, TUE_10_ET)).toEqual({ kind: 'buy_first' });
+    expect(openPaidDay(db, userId, MARKET_DAYS, TUE_10_ET)).toEqual({ kind: 'buy_first' });
     expect(chargeFor(db, userId, '2026-10-20')).toBeNull();
-    expect(billingStateFor(db, userId, TUE_10_ET)).toMatchObject({
+    expect(billingStateFor(db, userId, MARKET_DAYS, TUE_10_ET)).toMatchObject({
       door: 'buy_first',
       buyCase: 'card_removed',
       trialTaken: false,
@@ -430,7 +453,7 @@ describe('removeDefaultCard', () => {
     await removeDefaultCard({ db, stripe: cardStripe(), now: () => MON_10_ET }, userId);
     const webhookStripe = { customers: { update: vi.fn() }, invoices: { retrieve: vi.fn(), pay: vi.fn() }, subscriptions: { retrieve: vi.fn() } } as unknown as WebhookDeps['stripe'];
     await handleStripeEvent(
-      { db, stripe: webhookStripe, now: () => TUE_10_ET },
+      { db, stripe: webhookStripe, loadCalendar: async () => MARKET_DAYS, now: () => TUE_10_ET },
       {
         id: 'evt_new_card',
         type: 'customer.updated',
@@ -440,8 +463,8 @@ describe('removeDefaultCard', () => {
         },
       } as unknown as Stripe.Event,
     );
-    expect(billingStateFor(db, userId, TUE_10_ET).cardOnFile).toBe(true);
-    expect(openPaidDay(db, userId, TUE_10_ET)).toMatchObject({ kind: 'pending', door: 'open' });
+    expect(billingStateFor(db, userId, MARKET_DAYS, TUE_10_ET).cardOnFile).toBe(true);
+    expect(openPaidDay(db, userId, MARKET_DAYS, TUE_10_ET)).toMatchObject({ kind: 'pending', door: 'open' });
   });
 });
 
@@ -453,7 +476,7 @@ describe('billing history and refunds', () => {
     markSucceeded(db, row.id, 'pi_paid', MON_10_ET, 'https://pay.stripe.com/receipts/r');
     const stripe = {} as unknown as WebhookDeps['stripe'];
     const handled = await handleStripeEvent(
-      { db, stripe, now: () => TUE_10_ET },
+      { db, stripe, loadCalendar: async () => MARKET_DAYS, now: () => TUE_10_ET },
       { id: 'evt_refund', type: 'charge.refunded', data: { object: { id: 'ch_1', payment_intent: 'pi_paid' } } } as unknown as Stripe.Event,
     );
     expect(handled).toMatchObject({ result: 'charge marked refunded' });

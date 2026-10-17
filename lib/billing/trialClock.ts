@@ -5,8 +5,15 @@
  * His ruling, 2026-10-17 (Commercial's chat): "from session time +48 hours of
  * trading days". Read, and checked by Integration by hand:
  * - the trial is 48 hours, measured from the moment it starts;
- * - an hour counts only inside a paid day (20:00 to 20:00 ET) that ENDS on a
- *   market day. Weekends and exchange holidays never count.
+ * - an hour counts only inside a market day's OWN 24 hours, 20:00 ET the
+ *   evening before to 20:00 ET on the day. Weekends and exchange holidays never
+ *   count.
+ *
+ * NOT THE PAID DAY. Since the fold (his ruling, 2026-10-17) Monday's paid day
+ * runs from Friday 20:00, but his answer the same morning was that weekend and
+ * holiday hours do not count toward a trial. So this clock walks calendar days
+ * (lib/auth/expiry.ts calendarDayOf), as it did before the fold, and its answers
+ * did not change.
  *
  * Worked examples, both tested:
  * - Start Thu 10:00 ET: Thu 10:00-20:00 (10 h) + Fri's paid day (24 h) = 34 h;
@@ -14,12 +21,12 @@
  *   14 h later it ends, Mon 10:00 ET.
  * - Start on a Saturday: nothing counts until Sun 20:00; it ends Tue 20:00.
  *
- * The paid day is the session's own (lib/auth/expiry.ts), so the trial clock and
- * the session boundary use one definition of 20:00 ET, DST included. Durations
- * are real elapsed milliseconds, never wall-clock arithmetic.
+ * The 20:00 ET boundary is the session's own (lib/auth/expiry.ts), so the trial
+ * clock and the session use one definition of it, DST included. Durations are
+ * real elapsed milliseconds, never wall-clock arithmetic.
  */
 
-import { paidDayOf } from '@/lib/billing/store';
+import { calendarDayOf } from '@/lib/auth/expiry';
 import { sessionEndUtc } from '@/lib/market/session';
 
 export const TRIAL_MS = 48 * 60 * 60 * 1000;
@@ -35,7 +42,7 @@ export function trialEndsAt(
   let cursor = start.getTime();
   let remaining = lengthMs;
   for (let i = 0; i < MAX_PAID_DAYS; i += 1) {
-    const day = paidDayOf(new Date(cursor));
+    const day = calendarDayOf(new Date(cursor));
     const dayEnd = sessionEndUtc(day).getTime();
     if (isTradingDay(day)) {
       const span = dayEnd - cursor;
@@ -49,7 +56,7 @@ export function trialEndsAt(
 
 /** The ET months a trial starting at `start` can touch: its own and the next. */
 export function trialCalendarMonths(start: Date): string[] {
-  const first = paidDayOf(start).slice(0, 7);
+  const first = calendarDayOf(start).slice(0, 7);
   const [year, month] = first.split('-').map(Number);
   const next = new Date(Date.UTC(year, month, 1));
   return [first, `${next.getUTCFullYear()}-${String(next.getUTCMonth() + 1).padStart(2, '0')}`];

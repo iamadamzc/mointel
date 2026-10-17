@@ -45,14 +45,14 @@ describe('afterSignIn: the paid day opens at sign-in', () => {
   it('writes the day\'s PENDING charge row for a customer with a card', () => {
     const db = temporaryStore();
     const userId = payingUser(db, 'buyer@example.com');
-    afterSignIn(db, userId, MON_10_ET, () => {});
+    afterSignIn(db, userId, MARKET_DAYS, MON_10_ET, () => {});
     expect(charges(db, userId)).toHaveLength(1);
   });
 
   it('writes nothing for someone who never bought', () => {
     const db = temporaryStore();
     const user = linkIdentity(db, { provider: 'email', subject: 'new@example.com', email: 'new@example.com', emailVerified: true });
-    afterSignIn(db, user.userId, MON_10_ET, () => {});
+    afterSignIn(db, user.userId, MARKET_DAYS, MON_10_ET, () => {});
     expect(charges(db, user.userId)).toHaveLength(0);
   });
 
@@ -60,7 +60,7 @@ describe('afterSignIn: the paid day opens at sign-in', () => {
     const db = temporaryStore();
     const lines: string[] = [];
     expect(() =>
-      afterSignIn(db, 1, MON_10_ET, (l) => lines.push(l), () => {
+      afterSignIn(db, 1, MARKET_DAYS, MON_10_ET, (l) => lines.push(l), () => {
         throw new Error('boom');
       }),
     ).not.toThrow();
