@@ -40,7 +40,7 @@ export const SECTIONS: Section[] = [
     eyebrow: 'BEFORE THE OPEN',
     heading: 'A briefing at each session boundary.',
     body: [
-      'The evening report comes after the after-hours session and says how many names the desk is watching into the next premarket; at 09:25 there is one into the open, at 14:30 into the power hour, and at 16:00 into after-hours. Each opens with a short Summary, then groups its names by what the research found: fresh news found, sources that conflict, only older or secondary news, no catalyst found in our sources, research that could not tell, not researched at this checkpoint. A report that is missing says why; it is never replaced by an older one.',
+      'The evening report comes after the after-hours session and says how many names the desk is watching into the next premarket; at 09:25 there is one into the open, at 14:30 into the power hour, and at 16:00 into after-hours. Each opens with a short Summary, then groups its names by what the research found: recent news found, sources that conflict, only older or secondary news, no catalyst found in our sources, research that could not tell, not researched at this checkpoint. A report that is missing says why; it is never replaced by an older one.',
       'When a new report is published while the page is open, the briefing line says New or Revised until you open it or dismiss it. When you load the page and the current report is unread, it opens, except between 07:00 and 10:00 ET on weekdays, when the board stays in front and the line carries the mark.',
     ],
     shots: [
@@ -48,7 +48,7 @@ export const SECTIONS: Section[] = [
         slot: 12,
         shape: 'panel',
         caption: 'The evening report, {date}: a short Summary, then the names grouped by what the research found. A dated example, not a record or a prediction.',
-        alt: 'A session report: a short Summary paragraph, then name cards grouped under headings such as fresh news found and no catalyst found in our sources.',
+        alt: 'A session report: a short Summary paragraph, then name cards grouped under headings such as recent news found and no catalyst found in our sources.',
       },
       {
         slot: 13,
