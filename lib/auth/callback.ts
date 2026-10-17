@@ -35,6 +35,7 @@ import {
   readIdToken,
   secretsMatch,
 } from '@/lib/auth/oauth';
+import { afterSignIn } from '@/lib/auth/signInHook';
 import { createSession, linkIdentityJoiningVerifiedEmail, type IdentityDatabase } from '@/lib/auth/store';
 
 export interface CallbackDeps {
@@ -152,6 +153,8 @@ export async function completeCallback(deps: CallbackDeps): Promise<CallbackResu
 
   const expiry = sessionExpiry(now);
   const issued = createSession(deps.db, linked.userId, expiry, now);
+  // Open the paid day (lib/auth/signInHook.ts); never blocks the sign-in.
+  afterSignIn(deps.db, linked.userId, now);
   const maxAge = Math.max(1, Math.floor((expiry.expiresAt.getTime() - now.getTime()) / 1000));
 
   return result(303, {

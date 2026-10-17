@@ -36,6 +36,17 @@ KEEP_RELEASES=3
 RUNTIME_UNITS=(mointel-web mointel-research mointel-assess)
 RESTART_MARKET="${RESTART_MARKET:-no}"
 
+# The billing worker runs only once the box has a Stripe key: without one it
+# refuses to start (lib/billing/stripeClient.ts), and an enabled unit would
+# crash-loop. Read here, before anything stops, so stop and start agree. Only
+# whether the line has a value is read; the value is never printed.
+BILLING_UNIT=mointel-billing
+if grep -q '^STRIPE_SECRET_KEY=.' /etc/mointel/mointel.env 2>/dev/null; then
+  BILLING_ON=yes
+else
+  BILLING_ON=no
+fi
+
 log() { echo "[deploy] $*"; }
 fail() { echo "[deploy] FAILED: $*" >&2; exit 1; }
 
@@ -170,6 +181,10 @@ fi
 log "stopping runtime services"
 DOWN_AT=$(date +%s)
 for unit in "${RUNTIME_UNITS[@]}"; do systemctl stop "$unit" || true; done
+# Stopped like the runtime units so it restarts on the new release. SIGTERM lets
+# the pass in flight finish (worker/billing.ts); a PENDING row waits for the
+# next pass, it is never lost.
+systemctl stop "$BILLING_UNIT" 2>/dev/null || true
 if [ "$RESTART_MARKET" = "yes" ]; then
   log "stopping the market worker (RESTART_MARKET=yes)"
   systemctl stop mointel-market || true
@@ -225,6 +240,14 @@ if [ "$RESTART_MARKET" = "yes" ]; then
   systemctl enable mointel-market >/dev/null 2>&1 || true
   systemctl start mointel-market
 fi
+if [ "$BILLING_ON" = "yes" ]; then
+  systemctl enable "$BILLING_UNIT" >/dev/null 2>&1 || true
+  systemctl reset-failed "$BILLING_UNIT" 2>/dev/null || true
+  systemctl start "$BILLING_UNIT" || log "WARNING: $BILLING_UNIT did not start; charges wait until it does"
+else
+  systemctl disable "$BILLING_UNIT" >/dev/null 2>&1 || true
+  log "billing worker not started: no STRIPE_SECRET_KEY in the env file"
+fi
 
 # The watchdog is not part of the runtime and must never fail a deploy: enable
 # its timer if it is not already, and move on either way.
@@ -266,6 +289,10 @@ if [ "$healthy" != "yes" ]; then
       systemctl reset-failed "$unit" 2>/dev/null || true
       systemctl restart "$unit" || echo "[deploy] ROLLBACK: $unit did not restart" >&2
     done
+    if [ "$BILLING_ON" = "yes" ]; then
+      systemctl reset-failed "$BILLING_UNIT" 2>/dev/null || true
+      systemctl restart "$BILLING_UNIT" || echo "[deploy] ROLLBACK: $BILLING_UNIT did not restart" >&2
+    fi
     # THIS CHECK IS THE LOAD-BEARING LINE, NOT THE reset-failed ABOVE. The
     # reset makes the restart possible; the check makes the report honest. On
     # 2026-09-16 the old build was intact, the restart was refused, and this

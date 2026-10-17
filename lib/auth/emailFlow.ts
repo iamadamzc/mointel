@@ -29,6 +29,7 @@ import {
 } from '@/lib/auth/emailLink';
 import { EMAIL_LINK_REPLY_TO, EMAIL_LINK_SENDER, EMAIL_LINK_WORDS as W, rateLimitedMessage } from '@/lib/auth/emailLinkWords';
 import { sessionExpiry } from '@/lib/auth/expiry';
+import { afterSignIn } from '@/lib/auth/signInHook';
 import { createSession, type IdentityDatabase } from '@/lib/auth/store';
 import type { OutgoingEmail, SendResult } from '@/lib/email/ses';
 
@@ -207,6 +208,8 @@ export function completeEmailSignIn(deps: {
 
   const expiry = sessionExpiry(now);
   const issued = createSession(deps.db, resolved.userId, expiry, now);
+  // Open the paid day (lib/auth/signInHook.ts); never blocks the sign-in.
+  afterSignIn(deps.db, resolved.userId, now);
   const maxAge = Math.max(1, Math.floor((expiry.expiresAt.getTime() - now.getTime()) / 1000));
   return {
     status: 303,

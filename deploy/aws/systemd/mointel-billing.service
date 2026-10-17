@@ -1,0 +1,44 @@
+[Unit]
+# Daily charges and plan lapses for TMI Trader (worker/billing.ts, Billing's
+# draft from docs/billing/2026-10-17-billing-interface.md). Talks to Stripe and
+# to Alpaca's calendar. Its own unit so a web deploy never shares a charge's fate.
+#
+# NOT IN mointel.target's Wants=, and deploy.sh enables it ONLY when
+# STRIPE_SECRET_KEY is in the env file. Without the key the worker refuses to
+# start (lib/billing/stripeClient.ts), so an always-on unit would crash-loop
+# from the night it was installed until the night the key arrived. `enable`
+# links it into mointel.target through [Install], so once enabled it starts on
+# boot like the rest of the desk.
+Description=Momentum Intelligence: billing worker
+After=network-online.target mointel-migrate.service
+Wants=network-online.target
+Requires=mointel-migrate.service
+PartOf=mointel.target
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=mointel
+Group=mointel
+WorkingDirectory=/opt/mointel/current
+Environment=NODE_ENV=production
+EnvironmentFile=/etc/mointel/mointel.env
+ExecStart=/usr/bin/node node_modules/tsx/dist/cli.mjs worker/billing.ts
+Restart=always
+RestartSec=10
+KillSignal=SIGTERM
+TimeoutStopSec=30
+SuccessExitStatus=143 SIGTERM
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mointel-billing
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+# It writes identity.db only; the release directory stays read-only.
+ReadWritePaths=/var/lib/mointel
+
+[Install]
+WantedBy=mointel.target

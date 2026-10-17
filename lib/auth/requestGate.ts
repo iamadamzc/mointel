@@ -18,6 +18,9 @@
  *   box's internal credential, which the market worker sends
  *   (`worker/runtime.ts` refreshSheetSymbols, `lib/auth/internalCredential.ts`).
  *   No other route accepts that credential.
+ * - `/api/billing/webhook` is called by Stripe alone, which holds no session.
+ *   It verifies Stripe's signature on the raw body before reading anything
+ *   (`lib/billing/webhookRoute.ts`) and answers 400 without one.
  * - `/review/[token]/*` and `/mcp/[token]` carry their own token guard
  *   (`lib/review/access.ts`). A reviewer holds a token, not a session.
  * `tests/auth/requestGate.test.ts` enumerates `app/api/` so a new route cannot
