@@ -78,7 +78,7 @@ export function capSentences(text: string, max: number): string {
  * The captured word must be a count (COUNT_WORD), so "Each of the names the desk covers had fresh news ..." is not one.
  */
 const COUNT_SENTENCE =
-  /^(?:Of the (?:\d+ )?names the desk covers, (\w+) (?:had|has|have) fresh news|(\w+) of (?:the )?(?:\d+ )?names the desk covers (?:had|has|have) fresh news|Fresh news was found for (\w+) of (?:the )?(?:\d+ )?names the desk covers)[^,;:]*$/i;
+  /^(?:Of the (?:\d+ )?names the desk covers, (\w+) (?:had|has|have) (?:fresh|recent) news|(\w+) of (?:the )?(?:\d+ )?names the desk covers (?:had|has|have) (?:fresh|recent) news|(?:Fresh|Recent) news was found for (\w+) of (?:the )?(?:\d+ )?names the desk covers)[^,;:]*$/i;
 const COUNT_WORD =
   /^(?:\d+|none|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|all)$/i;
 

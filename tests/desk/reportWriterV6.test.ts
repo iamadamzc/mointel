@@ -80,7 +80,7 @@ describe('narrativeSheet v2: the given facts, worded exactly as the model must u
   it('intraday: the leader, then the next covered gainer, whole percents with basis, news and change notes; no cycle label; nothing else', () => {
     const sheet = narrativeSheet(intradayV2);
     expect(sheet[0]).toBe(
-      'leader (ranked first in this range): AAA, up 68 percent from the prior close; news: fresh news found in our sources; catalyst (restate in one short clause, never quote, repeat no number from it unless it is the catalyst\'s own figure): A distribution agreement.',
+      'leader (ranked first in this range): AAA, up 68 percent from the prior close; news: recent news found in our sources; catalyst (restate in one short clause, never quote, repeat no number from it unless it is the catalyst\'s own figure): A distribution agreement.',
     );
     expect(sheet[1]).toBe('next covered gainer (by move): BBB, up 51 percent from the prior close; news: no research at this checkpoint');
     expect(sheet).toContain('since the previous checkpoint, BBB: printed a new high of day');
@@ -89,7 +89,7 @@ describe('narrativeSheet v2: the given facts, worded exactly as the model must u
     expect(stale[0]).toBe('leader (ranked first in this range): AAA, up 68 percent from the prior close; news: only older or secondary news in our sources');
     expect(narrativeSheet(intradayV2).join(' ')).not.toContain('cycle:');
     expect(stale.join(' ')).not.toContain('catalyst (restate');
-    expect(sheet).toContain('fresh news in our sources: 1 of the 12 names the desk covers');
+    expect(sheet).toContain('recent news in our sources: 1 of the 12 names the desk covers');
     expect(sheet.join(' ')).not.toMatch(/range:|breadth|50 percent|carries into the next session/);
   });
 
@@ -99,7 +99,7 @@ describe('narrativeSheet v2: the given facts, worded exactly as the model must u
     expect(sheet).toContain('of those, gave the entire move back (closed at or below the prior close): 0');
     expect(sheet).toContain('of those, kept at least half of the peak gain at the close: 4');
     expect(sheet).toContain('of those, the desk covers: 5');
-    expect(sheet.find((l) => l.startsWith('named mover 1'))).toContain('NXL, ran to 156 percent above the prior close and closed up 76 percent from the prior close; news: fresh news found in our sources');
+    expect(sheet.find((l) => l.startsWith('named mover 1'))).toContain('NXL, ran to 156 percent above the prior close and closed up 76 percent from the prior close; news: recent news found in our sources');
     expect(sheet.join(' ')).not.toContain('cycle:');
     // Writer v6 14: the rank by peak is a given fact, so "the highest peaks" (sentence 2) is supported (10-08 EVENING strike).
     expect(sheet.find((l) => l.startsWith('named mover 1'))).toContain('(of the covered 50 percent movers, the highest peak above the prior close): NXL');
@@ -111,7 +111,7 @@ describe('narrativeSheet v2: the given facts, worded exactly as the model must u
     expect(ah.endsWith('AMOD, up 62 percent')).toBe(true);
     // Given in the facts and NOT printed since writer v6 12 (recapV2 carries an F12b count and a context).
     expect(sheet.join(' ')).not.toMatch(/of the covered 50 percent movers, (?:had|were)|context into the next session|carries into the next session|\$6\.50|\$4\.90|\$19\.20/);
-    expect(sheet.at(-1)).toBe('fresh news in our sources: 2 of the 12 names the desk covers');
+    expect(sheet.at(-1)).toBe('recent news in our sources: 2 of the 12 names the desk covers');
     expect(sheet.join(' ')).not.toMatch(/range:|breadth|no regular-session close|split/);
   });
 });
@@ -143,7 +143,7 @@ describe('factSheetV6: the catalyst story only; tag fields are gone', () => {
     // Commercial's read of e266e871: the recap's gainers are chosen by the regular-session high; sentence 3 is the move alone; no next-session purpose.
     expect(SYSTEM_V6).toContain('on the recap, GAINERS chosen by their regular-session peak; intraday, the leader ranked first in this range (it may be down)');
     // Writer v6 13 (report 25, 128 words): Marketing's intraday named-name line, verbatim (151ca1bb).
-    expect(SYSTEM_V6).toContain('- Intraday: each named name gets its move, its news state in the words the sheet uses, and nothing else about that name (no cycle label, no change note; the cards carry them), except one catalyst clause of twelve words at most, and only when the news state is fresh news found. For every other news state, give the state and nothing more: never restate older or secondary news, and never describe a catalyst the sheet does not give as fresh.');
+    expect(SYSTEM_V6).toContain('- Intraday: each named name gets its move, its news state in the words the sheet uses, and nothing else about that name (no cycle label, no change note; the cards carry them), except one catalyst clause of twelve words at most, and only when the news state is recent news found. For every other news state, give the state and nothing more: never restate older or secondary news, and never describe a catalyst the sheet does not give as recent.');
     expect(SYSTEM_V6).not.toMatch(/day's high|remain relevant into the next one/);
     expect(SYSTEM_V6).toContain('(3) the after-hours name, as its own sentence and about the after-hours move only, in the form "After the close, {TICKER} added {P} percent." with no news, no cycle and no other clause;');
     expect(SYSTEM_V6).not.toContain('ending with the names the desk carries');

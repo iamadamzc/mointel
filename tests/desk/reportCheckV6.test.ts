@@ -349,7 +349,7 @@ describe('ruleStrikes, v6', () => {
     // The checker sees the writer's WORDED facts, never raw JSON (voice run v6b struck a true recap narrative).
     const recapPrompt = buildCheckerPrompt({ ...input(GOOD_RECAP, 'x', recap), kind: 'PREMARKET' as const });
     expect(recapPrompt.user).toContain('among the counted names, ran at least 50 percent above the prior close, on the day (by the regular-session high): 9');
-    expect(recapPrompt.user).toContain('fresh news in our sources: ');
+    expect(recapPrompt.user).toContain('recent news in our sources: ');
     expect(recapPrompt.user).not.toContain('carries into the next session');
     expect(recapPrompt.user).not.toContain('"movers50"');
     const v5 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', null));
@@ -394,6 +394,14 @@ describe('ruleStrikes, v6', () => {
     expect(inferred).not.toContain('2026-09-18 (date only)');
   });
 
+  it('the checker reads that FRESH_FOUND supports "recent news" and never "fresh" (his yes ba8a0b2f; Commercial read 148 condition 1)', () => {
+    for (const prompt of [buildCheckerPrompt(input(GOOD_INTRADAY, 'x', intraday)), buildCheckerPrompt(input(GOOD_INTRADAY, 'x', null))]) {
+      expect(prompt.system).toContain('FRESH_FOUND supports that recent news was found in our sources, and never supports calling that news "fresh".');
+      expect(prompt.system).not.toContain('FRESH_FOUND supports a fresh catalyst');
+      expect(prompt.system).not.toContain('not a fresh catalyst');
+    }
+  });
+
   it('the v6 prompt asks read 82\'s two questions and carve-outs in exactly the words the night scan asks them (nightScan.ts)', () => {
     const v6 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', intraday));
     expect(v6.system).toContain(`${ADVICE_ASK}\n${FORECAST_ASK}\n`);
@@ -406,10 +414,10 @@ describe('ruleStrikes, v6', () => {
     const given = ['a sheet line only another writer was given: AAA, down 12 percent from the prior close'];
     const other = buildCheckerPrompt({ ...input(GOOD_INTRADAY, 'x', intraday), narrativeSheet: given });
     expect(other.user).toContain(`worded exactly as the writer was given them:\n  ${given[0]}`);
-    expect(other.user).not.toContain('fresh news in our sources: ');
+    expect(other.user).not.toContain('recent news in our sources: ');
     const v6 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', intraday));
     expect(v6.user).not.toContain(given[0]);
-    expect(v6.user).toContain('fresh news in our sources: ');
+    expect(v6.user).toContain('recent news in our sources: ');
   });
 });
 

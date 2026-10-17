@@ -834,8 +834,11 @@ function kindMoment(input: Pick<CheckInput, 'kind' | 'revision'>): string {
 
 /** The stored fields, rendered by the CHECKER -- never the writer's sheet. */
 
-/** v5's checker prompt version; v4's stays `REPORT_CHECKER_PROMPT_VERSION` (2), which its frozen harnesses ran. */
-export const REPORT_CHECKER_PROMPT_VERSION_V5 = 3;
+/**
+ * v5's checker prompt version; v4's stays `REPORT_CHECKER_PROMPT_VERSION` (2), which its frozen harnesses ran.
+ * 4: FRESH_FOUND supports "recent news", never "fresh" (his "b" and his "yes" to the exact strings (Integration chat uuid 2c3c548c; Research chat uuid ba8a0b2f, 2026-10-16), Marketing 7266c0d7, Commercial read 148).
+ */
+export const REPORT_CHECKER_PROMPT_VERSION_V5 = 4;
 
 /**
  * v5 adds what a name's RESEARCH supports, read from the same as-of block the
@@ -854,7 +857,7 @@ const CHECKER_SYSTEM_V5 = [
   '- "not researched yet" is supported for a name with no research.',
   'The OVERALL line (id O) restates the after-hours totals given: supported only if every count it states equals them, for the range given, and it names no ticker.',
   'TIMES in the research: each has an "et" reading already converted to Eastern time; the raw values are UTC. Judge a stated time against the "et" reading only. A time with no zone has no clock at all.',
-  'CATALYST STATUS: NONE_FOUND supports "no catalyst found in our sources"; UNKNOWN supports only that the analysis reached no conclusion (never that nothing was found); SECONDARY_STALE supports that only older or secondary news was found and that it is not a fresh catalyst; FRESH_FOUND supports a fresh catalyst.',
+  'CATALYST STATUS: NONE_FOUND supports "no catalyst found in our sources"; UNKNOWN supports only that the analysis reached no conclusion (never that nothing was found); SECONDARY_STALE supports that only older or secondary news was found; FRESH_FOUND supports that recent news was found in our sources, and never supports calling that news "fresh".',
 ].join('\n');
 
 /**
@@ -880,8 +883,10 @@ const CHECKER_SYSTEM_V5 = [
  * 18: the times in the research it is shown read as the writer and the rules read them (`whenReading`): a clock only
  * where a cited EXACT or INFERRED source carries it, else the stored calendar date. No prompt text changed; the data
  * did (report 50, 2026-10-15: WETO's date struck; Integration 41st's ruling, a defect fix inside L13).
+ * 19: the catalyst-status line it reads (CHECKER_SYSTEM_V5) says FRESH_FOUND supports "recent news" and never
+ * "fresh" for the group: the group holds RECENT (yesterday) names too (his "b" and his "yes" to the exact strings (Integration chat uuid 2c3c548c; Research chat uuid ba8a0b2f, 2026-10-16), Marketing 7266c0d7, Commercial read 148).
  */
-export const REPORT_CHECKER_PROMPT_VERSION_V6 = 18;
+export const REPORT_CHECKER_PROMPT_VERSION_V6 = 19;
 
 /**
  * Read 82 (2)(i)'s two questions, VERBATIM, and its carve-out with six examples drawn from the 46 real deal lines

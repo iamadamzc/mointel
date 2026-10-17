@@ -76,7 +76,7 @@ const pathOf = (from: number, high: number, now: number, fromBasis: ReportPath['
 
 /** v6's per-state phrases (writerV6.ts NEWS_WORDS): the words the model repeated name after name. */
 const V6_STATE_WORDS = [
-  'fresh news found in our sources',
+  'recent news found in our sources',
   'only older or secondary news in our sources',
   'sources that conflict',
   'research that could not tell',
@@ -117,8 +117,8 @@ describe('v7 hands the model facts, not words', () => {
     const sheet = narrativeSheetV7(intraday).join('\n');
     expect(sheet).toContain('ranked first in this range (it may be down): MI, up 806 percent from the prior close; news state: older or secondary');
     expect(sheet).not.toContain('An old placement.');
-    expect(sheet).toContain('the fresh catalyst (restate briefly, never quote): A license agreement.');
-    expect(sheet).toContain('names the desk covers that had fresh news in our sources: 2 of 12');
+    expect(sheet).toContain('the recent news (restate briefly, never quote): A license agreement.');
+    expect(sheet).toContain('names the desk covers that had recent news in our sources: 2 of 12');
     const recapSheet = narrativeSheetV7(recap).join('\n');
     expect(recapSheet).toContain('ran at least 50 percent above the prior close on the day (by the regular-session high): 9');
     expect(recapSheet).toContain('kept at least half of the peak gain at the close: 4');
@@ -231,7 +231,7 @@ describe('v7 system prompt: the character, the must-include list, the truth rule
     expect(names.map((line) => line.split('.')[0])).toEqual(['ALEC', 'MI', 'QTEX']);
     for (const line of names) expect(line).not.toMatch(/percent|%|\bup from\b|\bdown from\b|\bhigh\b|prior close/);
     // Integration's cut: no specimen name line opens on a state phrase, which a model would repeat name after name.
-    for (const line of names) expect(line.split('. ').slice(1).join('. ')).not.toMatch(/^\w+ had fresh news/);
+    for (const line of names) expect(line.split('. ').slice(1).join('. ')).not.toMatch(/^\w+ had (?:fresh|recent) news/);
   });
 
   it("carries Commercial read 81's three required rules", () => {
@@ -281,7 +281,7 @@ describe('version 7: the recap Summary fix (L13) and Commercial read 100 notes 1
     expect(SYSTEM_V7).toContain(
       "ONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (an intraday report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given. A recap's Summary instead follows the counts and the named movers it is given, and names only the tickers its facts list):",
     );
-    expect(REPORT_WRITER_PROMPT_VERSION_V7).toBe(13);
+    expect(REPORT_WRITER_PROMPT_VERSION_V7).toBe(15);
   });
 
   it('version 12: the counterparty exception, under USING THE FACTS right after the joining-words line, never in the voice paragraph', () => {
@@ -305,10 +305,10 @@ describe('version 11: three lines for the intraday Summary (Marketing f6562b63, 
   const LINES = [
     '- Never use a report label from the facts, such as "Intraday", in the Summary, and do not say when the report was written: the report\'s header says it.',
     "- A change note is restated once, in the facts' own words, and nothing is added to it: no time, and no 'when' clause.",
-    '- Join a move to its news with "with" ("up 20 percent from the prior close, with fresh news in our sources"), never with a word that says one caused the other.',
+    '- Join a move to its news with "with" ("up 20 percent from the prior close, with recent news in our sources"), never with a word that says one caused the other.',
   ];
   const INTRADAY_BULLET =
-    '- Intraday: the name ranked first in this range (it may be down) and the next named gainers, each with its move and its own news; and how many of the names the desk covers had fresh news in our sources.';
+    '- Intraday: the name ranked first in this range (it may be down) and the next named gainers, each with its move and its own news; and how many of the names the desk covers had recent news in our sources.';
 
   it('each line is in SYSTEM_V7 once, in order, right after the Intraday bullet under THE SUMMARY', () => {
     for (const line of LINES) expect(SYSTEM_V7.split(line).length - 1).toBe(1);

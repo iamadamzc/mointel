@@ -163,7 +163,7 @@ describe('the report pipeline, v6 wiring', () => {
     expect(run.status).toBe('PUBLISHED');
     if (run.status !== 'PUBLISHED') return;
     expect(run.report.sections.map((s) => [s.heading, s.lines.map((l) => l.ticker)])).toEqual([
-      ['FRESH NEWS FOUND', ['AAA']],
+      ['RECENT NEWS FOUND', ['AAA']],
       ['NOT RESEARCHED AT THIS CHECKPOINT', ['BBB']],
     ]);
     const lines = run.report.sections.flatMap((s) => s.lines);
