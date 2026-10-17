@@ -29,7 +29,7 @@
 
 **Replace** "A sign-in after 20:00 runs until 20:00 the following day, because a session that has already expired is not a session. It follows the calendar day rather than the trading day, so a Saturday sign-in ends at 20:00 that Saturday." **with:**
 
-"A sign-in after 20:00 runs until 20:00 the next trading day, because a session that has already expired is not a session. It follows the trading day rather than the calendar day, so a sign-in on a Saturday, a Sunday or a market holiday runs until 20:00 on the next trading day: up to 72 hours over a weekend, and longer over a holiday weekend."
+"A sign-in after 20:00 can run until 20:00 the next trading day, because a session that has already expired is not a session. It follows the trading day rather than the calendar day, so a sign-in on a Saturday, a Sunday or a market holiday can run until 20:00 on the next trading day: up to 72 hours over a weekend, and longer over a holiday weekend."
 
 ## 4. The sentence beside the Daily pay button (`CHECKOUT.legalDaily`)
 
@@ -49,6 +49,6 @@ True on a weekend too: Checkout charges the $5.50 then, for Monday. So the close
 
 ## 6. Questions that are not words
 
-1. **The calendar fallback (scope, "One design choice").** If the calendar cannot be read at sign-in, the session ends 20:00 that calendar day, shorter than section 3 says. "Runs until" is then too long in that rare case. Section 3 is true as a ceiling; I will say "can run until" if Billing builds the fallback. Billing to confirm it exists in the build.
+1. **The calendar fallback (scope, "One design choice").** If the calendar cannot be read at sign-in, the session ends 20:00 that calendar day, shorter than section 3 says. "Runs until" would then be too long in that rare case, so section 3 says "can run until", true as a ceiling either way. Billing to confirm whether the fallback exists; the words do not wait on it.
 2. **A plan renewing on a weekend.** A period that ends on a Saturday keeps access to Monday 8:00pm ET, and the renewal charge is taken at the period end (a Saturday). Billing to confirm the renewed period then does not also run from Saturday, which would make Saturday to Monday paid twice or the new period shorter by a day. The terms' "A plan covers every paid day in its period" depends on the answer.
 3. **Existing weekend rows across the deploy** (scope, "Rows that exist across the switch"): no words needed.
