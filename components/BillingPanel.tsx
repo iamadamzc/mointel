@@ -144,7 +144,7 @@ export function BillingPanel({
                       <td className="py-1.5">{row.status}</td>
                       <td className="py-1.5 text-right">
                         {row.receiptUrl ? (
-                          <a href={row.receiptUrl} target="_blank" rel="noreferrer" className="text-accent hover:underline">
+                          <a href={row.receiptUrl} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
                             {W.receipt}
                           </a>
                         ) : null}

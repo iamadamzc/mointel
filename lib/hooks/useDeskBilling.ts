@@ -60,6 +60,8 @@ export function useDeskBilling(): {
   // Update card: Stripe's portal, in a new tab so the board stays live on this one (Design's band design, section 5).
   const onUpdateCard = useCallback(() => {
     const tab = window.open('', '_blank');
+    // The same protection a rel="noopener" link gets: the portal page cannot reach back into the desk.
+    if (tab) tab.opener = null;
     void fetch(`${apiBase}/billing/portal`, { method: 'POST', credentials: 'same-origin' })
       .then(async (response) => {
         const body = response.ok ? ((await response.json()) as { url?: string }) : {};
