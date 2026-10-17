@@ -40,10 +40,29 @@ export const PRICING = {
   noRefunds: 'No refunds.',
 } as const;
 
-/** The trial block above the four plans (free trial words, section 1). */
+/**
+ * The trial block above the four plans. Length, table and card line: his "yes, approved"
+ * (Integration chat bf3b407e, uuid 0d2b3467, 2026-10-17T11:34:11.460Z) to
+ * docs/integration/2026-10-17-free-trial-words-final-for-him.md @666038e6 ("The pricing
+ * page, free trial block"); Marketing 8ec74cae v6. The button is unchanged (free trial
+ * words, section 1). The table's end times come from the trial clock (lib/billing/trialClock.ts).
+ */
 export const PRICING_TRIAL = {
-  headline: 'Try it free for 48 hours.',
-  line: 'The clock does not run on days the US market is closed. You need a card to start, only to stop repeat trials. We do not charge it, now or when the trial ends, and we do not keep it: we keep only a code that identifies it. The free trial is once per person and per card.',
+  headline: 'Try it free for 48 hours, not counting weekends and market holidays.',
+  clock: 'The clock stops from 8:00pm ET Friday to 8:00pm ET Sunday, and over a market holiday.',
+  tableLead: 'In a week with no market holiday:',
+  tableHeads: ['If you start', 'Your trial ends'],
+  examples: [
+    ['Tuesday at 10:00am ET', 'Thursday at 10:00am ET'],
+    ['Wednesday at 5:00am ET', 'Friday at 5:00am ET'],
+    ['Thursday at 10:00am ET', 'Monday at 10:00am ET'],
+    ['Friday at 10:00am ET', 'Tuesday at 10:00am ET'],
+    ['Friday at 9:00pm ET', 'Tuesday at 8:00pm ET'],
+    ['Saturday at 2:00pm ET', 'Tuesday at 8:00pm ET'],
+    ['Sunday at 9:00pm ET', 'Tuesday at 9:00pm ET'],
+  ],
+  underTable: 'A start between 8:00pm ET Friday and 8:00pm ET Sunday counts from 8:00pm ET Sunday.',
+  card: 'We ask for a card only so the same card cannot start a second trial. The trial never charges it, and we do not keep it: we keep only a code that identifies it. The free trial is once per person and per card.',
   button: 'Start free trial',
 } as const;
 
@@ -148,12 +167,17 @@ export const AGREE = {
   after: '.',
 } as const;
 
-/** The trial start screen (free trial words, section 2). */
+/**
+ * The trial start screen (free trial words, section 2). The line under the headline and
+ * the sentence beside the button: his "yes, approved" (uuid 0d2b3467) to @666038e6 ("The
+ * trial start page").
+ */
 export const TRIAL_START = {
   headline: 'Start your free trial',
-  underHeadline: (trialEnd: string) => `Free for 48 hours. Your trial ends at ${trialEnd}.`,
+  underHeadline: (trialEnd: string) =>
+    `Free for 48 hours, not counting weekends and market holidays. Your trial ends around ${trialEnd}.`,
   sentence:
-    'Free for 48 hours. The clock does not run on days the US market is closed. We use your card only to check that it has not been used for a trial before. We do not charge it, now or when the trial ends, and we do not keep it: we keep only a code that identifies it, so the same card cannot start a second trial. We ask Stripe to remove the card from your account at once, so it can never be charged. Stripe keeps a record of the card under its own privacy policy. When the trial ends, nothing is charged and your access ends. Your bank may show a small pending amount while the card is checked. It is not a charge, and we never take it.',
+    'Free for 48 hours, not counting weekends and market holidays. The clock stops from 8:00pm ET Friday to 8:00pm ET Sunday, and over a market holiday. In a week with no market holiday, a trial started on a Thursday at 10:00am ET ends on the Monday at 10:00am ET. We ask for a card only so the same card cannot start a second trial. The trial never charges it, and we do not keep it: we keep only a code that identifies it. We ask Stripe to remove the card from your account at once, so it can never be charged. Stripe keeps a record of the card under its own privacy policy. When the trial ends, nothing is charged and your access ends. Your bank may show a small pending amount while the card is checked. It is not a charge, and we never take it.',
   button: 'Start free trial',
 } as const;
 

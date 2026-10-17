@@ -186,7 +186,13 @@ describe('/pricing', () => {
     for (const line of ['$5.50 a day', '$89 a month', '$499 for six months', '$899 a year']) expect(page).toContain(line);
     expect(page).toContain('About 23% less than paying daily. About $4.26 a day.*');
     expect(page).toContain('*Against $5.50 for every trading day in the period');
-    expect(page).toContain('Try it free for 48 hours.');
+    expect(page).toContain('Try it free for 48 hours, not counting weekends and market holidays.');
+    expect(page).toContain('The clock stops from 8:00pm ET Friday to 8:00pm ET Sunday, and over a market holiday.');
+    expect(page).toContain('<caption');
+    expect(page).toContain('Saturday at 2:00pm ET');
+    expect(page).toContain('A start between 8:00pm ET Friday and 8:00pm ET Sunday counts from 8:00pm ET Sunday.');
+    expect(page).toContain('We ask for a card only so the same card cannot start a second trial.');
+    expect(page).not.toContain('The clock does not run on days the US market is closed.');
     expect(page).toContain('No refunds.');
     expect(page).toContain('href="/checkout?plan=six-months"');
     expect(page).toContain('href="/trial"');
@@ -262,7 +268,10 @@ describe('/trial and POST /trial/start', () => {
   it('shows the end time at the start, from the trading-hours clock', async () => {
     vi.setSystemTime(new Date('2026-10-15T14:00:00Z')); // Thursday 10:00 ET, his example
     const page = html(await TrialPage(params({})));
-    expect(page).toContain('Free for 48 hours. Your trial ends at 10:00am ET on Monday, October 19.');
+    expect(page).toContain(
+      'Free for 48 hours, not counting weekends and market holidays. Your trial ends around 10:00am ET on Monday, October 19.',
+    );
+    expect(page).toContain('a trial started on a Thursday at 10:00am ET ends on the Monday at 10:00am ET.');
     expect(page).toContain('Your bank may show a small pending amount while the card is checked.');
     expect(page).toContain('action="/trial/start"');
   });
