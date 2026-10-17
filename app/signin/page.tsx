@@ -169,7 +169,7 @@ export default async function SignInPage({
           <Link href="/terms" className="text-[13px] text-ink-3 hover:text-ink-1">
             Terms
           </Link>
-          <a href="mailto:info@andromedagenius.com" className="text-[13px] text-ink-3 hover:text-ink-1">
+          <a href="mailto:desk@tmitrader.com" className="text-[13px] text-ink-3 hover:text-ink-1">
             Contact
           </a>
         </nav>

@@ -101,7 +101,7 @@ export function NotAdmitted({ email }: { email?: string | null }) {
 
           <div className="flex flex-col gap-3">
             <a
-              href="mailto:info@andromedagenius.com?subject=Desk%20access"
+              href="mailto:desk@tmitrader.com?subject=Desk%20access"
               className="flex min-h-12 items-center justify-center rounded bg-ink px-6 text-base font-semibold text-desk md:h-12 md:text-[15px]"
             >
               Ask about access
