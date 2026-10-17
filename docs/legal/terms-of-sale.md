@@ -34,6 +34,9 @@ drafted: 2026-10-17
     - the free trial row in section 1's table, section 2's first sentence, and section 9
       (docs/commercial/2026-10-17-free-trial-strings.md section 2), with the sentence
       "A free trial is not available to an account that has already bought a day or a plan."
+    - the trial's card line in Marketing's final wording (8ec74cae, his "yes, approved",
+      Integration chat bf3b407e, uuid 0d2b3467, 2026-10-17T11:34:11.460Z): "We ask for a card
+      only so the same card cannot start a second trial. The trial never charges it."
     - the trial's length in Marketing's wording (b3288fdc): "48 hours, not counting weekends
       and market holidays" (his turn, uuid 98d98873, rejected "of trading days"), and the exact
       stop times, which match lib/billing/trialClock.ts at f23e4422.
@@ -166,9 +169,9 @@ holidays. The clock stops from 8:00pm ET on Friday until 8:00pm ET on Sunday, an
 8:00pm ET the evening before until 8:00pm ET on the holiday. Each person can
 take the trial once, and each card can start a trial once.
 
-To start, you enter a card. We use it to check that it has not already been
-used for a trial. **We do not charge it, now or when the trial ends, and we
-never will.** As soon as it has been checked, we ask Stripe, our payment
+To start, you enter a card. We ask for a card only so the same card cannot
+start a second trial. **The trial never charges it.** As soon as it has been
+checked, we ask Stripe, our payment
 processor, to remove it from your account, so it cannot be charged. We do not
 see your card number and we do not keep your card. Stripe, which takes the
 card, keeps a record of it under Stripe's own privacy policy. Your bank may
