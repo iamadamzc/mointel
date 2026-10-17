@@ -7,7 +7,7 @@
 - "$5 per day of use. it has been discussed throuroughly." (uuid 01659ed1, 2026-10-16T23:27:12.069Z)
 - "$5/day. Day starts at the close of AH. So a user starts their day with the report going into premarket the next day. cards will automatically be charged per day. if a user chooses to do monthly, 6 month or annual, caluclate the logical price breaks for such a scenario." (his latest message in that chat)
 - "we'll make the daily $5.50 to cover the stripe charge." (uuid dea68bce, 2026-10-16T23:33:31.014Z)
-- Provider: Stripe, one new account for Andromeda Genius with TMI as a product under it (his 2026-10-05 decision in the corporate-office record, relayed by Integration; I did not find that entry in `A:\corporate-office\company\decisions.md`, and I cite what Integration relayed).
+- Provider: Stripe, one new account for Andromeda Genius with TMI as a product under it (his 2026-10-05 decision in the corporate-office record, relayed by Integration; I did not find that entry in `A:\corporate-office\company\decisions.md`, and I cite what Integration relayed). The seller is Andromeda Genius LLC, not an Inc. (section 2, the Stripe account).
 
 **Two supersessions, said once.** His request for monthly, 6-month and annual replaces his 2026-09-27 "i will not do monthly. we can do daily, or annual"; the newer word wins. And "no beta" replaces his 2026-10-05 "free beta, limited invites" and corporate-office D-076 ("TMI launch will be beta, not paying customers. Once validated through beta, we'll negotiate the agreements needed. But i want everything piped for GA."). With no beta, the agreements D-076 deferred to "once validated" now come before the first paying customer. That is one item below (the licence).
 
@@ -113,7 +113,7 @@ Second message: "take whoever pays, say it's for people trading the US market. t
 ### Open
 
 **The Stripe account for Andromeda Genius.** Stripe is decided. What I could not establish:
-- The existing Stripe account is a Malta-country account, "not portable"; whether it is registered as an individual or a business was left open (corporate-office `revenue/pre-contact-checks.md`, 2026-09-15). TMI sells as Andromeda Genius, Inc., a Texas company formed 2026-09-24 (`company/decisions.md:3775`). That file says the Texas route runs "EIN → bank → a new Stripe account". I could not find whether the EIN, the business bank account and the new account exist today. If any step is missing it is the longest item in the sequence, because it is not code.
+- The existing Stripe account is a Malta-country account, "not portable"; whether it is registered as an individual or a business was left open (corporate-office `revenue/pre-contact-checks.md`, 2026-09-15). TMI sells as **Andromeda Genius LLC**, a Texas limited liability company effective 2026-09-24 (not an Inc.; corrected 2026-10-17). Billing-tmi reports, from his documents and not from mine: the Texas certificate of filing (file 806812738), an IRS notice dated 2026-10-16 issuing the EIN to the LLC with him as sole member, and a new Stripe account for the LLC (company, single-member LLC, tax ID provided). I did not open those documents. The corporate-office file's route was "EIN → bank → a new Stripe account" (`company/decisions.md`; line 3775 there still says Inc., the corporate office's record). What Billing reports does not mention a business bank account; if it is missing it is the longest item in the sequence, because it is not code.
 - Corporate-office D-014 (2026-09-15): no seat sets up Stripe products, prices, webhooks or checkout; it goes to the project thread, by Stripe's MCP or CLI, once the shape is settled. For mointel that means Ops and Web build it. The account and the keys are his; seats never create accounts or enter keys.
 - Stripe may question the business. It lists "Investment and brokerage services" as restricted: "additional due diligence... proof of relevant licenses or more details about your business model" (*read today*). TMI is an information service, not an investment or brokerage service, but Stripe decides the classification, and I do not know until the account applies. Stripe also prohibits "get rich quick" schemes, one more reason the copy stays inside `docs/marketing/what-it-is-not.md`.
 
@@ -164,7 +164,7 @@ No dates. The paced items are his (the answers, the licence, the Stripe account,
 
 1. **His yes to the exact strings** (the words and legal text in item 4), and the one yes or no in section 2.
 2. **The licence in place** (his word). Before the first paying customer at the latest.
-3. **The Stripe account for Andromeda Genius, test mode, keys** (his), including Stripe's own review of the business. If the EIN or the bank account is missing, this is the long item.
+3. **The Stripe account for Andromeda Genius, test mode, keys** (his), including Stripe's own review of the business. If the business bank account is missing, this is the long item.
 4. **Words and legal text** (Commercial, Marketing, Web), then his yes to the exact strings:
    - terms of service: section 2 ("There is no public sign-up") and section 3 ("Your invitation was issued to an email address"), and the payment clauses;
    - terms of sale: the draft exists for the daily day; its section 2 still describes a self-serve card save, and it has nothing yet on the longer plans, tax, or the non-trading-day rule; its refund section becomes his "no refunds" rule, with the plans and automatic renewal added;
@@ -178,7 +178,7 @@ No dates. The paced items are his (the answers, the licence, the Stripe account,
 ## 5. What I could not establish
 
 - Whether Stripe will take the business as an information service, and whether it would ask for licences.
-- Whether the Texas company has an EIN, a business bank account and the new Stripe account today.
+- Whether the LLC has a business bank account today (Billing reports the EIN and the new Stripe account, not a bank account).
 - Whether a merchant of record supports a daily saved-card charge, and whether Paddle would accept the product.
 - What an exchange would assess against a seller that redistributes, beyond reclassification and retroactive fees.
 - The exchange fee amounts behind Massive's expansions and Databento's external distribution for US equities, and how the 2027-04-01 changes land.
