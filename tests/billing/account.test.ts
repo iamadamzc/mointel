@@ -61,6 +61,7 @@ describe('billingStateFor', () => {
       endedAt: null,
       trial: null,
       plan: null,
+      paidThroughAt: null,
       cardOnFile: false,
       customer: false,
       latestCharge: null,
@@ -108,6 +109,22 @@ describe('billingStateFor', () => {
     });
   });
 
+  it('while a retry is pending after a card update, the band stays up with the original deadline', () => {
+    const db = temporaryStore();
+    const userId = buyer(db);
+    const row = ensurePendingCharge(db, userId, '2026-10-19', MON_10_ET);
+    markFailed(db, row.id, 'card_declined', null, MON_10_ET);
+    requeueFailedCharge(db, userId, '2026-10-19');
+    const state = billingStateFor(db, userId, new Date(MON_10_ET.getTime() + 5 * 60_000));
+    expect(state.latestCharge).toMatchObject({ state: 'PENDING' });
+    expect(state.grace).toEqual({
+      kind: 'daily',
+      amountCents: 550,
+      declinedAgain: false,
+      endsAt: new Date(MON_10_ET.getTime() + GRACE_MS).toISOString(),
+    });
+  });
+
   it('charge_first carries when the last lapsed hour ended the session', () => {
     const db = temporaryStore();
     const userId = buyer(db);
@@ -140,9 +157,12 @@ describe('billingStateFor', () => {
     expect(openPaidDay(db, userId, TUE_10_ET)).toMatchObject({ kind: 'pending', door: 'charge_first' });
     expect(billingStateFor(db, userId, TUE_10_ET, { BILLING_LAPSED_DOOR: 'one_hour' }).door).toBe('ok');
 
+    expect(billingStateFor(db, userId, TUE_10_ET).paidThroughAt).toBeNull();
     const tuesday = chargeFor(db, userId, '2026-10-20')!;
     markSucceeded(db, tuesday.id, 'pi_ok', TUE_10_ET);
     expect(billingStateFor(db, userId, TUE_10_ET).door).toBe('ok');
+    // Paid through the end of Tuesday's paid day, 20:00 ET (EDT) = 00:00Z.
+    expect(billingStateFor(db, userId, TUE_10_ET).paidThroughAt).toBe('2026-10-21T00:00:00.000Z');
   });
 
   it('on the day the card first fails, sign-in and the state agree: the hour, not charge_first', () => {

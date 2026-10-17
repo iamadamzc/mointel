@@ -35,6 +35,7 @@ import {
   type ChargeSource,
   type ChargeState,
 } from '@/lib/billing/store';
+import { sessionEndUtc } from '@/lib/market/session';
 
 /**
  * What the page shows in place of the board, if anything.
@@ -76,6 +77,12 @@ export interface DeskBillingState {
   endedAt: string | null;
   trial: { endsAt: string | null } | null;
   plan: DeskPlan | null;
+  /**
+   * A DAILY buyer's paid-through instant: when the current paid day ends
+   * (20:00 ET), set only when today's daily charge has succeeded. Null otherwise.
+   * The client never computes the boundary.
+   */
+  paidThroughAt: string | null;
   cardOnFile: boolean;
   /** Whether this person has a Stripe customer at all (never bought: false). */
   customer: boolean;
@@ -138,6 +145,7 @@ export function billingStateFor(
     endedAt: door === 'charge_first' ? lastLapsedGraceBefore(db, userId, now) : null,
     trial: trial.state === 'active' ? { endsAt: trial.endsAt } : null,
     plan: displayPlan(db, userId, today),
+    paidThroughAt: chargeFor(db, userId, today)?.state === 'SUCCEEDED' ? sessionEndUtc(today).toISOString() : null,
     cardOnFile: hasCardOnFile(db, userId),
     customer,
     latestCharge: latestCharge(db, userId),

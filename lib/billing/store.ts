@@ -489,12 +489,14 @@ export function billingStatus(db: IdentityDatabase, userId: number, now: Date = 
   const charge = db
     .prepare(
       `SELECT grace_until AS endsAt, amount_cents AS amountCents, attempts FROM billing_charges
-        WHERE user_id = ? AND et_date = ? AND state = 'FAILED' AND grace_until > ?`,
+        WHERE user_id = ? AND et_date = ? AND state IN ('FAILED', 'PENDING') AND grace_until > ?`,
     )
     .get(userId, paidDayOf(now), at) as { endsAt: string; amountCents: number; attempts: number } | undefined;
   if (charge) {
-    // attempts counts definite outcomes: 1 is the first decline, 2+ a retry
-    // after a card update that was declined too.
+    // PENDING too: a retry after a card update puts the row back to PENDING
+    // while the original deadline stands, and the band must stay up ("checking")
+    // until the retry answers. attempts counts definite outcomes: 1 is the first
+    // decline, 2+ a retry that was declined too.
     return {
       state: 'grace',
       kind: 'daily',
