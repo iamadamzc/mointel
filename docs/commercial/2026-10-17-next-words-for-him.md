@@ -46,14 +46,14 @@ You approved an earlier version ("Access is by purchase. Anyone who is 18 or old
 **Terms, section 2, third bullet.**
 Now: "You sign in with a Google account. You need to be entitled to use that account."
 Becomes: "You sign in with a Google account, or with a link we email you. You need to be entitled to use that account or that email address."
-New text for sign-in by email link: I did not find your yes to these exact words, only to the feature.
+You approved this (your "1, yes" of 2026-10-17T03:54:19.866Z to the email sign-in wording, my `60caccb5`). No change since your yes.
 
-**Terms, section 3, first paragraph.** Add at the end: "A sign-in link works for whoever opens it. Do not forward it." New text, same note.
+**Terms, section 3, first paragraph.** Add at the end: "A sign-in link works for whoever opens it. Do not forward it." You approved this (your "1, yes" of 2026-10-17T03:54:19.866Z to the email sign-in wording, my `60caccb5`). No change since your yes.
 
 **Terms, section 3, second paragraph.**
 Now: "Your invitation was issued to an email address. It does not transfer to another person, another company, or another desk."
 Becomes: "Your access is tied to the email address you sign in with, whether by Google or by link. It does not transfer to another person, another company, or another desk."
-You approved an earlier version that said "the Google account you sign in with". This one covers the email link.
+You approved this (your "1, yes" of 2026-10-17T03:54:19.866Z to the email sign-in wording, my `60caccb5`). It replaced the earlier approved version that said "the Google account you sign in with". No change since your yes.
 
 **Privacy policy, section 8, the sentence before.**
 Now: "It runs on servers in us-east-1 and your data is stored there."
