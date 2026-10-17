@@ -16,7 +16,7 @@ import type Stripe from 'stripe';
 
 import type { IdentityDatabase } from '@/lib/auth/store';
 import type { MarketDays } from '@/lib/auth/expiry';
-import { cardFailedBeforeToday } from '@/lib/billing/charge';
+import { cardFailedBeforeToday, hourSpent } from '@/lib/billing/charge';
 import { lapsedDoor, RULED_AMOUNT_CENTS, type PlanKey } from '@/lib/billing/config';
 import {
   billingStatus,
@@ -177,9 +177,13 @@ export function billingStateFor(
     else if (planEndedByCancel(db, userId, today)) [door, buyCase] = ['buy_first', 'plan_ended'];
     else if (!hasBought(db, userId) && !hasCardOnFile(db, userId)) [door, buyCase] = ['buy_first', 'no_access'];
     else {
-      // The same rule openPaidDay uses: from the paid day AFTER the first failure.
-      const paidToday = chargeFor(db, userId, today)?.state === 'SUCCEEDED';
-      if (cardFailedBeforeToday(db, userId, isMarketDay, now) && !paidToday && lapsedDoor(env) === 'charge_first') {
+      // The same rules openPaidDay uses: today's hour already spent, or a
+      // failure on an earlier paid day under his door rule.
+      const todayRow = chargeFor(db, userId, today);
+      const paidToday = todayRow?.state === 'SUCCEEDED';
+      if (hourSpent(todayRow, now)) {
+        door = 'charge_first';
+      } else if (cardFailedBeforeToday(db, userId, isMarketDay, now) && !paidToday && lapsedDoor(env) === 'charge_first') {
         door = 'charge_first';
       }
     }

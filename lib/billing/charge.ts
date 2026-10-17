@@ -98,8 +98,31 @@ export function openPaidDay(
   // buyer who saved a card on a weekend has a card on file and goes on.
   if (!hasBought(db, userId) && !hasCardOnFile(db, userId)) return { kind: 'buy_first' };
   const charge = ensurePendingCharge(db, userId, etDate, now);
+  // The hour is once per paid day: spent today, a new sign-in gets the
+  // update-card screen, whatever the lapsed-door switch says.
+  if (hourSpent(charge, now)) return { kind: 'pending', charge, door: 'charge_first' };
   const door = cardFailedBeforeToday(db, userId, isMarketDay, now) ? lapsedDoor(env) : 'open';
   return { kind: 'pending', charge, door };
+}
+
+/**
+ * HAS TODAY'S ONE HOUR RUN OUT? Today's row was declined (FAILED) and its hour
+ * is over, or it was declined, the hour ran out, and a card update put it back
+ * to PENDING for the retry. His rulings: one hour, once; retry only on a card
+ * update; a failing card sees the update-card screen. Without this a sign-in
+ * after the hour got a fresh session and the board for the rest of the paid
+ * day (found 2026-10-17, Integration 43rd).
+ *
+ * The session is NOT ended: the update-card screen and the card update itself
+ * need one, exactly as on his next-day door.
+ */
+export function hourSpent(row: ChargeRow | null, now: Date): boolean {
+  return (
+    row !== null &&
+    (row.state === 'FAILED' || row.state === 'PENDING') &&
+    row.graceUntil !== null &&
+    Date.parse(row.graceUntil) <= now.getTime()
+  );
 }
 
 /**

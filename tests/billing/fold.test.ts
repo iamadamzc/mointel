@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { CALENDAR_DAYS, sessionExpiry } from '@/lib/auth/expiry';
 import { createSession, resolveSession } from '@/lib/auth/store';
-import { openPaidDay, runChargePass, type ChargeDeps } from '@/lib/billing/charge';
+import { cardFailedBeforeToday, openPaidDay, runChargePass, type ChargeDeps } from '@/lib/billing/charge';
 import {
   billingPlanFor,
   chargeFor,
@@ -92,8 +92,10 @@ describe('one paid day from Friday 20:00 to Monday 20:00', () => {
     const userId = customer(db);
     const row = ensurePendingCharge(db, userId, '2026-10-26', SAT_14_ET);
     markFailed(db, row.id, 'card_declined', null, SAT_14_ET);
-    const sunday = openPaidDay(db, userId, MARKET_DAYS, SUN_10_ET, {});
-    expect(sunday).toMatchObject({ kind: 'pending', door: 'open' });
+    // Not an earlier paid day: his next-day door does not apply. (Its hour is
+    // spent, which is a different rule: tests/billing/hourOnce.test.ts.)
+    expect(cardFailedBeforeToday(db, userId, MARKET_DAYS, SUN_10_ET)).toBe(false);
+    openPaidDay(db, userId, MARKET_DAYS, SUN_10_ET, {});
     expect(rows(db)).toEqual([{ etDate: '2026-10-26', state: 'FAILED' }]);
   });
 });
