@@ -126,6 +126,10 @@ describe('no API route ships ungated', () => {
   const UNGATED = new Set([
     // Loopback-only at nginx; how Ops and deploy.sh check the box.
     'app/api/health/route.ts',
+    // Stripe's webhook: no session, the signature on the raw body is the check
+    // (lib/billing/webhookRoute.ts). tests/billing/webhookRouteFile.test.ts proves
+    // the shipped file refuses an unsigned request.
+    'app/api/billing/webhook/route.ts',
   ]);
 
   // The one route the box's own workers read: a session OR the internal
@@ -191,5 +195,6 @@ describe('no API route ships ungated', () => {
       expect(UNGATED.has(file) || INTERNAL_OK.has(file) || OWNER_ONLY.has(file), file).toBe(false);
     }
     for (const file of INTERNAL_OK) expect(files).toContain(file);
+    for (const file of UNGATED) expect(files).toContain(file);
   });
 });

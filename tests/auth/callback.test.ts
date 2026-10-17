@@ -255,3 +255,20 @@ describe('completeCallback: his one-account rule (uuid 4264b641), direction B', 
     expect(signedInUser(again.setCookies)).toBe(signedInUser(first.setCookies));
   });
 });
+
+describe('completeCallback: the paid day opens at sign-in (lib/auth/signInHook.ts)', () => {
+  it("a Google sign-in by a customer with a card writes the day's PENDING charge row", async () => {
+    const { linkCustomer, markCardSaved } = await import('@/lib/billing/store');
+    const user = linkIdentity(db, { provider: 'google', subject: 'sub-1', email: 'adam@example.com', emailVerified: true });
+    const at = new Date('2026-10-19T14:00:00Z');
+    linkCustomer(db, user.userId, 'cus_cb', at);
+    markCardSaved(db, 'cus_cb', at);
+    const exp = Math.floor(at.getTime() / 1000) + 3600;
+    const result = await completeCallback(
+      deps({ now: at, fetchImpl: fetchReturning({ id_token: idToken(validPayload({ exp })) }) }),
+    );
+    expect(result.status).toBe(303);
+    const rows = db.prepare('SELECT COUNT(*) AS n FROM billing_charges WHERE user_id = ?').get(user.userId) as { n: number };
+    expect(rows.n).toBe(1);
+  });
+});
