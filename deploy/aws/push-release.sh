@@ -252,6 +252,11 @@ esac
 # "is live" over a production that never moved.
 UNITS="mointel-web mointel-research mointel-assess"
 [ "${RESTART_MARKET:-no}" = "yes" ] && UNITS="$UNITS mointel-market"
+# The billing worker counts once deploy.sh has enabled it (only with
+# STRIPE_SECRET_KEY on the box). Before that it is disabled by design and has no
+# process to read.
+BILLING_ENABLED="$("${SSH[@]}" "systemctl is-enabled mointel-billing 2>/dev/null" 2>/dev/null | tr -d '\r' || true)"
+[ "$BILLING_ENABLED" = "enabled" ] && UNITS="$UNITS mointel-billing"
 LIVE="$("${SSH[@]}" "for u in $UNITS; do p=\$(systemctl show -p MainPID --value \$u); echo \"\$u \$(sudo readlink -f /proc/\$p/cwd)\"; done" 2>/dev/null || true)"
 WANT="/opt/mointel/releases/$SHA"
 CONFIRMED=0

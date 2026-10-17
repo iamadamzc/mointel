@@ -39,6 +39,7 @@ function writeStubs() {
       '#!/usr/bin/env bash',
       'case "$1" in',
       `  is-active) cat "${s}/active.$2" 2>/dev/null || echo inactive ;;`,
+      `  is-enabled) cat "${s}/enabled.$2" 2>/dev/null || echo disabled ;;`,
       `  show) cat "${s}/nr.$5" 2>/dev/null || echo 0 ;;`,
       `  list-units) [ -f "${s}/deploy-running" ] && echo "mointel-deploy-abc.service loaded active running deploy" ; exit 0 ;;`,
       'esac',
@@ -113,6 +114,42 @@ afterEach(() => {
 
 describe('watchdog: a healthy desk', () => {
   it('says nothing', () => {
+    tick(T0);
+    tick(T0 + 60);
+    expect(log()).not.toContain('ALERT');
+  });
+});
+
+describe('watchdog: the billing worker, watched only once enabled', () => {
+  // deploy.sh enables mointel-billing only when STRIPE_SECRET_KEY is on the box. Before
+  // that it is installed, disabled and inactive by design.
+  it('says nothing about a disabled, inactive billing worker', () => {
+    fs.writeFileSync(sb('active.mointel-billing'), 'inactive');
+    tick(T0);
+    expect(log()).not.toContain('mointel-billing');
+    expect(log()).not.toContain('ALERT');
+  });
+
+  it('alerts when the billing worker is enabled and not running', () => {
+    fs.writeFileSync(sb('enabled.mointel-billing'), 'enabled');
+    fs.writeFileSync(sb('active.mointel-billing'), 'inactive');
+    tick(T0);
+    expect(log()).toContain('ALERT mointel-billing is inactive');
+  });
+
+  it('alerts when the enabled billing worker restarts three times inside the window', () => {
+    fs.writeFileSync(sb('enabled.mointel-billing'), 'enabled');
+    fs.writeFileSync(sb('active.mointel-billing'), 'active');
+    fs.writeFileSync(sb('nr.mointel-billing'), '0');
+    tick(T0);
+    fs.writeFileSync(sb('nr.mointel-billing'), '3');
+    tick(T0 + 60);
+    expect(log()).toContain('ALERT mointel-billing restarted 3 times');
+  });
+
+  it('control: an enabled, running billing worker is quiet', () => {
+    fs.writeFileSync(sb('enabled.mointel-billing'), 'enabled');
+    fs.writeFileSync(sb('active.mointel-billing'), 'active');
     tick(T0);
     tick(T0 + 60);
     expect(log()).not.toContain('ALERT');

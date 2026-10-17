@@ -52,6 +52,10 @@ function writeStubs(options: {
    * server-level auth_basic. null makes `git show` fail, as it does when the path is absent.
    */
   nginxLocations?: string | null;
+  /** Whether the box reports mointel-billing enabled (deploy.sh enables it only with a Stripe key). */
+  billingEnabled?: boolean;
+  /** The release the billing worker's /proc cwd resolves to, when enabled. Default: liveRelease. */
+  billingRelease?: string;
 }) {
   const requiredEnv = options.requiredEnv ?? '';
   const nginxLocations =
@@ -60,6 +64,7 @@ function writeStubs(options: {
   const envState = options.envState ?? 'present';
   const activeState = options.activeState ?? 'inactive';
   const liveRelease = options.liveRelease ?? '/opt/mointel/releases/abc1234def';
+  const billingRelease = options.billingRelease ?? liveRelease;
   fs.writeFileSync(
     path.join(stubs, 'ssh'),
     `#!/usr/bin/env bash
@@ -84,6 +89,9 @@ case "\$remote" in
   *preflight.sh*)
     exit ${options.preflightExit}
     ;;
+  *"systemctl is-enabled mointel-billing"*)
+    echo ${options.billingEnabled ? 'enabled' : 'disabled'}
+    ;;
   *"systemd-run"*)
     # The deploy now runs detached on the box; the stub accepts the launch.
     echo "Running as unit: stub.service"
@@ -94,6 +102,7 @@ case "\$remote" in
     for u in mointel-web mointel-research mointel-assess mointel-market; do
       echo "\$u ${liveRelease}"
     done
+    ${options.billingEnabled ? `echo "mointel-billing ${billingRelease}"` : ':'}
     ;;
   *"systemctl show"*"ActiveState"*)
     echo "${activeState}"
@@ -250,6 +259,31 @@ describe('release bootstrap', () => {
 
     expect(result.status).toBe(0);
     expect(result.output).toContain('(4 services confirmed from /proc)');
+  });
+
+  it('also confirms the billing worker once deploy.sh has enabled it', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0, billingEnabled: true });
+
+    const result = run();
+
+    expect(result.status).toBe(0);
+    expect(result.output).toContain('(4 services confirmed from /proc)');
+    expect(transcript()).toContain('systemctl is-enabled mointel-billing');
+  });
+
+  it('refuses to say live when the enabled billing worker is still on the old release', () => {
+    writeStubs({
+      deployedHasPreflight: true,
+      preflightExit: 0,
+      billingEnabled: true,
+      billingRelease: '/opt/mointel/releases/0ldre1ease',
+    });
+
+    const result = run();
+
+    expect(result.status).toBe(9);
+    expect(result.output).toContain('mointel-billing=/opt/mointel/releases/0ldre1ease');
+    expect(result.output).not.toContain('is live on');
   });
 
   it('refuses to say live when the unit succeeded but production did not move', () => {
