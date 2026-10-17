@@ -44,7 +44,36 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state: 2026-10-14 02:56 UTC / Tue 22:56 ET (fourteenth seat, same id local_83b5b7ec; clock read via zoneinfo). THIS BLOCK SUPERSEDES ALL BELOW WHERE THEY DIFFER
+## Live state: 2026-10-17 10:20 UTC / Sat 06:20 ET (fifteenth seat, same id local_83b5b7ec; clock read via zoneinfo). THIS BLOCK SUPERSEDES ALL BELOW WHERE THEY DIFFER
+
+**Written for a reset at his word ("prepare to reset"). Every sha is a lead: open it.** Production is `858aadd1` (origin/production, read 10:20Z).
+
+**LIVE, ancestors of production (checked with `git merge-base --is-ancestor`):**
+
+| Item | Literal | Note |
+| --- | --- | --- |
+| Light/dark mode, default dark (his ask 10-14, words his "yes") | 78b07b00 | desk and review only; `lib/theme.ts`, `components/ThemeToggle.tsx` |
+| Theme follows client-side navigation (Web's catch) | efa164e3 | `components/ThemeSync.tsx` in the root layout |
+| Catalyst time reads Research's eventWhen (no false clock on a date-only event) | 2b1c44d7 | rule moved unchanged to `lib/research/eventWhen.ts`; board through `catalystView.ts catalystEventTime` |
+| L19: a recap snapshot's ticker opens the dossier | a7e75f9e | `AssessmentHistory.tsx SnapshotTicker` |
+| L19 follow-on: the open ticker joins the market request (names off the board open) | 5236f989 | fixed the report window too; board unchanged (proved on LRMR) |
+
+**BUILT, APPROVED, NOT LIVE: desk billing for the purchase launch.** `design/desk-billing-on-46724468` at **6ab24028** (pushed), in Ops's `ops/purchase-cut-b`. Screens (failed-charge band, update-card, checking, the four buy cases, trial chip, billing page and history), five session-gated routes (`app/api/billing/{state,history,cancel,card/remove,portal}`), the owner rule (state null for the owner), and the switch rule (state null and history empty while `PURCHASE_PAGES` is closed, through Web's `lib/public/purchaseOpen.ts`, committed byte-identical, blob 083ca374). Billing's tip c0cd16b3 merged; the desk imports Billing's `DeskBillingState` and `BilledDay`. Words: his verbatim yes (Integration chat, uuid 3f2e06b4, 03:11:47.893Z) to Marketing b227a882 and 1b11c496; plan names per dd60a775. Full suite 360 files 4908 passed. Renders (1,024, injected states) approved by Integration; PNGs in this seat's scratchpad `render-billing/`. Ships with the whole purchase cut on his go by full sha in Ops's chat.
+
+**OWED BY DESIGN:**
+1. **L19 post-deploy click check** on the live desk: click a recap snapshot ticker (an off-board name too) and see its dossier. Needs a review link, which is HIS word each time. About 15 min.
+2. **After the purchase cut deploys:** a live look at the desk with the switch closed (no billing anything) and, after his go opens it, one real account's billing page. Each needs a review link (his word).
+
+**Nothing approved and unbuilt. Nothing waiting on him from Design.**
+
+**The render methods that work (10-17):**
+- *Board and dossier, real rows:* copy Ops's newest slim-design store (`A:/mointel/data/slim-design*.db`, ask Ops; never write the original) to the scratchpad; if today's session has no rows yet, set the COPY's `meta.trading_date` to the last full day and `DESIGN_FAKE_NOW` inside it; mint a local review token IN THE COPY (`worker/review.ts create` with MARKET_DB_PATH); temporary `design-local` entry in `.claude/launch.json`; `rm -rf .next` first (a stale `.next` served 404 on the review API routes); render from `A:\mointel-design` checked out detached (Turbopack refuses a node_modules junction). Scripts in this seat's scratchpad: `cdp.mjs` (save support), `mkplan-live.mjs` (cells and dossiers, `RANGE=lo-hi` to bring a name on the board), `mkplan-panel.mjs`, `mkplan-recap.mjs`, `mkplan-why.mjs`, `mkplan-public.mjs`.
+- *Billing screens:* the review page never reads billing (readOnly), so a render needs ONE render-only, never-committed edit in the detached checkout (`useBillingState`'s `if (readOnly) return;`) and `billing-preload.js`, which answers `/billing/state` and `/billing/history` from `window.__billingSpec`; `mkplan-billing.mjs` drives 20 states. Undo the edit with `git checkout -- lib/hooks/useBillingState.ts` in that detached checkout only.
+- *Which tables a render reads:* `sql-trace.cjs` (NODE_OPTIONS --require, SQL_TRACE_FILE) patches better-sqlite3's prepare/exec at startup and logs every statement; the first version hooked `Module._load` and silently missed most statements (a check that returned a plausible answer).
+
+**My worktrees:** A:\mointel-design (render checkout, on design/drawer-float-verdict 42777682), A:\mointel-design-billing (its node_modules junction points at Billing's install A:\mointel-billing\node_modules, which has stripe 22.6.2), A:\mointel-design-theme, -clock, -recap, -l6, -a5, -a5b, A:\mointel-l7, A:\mointel-designdoc (docs, detached on origin/main). A:\mointel-designdoc-renders is a stray EMPTY folder I made by mistake; a safety check refused my removal; his to delete.
+
+## Live state: 2026-10-14 02:56 UTC / Tue 22:56 ET (fourteenth seat, same id local_83b5b7ec; clock read via zoneinfo). SUPERSEDED BY THE BLOCK ABOVE WHERE THEY DIFFER
 
 **Written for a reset at his word ("prepare to reset"). Every sha is a lead: open it. His freeze stands: "adding nothing more" (19:54:41.917Z 10-13); "everything tonight" (02:09:54.695Z 10-14) moved THE DEFINED LIST (Integration's `docs/finish-list-2026-10-09.md`) into tonight where it can ship safely.**
 
@@ -847,6 +876,19 @@ probe came before any edit, as the ledger says it must.**
 
 
 **Repeat reached:** per session-hygiene section 2, warned the owner and proposed a reset at the next task boundary (row 5's final words).
+
+**Fifteenth seat (same id `local_83b5b7ec`, reset in place 2026-10-14).**
+
+| Error (asserted vs true) | Type | Already logged? | Caught by |
+| --- | --- | --- | --- |
+| Called the desk billing literal green on the test folders I had touched; `tests/review/sideEffects.test.ts` (every `target="_blank"` needs `rel="noopener noreferrer"`) broke on my receipt link, and Ops's full cut gate went red | RUN-THE-GATE (memory run-the-gate-not-your-habit, its fifth shape) | Yes, the class | Ops. **Rule: before any literal, the WHOLE `npx vitest run` (about 3 min), plus typegen, tsc, eslint** |
+| My state route returned billing state to every non-owner even with the purchase switch closed, so a dark deploy would have shown a buy screen whose links 404 | TWO-GUARDS (a switch on the pages, none on the desk) | No | Ops, confirmed by Integration. **Rule: a feature behind a switch is behind it on every surface, the desk included** |
+| The first SQL trace hooked `Module._load` and logged 2 of ~170 statements; I nearly read it as "the render reads two tables" | FAILED-CHECK-RETURNS-PLAUSIBLE | Yes (memory) | Self, from the count. **Rule: put a known-present case through any trace first** |
+| A stale `.next` in the render checkout served 404 on the review API routes; I spent time on routing before clearing it | ENVIRONMENT | No | Self. **Rule: `rm -rf .next` before every render** |
+| Two scripts broke on quoting through a bash heredoc (generated code) | GENERATED-CODE (memory) | Yes | Self. **Rule: write edit scripts to a file with the Write tool and run the file** |
+| A billing-page test expected "9:00 PM" for a November instant (Eastern is UTC-5 after Nov 1) | TIMEZONE | No | Self, from the failure |
+| Told Integration "I start the pure view and the band now" while it had asked for the scope before building | APPROVAL-IN-FLIGHT | Yes (memory) | Self, corrected in the next message |
+| `mkdir -p A:/mointel-designdoc-renders` in a cleanup line created a stray folder | SIDE-EFFECT | No | Self; removal refused by a safety check, left to him |
 
 **Fourteenth seat (same id `local_83b5b7ec`, reset in place 2026-10-11).**
 
