@@ -68,8 +68,14 @@ export default async function WelcomePage({
   if (!sessionId) redirect('/pricing');
 
   const status = await checkoutStatus({ db, stripe: purchaseStripe() }, admission.userId, sessionId);
+  // One moment for the whole request, and Billing's account read on the folded paid day
+  // (a weekend belongs to Monday's), so both branches that read the account ask the same
+  // question. The calendar is read only by the branch that needs it.
+  const now = new Date();
+  const accountNow = async () =>
+    billingStateFor(db, admission.userId, await marketDaysOrFallback(now, paidDayCalendarSources()), now);
   if (status.state === 'trial_refused') {
-    const door = billingStateFor(db, admission.userId).door;
+    const door = (await accountNow()).door;
     return <RefusedTrial reason={status.reason} deskOpen={door === 'ok' || door === 'trial'} />;
   }
   if (status.state !== 'complete' && status.state !== 'recording') redirect('/pricing');
@@ -91,8 +97,7 @@ export default async function WelcomePage({
     if (end) line = YOU_ARE_IN.trial(etEndTime(end));
     noRefunds = false;
   } else {
-    const now = new Date();
-    const state = billingStateFor(db, admission.userId, await marketDaysOrFallback(now, paidDayCalendarSources()), now);
+    const state = await accountNow();
     const plan = PLANS[status.purchase];
     if (status.purchase === 'daily') {
       if (state.paidThroughAt) line = YOU_ARE_IN.daily(plan.amount, etEndTime(new Date(state.paidThroughAt)));

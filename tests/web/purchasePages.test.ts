@@ -406,6 +406,28 @@ describe('/welcome', () => {
     }
   });
 
+  /*
+   * The composed cut 0c626f52 failed tsc here: the refused-trial branch called
+   * billingStateFor(db, userId) after Billing's fold made the market calendar required.
+   * The mock takes any arguments and vitest does not typecheck, so the render passed.
+   * This pins what the branch must hand Billing: the folded calendar and the moment.
+   */
+  it('a refused trial reads the account on the folded paid day: the market calendar and the moment', async () => {
+    const now = new Date('2026-10-17T15:00:00Z'); // Sat 11:00 ET
+    vi.setSystemTime(now);
+    state.status = { state: 'trial_refused', reason: 'already_bought' };
+    state.billing = { door: 'ok' };
+    const page = html(await WelcomePage(params({ trial: '1', session_id: 'cs_t' })));
+    expect(page).toContain('href="/desk"');
+    // billingReads.calls also counts checkoutStatus, so the arguments are the pin here
+    expect(billingReads.args.length).toBeGreaterThanOrEqual(4);
+    const [, userId, isMarketDay, at] = billingReads.args as [unknown, number, (d: string) => boolean, Date];
+    expect(userId).toBe(7);
+    expect(typeof isMarketDay).toBe('function');
+    expect([isMarketDay('2026-10-17'), isMarketDay('2026-10-19')]).toEqual([false, true]);
+    expect(at?.getTime()).toBe(now.getTime());
+  });
+
   it('a refused trial with the switch closed is still 404, before any billing read', async () => {
     delete process.env.PURCHASE_PAGES;
     state.status = { state: 'trial_refused', reason: 'card_used' };
