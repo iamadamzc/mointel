@@ -24,7 +24,9 @@ import {
   chargeFor,
   hasBought,
   linkCustomer,
+  markCardSaved,
   markPlanPaid,
+  markRefunded,
   markRenewalFailed,
   paidDayOf,
   recordCheckoutDay,
@@ -73,11 +75,18 @@ function isOurs(metadata: Stripe.Metadata | null | undefined): boolean {
   return metadata?.app === 'mointel';
 }
 
-async function setDefaultCard(deps: WebhookDeps, customerId: string, paymentMethodId: string | null) {
+async function setDefaultCard(
+  deps: WebhookDeps,
+  customerId: string,
+  paymentMethodId: string | null,
+  now: Date = new Date(),
+) {
   if (!paymentMethodId) return;
   await deps.stripe.customers.update(customerId, {
     invoice_settings: { default_payment_method: paymentMethodId },
   });
+  // On file for the billing page, and any earlier removal no longer stands.
+  markCardSaved(deps.db, customerId, now);
 }
 
 /** The latest period end across a subscription's items (dahlia moved it there). */
@@ -123,14 +132,14 @@ async function onCheckoutCompleted(deps: WebhookDeps, session: Stripe.Checkout.S
     const intent = intentId
       ? await deps.stripe.paymentIntents.retrieve(intentId, { expand: ['latest_charge'] })
       : null;
-    await setDefaultCard(deps, customerId, idOf(intent?.payment_method));
+    await setDefaultCard(deps, customerId, idOf(intent?.payment_method), now);
     const latest = intent?.latest_charge;
     const receiptUrl = latest && typeof latest !== 'string' ? (latest.receipt_url ?? null) : null;
     recordCheckoutDay(deps.db, userId, session.metadata?.et_date ?? paidDayOf(now), intentId, now, receiptUrl);
   } else if (session.mode === 'setup') {
     const setupId = idOf(session.setup_intent);
     const setup = setupId ? await deps.stripe.setupIntents.retrieve(setupId) : null;
-    await setDefaultCard(deps, customerId, idOf(setup?.payment_method));
+    await setDefaultCard(deps, customerId, idOf(setup?.payment_method), now);
   } else if (session.mode === 'subscription') {
     const subscriptionId = idOf(session.subscription);
     if (!subscriptionId) throw new Error(`checkout ${session.id} has no subscription`);
@@ -138,7 +147,7 @@ async function onCheckoutCompleted(deps: WebhookDeps, session: Stripe.Checkout.S
     upsertPlan(deps.db, planUpdateFrom(subscription, userId), now);
     // The plan's card also becomes the customer's default, so a plan that
     // lapses to daily is charged on the card the buyer last gave.
-    await setDefaultCard(deps, customerId, idOf(subscription.default_payment_method));
+    await setDefaultCard(deps, customerId, idOf(subscription.default_payment_method), now);
   }
 
   /*
@@ -257,7 +266,7 @@ async function onCardUpdated(deps: WebhookDeps, customerId: string, paymentMetho
   const today = paidDayOf(now);
   const charge = chargeFor(deps.db, userId, today);
   if (charge?.state === 'FAILED') {
-    if (paymentMethodId) await setDefaultCard(deps, customerId, paymentMethodId);
+    if (paymentMethodId) await setDefaultCard(deps, customerId, paymentMethodId, now);
     if (requeueFailedCharge(deps.db, userId, today)) results.push('daily charge requeued');
   }
 
@@ -331,10 +340,13 @@ export async function handleStripeEvent(deps: WebhookDeps, event: Stripe.Event):
       const previous = event.data.previous_attributes as
         | { invoice_settings?: { default_payment_method?: unknown } }
         | undefined;
-      result =
-        previous?.invoice_settings && 'default_payment_method' in previous.invoice_settings
-          ? await onCardUpdated(deps, customer.id, idOf(customer.invoice_settings?.default_payment_method), now)
-          : 'ignored: default card unchanged';
+      const changed = Boolean(previous?.invoice_settings && 'default_payment_method' in previous.invoice_settings);
+      const newDefault = idOf(customer.invoice_settings?.default_payment_method);
+      // A new default card (the portal, or our own update) is a card on file.
+      if (changed && newDefault) markCardSaved(deps.db, customer.id, now);
+      result = changed
+        ? await onCardUpdated(deps, customer.id, newDefault, now)
+        : 'ignored: default card unchanged';
       break;
     }
     case 'payment_method.detached': {
@@ -344,6 +356,14 @@ export async function handleStripeEvent(deps: WebhookDeps, event: Stripe.Event):
       const pm = event.data.object;
       deps.log?.(`billing: card ${pm.id} detached`);
       result = 'card detached; next charge reads the default card';
+      break;
+    }
+    case 'charge.refunded': {
+      // Refunds happen only through the terms' "make it right" cases, made by a
+      // person in Stripe. The history shows the day as Refunded.
+      const charge = event.data.object;
+      const intentId = idOf(charge.payment_intent);
+      result = intentId && markRefunded(deps.db, intentId) ? 'charge marked refunded' : 'ignored: no daily charge';
       break;
     }
     case 'charge.dispute.created': {
@@ -375,5 +395,6 @@ export const WEBHOOK_EVENTS = [
   'payment_method.attached',
   'payment_method.detached',
   'customer.updated',
+  'charge.refunded',
   'charge.dispute.created',
 ] as const;

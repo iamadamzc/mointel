@@ -19,12 +19,22 @@ export const BILLING_SCHEMA = `
  * One Stripe customer per desk user. card_failing_since is set when a charge or
  * a renewal is declined and cleared when a charge succeeds; the lapsed-hour door
  * (lib/billing/config.ts) reads it on the next paid day.
+ *
+ * card_saved_at is when a card was last made the customer's default (the
+ * webhook, after Checkout or a portal change); the billing page shows "card on
+ * file" from it without asking Stripe. card_removed_at is set when the person
+ * removes their saved card on the desk (lib/billing/account.ts) and cleared when
+ * a card is saved again. While it is set, a sign-in shows the buy screen and
+ * attempts no charge: removing the card is stopping, not a decline, so it earns
+ * no one-hour band.
  */
 CREATE TABLE IF NOT EXISTS billing_customers (
   user_id            INTEGER PRIMARY KEY REFERENCES users(id),
   stripe_customer_id TEXT    NOT NULL UNIQUE,
   created_at         TEXT    NOT NULL,
-  card_failing_since TEXT
+  card_failing_since TEXT,
+  card_saved_at      TEXT,
+  card_removed_at    TEXT
 );
 
 /*
@@ -35,7 +45,9 @@ CREATE TABLE IF NOT EXISTS billing_customers (
  *
  * state: PENDING (not yet charged, or the processor gave no definite answer),
  * SUCCEEDED, FAILED (a definite decline), NOT_CHARGED (a non-trading day or a
- * day a paid plan covers; decline_code then holds the reason). Only a decline
+ * day a paid plan covers; decline_code then holds the reason), REFUNDED (Stripe
+ * reported a refund, which happens only through the terms' "make it right" cases,
+ * made by a person in Stripe). Only a decline
  * writes FAILED: an outage leaves the row PENDING and the one-hour clock never
  * starts.
  *

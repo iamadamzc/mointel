@@ -86,6 +86,8 @@ describe('the charge row', () => {
     expect(resolveSession(db, sessionId, later(GRACE_MS + 1))).toBeNull();
     expect(billingStatus(db, userId, later(5 * 60_000))).toEqual({
       state: 'grace',
+      kind: 'daily',
+      amountCents: 550,
       endsAt: new Date(MON_10_ET.getTime() + GRACE_MS).toISOString(),
     });
 
@@ -131,6 +133,7 @@ describe('the charge pass', () => {
         etDate: '2026-10-19',
         amountCents: 550,
         source: 'daily',
+        state: 'paid',
         chargedAt: MON_10_ET.toISOString(),
         receiptUrl: 'https://pay.stripe.com/receipts/r1',
       },
@@ -188,8 +191,10 @@ describe('the charge pass', () => {
     });
     const summary = await runChargePass({ db, stripe, isTradingDay: () => true, now: () => MON_10_ET });
     expect(summary.declined).toBe(1);
-    // A declined day is not a billed day.
-    expect(billingHistory(db, userId)).toEqual([]);
+    // A declined day shows in the history as Declined, with no receipt.
+    expect(billingHistory(db, userId)).toMatchObject([
+      { etDate: '2026-10-19', state: 'declined', amountCents: 550, receiptUrl: null },
+    ]);
     const row = chargeFor(db, userId, '2026-10-19')!;
     expect(row.state).toBe('FAILED');
     expect(row.declineCode).toBe('card_declined');

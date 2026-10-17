@@ -141,6 +141,15 @@ A card is required to START the trial, and it is never charged. The trial is **4
 - **The fingerprint is kept forever** (his answer), even after an account closes. Nothing deletes a `billing_trials` row, and an account-deletion tidy-up must leave that table alone.
 - Kept by us: user, card fingerprint, start and end. Kept by Stripe: its own record of the detached card (brand, last 4, expiry, fingerprint), under its privacy policy, with no fixed period.
 
+## The desk's billing screens (Integration's ruling, 2026-10-17)
+
+`lib/billing/account.ts` holds what Design's routes call. The routes and screens are Design's.
+- `billingStateFor(db, userId)` returns `DeskBillingState`: the door (`ok`, `trial`, `buy_first`, `charge_first`), the grace band with its kind (daily or plan) and amount, the trial's end, the plan (kind, price, paid-through, renews-on or ends-on), whether a card is on file, and the latest charge. It is a pure read with no Stripe call, so `GET /api/billing/state` can poll it.
+- `cancelAtPeriodEnd({ db, stripe }, userId)`: one step, no portal, idempotent. Access runs to the paid date; no refund.
+- `removeDefaultCard({ db, stripe }, userId)`: unsets and detaches the saved card. It is **refused while a plan still renews on it** (read 150). After removal, sign-in shows `buy_first` and attempts no charge (removing the card is stopping, not a decline). Saving a card again clears it.
+- `billingHistory` now returns every daily charge with its state (`paid`, `declined`, `pending`, `refunded`). A refund reported by Stripe (`charge.refunded`, which happens only through the "make it right" cases) marks the day Refunded.
+- `charge_first` applies from the paid day AFTER the card first failed. On the day of the failure the person has the hour and the band. Sign-in (`openPaidDay`) and the state read share one rule (`cardFailedBeforeToday`).
+
 ## Still to wire (owners)
 
 - **The sign-in hook (Web/Ops, whoever owns `lib/auth/callback.ts`).** One call to `openPaidDay(db, userId, now)` after `createSession` for an admitted user.

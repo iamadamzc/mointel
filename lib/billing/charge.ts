@@ -18,7 +18,8 @@ import { lapsedDoor, type LapsedDoor } from '@/lib/billing/config';
 import {
   customerIdFor,
   ensurePendingCharge,
-  isCardFailing,
+  cardFailingSince,
+  isCardRemoved,
   markFailed,
   markIndeterminate,
   markNotCharged,
@@ -27,12 +28,14 @@ import {
   paidDayOf,
   pendingCharges,
   planCovers,
+  previousEtDate,
   setTrialEnd,
   trialState,
   trialsWithoutEnd,
   type ChargeRow,
 } from '@/lib/billing/store';
 import { trialCalendarMonths, trialEndsAt } from '@/lib/billing/trialClock';
+import { sessionEndUtc } from '@/lib/market/session';
 
 /**
  * Called at sign-in for an admitted user. Writes the day's PENDING row unless a
@@ -72,9 +75,24 @@ export function openPaidDay(
     return { kind: 'trial', endsAt: trial.endsAt };
   }
   if (trial.state === 'over') return { kind: 'buy_first' };
+  // The person removed their card: stopping, not a decline. The buy screen, and
+  // no charge attempt, so no one-hour band either.
+  if (isCardRemoved(db, userId)) return { kind: 'buy_first' };
   const charge = ensurePendingCharge(db, userId, etDate, now);
-  const door = isCardFailing(db, userId) ? lapsedDoor(env) : 'open';
+  const door = cardFailedBeforeToday(db, userId, now) ? lapsedDoor(env) : 'open';
   return { kind: 'pending', charge, door };
+}
+
+/**
+ * Did the card first fail on an EARLIER paid day? The lapsed-hour door applies
+ * only then: on the day of the failure itself the person has the hour, and the
+ * band shows it. billingStateFor (lib/billing/account.ts) reads the same rule.
+ */
+export function cardFailedBeforeToday(db: IdentityDatabase, userId: number, now: Date = new Date()): boolean {
+  const since = cardFailingSince(db, userId);
+  if (since === null) return false;
+  const todayStart = sessionEndUtc(previousEtDate(paidDayOf(now))).getTime();
+  return Date.parse(since) < todayStart;
 }
 
 /**

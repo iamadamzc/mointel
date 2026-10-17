@@ -174,6 +174,8 @@ describe('a renewal declined, then the card updated', () => {
     await handleStripeEvent(deps, event('evt_f', 'invoice.payment_failed', renewal));
     expect(billingStatus(db, userId, MON_10_ET)).toEqual({
       state: 'grace',
+      kind: 'plan',
+      amountCents: 8900,
       endsAt: new Date(MON_10_ET.getTime() + GRACE_MS).toISOString(),
     });
 

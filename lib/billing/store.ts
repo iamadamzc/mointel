@@ -12,7 +12,7 @@ import type { IdentityDatabase } from '@/lib/auth/store';
 import { GRACE_MS, RULED_AMOUNT_CENTS, type PlanKey } from '@/lib/billing/config';
 import { sessionEndUtc } from '@/lib/market/session';
 
-export type ChargeState = 'PENDING' | 'SUCCEEDED' | 'FAILED' | 'NOT_CHARGED';
+export type ChargeState = 'PENDING' | 'SUCCEEDED' | 'FAILED' | 'NOT_CHARGED' | 'REFUNDED';
 export type ChargeSource = 'daily' | 'checkout';
 
 export interface ChargeRow {
@@ -79,6 +79,46 @@ export function isCardFailing(db: IdentityDatabase, userId: number): boolean {
     .prepare('SELECT card_failing_since AS since FROM billing_customers WHERE user_id = ?')
     .get(userId) as { since: string | null } | undefined;
   return Boolean(row?.since);
+}
+
+export function cardFailingSince(db: IdentityDatabase, userId: number): string | null {
+  const row = db
+    .prepare('SELECT card_failing_since AS since FROM billing_customers WHERE user_id = ?')
+    .get(userId) as { since: string | null } | undefined;
+  return row?.since ?? null;
+}
+
+export function isCardRemoved(db: IdentityDatabase, userId: number): boolean {
+  const row = db
+    .prepare('SELECT card_removed_at AS at FROM billing_customers WHERE user_id = ?')
+    .get(userId) as { at: string | null } | undefined;
+  return Boolean(row?.at);
+}
+
+/** The person removed their card. Idempotent: the first removal time stands. */
+export function markCardRemoved(db: IdentityDatabase, userId: number, now: Date = new Date()): void {
+  db.prepare(
+    'UPDATE billing_customers SET card_removed_at = COALESCE(card_removed_at, ?) WHERE user_id = ?',
+  ).run(now.toISOString(), userId);
+}
+
+/**
+ * A card was saved as the default (Checkout, a plan, the portal): it is on file,
+ * and any earlier removal no longer stands. A trial card never comes through
+ * here, because it is never made a default.
+ */
+export function markCardSaved(db: IdentityDatabase, stripeCustomerId: string, now: Date = new Date()): void {
+  db.prepare(
+    'UPDATE billing_customers SET card_saved_at = ?, card_removed_at = NULL WHERE stripe_customer_id = ?',
+  ).run(now.toISOString(), stripeCustomerId);
+}
+
+/** Is a card on file, as far as the desk recorded it? Saved, and not removed since. */
+export function hasCardOnFile(db: IdentityDatabase, userId: number): boolean {
+  const row = db
+    .prepare('SELECT card_saved_at AS saved, card_removed_at AS removed FROM billing_customers WHERE user_id = ?')
+    .get(userId) as { saved: string | null; removed: string | null } | undefined;
+  return Boolean(row?.saved) && !row?.removed;
 }
 
 /**
@@ -432,29 +472,73 @@ export function lapsePlan(db: IdentityDatabase, subscriptionId: string, now: Dat
 
 // ---------------------------------------------------------- what the band reads
 
-export type BillingStatus = { state: 'ok' } | { state: 'grace'; endsAt: string };
+export type BillingStatus =
+  | { state: 'ok' }
+  | { state: 'grace'; kind: 'daily' | 'plan'; endsAt: string; amountCents: number };
 
 /**
  * What the desk shows. The band and both OS notifications read endsAt and
- * compute nothing (Ops item 5): the server is the only clock.
+ * compute nothing (Ops item 5): the server is the only clock. kind and the
+ * amount are for the words, which differ for a daily payment and a plan renewal
+ * (Design, ruled by Integration 2026-10-17).
  */
 export function billingStatus(db: IdentityDatabase, userId: number, now: Date = new Date()): BillingStatus {
   const at = now.toISOString();
   const charge = db
     .prepare(
-      `SELECT grace_until AS endsAt FROM billing_charges
-        WHERE user_id = ? AND et_date = ? AND state <> 'SUCCEEDED' AND grace_until > ?`,
+      `SELECT grace_until AS endsAt, amount_cents AS amountCents FROM billing_charges
+        WHERE user_id = ? AND et_date = ? AND state = 'FAILED' AND grace_until > ?`,
     )
-    .get(userId, paidDayOf(now), at) as { endsAt: string } | undefined;
-  if (charge) return { state: 'grace', endsAt: charge.endsAt };
+    .get(userId, paidDayOf(now), at) as { endsAt: string; amountCents: number } | undefined;
+  if (charge) return { state: 'grace', kind: 'daily', endsAt: charge.endsAt, amountCents: charge.amountCents };
   const plan = db
     .prepare(
-      `SELECT renewal_grace_until AS endsAt FROM billing_plans
+      `SELECT renewal_grace_until AS endsAt, plan FROM billing_plans
         WHERE user_id = ? AND renewal_grace_until > ? ORDER BY renewal_grace_until LIMIT 1`,
     )
-    .get(userId, at) as { endsAt: string } | undefined;
-  if (plan) return { state: 'grace', endsAt: plan.endsAt };
+    .get(userId, at) as { endsAt: string; plan: PlanKey } | undefined;
+  if (plan) {
+    return { state: 'grace', kind: 'plan', endsAt: plan.endsAt, amountCents: RULED_AMOUNT_CENTS[plan.plan] };
+  }
   return { state: 'ok' };
+}
+
+/** A plan as the desk shows it. */
+export interface PlanRow {
+  subscriptionId: string;
+  plan: PlanKey;
+  status: string;
+  currentPeriodEnd: string;
+  paidThroughEtDate: string;
+  cancelAtPeriodEnd: boolean;
+}
+
+/** Every plan this user has, newest first. */
+export function plansFor(db: IdentityDatabase, userId: number): PlanRow[] {
+  return (
+    db
+      .prepare(
+        `SELECT stripe_subscription_id AS subscriptionId, plan, status, current_period_end AS currentPeriodEnd,
+                paid_through_et_date AS paidThroughEtDate, cancel_at_period_end AS cancelAtPeriodEnd
+           FROM billing_plans WHERE user_id = ? ORDER BY updated_at DESC`,
+      )
+      .all(userId) as (Omit<PlanRow, 'cancelAtPeriodEnd'> & { cancelAtPeriodEnd: number })[]
+  ).map((row) => ({ ...row, cancelAtPeriodEnd: row.cancelAtPeriodEnd === 1 }));
+}
+
+/**
+ * A plan that still renews: not cancelled and not set to end. A plan set to
+ * cancel at period end no longer depends on the card, because it will not
+ * charge again.
+ */
+export function renewingPlanFor(db: IdentityDatabase, userId: number): PlanRow | null {
+  return plansFor(db, userId).find((p) => p.status !== 'canceled' && !p.cancelAtPeriodEnd) ?? null;
+}
+
+export function setPlanCancelAtPeriodEnd(db: IdentityDatabase, subscriptionId: string, now: Date = new Date()): void {
+  db.prepare(
+    'UPDATE billing_plans SET cancel_at_period_end = 1, updated_at = ? WHERE stripe_subscription_id = ?',
+  ).run(now.toISOString(), subscriptionId);
 }
 
 // --------------------------------------------------------------------- trial
@@ -569,10 +653,15 @@ export function setTrialEnd(db: IdentityDatabase, userId: number, endsAt: Date):
 
 // ---------------------------------------------------------- daily billing history
 
+export type BilledState = 'paid' | 'declined' | 'pending' | 'refunded';
+
 export interface BilledDay {
   etDate: string;
   amountCents: number;
   source: ChargeSource;
+  /** Marketing's table: Paid / Declined / Pending / Refunded. */
+  state: BilledState;
+  /** When it was paid, or last attempted, or (still pending) first written. */
   chargedAt: string;
   /**
    * Stripe's receipt page for the charge. Stripe: "Receipts don't expire, but
@@ -583,21 +672,56 @@ export interface BilledDay {
   receiptUrl: string | null;
 }
 
+const BILLED_STATE: Record<string, BilledState> = {
+  SUCCEEDED: 'paid',
+  FAILED: 'declined',
+  PENDING: 'pending',
+  REFUNDED: 'refunded',
+};
+
 /**
- * Every paid day a DAILY buyer was charged for, newest first. Plan invoices are
- * in Stripe's portal; this is the desk's list for the daily days, which make no
- * Invoice and so never appear there (Integration's ruling, 2026-10-17).
+ * Every daily charge, in every state that is a charge, newest first. Plan
+ * invoices are in Stripe's portal; this is the desk's list for the daily days,
+ * which make no Invoice and so never appear there (Integration's rulings,
+ * 2026-10-17). NOT_CHARGED rows (weekends, plan days) are not charges and are
+ * left out.
  */
 export function billingHistory(db: IdentityDatabase, userId: number, limit = 400): BilledDay[] {
-  return db
-    .prepare(
-      `SELECT et_date AS etDate, amount_cents AS amountCents, source, succeeded_at AS chargedAt,
-              receipt_url AS receiptUrl
-         FROM billing_charges
-        WHERE user_id = ? AND state = 'SUCCEEDED'
-        ORDER BY et_date DESC LIMIT ?`,
-    )
-    .all(userId, limit) as BilledDay[];
+  return (
+    db
+      .prepare(
+        `SELECT et_date AS etDate, amount_cents AS amountCents, source, state AS raw,
+                COALESCE(succeeded_at, attempted_at, created_at) AS chargedAt, receipt_url AS receiptUrl
+           FROM billing_charges
+          WHERE user_id = ? AND state IN ('SUCCEEDED', 'FAILED', 'PENDING', 'REFUNDED')
+          ORDER BY et_date DESC LIMIT ?`,
+      )
+      .all(userId, limit) as (Omit<BilledDay, 'state'> & { raw: string })[]
+  ).map(({ raw, ...row }) => ({ ...row, state: BILLED_STATE[raw] }));
+}
+
+/** Stripe reported a refund on a daily charge. Found by its PaymentIntent. */
+export function markRefunded(db: IdentityDatabase, paymentIntentId: string): boolean {
+  const result = db
+    .prepare(`UPDATE billing_charges SET state = 'REFUNDED' WHERE payment_intent_id = ? AND state = 'SUCCEEDED'`)
+    .run(paymentIntentId);
+  return result.changes > 0;
+}
+
+/** The newest charge row, any state, for the desk's billing page. */
+export function latestCharge(
+  db: IdentityDatabase,
+  userId: number,
+): { etDate: string; state: ChargeState; source: ChargeSource; amountCents: number } | null {
+  return (
+    (db
+      .prepare(
+        `SELECT et_date AS etDate, state, source, amount_cents AS amountCents FROM billing_charges
+          WHERE user_id = ? ORDER BY et_date DESC, id DESC LIMIT 1`,
+      )
+      .get(userId) as { etDate: string; state: ChargeState; source: ChargeSource; amountCents: number } | undefined) ??
+    null
+  );
 }
 
 // ------------------------------------------------------------ webhook bookkeeping
