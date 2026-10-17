@@ -111,6 +111,7 @@ import TermsOfSalePage from '@/app/terms-of-sale/page';
 import TrialPage from '@/app/trial/page';
 import { POST as trialStart } from '@/app/trial/start/route';
 import WelcomePage from '@/app/welcome/page';
+import { PRICING_TRIAL } from '@/lib/public/purchaseCopy';
 import { etEndTime, longEtDate, renewalEtDate } from '@/lib/public/purchaseFormat';
 import { purchaseOpen } from '@/lib/public/purchaseOpen';
 
@@ -206,6 +207,45 @@ describe('/pricing', () => {
     expect(page).toContain('No refunds.');
     expect(page).toContain('href="/checkout?plan=six-months"');
     expect(page).toContain('href="/trial"');
+  });
+
+  it('his ask (328a81c1): Start free trial under the trial headline, the rest folded and closed, no word lost', () => {
+    const page = html(PricingPage());
+    const at = (s: string) => {
+      const i = page.indexOf(s);
+      expect(i, s).toBeGreaterThan(-1);
+      return i;
+    };
+    const headline = at(PRICING_TRIAL.headline);
+    const button = at('href="/trial"');
+    const details = at('<details');
+    const summary = at(`>${PRICING_TRIAL.moreLabel}</summary>`);
+    expect(headline).toBeLessThan(button);
+    expect(button).toBeLessThan(details);
+    expect(details).toBeLessThan(summary);
+    // The button is the trial block's only link to /trial, and it is above the fold.
+    expect(page.split('href="/trial"')).toHaveLength(2);
+    expect(page.indexOf(PRICING_TRIAL.button)).toBeLessThan(details);
+    // Closed by default: no `open` attribute on the tag, in any attribute order.
+    const tag = page.slice(details, page.indexOf('>', details) + 1);
+    expect(tag).not.toMatch(/\sopen(=|\s|>)/);
+    // Every approved line sits inside the fold, after the label.
+    const end = at('</details>');
+    const folded = [
+      PRICING_TRIAL.clock,
+      PRICING_TRIAL.tableLead,
+      ...PRICING_TRIAL.tableHeads,
+      ...PRICING_TRIAL.examples.flat(),
+      PRICING_TRIAL.underTable,
+      PRICING_TRIAL.card,
+    ];
+    for (const line of folded) {
+      const i = at(line);
+      expect(i, line).toBeGreaterThan(summary);
+      expect(i, line).toBeLessThan(end);
+    }
+    // The four plans stay below the trial block.
+    expect(end).toBeLessThan(at('$5.50 a day'));
   });
 
   it('the paid day, as he approved it (579acaee): weekends belong to the paid day that follows', () => {

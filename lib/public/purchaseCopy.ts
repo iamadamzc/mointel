@@ -47,6 +47,13 @@ export const PRICING = {
  * docs/integration/2026-10-17-free-trial-words-final-for-him.md @666038e6 ("The pricing
  * page, free trial block"); Marketing 8ec74cae v6. The button is unchanged (free trial
  * words, section 1). The table's end times come from the trial clock (lib/billing/trialClock.ts).
+ *
+ * Placement: the button sits under the headline, and the rest folds into a closed section,
+ * on his ask (Ops chat 38cd4446, uuid 328a81c1, 2026-10-17T16:35:23.289Z) "start the free
+ * trial needs to be at the top. put this somewhere else, in its own page or collaspable";
+ * layout ruled by Integration 43rd. `moreLabel`: his "use the recommended" (Integration chat
+ * bf3b407e, uuid 9319f2c0, 2026-10-17T16:42:08.710Z) to (a) "How the free trial works", shown
+ * to him in quotes; Marketing a026f04f, Commercial read 179 c9ce0b88.
  */
 export const PRICING_TRIAL = {
   headline: 'Try it free for 48 hours, not counting weekends and market holidays.',
@@ -65,6 +72,7 @@ export const PRICING_TRIAL = {
   underTable: 'A start between 8:00pm ET Friday and 8:00pm ET Sunday counts from 8:00pm ET Sunday.',
   card: 'We ask for a card only so the same card cannot start a second trial. The trial never charges it, and we do not keep it: we keep only a code that identifies it. The free trial is once per person and per card.',
   button: 'Start free trial',
+  moreLabel: 'How the free trial works',
 } as const;
 
 export interface PlanCopy {
