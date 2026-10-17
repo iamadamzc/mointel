@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { BrandMark } from '@/components/BrandMark';
-import { REFUSAL } from '@/lib/public/purchaseCopy';
+import { REFUSAL, REFUSED_TRIAL } from '@/lib/public/purchaseCopy';
 
 /**
  * What a person sees who IS signed in and is NOT on the allowlist.
@@ -85,6 +85,48 @@ export function PaymentPending({ email, reloadHref }: { email: string; reloadHre
         <a href="mailto:desk@tmitrader.com?subject=Payment" className="text-sm text-ink-1 underline hover:text-ink">
           {REFUSAL.pending.ask}
         </a>
+      </div>
+    </RefusalShell>
+  );
+}
+
+export type TrialRefusalReason = keyof typeof REFUSED_TRIAL.reasons;
+
+/**
+ * Back from Stripe's card check, and the trial could not start (Billing's checkoutStatus
+ * 'trial_refused'). Never accuses and says nothing about the card. The bank line shows for
+ * every reason but not_a_card, which never ran a card check. `deskOpen` is set for
+ * already_bought when the account has current access (Billing's door 'ok' or 'trial'),
+ * so its button opens the desk instead of pricing.
+ */
+export function RefusedTrial({ reason, deskOpen }: { reason: TrialRefusalReason; deskOpen: boolean }) {
+  const primary = 'flex min-h-12 items-center justify-center rounded bg-ink px-6 text-base font-semibold text-desk md:h-12 md:text-[15px]';
+  const secondary =
+    'flex min-h-12 items-center justify-center rounded border border-line-2 px-6 text-base font-medium text-ink md:h-12 md:text-[15px]';
+  return (
+    <RefusalShell>
+      <div className="flex flex-col gap-3.5">
+        <h1 className="text-[28px] font-semibold leading-[1.15] tracking-tight md:text-[32px]">{REFUSED_TRIAL.headline}</h1>
+        <p className="text-base leading-relaxed text-ink-2">{REFUSED_TRIAL.reasons[reason]}</p>
+        <p className="text-base leading-relaxed text-ink-2">{REFUSED_TRIAL.notCharged}</p>
+        {reason === 'not_a_card' ? null : <p className="text-sm leading-relaxed text-ink-3">{REFUSED_TRIAL.bankLine}</p>}
+      </div>
+      <div className="flex flex-col gap-3">
+        {reason === 'not_a_card' ? (
+          <Link href="/trial" className={primary}>
+            {REFUSED_TRIAL.tryAgain}
+          </Link>
+        ) : null}
+        {reason === 'already_bought' && deskOpen ? (
+          <Link href="/desk" className={primary}>
+            {REFUSED_TRIAL.openDesk}
+          </Link>
+        ) : (
+          <Link href="/pricing" className={reason === 'not_a_card' ? secondary : primary}>
+            {REFUSED_TRIAL.pricing}
+          </Link>
+        )}
+        <SignOutButton label={REFUSED_TRIAL.signOut} />
       </div>
     </RefusalShell>
   );

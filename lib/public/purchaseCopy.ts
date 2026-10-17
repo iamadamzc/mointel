@@ -168,6 +168,32 @@ export const YOU_ARE_IN = {
   noRefunds: 'No refunds.',
 } as const;
 
+/**
+ * The refused-trial page: his "1, yes" (Integration chat bf3b407e, uuid 622497ba,
+ * 2026-10-17T11:04:55.669Z) to docs/integration/2026-10-17-refused-trial-and-privacy-for-him.md
+ * section 1 @f84c59fa, sent to him at 11:01:36Z; words Marketing
+ * docs/marketing/refused-trial-words-2026-10-17.md @06fd4a78 (Commercial read 161a PASS).
+ * The bank line is for card_used, account_used and already_bought only. For already_bought,
+ * "Open the desk" replaces "See pricing" when the account still has access (Billing's door
+ * 'ok' or 'trial').
+ */
+export const REFUSED_TRIAL = {
+  headline: "We couldn't start your free trial.",
+  notCharged: 'You were not charged for this.',
+  bankLine: 'Your bank may show a small pending amount from the card check. It is not a charge, and we never take it.',
+  reasons: {
+    card_used: 'The free trial is once per person and per card, so it can\'t start with this card. You can buy a day or a plan.',
+    account_used: "You've already had your free trial. The free trial is once per person and per card. You can buy a day or a plan.",
+    already_bought:
+      "You've already bought on this account, so a free trial isn't available. You can buy a day or a plan at any time.",
+    not_a_card: "The free trial needs a card, and the payment method you used wasn't one. You can try again with a card.",
+  },
+  tryAgain: 'Try again',
+  pricing: 'See pricing',
+  openDesk: 'Open the desk',
+  signOut: 'Sign out',
+} as const;
+
 /** The sign-in page's second option, by email link (email-link words, section 1). */
 export const SIGNIN_EMAIL = {
   lead: 'Sign in with Google, or with a link we email you. There is no password to set, and none for us to store.',

@@ -316,6 +316,48 @@ describe('/welcome', () => {
     expect(page).not.toContain('No refunds.');
   });
 
+  it('a refused trial: one message per reason, never charged, and the right buttons', async () => {
+    const reasons: Record<string, string> = {
+      card_used: 'so it can\'t start with this card.',
+      account_used: "You've already had your free trial.",
+      already_bought: "You've already bought on this account",
+      not_a_card: 'the payment method you used wasn\'t one.',
+    };
+    state.billing = { door: 'buy_first' };
+    for (const [reason, line] of Object.entries(reasons)) {
+      state.status = { state: 'trial_refused', reason };
+      const page = html(await WelcomePage(params({ trial: '1', session_id: 'cs_t' })));
+      expect(page, reason).toContain("We couldn't start your free trial.");
+      expect(page, reason).toContain(line);
+      expect(page, reason).toContain('You were not charged for this.');
+      // the bank line only where a card check ran: never for not_a_card
+      expect(page.includes('Your bank may show a small pending amount from the card check.'), reason).toBe(
+        reason !== 'not_a_card',
+      );
+      expect(page, reason).toContain('href="/pricing"');
+      expect(page.includes('href="/trial"'), reason).toBe(reason === 'not_a_card');
+      expect(page, reason).not.toContain('href="/desk"');
+    }
+  });
+
+  it('already bought with current access: Open the desk instead of pricing (door ok or trial)', async () => {
+    state.status = { state: 'trial_refused', reason: 'already_bought' };
+    for (const door of ['ok', 'trial']) {
+      state.billing = { door };
+      const page = html(await WelcomePage(params({ trial: '1', session_id: 'cs_t' })));
+      expect(page, door).toContain('href="/desk"');
+      expect(page, door).not.toContain('href="/pricing"');
+    }
+  });
+
+  it('a refused trial with the switch closed is still 404, before any billing read', async () => {
+    delete process.env.PURCHASE_PAGES;
+    state.status = { state: 'trial_refused', reason: 'card_used' };
+    await expect(WelcomePage(params({ trial: '1', session_id: 'cs_t' }))).rejects.toThrow('NOT_FOUND');
+    expect(billingReads.calls).toBe(0);
+    expect(outside.calls).toEqual([]);
+  });
+
   it('a session id that is not this user\'s goes to /pricing', async () => {
     state.status = { state: 'not_yours' };
     await expect(WelcomePage(params({ session_id: 'cs_x' }))).rejects.toThrow('REDIRECT /pricing');
