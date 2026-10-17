@@ -34,8 +34,9 @@ drafted: 2026-10-17
     - the free trial row in section 1's table, section 2's first sentence, and section 9
       (docs/commercial/2026-10-17-free-trial-strings.md section 2), with the sentence
       "A free trial is not available to an account that has already bought a day or a plan."
-    - the trial's length in Marketing's wording (fe2b21ac): "48 hours of trading days", and
-      the exact stop times, which match lib/billing/trialClock.ts at f23e4422.
+    - the trial's length in Marketing's wording (b3288fdc): "48 hours, not counting weekends
+      and market holidays" (his turn, uuid 98d98873, rejected "of trading days"), and the exact
+      stop times, which match lib/billing/trialClock.ts at f23e4422.
   NOT YET REWORDED: the paid day. His ruling of 2026-10-17 (uuid 5c1bc71e) makes weekends
   and holidays part of the next market day's paid day; sections 1 and 2 still carry the
   old 8:00pm to 8:00pm text and the closed-day sentence until Billing's scope of the code
@@ -69,7 +70,7 @@ Access to the desk, for a paid day or for a plan. Prices are in US dollars.
 | Monthly | $89 | one month |
 | Six months | $499 | six months |
 | Annual | $899 | one year |
-| Free trial | no charge | 48 hours of trading days, once |
+| Free trial | no charge | 48 hours, not counting weekends and market holidays, once |
 
 [TAX: his accountant decides whether these prices include sales tax and what
 the checkout shows.]
@@ -160,8 +161,8 @@ TMI is developed and sold by Andromeda Genius LLC, of 5460 Babcock Rd, Suite 120
 
 ## 9. The free trial
 
-You can try the desk free for 48 hours of trading days. The clock stops from
-8:00pm ET on Friday until 8:00pm ET on Sunday, and for a market holiday from
+You can try the desk free for 48 hours, not counting weekends and market
+holidays. The clock stops from 8:00pm ET on Friday until 8:00pm ET on Sunday, and for a market holiday from
 8:00pm ET the evening before until 8:00pm ET on the holiday. Each person can
 take the trial once, and each card can start a trial once.
 
