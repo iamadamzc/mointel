@@ -61,12 +61,12 @@ If the card cannot be checked, or has already been used for a trial, the trial d
 "**When you start a free trial.** You enter a card on Stripe's page. Stripe checks it, and we ask Stripe to remove it from your account at once; we never charge it. We never receive your card number. Stripe gives us a code that identifies the card. We keep that code, Stripe's reference number for the check, and the time the trial started, with your account, so the same card cannot start a second trial. We keep them for as long as we offer the free trial, including after you close your account. Stripe keeps a record of the card, including its brand, last four digits and expiry date, under its own privacy policy."
 
 **Section 2, after that paragraph, add one more (a trial that cannot start).** Billing read the code (relayed; I did not open it): a card refused at the trial page is detached from the Stripe customer in all four refusal cases before the reason is known, is never charged, and its code is not stored; one row is kept of the attempt: Stripe's reference for the check, our user id, the reason, and the time.
-"**If a free trial cannot start.** The card is still removed from your account at once, it is never charged, and we do not keep a code for it. We keep a short record of the attempt: Stripe's reference for the check, your account, the reason it could not start, and the time. [REFUSAL RETENTION]"
+"**If a free trial cannot start.** The card is still removed from your account at once, it is never charged, and we do not keep a code for it. We keep a short record of the attempt: Stripe's reference for the check, your account, the reason it could not start, and the time. We delete this record 30 days after the attempt."
 
 **Section 6, add a bullet:**
-"**A free trial that could not start**: [REFUSAL RETENTION]."
+"**A free trial that could not start**: deleted 30 days after the attempt. It holds Stripe's reference for the check, your account, the reason it could not start, and the time."
 
-[REFUSAL RETENTION] is not ruled. His "forever" answer was about the trial code, not about refusals, and Billing's schema comment says "forever" as its own default. Nothing needs the row once the person has seen the page. **My lean: 30 days, then deleted**, the same period as the sign-in link records, because the purpose ends when the page has been shown and a short period is the plainer privacy line. The sentence then reads: "We delete this record 30 days after the attempt." If he wants it kept, the sentence says for how long and why. His call through Integration; Billing builds a daily delete if he picks the short period.
+**Ruled** (Integration 42nd, relaying his word, 2026-10-17): deleted 30 days after creation, like the email-link records. His "forever" covers only the trial card code. Billing builds the daily delete.
 
 **Section 4 ("Why we hold it"), add a bullet:**
 "**To stop the free trial being taken twice.** The card code is kept for this and for nothing else."
