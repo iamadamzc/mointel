@@ -579,9 +579,14 @@ describe('narrativeFacts intraday v2: F10 and F13', () => {
 
 describe('narrativeFootnotes (build step 4)', () => {
   it('carries G and the split count as computed fields on the recap; null on the intraday kinds; a zero is a zero, a null stays null', () => {
-    expect(narrativeFootnotes({ noClose: 3, splitExcluded: 2 })).toEqual({ noClose: 3, splitExcluded: 2 });
-    expect(narrativeFootnotes({ noClose: 0, splitExcluded: 0 })).toEqual({ noClose: 0, splitExcluded: 0 });
+    expect(narrativeFootnotes({ noClose: 3, splitExcluded: 2 })).toEqual({ noClose: 3, splitExcluded: 2, basis: 'prior_or_close' });
+    expect(narrativeFootnotes({ noClose: 0, splitExcluded: 0 })).toEqual({ noClose: 0, splitExcluded: 0, basis: 'prior_or_close' });
     expect(narrativeFootnotes({ noClose: null, splitExcluded: null })).toBeNull();
-    expect(narrativeFootnotes({ noClose: 1, splitExcluded: null })).toEqual({ noClose: 1, splitExcluded: null });
+    expect(narrativeFootnotes({ noClose: 1, splitExcluded: null })).toEqual({ noClose: 1, splitExcluded: null, basis: 'prior_or_close' });
+  });
+
+  it("a recap's footnotes say which names it counted (the prior-or-close basis), so the third footnote prints on it", () => {
+    // His "approved all" (Commercial's chat, 2026-10-17T03:17:46.629Z; Commercial read 156a).
+    expect(narrativeFootnotes({ noClose: 2, splitExcluded: 0 })?.basis).toBe('prior_or_close');
   });
 });

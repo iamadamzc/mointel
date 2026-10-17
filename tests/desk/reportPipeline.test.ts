@@ -427,7 +427,8 @@ describe('the report pipeline, v6 wiring', () => {
     const run = await runReport(db, { kind: 'PREMARKET', rangeId: '1-20', tradingDate: DATE, range: { min: 1, max: 20 } }, { writer, checker }, () => new Date(recapAt));
     expect(run.status).toBe('PUBLISHED');
     if (run.status !== 'PUBLISHED') return;
-    expect(run.report.narrativeFootnotes).toEqual({ noClose: 1, splitExcluded: 1 });
+    // A recap built now carries the prior-or-close marker that prints the third footnote.
+    expect(run.report.narrativeFootnotes).toEqual({ noClose: 1, splitExcluded: 1, basis: 'prior_or_close' });
     // His "a and b": the evening recap keeps writer v6 (v7's recap Summary failed its re-check, 7f9210be).
     const sent = prompts.find((p) => p.role === 'writer');
     expect(sent?.system).toBe(SYSTEM_V6);

@@ -258,6 +258,12 @@ export interface SessionReport {
 export interface NarrativeFootnotes {
   noClose: number | null;
   splitExcluded: number | null;
+  /**
+   * Which names the recap counted: 'prior_or_close' = those that started or ended the day in range (his "2, prior
+   * close or close", 2026-10-15). It prints the third footnote (his "approved all", Commercial's chat,
+   * 2026-10-17T03:17:46.629Z; Commercial read 156a). Absent on recaps stored before it, which print nothing new.
+   */
+  basis?: 'prior_or_close';
 }
 
 export interface SessionReportsPayload {
