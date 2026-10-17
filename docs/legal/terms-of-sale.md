@@ -31,10 +31,12 @@ drafted: 2026-10-17
 
   BRACKETED ITEMS ARE NOT DECIDED. Each says who decides. Nothing in brackets
   ships as written.
-  [PRICE CHANGE NOTICE] his number.
+  [PRICE CHANGE NOTICE] ANSWERED 2026-10-17: 30 days (his "4, yes", uuid 6c3dc8f3,
+        2026-10-17T00:12:10.134Z, through Integration). No longer bracketed.
   [TAX] his accountant: whether prices include or exclude sales tax and what the
         checkout shows.
-  [MONTH] his answer to the one question about how a month is counted.
+  [MONTH] ANSWERED 2026-10-17: "3, a": from the day you buy (the 17th to the 17th).
+        No longer bracketed.
   [RECORDS] his accountant: how long the record of each charge is kept.
   [ATTORNEY] his attorney reads this whole file before it is adopted.
 -->
@@ -62,11 +64,9 @@ the checkout shows.]
 A paid day runs from 8:00pm ET to 8:00pm ET the next day, the same window your
 session already uses. A plan covers every paid day in its period.
 
-[MONTH: a month is a calendar month counted from the day you buy it. A plan
-bought on the 17th runs to 8:00pm ET on the 17th of the next month. Six months
-and a year count the same way. This is the default; it goes to him as one
-question, because "a month is as it is according to the market" can also be
-read as a month that starts on the 1st.]
+A month is a calendar month counted from the day you buy it. A plan bought on
+the 17th runs to 8:00pm ET on the 17th of the next month. Six months and a
+year count the same way.
 
 ## 2. Daily: how the charge works
 
@@ -95,7 +95,7 @@ how to cancel.
 
 If we change the price of a plan, the new price starts at your next renewal.
 We will tell you in the desk and on the pricing page at least
-[PRICE CHANGE NOTICE: 30] days before.
+30 days before.
 
 If you buy a plan while you are paying daily, days you have already paid for
 are not credited against the plan.

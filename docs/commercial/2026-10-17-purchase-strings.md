@@ -4,21 +4,15 @@
 
 His rulings these rest on (read at his turns through Integration): the ladder and renewal ("$89, $499, $899", "yes auto renew, make easy cancel. plans renwe on their own. no refunds."), "take whoever pays, say it's for people trading the US market", and, for the kept sentence, "yes to all. except 2." (Integration chat, uuid 0114ba50, 2026-10-17T00:01:01.558Z).
 
-## NEEDS YOU
+## Answered
 
-Three short questions. Everything else in this file is for him to approve as written.
+His answers (Integration chat, uuid 6c3dc8f3, 2026-10-17T00:12:10.134Z, through Integration): "1, approved. 2, a. 3, a. 4, yes. 5, yes. 6, connected."
+- **How a month is counted:** from the day you buy (the 17th to the 17th). Folded into the terms of sale.
+- **Notice before a plan price changes:** 30 days. Folded into the terms of sale.
+- **Terms of service section 9:** the added line below is approved and is part of the set.
+- **A lapsed hour:** the next paid day's charge runs before the board opens; a card that is still failing sees "update your card", not the board. The terms of sale already say sign-in is refused until the card is fixed.
 
-**How is a month counted?** He said "a month is as it is according to the market." Two readings:
-- From the day you buy: a plan bought on the 17th runs to 8:00pm ET on the 17th of the next month. This is my default in the draft.
-- By calendar month: a month is the 1st to the end of the month, so someone who buys on the 17th gets the rest of that month.
-
-*Blocks:* the sentence under "What you are buying" in the terms of sale and the renewal date at checkout.
-
-**How many days' notice before a plan price changes?** The draft says 30. His number.
-
-**Terms of service section 9 says we may end access "with or without a reason", and the terms of sale say no refunds.** If we ended a paid plan without a reason connected to the buyer, the buyer would have paid for time they did not get. The sentence he kept ("if the service was unavailable for a paid day through our own fault... we will make it right") reads as covering that, but it does not say so. Choices: (a) leave both as they are and his attorney decides; (b) add to section 9: "If we end your access and the reason is not your breach of these terms, we will make it right for the part of a plan you paid for and did not get." My lean: (b), because it follows from the sentence he already kept. His call, and his attorney's.
-
-Two items belong to his accountant and attorney and are marked in brackets in the drafts: sales tax on the prices, and how long billing records are kept.
+Two items belong to his accountant and attorney and are marked in brackets in the drafts: sales tax on the prices, and how long billing records are kept. The attorney reads the whole terms-of-sale file before adoption.
 
 ## 1. Terms of sale
 
@@ -44,7 +38,8 @@ The terms are adopted. Changing them sends `adopted` back to null and puts a DRA
 
 **One pointer sentence** goes at the end of section 1: "What you pay and when is in the [Terms of sale](/terms-of-sale)." (The page `/terms-of-sale` does not exist yet; Web builds it with the checkout.)
 
-**Section 9, the optional line above:** "If we end your access and the reason is not your breach of these terms, we will make it right for the part of a plan you paid for and did not get." (only if he chooses (b)).
+**Section 9, add this line** (approved):
+"If we end your access and the reason is not your breach of these terms, we will make it right for the part of a plan you paid for and did not get."
 
 ## 3. Privacy policy: six changes
 
