@@ -45,7 +45,7 @@ describe('the screens that replace the board', () => {
     const view = billingDeskView(base({ door: 'charge_first', latestCharge: { etDate: '2026-10-19', state: 'PENDING', source: 'daily', amountCents: 550 } }), Date.parse(END));
     const html = renderToStaticMarkup(createElement(CheckingScreen, { checking: view.checking! }));
     expect(html).not.toContain('<button');
-    expect(html).toContain('Checking today&#x27;s payment...');
+    expect(html).toContain('Checking your payment...');
     expect(html).toContain('The desk opens when the payment is confirmed.');
   });
 
