@@ -5,7 +5,7 @@
  * b227a882), HIS VERBATIM YES (Integration chat, uuid 3f2e06b4, 2026-10-17T03:11:47.893Z). Its variables fix the
  * formats: {plan} "Daily" / "Monthly" / "Six months" / "Annual"; {endTime} "8:00pm ET on Friday, October 17";
  * {date} "November 17". The plan and history shapes are Billing's (lib/billing/account.ts
- * DeskPlan, lib/billing/store.ts BilledDay), mirrored here until that branch merges.
+ * DeskPlan, lib/billing/store.ts BilledDay), imported.
  *
  * Read 150's rule is built in: there is no Remove card on a plan that still renews (a buyer who removed the card would
  * hit a failed renewal later, which is not an easy cancel). Cancel and Remove card are one step each; the confirmation
@@ -14,15 +14,9 @@
 
 import type { DeskBillingState, DeskPlan } from './billingView';
 
-/** Mirror of Billing's BilledDay (lib/billing/store.ts billingHistory, as Billing-tmi sent it 2026-10-17). */
-export interface BilledDay {
-  etDate: string;
-  amountCents: number;
-  source: 'daily' | 'checkout';
-  state: 'paid' | 'declined' | 'pending' | 'refunded';
-  chargedAt: string;
-  receiptUrl: string | null;
-}
+import type { BilledDay } from '@/lib/billing/store';
+
+export type { BilledDay };
 
 export const BILLING_PAGE_WORDS = {
   headline: 'Billing',

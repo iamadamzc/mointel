@@ -36,7 +36,7 @@ describe('the time and money helpers', () => {
 describe('nothing billing-related changes the board when nothing applies', () => {
   it('none, null and an open day with no grace leave the board alone', () => {
     for (const state of [null, undefined, base()]) {
-      expect(billingDeskView(state, at(30))).toEqual({ screen: 'board', band: null, titlePrefix: null, trialChip: null, card: null, buy: null });
+      expect(billingDeskView(state, at(30))).toEqual({ screen: 'board', band: null, titlePrefix: null, trialChip: null, card: null, checking: null, buy: null });
     }
   });
 });

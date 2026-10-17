@@ -15,50 +15,12 @@
  */
 
 /**
- * THE STATE THE DESK READS: a MIRROR of Billing's DeskBillingState (lib/billing/account.ts on branch
- * billing/stripe-v1-on-d772ba25 at 9a12ebfe, which added grace.declinedAgain, endedAt, paidThroughAt, buyCase, trialTaken and
- * email at Design's ask). Billing
- * owns this shape; replace the mirror with `import type { DeskBillingState } from '@/lib/billing/account'` when that
- * branch merges.
+ * THE STATE THE DESK READS is Billing's (lib/billing/account.ts billingStateFor), imported, never copied: Billing owns
+ * the shape, and the desk renders it.
  */
-export type DeskDoor = 'ok' | 'trial' | 'buy_first' | 'charge_first';
+import type { BuyCase, DeskBillingState, DeskDoor, DeskPlan } from '@/lib/billing/account';
 
-export interface DeskPlan {
-  kind: 'monthly' | 'six_month' | 'annual';
-  priceCents: number;
-  status: string;
-  paidThroughEtDate: string;
-  currentPeriodEnd: string;
-  cancelAtPeriodEnd: boolean;
-  renewsOn: string | null;
-  endsOn: string | null;
-}
-
-export interface DeskBillingState {
-  door: DeskDoor;
-  /** The hour; endsAt never moves on a second decline (declinedAgain). */
-  grace: { kind: 'daily' | 'plan'; endsAt: string; amountCents: number; declinedAgain: boolean } | null;
-  trial: { endsAt: string | null } | null;
-  plan: DeskPlan | null;
-  cardOnFile: boolean;
-  customer: boolean;
-  latestCharge: {
-    etDate: string;
-    state: 'PENDING' | 'SUCCEEDED' | 'FAILED' | 'NOT_CHARGED' | 'REFUNDED';
-    source: 'daily' | 'checkout';
-    amountCents: number;
-  } | null;
-  /** Set only on charge_first: when the most recent lapsed hour ended the session; null otherwise. */
-  endedAt: string | null;
-  /** The instant the current paid day ends (20:00 ET), only when today's DAILY charge succeeded; else null. */
-  paidThroughAt: string | null;
-  /** Set only on buy_first: which buy screen. Billing's precedence: trial_ended, then card_removed, then plan_ended. */
-  buyCase: BuyCase | null;
-  /** A trial was ever taken on the account, running or ended: "Start free trial" only when false. */
-  trialTaken: boolean;
-  /** The verified address the account's purchases are for. */
-  email: string | null;
-}
+export type { BuyCase, DeskBillingState, DeskDoor, DeskPlan };
 
 /** The desk's own memory between reads: the band saw a grace end with the charge succeeding. */
 export interface BillingMemory {
@@ -167,7 +129,6 @@ export interface BillingDeskView {
   buy: { variant: BuyCase; headline: string; line: string; buttons: Array<{ action: BuyAction; label: string }> } | null;
 }
 
-export type BuyCase = 'trial_ended' | 'plan_ended' | 'no_access' | 'card_removed';
 export type BuyAction = 'pricing' | 'trial' | 'add_card' | 'sign_out';
 
 const WARN = String.fromCharCode(0x26a0);

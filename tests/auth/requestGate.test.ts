@@ -136,6 +136,16 @@ describe('no API route ships ungated', () => {
   // and no other route may, so widening or narrowing the set is a test change.
   const OWNER_ONLY = new Set(['app/api/research/retry/route.ts']);
 
+  // The desk's billing routes (Integration 42nd, 2026-10-17): every one signed-in through gateApiRequest, none exempt.
+  // The only billing exemption in the cut is Ops's /api/billing/webhook (Stripe's signature, not a session).
+  const BILLING_GATED = new Set([
+    'app/api/billing/state/route.ts',
+    'app/api/billing/history/route.ts',
+    'app/api/billing/cancel/route.ts',
+    'app/api/billing/card/remove/route.ts',
+    'app/api/billing/portal/route.ts',
+  ]);
+
   function routes(dir: string): string[] {
     return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
       const full = path.join(dir, entry.name);
@@ -175,6 +185,11 @@ describe('no API route ships ungated', () => {
     }
     // Control: the owner-only set names routes that exist.
     for (const file of OWNER_ONLY) expect(files).toContain(file);
+    // The billing routes exist, and none is in an exempt or special set: each took the gateApiRequest check above.
+    for (const file of BILLING_GATED) {
+      expect(files).toContain(file);
+      expect(UNGATED.has(file) || INTERNAL_OK.has(file) || OWNER_ONLY.has(file), file).toBe(false);
+    }
     for (const file of INTERNAL_OK) expect(files).toContain(file);
   });
 });
