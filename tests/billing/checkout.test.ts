@@ -26,7 +26,12 @@ function fakeStripe(amounts: Record<string, number> = PRICES) {
         data: [{ id: `price_${lookup_keys[0]}`, unit_amount: amounts[lookup_keys[0]], currency: 'usd' }],
       })),
     },
-    checkout: { sessions: { create: vi.fn(async () => ({ id: 'cs_1', url: 'https://checkout.stripe.com/c/cs_1' })) } },
+    checkout: {
+      sessions: {
+        create: vi.fn(async () => ({ id: 'cs_1', url: 'https://checkout.stripe.com/c/cs_1' })),
+        list: vi.fn(async () => ({ data: [] })),
+      },
+    },
     billingPortal: { sessions: { create: vi.fn() } },
   } as unknown as CheckoutDeps['stripe'];
 }
