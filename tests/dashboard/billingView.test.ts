@@ -116,7 +116,7 @@ describe('the screens that replace the board', () => {
   it('the checking screen: ONLY on charge_first while the charge resolves (terms of sale s2), daily or plan words, no button', () => {
     const daily = billingDeskView(base({ door: 'charge_first', latestCharge: charge('PENDING') }), at(30));
     expect(daily.screen).toBe('checking');
-    expect(daily.checking).toEqual({ headline: "Checking today's payment...", line: 'The desk opens when the payment is confirmed.' });
+    expect(daily.checking).toEqual({ headline: "Checking your payment...", line: 'The desk opens when the payment is confirmed.' });
     expect(daily.card).toBeNull();
     const plan = billingDeskView(base({ door: 'charge_first', plan: PLAN, latestCharge: { ...charge('PENDING', 8900), source: 'checkout' } }), at(30));
     expect(plan.checking?.headline).toBe("Checking your plan's renewal...");
@@ -136,7 +136,7 @@ describe('the screens that replace the board', () => {
     expect(view({ buyCase: 'card_removed', customer: true, cardOnFile: false })).toEqual({
       variant: 'card_removed',
       headline: 'Add a card to open the desk.',
-      line: 'You removed your card, so nothing was charged today. A paid day costs $5.50. Add a card to continue. No refunds.',
+      line: 'You removed your card, so nothing was charged for this paid day. A paid day costs $5.50. Add a card to continue. No refunds.',
       buttons: [{ action: 'add_card', label: 'Add card' }, { action: 'sign_out', label: 'Sign out' }],
     });
     expect(view({ buyCase: 'no_access', customer: false, cardOnFile: false, trialTaken: false, email: 'a@b.co' })).toEqual({

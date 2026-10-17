@@ -66,7 +66,9 @@ export const DESK_WORDS = {
   planEndedLine: 'To keep using TMI, choose a day or a plan.',
   // D: a daily buyer who removed the card.
   cardRemovedHeadline: 'Add a card to open the desk.',
-  cardRemovedLine: 'You removed your card, so nothing was charged today. A paid day costs $5.50. Add a card to continue. No refunds.',
+  // Paid-day words (docs/integration/2026-10-17-next-words-for-him.md @ 488c74b5 sections 1 and 2, his yes
+  // 2026-10-17T13:00:25.931Z): a Saturday sign-in belongs to Monday's paid day, so no "today".
+  cardRemovedLine: 'You removed your card, so nothing was charged for this paid day. A paid day costs $5.50. Add a card to continue. No refunds.',
   // C: never bought and never took a trial.
   noAccessHeadline: 'This account has no access yet.',
   noAccessLine: (email: string) => `You are signed in as ${email}. Access is by purchase, and is tied to the email address you sign in with.`,
@@ -75,7 +77,7 @@ export const DESK_WORDS = {
   addCard: 'Add card',
   signOut: 'Sign out',
   // The checking screen: ONLY on the charge_first door (terms of sale s2). No button.
-  checkingDaily: "Checking today's payment...",
+  checkingDaily: 'Checking your payment...',
   checkingPlan: "Checking your plan's renewal...",
   checkingLine: 'The desk opens when the payment is confirmed.',
 } as const;
