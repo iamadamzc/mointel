@@ -281,7 +281,7 @@ describe('version 7: the recap Summary fix (L13) and Commercial read 100 notes 1
     expect(SYSTEM_V7).toContain(
       "ONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (an intraday report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given. A recap's Summary instead follows the counts and the named movers it is given, and names only the tickers its facts list):",
     );
-    expect(REPORT_WRITER_PROMPT_VERSION_V7).toBe(14);
+    expect(REPORT_WRITER_PROMPT_VERSION_V7).toBe(15);
   });
 
   it('version 12: the counterparty exception, under USING THE FACTS right after the joining-words line, never in the voice paragraph', () => {

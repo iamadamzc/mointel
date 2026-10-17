@@ -33,11 +33,12 @@ describe('the recent-news words', () => {
   });
 
   it('no writer prompt still calls the group "fresh news" or "a fresh catalyst"', () => {
-    // v7's approved voice paragraph keeps its own tense example ("had fresh news"): his text, not in the strings he
-    // passed, so it is left for his word (raised with Integration and Marketing, 2026-10-16). Everything else is checked.
-    for (const [name, prompt] of [['v5', SYSTEM_V5], ['v6', SYSTEM_V6], ['v7', SYSTEM_V7.replace(VOICE_PARAGRAPH, '')]] as const) {
+    // The whole v7 prompt, voice paragraph included: its tense example now says "had recent news" (v7 15, his yes,
+    // Integration chat uuid 0114ba50).
+    for (const [name, prompt] of [['v5', SYSTEM_V5], ['v6', SYSTEM_V6], ['v7', SYSTEM_V7]] as const) {
       expect(prompt, name).not.toMatch(/fresh news|fresh catalyst/i);
     }
+    expect(VOICE_PARAGRAPH).toContain('Speak of the checkpoint in the past tense ("was up", "had recent news"), so a report read later does not state a market condition as now;');
     expect(SYSTEM_V7).toContain('and how many of the names the desk covers had recent news in our sources.');
     expect(VOICE_SPECIMEN).toContain('Of the 12 names the desk covers, 2 had recent news in our sources.');
     expect(VOICE_SPECIMEN).toContain('had recent news in our sources: a license agreement with Genentech');
