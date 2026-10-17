@@ -29,8 +29,8 @@ His three points, and what is literally true. I kept his meaning and changed the
 | "it is only to prevent trial cheating" | Yes as a purpose. The word "cheating" is accusatory on a page a stranger reads. | "We use it only to stop the same card starting a second trial." |
 
 Two more places where the words stay careful:
-- **"Detached" is not "deleted".** The relay says the card is detached from the Stripe customer at once. That means it cannot be charged. It does not say Stripe erases its record of the card or the check, and Billing is still reading what Stripe keeps. So no sentence says the card is deleted or that nobody keeps it. The sentences say "we ask Stripe to remove it from your account at once, so it cannot be charged".
-- **"No charge" and a bank statement.** A card check can show on a bank statement as a pending authorization that is released. Billing has not said whether this one does. If it does, the screen says so in one line, because "no charge" is true and a pending amount on the statement is something a person would otherwise call us about. `[STATEMENT]`
+- **"Detached" is not "deleted".** Billing reports from Stripe's API reference (relayed by Integration; I did not open it): detaching a card from a customer is permanent, so the card can no longer be used for payments or be attached again; and Stripe keeps a record of the detached card (its brand, last four digits, expiry, country, type and the code) under Stripe's own privacy policy. Billing found no statement that detaching deletes that record. So no sentence says the card is deleted or that nobody keeps the card details. The sentences say we ask Stripe to remove the card from the account at once, so it can never be charged, and that Stripe keeps a record under its own policy.
+- **"No charge" and a bank statement.** Billing has not read whether the card check places a temporary hold or authorization on the card, and Stripe's retention period is unread too. Both are unknown, so no sentence says anything about a bank statement or about how long Stripe keeps its record. If the check does place a hold, one line has to say so before launch, because "no charge" is true and a pending amount is still something a person would call us about. Billing can find out with one real card of his own (his action). `[STATEMENT]`
 
 ## 2. Terms of sale: the changes
 
@@ -49,9 +49,9 @@ This replaces the default I applied ("no free first day"). The terms of sale are
 
 You can try the desk free for two paid days. Each person can take the trial once, and each card can start a trial once.
 
-To start, you enter a card. We use it to check that it has not already been used for a trial. **We do not charge it, now or when the trial ends, and we never will.** As soon as it has been checked, we ask Stripe, our payment processor, to remove it from your account, so it cannot be charged. We do not see your card number and we do not keep your card.
+To start, you enter a card. We use it to check that it has not already been used for a trial. **We do not charge it, now or when the trial ends, and we never will.** As soon as it has been checked, we ask Stripe, our payment processor, to remove it from your account, so it cannot be charged. We do not see your card number and we do not keep your card. Stripe, which takes the card, keeps a record of it under Stripe's own privacy policy.
 
-We keep one code that identifies the card, with your account and the date. We use it only to stop the same card starting a second trial. [FINGERPRINT RETENTION]
+We keep one code that identifies the card, Stripe's reference number for the check, and the time the trial started, with your account. We use them only to stop the same card starting a second trial. [FINGERPRINT RETENTION]
 
 When the two days end, your access ends. Nothing is charged and nothing renews. To keep using the desk, you buy a day or a plan and enter a card then.
 
@@ -62,7 +62,7 @@ If the card cannot be checked, or has already been used for a trial, the trial d
 ## 3. Privacy policy: the changes
 
 **Section 2, after "When you pay." add a paragraph:**
-"**When you start a free trial.** You enter a card on Stripe's page. Stripe checks it, and we ask Stripe to remove it from your account at once; we never charge it. We never receive your card number. Stripe gives us a code that identifies the card. We keep that code with your account and the date the trial started, so the same card cannot start a second trial. [FINGERPRINT RETENTION] [STRIPE RETAINS: one sentence on what Stripe may keep, once Billing has read it.]"
+"**When you start a free trial.** You enter a card on Stripe's page. Stripe checks it, and we ask Stripe to remove it from your account at once; we never charge it. We never receive your card number. Stripe gives us a code that identifies the card. We keep that code, Stripe's reference number for the check, and the time the trial started, with your account, so the same card cannot start a second trial. [FINGERPRINT RETENTION] Stripe keeps a record of the card, including its brand, last four digits and expiry date, under its own privacy policy."
 
 **Section 4 ("Why we hold it"), add a bullet:**
 "**To stop the free trial being taken twice.** The card code is kept for this and for nothing else."
@@ -80,7 +80,7 @@ If the card cannot be checked, or has already been used for a trial, the trial d
 
 Legal text, with the box unticked. Marketing's page words surround them. Same position as the checkout sentences.
 
-"Free for two paid days. We use your card only to check that it has not been used for a trial before. We do not charge it, now or when the trial ends, and we do not keep it: we keep only a code that identifies it, so the same card cannot start a second trial. We ask Stripe to remove the card from your account at once. When the trial ends, nothing is charged and your access ends. [STATEMENT]"
+"Free for two paid days. We use your card only to check that it has not been used for a trial before. We do not charge it, now or when the trial ends, and we do not keep it: we keep only a code that identifies it, so the same card cannot start a second trial. We ask Stripe to remove the card from your account at once, so it can never be charged. Stripe keeps a record of the card under its own privacy policy. When the trial ends, nothing is charged and your access ends. [STATEMENT]"
 
 "I have read and agree to the [Terms of sale](/terms-of-sale) and the [Terms of service](/terms)."
 
@@ -94,14 +94,20 @@ I read them against these. They replace the earlier rule "no free trial", which 
 - The trial is not "a plan". The pricing page lists it apart from the four prices.
 - Still in force: prices with a period, "No refunds" near any button that buys, no outcome words, no data-licence claim, no "beta" or "invite".
 
-## 6. What I need from Billing, for the brackets
+## 6. The facts
 
-1. What Stripe keeps about a card after it is detached from a customer, and about the check itself. `[STRIPE RETAINS]`
-2. Whether the check shows on a cardholder's statement, and for how long. `[STATEMENT]`
-3. What the fingerprint is and is not: Stripe's code for a card number, stable across customers on the same Stripe account, not the card number, and whether it changes when a card is reissued.
-4. How the "two days" are counted in the build. `[TRIAL DAYS]`
-5. What happens when a card is declined, is prepaid, or is a wallet card.
-6. Whether the card is taken on Stripe's own page (a redirect), which keeps the privacy policy's line that our pages load nothing from anyone else's servers true, or in an embedded form, which does not.
+**Received** (Billing's reading of Stripe's API reference, relayed by Integration, 2026-10-17; I did not open it):
+- Detaching is permanent. The card can no longer be used for payments or attached again.
+- Stripe keeps a record of the detached card (brand, last four digits, expiry, country, type, the code) under Stripe's own privacy policy. No statement was found that detaching deletes it.
+- Our side keeps exactly: the user, the card fingerprint, the trial start time, and the setup intent id. No card number, last four or expiry.
+- Link (Stripe's wallet) is off for the trial: cards only, because Link carries no fingerprint.
+- Trial days count only on trading days.
+
+**Still unknown, and named as unknown in the words:**
+1. Whether the card check places a temporary authorization on the card. `[STATEMENT]`
+2. How long Stripe keeps its record of the card. (No sentence gives a period.)
+3. How the "two days" are counted (a fixed window from the start, or the days the person signs in on). Billing says they count on trading days only; the question of the window stays his.
+4. Whether the card is taken on Stripe's own page (a redirect), which keeps the privacy line that our pages load nothing from anyone else's servers true, or in an embedded form, which does not.
 
 ## 7. Order
 
