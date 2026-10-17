@@ -353,13 +353,9 @@ function verifiedFlag(value: boolean | null | undefined): number | null {
 /**
  * Resolve a provider identity to an internal user, creating one on first sight.
  *
- * LINK-FROM-SESSION, NEVER LINK-ON-SIGNIN. This deliberately does NOT look for
- * an existing user by email and attach to it. Two providers asserting the same
- * address are not evidence of one person -- and with Apple they frequently
- * cannot match at all, because the address may be a per-app relay. Joining two
- * providers is something an already-authenticated user does on purpose. It is
- * not an inference drawn at the moment of sign-in from whatever the provider
- * happened to assert that time.
+ * THIS FUNCTION NEVER JOINS BY EMAIL. It is the raw (provider, subject) lookup.
+ * Sign-in paths that prove a mailbox call `linkIdentityJoiningVerifiedEmail`
+ * below, which applies his one-account rule and then calls this.
  */
 export function linkIdentity(
   db: IdentityDatabase,
@@ -419,6 +415,63 @@ export function linkIdentity(
   const userId = create();
   const user = db.prepare('SELECT status FROM users WHERE id = ?').get(userId) as { status: string };
   return { userId, status: user.status, created: true };
+}
+
+/**
+ * ONE ACCOUNT PER VERIFIED EMAIL ADDRESS. HIS RULING: "yes, one account"
+ * (Integration chat, uuid 4264b641, 2026-10-17T02:25:25.197Z), answering
+ * "Make Google and email-link sign-ins on the same address one account?". It
+ * REPLACES the earlier seat-design rule written here, "link-from-session, never
+ * link-on-signin", which had no ruling of his behind it.
+ *
+ * Why it holds: a Google sign-in with email_verified and an email link both
+ * prove control of the mailbox, and a buyer's plan is keyed to the user; two
+ * users for one address would leave the second unpaid.
+ *
+ * THE RULE, both directions (Google joining an email-link user, and an email
+ * link joining a Google user):
+ * 1. A known (provider, subject) is that identity's user, as always.
+ * 2. Otherwise, ONLY IF THE NEW IDENTITY'S ADDRESS IS VERIFIED: the users who
+ *    already hold that address verified (lower + trim, no dot or plus folding).
+ *    None: a new user. Exactly one: the new identity joins it. More than one:
+ *    REFUSED, never merged -- the caller shows a contact-support page.
+ * 3. An unverified address never joins anyone (Google email_verified false or
+ *    absent): it makes its own user, as before.
+ */
+export type JoinedUser = (LinkedUser & { ok: true; joined: boolean }) | { ok: false; reason: 'ambiguous' };
+
+export function linkIdentityJoiningVerifiedEmail(
+  db: IdentityDatabase,
+  identity: ProviderIdentity,
+  now: string = new Date().toISOString(),
+): JoinedUser {
+  const known = db
+    .prepare('SELECT 1 AS ok FROM identities WHERE provider = ? AND subject = ?')
+    .get(identity.provider, identity.subject) as { ok: number } | undefined;
+  const email = identity.email ? normaliseEmail(identity.email) : '';
+  if (known || identity.emailVerified !== true || !email) {
+    return { ok: true, joined: false, ...linkIdentity(db, identity, now) };
+  }
+
+  return db.transaction((): JoinedUser => {
+    const holders = db
+      .prepare(
+        `SELECT DISTINCT user_id AS userId FROM identities
+          WHERE email_verified = 1 AND lower(trim(email)) = ?`,
+      )
+      .all(email) as Array<{ userId: number }>;
+    if (holders.length > 1) return { ok: false, reason: 'ambiguous' };
+    if (holders.length === 0) return { ok: true, joined: false, ...linkIdentity(db, identity, now) };
+
+    const userId = holders[0].userId;
+    db.prepare(
+      `INSERT INTO identities
+         (user_id, provider, subject, email, email_verified, created_at, last_seen_at)
+       VALUES (?, ?, ?, ?, 1, ?, ?)`,
+    ).run(userId, identity.provider, identity.subject, identity.email ?? null, now, now);
+    const user = db.prepare('SELECT status FROM users WHERE id = ?').get(userId) as { status: string };
+    return { ok: true, joined: true, userId, status: user.status, created: false };
+  })();
 }
 
 /** The raw id goes to the caller and into a cookie. Only its hash is stored. */
