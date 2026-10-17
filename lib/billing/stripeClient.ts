@@ -21,7 +21,7 @@ export function stripeKeyMode(key: string | undefined): 'test' | 'live' | 'missi
   return 'unrecognised';
 }
 
-export function stripeFromEnv(env: NodeJS.ProcessEnv = process.env): StripeClient {
+export function stripeFromEnv(env: Readonly<Record<string, string | undefined>> = process.env): StripeClient {
   const key = env.STRIPE_SECRET_KEY;
   const mode = stripeKeyMode(key);
   if (mode === 'missing') throw new Error('STRIPE_SECRET_KEY is not set');

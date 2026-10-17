@@ -47,7 +47,7 @@ export function openPaidDay(
   db: IdentityDatabase,
   userId: number,
   now: Date = new Date(),
-  env: NodeJS.ProcessEnv = process.env,
+  env: Readonly<Record<string, string | undefined>> = process.env,
 ): PaidDayOpening {
   if (!customerIdFor(db, userId)) return { kind: 'no_customer' };
   const etDate = paidDayOf(now);

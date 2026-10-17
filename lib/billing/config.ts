@@ -29,9 +29,10 @@ export const RULED_AMOUNT_CENTS: Record<Purchase, number> = {
 export const GRACE_MS = 60 * 60 * 1000;
 
 /**
- * WHAT HAPPENS ON THE NEXT PAID DAY AFTER A LAPSED HOUR. HIS DECISION, OPEN
- * when this was written (Integration put it to him 2026-10-17), so it is a
- * switch rather than a choice made here.
+ * WHAT HAPPENS ON THE NEXT PAID DAY AFTER A LAPSED HOUR. HIS RULING, 2026-10-17
+ * (Integration chat, uuid 6c3dc8f3): 'charge_first' is the rule, as the default
+ * and the production value. The switch stays only so a test can exercise the
+ * other branch; production never sets it.
  *
  * - 'charge_first': a customer whose card is failing is charged before the
  *   board opens; a decline shows the update-card screen, not the board.
@@ -44,6 +45,6 @@ export const GRACE_MS = 60 * 60 * 1000;
  */
 export type LapsedDoor = 'charge_first' | 'one_hour';
 
-export function lapsedDoor(env: NodeJS.ProcessEnv = process.env): LapsedDoor {
+export function lapsedDoor(env: Readonly<Record<string, string | undefined>> = process.env): LapsedDoor {
   return env.BILLING_LAPSED_DOOR === 'one_hour' ? 'one_hour' : 'charge_first';
 }
