@@ -64,5 +64,6 @@ The paragraph that follows stays.
 ## What is not in this set
 
 - The pointer sentence in `terms.md` and the terms of sale (`docs/legal/terms-of-sale.md`, sections 1 to 9): separate files, same motion.
+- The "by invitation" sentences in `terms.md` (section 2 bullets, section 3) and in the policy's section 8, with the corrections to my earlier drafts of them: `2026-10-17-invitation-sentences.md`, same motion.
 - The refused-trial page (Marketing `06fd4a78`, read 161a) and the terms of sale section 9 sentence "A free trial is not available to an account that has already bought a day or a plan." They go to him with this set.
 - Whether Stripe keeps the email on a deleted customer for its own legal reasons: not read. The bullets promise only what we do and say Stripe keeps its record of charges under its own policy.
