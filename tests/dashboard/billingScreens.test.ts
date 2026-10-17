@@ -24,7 +24,7 @@ describe('the band', () => {
     const view = billingDeskView(base({ grace: { kind: 'daily', endsAt: END, amountCents: 550, declinedAgain: false }, latestCharge: { etDate: '2026-10-19', state: 'FAILED', source: 'daily', amountCents: 550 } }), Date.parse(END) - 52 * 60_000);
     const html = renderToStaticMarkup(createElement(BillingBand, { band: view.band, onUpdateCard: noop }));
     expect(html).toContain('data-billing-band="amber"');
-    expect(html).toContain("Today&#x27;s payment didn&#x27;t go through. Your session ends at 07:43 ET, 52 min left.");
+    expect(html).toContain("Your payment didn&#x27;t go through. Your session ends at 07:43 ET, 52 min left.");
     expect(html.match(/<button/g)?.length).toBe(1);
     expect(html).toContain('>Update card</button>');
     expect(renderToStaticMarkup(createElement(BillingBand, { band: null, onUpdateCard: noop }))).toBe('');
@@ -35,7 +35,7 @@ describe('the screens that replace the board', () => {
   it('update your card: headline, the amount line, one button, the under line, contact', () => {
     const view = billingDeskView(base({ door: 'charge_first', latestCharge: { etDate: '2026-10-19', state: 'FAILED', source: 'daily', amountCents: 550 } }), Date.parse(END));
     const html = renderToStaticMarkup(createElement(CardRequiredScreen, { card: view.card!, onUpdateCard: noop }));
-    for (const words of ['Update your card to open the desk.', 'Today&#x27;s payment of $5.50 didn&#x27;t go through.', 'Your card is tried again as soon as you update it. No refunds.', 'mailto:desk@tmitrader.com']) {
+    for (const words of ['Update your card to open the desk.', 'Your payment of $5.50 didn&#x27;t go through.', 'Your card is tried again as soon as you update it. No refunds.', 'mailto:desk@tmitrader.com']) {
       expect(html).toContain(words);
     }
     expect(html.match(/<button/g)?.length).toBe(1);
