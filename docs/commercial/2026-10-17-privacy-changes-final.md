@@ -51,16 +51,20 @@ Becomes: "A sign-in after 20:00 can run until 20:00 the next trading day, becaus
 ## Section 7, your rights, the deletion bullet
 
 Add after "Delete it. Ask, and we close the account and delete the record. This cannot be undone, and it ends your access.":
-"The exceptions are the card code from a free trial, Stripe's reference for the check, and the date, which we keep for the reason in section 2: otherwise the same card could start a second trial. Stripe keeps its own record of each charge under its own privacy policy." [ATTORNEY: whether the policy may keep these after a deletion request, and whether it must name a legal basis.]
+"The exceptions are the card code from a free trial, Stripe's reference for the check, and the date, which we keep for the reason in section 2: otherwise the same card could start a second trial. We also keep the record of each charge, for the period in section 6. Stripe keeps its own record of each charge under its own privacy policy." [ATTORNEY: whether the policy may keep these after a deletion request, and whether it must name a legal basis.]
 
-**Proposed addition, not yet shown to him (ninth tenure, 2026-10-17, from Billing's deletion runbook question):** our own record of each charge and plan is not named above, so as approved a deletion request would leave rows the policy says are deleted. Add to the exceptions sentence: "and the record of each charge, for the period in section 6." Until his accountant sets that period (the [RECORDS] bracket in section 6), the runbook keeps the charge and plan rows in full. Changing approved text needs his yes and the attorney's read. [ATTORNEY: the same question as above, for the charge record.]
+**The sentence "We also keep the record of each charge, for the period in section 6." is APPROVED** (his "yes to all five", Integration chat bf3b407e, human row uuid c7584eb1, 2026-10-17T13:00:25.931Z, checked at his turn, to `docs/commercial/2026-10-17-next-words-for-him.md` at `481547e1` (copied byte for byte by Integration to `docs/integration/` at `488c74b5`, which I compared)), section 4 of that file. Until his accountant sets the period (the [RECORDS] bracket in section 6), the runbook keeps the charge and plan rows in full. Attorney's read before adoption.
 
 **Question for his attorney (ninth tenure, read 172):** Stripe recommends redaction jobs, not deleting the customer, for consumer data deletion requests. The section 6 bullet "If you ask us to delete your account, we delete both" stays as approved, because it says only what we do (delete the Stripe customer and our link to it). [ATTORNEY: whether that answers a deletion request under the law that applies to each buyer, or whether a Stripe redaction is expected. A redaction cannot start on a paid customer's charges until 90 days after they were created, cannot be undone, and leaves those charges unrefundable and lost if disputed; it is in Stripe's public preview.]
 
 ## Section 8, where the service is, and who it is for
 
-Now: "**We do not offer it to the public anywhere.** Access is by invitation, which is how the scope above stays a fact rather than a sentence: we choose who is invited."
-Becomes: "**We sell it to anyone who pays.** It is made for people trading the US market, and the service and your data stay in the United States."
+**APPROVED, replacing the text above this heading's earlier draft** (his "yes to all five", Integration chat bf3b407e, human row uuid c7584eb1, 2026-10-17T13:00:25.931Z, checked at his turn, to `docs/commercial/2026-10-17-next-words-for-him.md` at `481547e1` (copied byte for byte by Integration to `docs/integration/` at `488c74b5`, which I compared)), section 5. The earlier draft ("We sell it to anyone who pays ... the service and your data stay in the United States") is withdrawn.
+
+The sentence before: Now "It runs on servers in us-east-1 and your data is stored there." Becomes "It runs on servers in us-east-1, and the data we hold about you is stored there."
+
+The two sentences: Now: "**We do not offer it to the public anywhere.** Access is by invitation, which is how the scope above stays a fact rather than a sentence: we choose who is invited."
+Becomes: "**It is for sale to the public.** It is made for people trading the US market."
 The paragraph that follows stays.
 
 ## What is not in this set

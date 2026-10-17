@@ -22,6 +22,8 @@ It replaces the held daily-pass draft (2026-09-30), which stays in the repo mark
 
 ## 2. Terms of service: three changes
 
+**Superseded for the first and second bullets of section 2 and the Google wording of section 3 (ninth tenure, 2026-10-17):** the replacements in `2026-10-17-invitation-sentences.md` are the ones he approved last; adopt those, not the text in this section.
+
 The terms are adopted. Changing them sends `adopted` back to null and puts a DRAFT banner on `/terms` until he adopts again (the file's own rule), so these go with the terms of sale in one motion.
 
 **Section 2, first bullet.**
