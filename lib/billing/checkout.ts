@@ -14,6 +14,8 @@
  * Marketing's, and go to him verbatim before they ship.
  */
 
+import { createHash } from 'node:crypto';
+
 import type Stripe from 'stripe';
 
 import type { MarketDays } from '@/lib/auth/expiry';
@@ -25,7 +27,15 @@ import {
   TRIAL_PAYMENT_METHODS_ENV,
   type Purchase,
 } from '@/lib/billing/config';
-import { canStartTrial, customerIdFor, linkCustomer, paidDayOf, verifiedEmailFor } from '@/lib/billing/store';
+import {
+  canStartTrial,
+  chargeFor,
+  customerIdFor,
+  linkCustomer,
+  paidDayOf,
+  planCovers,
+  verifiedEmailFor,
+} from '@/lib/billing/store';
 
 /**
  * ANDROMEDA GENIUS LLC IS THE SELLER, NOT STRIPE. The LLC's Stripe account has
@@ -39,6 +49,82 @@ import { canStartTrial, customerIdFor, linkCustomer, paidDayOf, verifiedEmailFor
  */
 const WE_ARE_THE_SELLER = { managed_payments: { enabled: false } } as const;
 
+/**
+ * ONE OPEN CHECKOUT PER PURCHASE AND PAID DAY. His first live Daily (2026-10-17)
+ * made six Checkout Sessions: one browser posted the form six times in two
+ * seconds, each new submit aborting the one in flight (nginx 499), and the server
+ * finished every aborted request (Ops's access log). Two of those pages paid in
+ * two tabs would be two charges for one day. So before creating, an OPEN session
+ * of ours for the same customer and the same metadata (user, address, purchase,
+ * paid day) is handed back instead; and the create carries an idempotency key,
+ * because a burst's requests run at the same time and none sees the others' yet.
+ *
+ * The key holds the paid day, the hour, and a digest of the parameters. The hour
+ * keeps a replay young (Stripe keeps keys at least 24 hours and a replay returns
+ * the first session even after it expired); the digest means a change of
+ * parameters (a new price, a new suffix) makes a new session rather than
+ * Stripe's refusal of a reused key with different parameters.
+ */
+const REUSE_MARGIN_MS = 10 * 60 * 1000;
+/** A burst's later request that collided with the first (Stripe answers 409) waits this long, then looks again. */
+const COLLISION_WAIT_MS = 1500;
+
+type CheckoutStripe = Pick<Stripe, 'checkout'>;
+
+async function openSessionFor(
+  stripe: CheckoutStripe,
+  customer: string,
+  metadata: Record<string, string>,
+  now: Date,
+): Promise<{ id: string; url: string } | null> {
+  const open = await stripe.checkout.sessions.list({ customer, status: 'open', limit: 20 });
+  for (const session of open.data) {
+    if (!session.url) continue;
+    if (session.expires_at * 1000 - now.getTime() < REUSE_MARGIN_MS) continue;
+    const theirs = session.metadata ?? {};
+    if (Object.entries(metadata).every(([key, value]) => theirs[key] === value)) {
+      return { id: session.id, url: session.url };
+    }
+  }
+  return null;
+}
+
+function idempotencyKey(prefix: string, now: Date, params: Stripe.Checkout.SessionCreateParams): string {
+  const hour = now.toISOString().slice(0, 13);
+  const digest = createHash('sha256').update(JSON.stringify(params)).digest('hex').slice(0, 16);
+  return `${prefix}-${hour}-${digest}`;
+}
+
+/**
+ * The buyer's open session for this purchase if there is one, else a new one made
+ * idempotently. A create that fails (a collision inside a burst, or anything else)
+ * looks once more after a short wait: the colliding request has usually finished
+ * by then, and its session is the one to use. Otherwise the error stands.
+ */
+async function sessionOnce(
+  deps: { stripe: CheckoutStripe; now?: () => Date; wait?: (ms: number) => Promise<void> },
+  customer: string,
+  metadata: Record<string, string>,
+  params: Stripe.Checkout.SessionCreateParams,
+  keyPrefix: string,
+): Promise<{ id: string; url: string }> {
+  const now = (deps.now ?? (() => new Date()))();
+  const existing = await openSessionFor(deps.stripe, customer, metadata, now);
+  if (existing) return existing;
+  try {
+    const session = await deps.stripe.checkout.sessions.create(params, {
+      idempotencyKey: idempotencyKey(keyPrefix, now, params),
+    });
+    if (!session.url) throw new Error('Stripe returned a Checkout Session with no url');
+    return { id: session.id, url: session.url };
+  } catch (error) {
+    await (deps.wait ?? ((ms) => new Promise<void>((resolve) => setTimeout(resolve, ms))))(COLLISION_WAIT_MS);
+    const settled = await openSessionFor(deps.stripe, customer, metadata, now);
+    if (settled) return settled;
+    throw error;
+  }
+}
+
 export interface CheckoutDeps {
   db: IdentityDatabase;
   /** For the statement suffix; process.env when omitted. */
@@ -51,10 +137,12 @@ export interface CheckoutDeps {
    */
   marketDays: MarketDays;
   now?: () => Date;
+  /** The pause before looking again after a failed create; a real timer when omitted. */
+  wait?: (ms: number) => Promise<void>;
 }
 
 /** What creating a customer or a trial Checkout needs: no calendar. */
-export type TrialCheckoutDeps = Pick<CheckoutDeps, 'db' | 'stripe' | 'now' | 'env'>;
+export type TrialCheckoutDeps = Pick<CheckoutDeps, 'db' | 'stripe' | 'now' | 'env' | 'wait'>;
 
 /**
  * The price for a purchase, found by lookup_key and CHECKED against the ruled
@@ -101,6 +189,33 @@ export class NoVerifiedEmailError extends Error {
 }
 
 /**
+ * YOU ARE CHARGED ONCE FOR A PAID DAY (his ruling). A Daily for a paid day that is
+ * already paid, by a Daily that SUCCEEDED or by a plan that covers it, creates
+ * nothing; the routes send the buyer to /desk (Integration's ruling, 2026-10-17).
+ * A plan bought on a day a Daily already paid is allowed, as before.
+ */
+export class AlreadyPaidError extends Error {
+  override name = 'AlreadyPaidError';
+  constructor(readonly etDate: string) {
+    super(`paid day ${etDate} is already paid`);
+  }
+}
+
+/** Is this paid day already paid, by a Daily or by a plan? */
+export function paidDayCovered(db: IdentityDatabase, userId: number, etDate: string): boolean {
+  return chargeFor(db, userId, etDate)?.state === 'SUCCEEDED' || planCovers(db, userId, etDate);
+}
+
+/**
+ * The same question for a page, at `now`: would a Daily bought now be for a paid
+ * day that is already paid? The paid day needs the market calendar (on a weekend
+ * it is Monday's), so the caller loads it, as for a purchase.
+ */
+export function dailyAlreadyPaid(db: IdentityDatabase, userId: number, now: Date, marketDays: MarketDays): boolean {
+  return paidDayCovered(db, userId, paidDayOf(now, marketDays));
+}
+
+/**
  * A hosted Checkout Session for one purchase.
  *
  * daily: mode=payment for $5.50 with setup_future_usage, so day one is paid and
@@ -118,9 +233,10 @@ export async function createCheckoutSession(
 ): Promise<{ id: string; url: string; mode: Stripe.Checkout.SessionCreateParams.Mode }> {
   const email = verifiedEmailFor(deps.db, userId);
   if (!email) throw new NoVerifiedEmailError();
-  const customer = await ensureCustomer(deps, userId, email);
   const now = (deps.now ?? (() => new Date()))();
   const etDate = paidDayOf(now, deps.marketDays);
+  if (purchase === 'daily' && paidDayCovered(deps.db, userId, etDate)) throw new AlreadyPaidError(etDate);
+  const customer = await ensureCustomer(deps, userId, email);
   const metadata = { app: 'mointel', user_id: String(userId), email, purchase, et_date: etDate };
 
   const base: Stripe.Checkout.SessionCreateParams = {
@@ -156,9 +272,8 @@ export async function createCheckoutSession(
     };
   }
 
-  const session = await deps.stripe.checkout.sessions.create(params);
-  if (!session.url) throw new Error('Stripe returned a Checkout Session with no url');
-  return { id: session.id, url: session.url, mode: params.mode! };
+  const session = await sessionOnce(deps, customer, metadata, params, `tmi-checkout-${userId}-${purchase}-${etDate}`);
+  return { ...session, mode: params.mode! };
 }
 
 export class TrialNotAvailableError extends Error {
@@ -217,7 +332,7 @@ export async function createTrialCheckoutSession(
   const paymentMethods = await trialPaymentMethods(deps);
   const customer = await ensureCustomer(deps, userId, email);
   const metadata = { app: 'mointel', user_id: String(userId), email, purchase: 'trial' };
-  const session = await deps.stripe.checkout.sessions.create({
+  const params: Stripe.Checkout.SessionCreateParams = {
     customer,
     client_reference_id: String(userId),
     success_url: urls.successUrl,
@@ -229,9 +344,8 @@ export async function createTrialCheckoutSession(
     ...WE_ARE_THE_SELLER,
     setup_intent_data: { metadata },
     metadata,
-  });
-  if (!session.url) throw new Error('Stripe returned a Checkout Session with no url');
-  return { id: session.id, url: session.url };
+  };
+  return sessionOnce(deps, customer, metadata, params, `tmi-trial-${userId}`);
 }
 
 /**
