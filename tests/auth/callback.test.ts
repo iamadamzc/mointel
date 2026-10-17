@@ -5,7 +5,8 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { completeCallback, type CallbackDeps } from '@/lib/auth/callback';
 import { OAUTH_FLOW_COOKIE } from '@/lib/auth/config';
-import { openIdentityStore, resolveSession, type IdentityDatabase } from '@/lib/auth/store';
+import { SESSION_COOKIE } from '@/lib/auth/cookie';
+import { linkIdentity, openIdentityStore, resolveSession, type IdentityDatabase } from '@/lib/auth/store';
 
 const CLIENT_ID = 'client-123';
 const STATE = 'state-xyz';
@@ -208,5 +209,49 @@ describe('completeCallback', () => {
       const res = await completeCallback(d);
       expect(clearsFlowCookie(res.setCookies)).toBe(true);
     }
+  });
+});
+
+describe('completeCallback: his one-account rule (uuid 4264b641), direction B', () => {
+  function signedInUser(setCookies: string[]): number | null {
+    const c = setCookies.find((x) => x.startsWith(`${SESSION_COOKIE}=`));
+    if (!c) return null;
+    const id = c.slice(SESSION_COOKIE.length + 1).split(';')[0];
+    return resolveSession(db, id)?.userId ?? null;
+  }
+
+  it('a verified Google sign-in joins the user who first came in by email link', async () => {
+    const emailUser = linkIdentity(db, { provider: 'email', subject: 'adam@example.com', email: 'adam@example.com', emailVerified: true });
+    const result = await completeCallback(deps());
+    expect(result.status).toBe(303);
+    expect(signedInUser(result.setCookies)).toBe(emailUser.userId);
+    const google = db.prepare("SELECT user_id AS userId FROM identities WHERE provider = 'google'").get() as { userId: number };
+    expect(google.userId).toBe(emailUser.userId);
+  });
+
+  it('a Google sign-in with email_verified false never joins', async () => {
+    const emailUser = linkIdentity(db, { provider: 'email', subject: 'adam@example.com', email: 'adam@example.com', emailVerified: true });
+    const result = await completeCallback(
+      deps({ fetchImpl: fetchReturning({ id_token: idToken(validPayload({ email_verified: false })) }) }),
+    );
+    expect(result.status).toBe(303);
+    expect(signedInUser(result.setCookies)).not.toBe(emailUser.userId);
+  });
+
+  it('two users already holding the address: refused with 409, no session, never merged', async () => {
+    linkIdentity(db, { provider: 'email', subject: 'adam@example.com', email: 'adam@example.com', emailVerified: true });
+    linkIdentity(db, { provider: 'google', subject: 'other-sub', email: 'adam@example.com', emailVerified: true });
+    const result = await completeCallback(deps());
+    expect(result.status).toBe(409);
+    expect(cookieNamed(result.setCookies, SESSION_COOKIE)).toBeNull();
+    expect(clearsFlowCookie(result.setCookies)).toBe(true);
+    const users = db.prepare('SELECT COUNT(*) AS n FROM users').get() as { n: number };
+    expect(users.n).toBe(2);
+  });
+
+  it('a returning Google subject keeps its own user (no join on a known identity)', async () => {
+    const first = await completeCallback(deps());
+    const again = await completeCallback(deps());
+    expect(signedInUser(again.setCookies)).toBe(signedInUser(first.setCookies));
   });
 });
