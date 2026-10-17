@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import { createElement, type ReactElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -59,14 +59,20 @@ vi.mock('@/lib/billing/checkoutStatus', () => ({
   },
 }));
 
-const { TrialNotAvailableError, createCheckoutSession, createTrialCheckoutSession } = vi.hoisted(() => ({
+const { AlreadyPaidError, TrialNotAvailableError, createCheckoutSession, createTrialCheckoutSession, dailyAlreadyPaid } = vi.hoisted(() => ({
+  AlreadyPaidError: class AlreadyPaidError extends Error {
+    override name = 'AlreadyPaidError';
+  },
   TrialNotAvailableError: class TrialNotAvailableError extends Error {},
   createCheckoutSession: vi.fn(),
   createTrialCheckoutSession: vi.fn(),
+  dailyAlreadyPaid: vi.fn<(...args: unknown[]) => boolean>(() => false),
 }));
 vi.mock('@/lib/billing/checkout', () => ({
   createCheckoutSession: (...args: unknown[]) => createCheckoutSession(...args),
   createTrialCheckoutSession: (...args: unknown[]) => createTrialCheckoutSession(...args),
+  dailyAlreadyPaid: (...args: unknown[]) => dailyAlreadyPaid(...args),
+  AlreadyPaidError,
   TrialNotAvailableError,
 }));
 /** Every reach for Stripe or the calendar, so "dark" can be pinned as "no call at all". */
@@ -111,6 +117,8 @@ import TermsOfSalePage from '@/app/terms-of-sale/page';
 import TrialPage from '@/app/trial/page';
 import { POST as trialStart } from '@/app/trial/start/route';
 import WelcomePage from '@/app/welcome/page';
+import { SubmitOnceButton, SubmitPending, submitGate } from '@/components/SubmitOnce';
+import { PLANS, PRICING_TRIAL, TRIAL_START } from '@/lib/public/purchaseCopy';
 import { etEndTime, longEtDate, renewalEtDate } from '@/lib/public/purchaseFormat';
 import { purchaseOpen } from '@/lib/public/purchaseOpen';
 
@@ -137,6 +145,8 @@ beforeEach(() => {
   state.email = 'buyer@example.com';
   createCheckoutSession.mockReset();
   createTrialCheckoutSession.mockReset();
+  dailyAlreadyPaid.mockReset();
+  dailyAlreadyPaid.mockReturnValue(false);
   outside.calls.length = 0;
   billingReads.calls = 0;
   billingReads.args = [];
@@ -208,6 +218,48 @@ describe('/pricing', () => {
     expect(page).toContain('href="/trial"');
   });
 
+  it('his ask (328a81c1): Start free trial under the trial headline, the rest folded and closed, no word lost', () => {
+    const page = html(PricingPage());
+    const at = (s: string) => {
+      const i = page.indexOf(s);
+      expect(i, s).toBeGreaterThan(-1);
+      return i;
+    };
+    const headline = at(PRICING_TRIAL.headline);
+    const button = at('href="/trial"');
+    const details = at('<details');
+    const summary = at(`>${PRICING_TRIAL.moreLabel}</summary>`);
+    expect(headline).toBeLessThan(button);
+    expect(button).toBeLessThan(details);
+    expect(details).toBeLessThan(summary);
+    // The button is the trial block's only link to /trial, and it is above the fold.
+    expect(page.split('href="/trial"')).toHaveLength(2);
+    expect(page.indexOf(PRICING_TRIAL.button)).toBeLessThan(details);
+    // Closed by default: no `open` attribute on the tag, in any attribute order.
+    const tag = page.slice(details, page.indexOf('>', details) + 1);
+    expect(tag).not.toMatch(/\sopen(=|\s|>)/);
+    // The browser's disclosure triangle shows only while the summary keeps display: list-item.
+    const summaryTag = /<summary[^>]*>/.exec(page.slice(details))?.[0] ?? '';
+    expect(summaryTag).not.toMatch(/class="[^"]*\b(flex|grid|block|inline-flex)\b/);
+    // Every approved line sits inside the fold, after the label.
+    const end = at('</details>');
+    const folded = [
+      PRICING_TRIAL.clock,
+      PRICING_TRIAL.tableLead,
+      ...PRICING_TRIAL.tableHeads,
+      ...PRICING_TRIAL.examples.flat(),
+      PRICING_TRIAL.underTable,
+      PRICING_TRIAL.card,
+    ];
+    for (const line of folded) {
+      const i = at(line);
+      expect(i, line).toBeGreaterThan(summary);
+      expect(i, line).toBeLessThan(end);
+    }
+    // The four plans stay below the trial block.
+    expect(end).toBeLessThan(at('$5.50 a day'));
+  });
+
   it('the paid day, as he approved it (579acaee): weekends belong to the paid day that follows', () => {
     const page = html(PricingPage());
     expect(page).toContain(
@@ -257,8 +309,35 @@ describe('/checkout', () => {
     vi.setSystemTime(new Date('2026-10-17T15:00:00Z')); // Sat 11:00 ET
     page = html(await CheckoutPage(params({ plan: 'daily' })));
     expect(page).toContain('You will be charged $5.50 now');
-    expect(page).not.toContain('If you cannot use this page'); // no calendar read on the page itself
-    expect(outside.calls).not.toContain('calendar');
+    expect(page).not.toContain('If you cannot use this page');
+  });
+
+  /*
+   * A Daily for a paid day already paid goes to /desk (Integration 43rd, 2026-10-17; Billing
+   * c4ff5b19). Until then the page never read the calendar; now a Daily load does, because
+   * on a weekend the paid day is Monday's. Plans never ask.
+   */
+  it('daily, paid day already paid: /desk; asked with this user, now and the calendar', async () => {
+    dailyAlreadyPaid.mockReturnValue(true);
+    await expect(CheckoutPage(params({ plan: 'daily' }))).rejects.toThrow('REDIRECT /desk');
+    expect(dailyAlreadyPaid).toHaveBeenCalledTimes(1);
+    const [db, userId, now, marketDays] = dailyAlreadyPaid.mock.calls[0];
+    expect(db).toEqual({});
+    expect(userId).toBe(7);
+    expect((now as Date).toISOString()).toBe('2026-10-16T15:00:00.000Z');
+    expect(typeof marketDays).toBe('function');
+    expect(outside.calls).toContain('calendar');
+  });
+
+  it('daily, not paid: the page; a plan never asks; the calendar unreadable: the page, no guess', async () => {
+    expect(html(await CheckoutPage(params({ plan: 'daily' })))).toContain('You will be charged $5.50 now');
+    dailyAlreadyPaid.mockClear();
+    html(await CheckoutPage(params({ plan: 'monthly' })));
+    expect(dailyAlreadyPaid).not.toHaveBeenCalled();
+    dailyAlreadyPaid.mockImplementation(() => {
+      throw new Error('calendar down');
+    });
+    expect(html(await CheckoutPage(params({ plan: 'daily' })))).toContain('You will be charged $5.50 now');
   });
 });
 
@@ -285,6 +364,16 @@ describe('POST /checkout/start', () => {
     });
   });
 
+  it('a Daily for a paid day already paid -> 303 /desk, not "unavailable"', async () => {
+    createCheckoutSession.mockRejectedValue(new AlreadyPaidError('2026-10-16'));
+    const res = await checkoutStart(form({ plan: 'daily', agree: 'yes' }));
+    expect([res.status, res.headers.get('location')]).toEqual([303, '/desk']);
+    // Control: any other failure still says unavailable.
+    createCheckoutSession.mockRejectedValue(new Error('down'));
+    const other = await checkoutStart(form({ plan: 'daily', agree: 'yes' }));
+    expect(other.headers.get('location')).toBe('/checkout?plan=daily&e=unavailable');
+  });
+
   it('Stripe unreachable -> back with e=unavailable; daily on a Saturday -> Stripe (the fold)', async () => {
     createCheckoutSession.mockRejectedValue(new Error('down'));
     let res = await checkoutStart(form({ plan: 'monthly', agree: 'yes' }));
@@ -293,6 +382,53 @@ describe('POST /checkout/start', () => {
     vi.setSystemTime(new Date('2026-10-17T15:00:00Z')); // Sat 11:00 ET
     res = await checkoutStart(form({ plan: 'daily', agree: 'yes' }));
     expect(res.headers.get('location')).toBe('https://checkout.stripe.com/c/pay/cs_2');
+  });
+});
+
+/*
+ * The buy buttons post once (his "the button to actually buy does not react", Ops chat 38cd4446,
+ * uuid d8da7d02; Integration 43rd's ruling): a repeat click aborted Stripe's page load and made
+ * another Checkout Session. No new words: the busy button keeps its approved label.
+ */
+describe('the Stripe forms post once', () => {
+  const formTag = (page: string, action: string) =>
+    new RegExp(`<form[^>]*action="${action.replace(/\//g, '\\/')}"[^>]*>`).exec(page)?.[0] ?? '';
+
+  it('the gate lets the first submit through and stops every later one, until a reset', () => {
+    const gate = submitGate();
+    const events = [0, 1, 2].map(() => ({ preventDefault: vi.fn() }));
+    expect(events.map((e) => gate.submit(e))).toEqual([true, false, false]);
+    expect(events.map((e) => e.preventDefault.mock.calls.length)).toEqual([0, 1, 1]);
+    gate.reset();
+    const again = { preventDefault: vi.fn() };
+    expect(gate.submit(again)).toBe(true);
+    expect(again.preventDefault).not.toHaveBeenCalled();
+  });
+
+  it('/checkout and /trial: still a plain POST form, not busy, an enabled button with only its label', async () => {
+    const checkout = html(await CheckoutPage(params({ plan: 'monthly' })));
+    vi.setSystemTime(new Date('2026-10-15T14:00:00Z'));
+    const trial = html(await TrialPage(params({})));
+    for (const [page, action, label] of [
+      [checkout, '/checkout/start', PLANS.monthly.pay],
+      [trial, '/trial/start', TRIAL_START.button],
+    ] as const) {
+      const tag = formTag(page, action);
+      for (const attr of ['method="post"', 'aria-busy="false"']) expect(tag, action).toContain(attr);
+      const button = /<button[^>]*type="submit"[^>]*>([\s\S]*?)<\/button>/.exec(page.slice(page.indexOf(tag)));
+      expect(button?.[0], action).not.toMatch(/\sdisabled(=|\s|>)/);
+      expect(button?.[1], action).toBe(label);
+    }
+  });
+
+  it('busy: the button is disabled, shows a spinner hidden from readers, and keeps exactly its label', () => {
+    const busy = renderToStaticMarkup(
+      createElement(SubmitPending.Provider, { value: true }, createElement(SubmitOnceButton, { className: 'x' }, 'Pay $89 a month')),
+    );
+    const tag = /<button[^>]*>/.exec(busy)?.[0] ?? '';
+    expect(tag).toMatch(/\sdisabled(=|\s|>)/);
+    expect(busy).toContain('aria-hidden="true"');
+    expect(busy.replace(/<[^>]*>/g, '')).toBe('Pay $89 a month');
   });
 });
 
