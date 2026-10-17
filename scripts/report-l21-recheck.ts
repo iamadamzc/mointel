@@ -23,6 +23,12 @@
  * A report launches only if spend + its worst case fits the stop; a call with no usage is charged its worst case.
  * Keys: Tests-TMI read by name (readNamedKey), never printed; the desk's OpenAI key from --env-file.
  *   node --env-file=../mointel/.env.local --import tsx scripts/report-l21-recheck.ts <store> <out-dir> --key-file <path> [--dry]
+ * THE RE-RUN (his "test it first, run the 3", Integration chat uuid c967825c, 2026-10-17T03:21:13.230Z): the first run
+ * struck the INTO_POWER_HOUR Summary for two date claims; this runs that input 3 more times, HARD STOP $1.00
+ * (Integration's), to tell a rate from one draw. Pre-registered with Integration: (1) Summaries struck of 3; (2) each
+ * strike's reason and whether it is a date claim (a hand read of each detail; `dateClaim` only flags a date word);
+ * (3) any "fresh" for the group.
+ *   ... scripts/report-l21-recheck.ts <store> <out-dir> --key-file <path> --kinds INTO_POWER_HOUR --runs 3 --stop 1
  * --dry: stub models with a PLANTED CONTROL (no key, no spend): each Summary is the count sentence in "fresh" from the
  * input's own counts, and the first name line says "fresh news", so measures 1 and 4 see a present case.
  */
@@ -48,7 +54,8 @@ import { readNamedKey } from './readNamedKey';
 const RANGE = { min: 1, max: 20 };
 const RANGE_KEY = '1-20';
 const DAY = '2026-10-16';
-const STOP_AT = 2;
+/** The stop: $2 for the first run; --stop sets another (the INTO_POWER_HOUR x3 re-run, $1.00). */
+let STOP_AT = 2;
 const OPUS = 'claude-opus-5-5';
 const EXPECTED = { v7: 15, v6: 17, checker: 19 };
 const PRICE: Record<string, { input: number; output: number }> = { luna: { input: 0.2, output: 1.2 }, 'claude-opus-5-5': { input: 4, output: 20 } };
@@ -122,6 +129,8 @@ const stubChecker = (): CheckerModel => ({
 });
 
 const FRESH = /\bfresh\b/i;
+/** A flag for the hand read only: the strike's detail names a date or dating. */
+const DATE_WORD = /\b(?:dat(?:e|es|ed|ing)|January|February|March|April|May|June|July|August|September|October|November|December)\b/i;
 const COUNT_WORD = /names the desk covers[^.]*?\b(recent|fresh) news|\b(Recent|Fresh) news was found for/;
 const countWord = (text: string | null) => {
   if (text === null) return null;
@@ -176,7 +185,8 @@ interface RunRecord {
   status: string;
   error: string | null;
   summaryStruck: boolean;
-  summaryStrikes: Array<{ reason: string; by: string; detail: string }>;
+  summaryStrikes: Array<{ reason: string; by: string; detail: string; dateClaim: boolean }>;
+  allStrikes: Array<{ id: string; reason: string; by: string; detail: string; dateClaim: boolean }>;
   strikesByReason: Record<string, number>;
   freshPublished: Array<{ where: string; ticker: string | null; text: string }>;
   freshInDraft: number;
@@ -196,8 +206,15 @@ async function main() {
   if (process.argv[1] && !process.argv[1].endsWith('report-l21-recheck.ts')) return;
   const args = process.argv.slice(2);
   const [store, out] = args;
-  if (!store || !out) throw new Error('usage: report-l21-recheck.ts <store> <out-dir> --key-file <path> [--dry]');
+  if (!store || !out) throw new Error('usage: report-l21-recheck.ts <store> <out-dir> --key-file <path> [--kinds K,K] [--runs N] [--stop USD] [--dry]');
   const dry = args.includes('--dry');
+  const flag = (name: string) => { const at = args.indexOf(name); return at >= 0 ? args[at + 1] : undefined; };
+  const runs = Number(flag('--runs') ?? 1);
+  if (!Number.isInteger(runs) || runs < 1 || runs > 5) throw new Error('--runs must be 1 to 5; nothing run');
+  if (flag('--stop') !== undefined) {
+    STOP_AT = Number(flag('--stop'));
+    if (!(STOP_AT > 0 && STOP_AT <= 2)) throw new Error('--stop must be above 0 and at most 2; nothing run');
+  }
   const keyFileAt = args.indexOf('--key-file');
   const keyFile = keyFileAt >= 0 ? args[keyFileAt + 1] : undefined;
   if (Number(REPORT_WRITER_PROMPT_VERSION_V7) !== EXPECTED.v7) throw new Error(`v7 is ${REPORT_WRITER_PROMPT_VERSION_V7}, not ${EXPECTED.v7}; nothing run`);
@@ -215,7 +232,9 @@ async function main() {
   }
   const db = openDatabase(store, { readonly: true, skipSchema: true });
   const recap: ReportKind = readProduction(db, 'EVENING')?.status === 'PUBLISHED' ? 'EVENING' : 'PREMARKET';
-  const plan: ReportKind[] = ['INTO_RTH', 'INTO_POWER_HOUR', 'AFTER_HOURS', recap];
+  const kinds = flag('--kinds')?.split(',') as ReportKind[] | undefined;
+  for (const k of kinds ?? []) if (!['INTO_RTH', 'INTO_POWER_HOUR', 'AFTER_HOURS', 'EVENING', 'PREMARKET'].includes(k)) throw new Error(`unknown kind ${k}; nothing run`);
+  const plan: ReportKind[] = (kinds ?? ['INTO_RTH', 'INTO_POWER_HOUR', 'AFTER_HOURS', recap]).flatMap((k) => Array.from({ length: runs }, () => k));
   const NOW = new Date();
   const st = fs.statSync(store);
   const summary: string[] = [
@@ -229,8 +248,8 @@ async function main() {
   let spend = 0;
   let stopped: string | null = null;
 
-  for (const kind of plan) {
-    const tag = `${DAY}-${kind}-l21`;
+  for (const [i, kind] of plan.entries()) {
+    const tag = runs > 1 ? `${DAY}-${kind}-l21-run${(i % runs) + 1}` : `${DAY}-${kind}-l21`;
     const family = writerPromptFor(kind).family;
     if (stopped) { summary.push(`${tag}: NOT RUN, ${stopped}`); continue; }
     const read = readReportInputs(db, kind, DAY, RANGE, NOW);
@@ -271,7 +290,8 @@ async function main() {
       status: error ? 'ERROR' : result!.status === 'MISSED' ? `MISSED ${JSON.stringify(result!.cause)}` : 'PUBLISHED',
       error,
       summaryStruck: strikes.some((s) => s.id === 'O'),
-      summaryStrikes: strikes.filter((s) => s.id === 'O').map((s) => ({ reason: s.reason, by: s.by, detail: s.detail })),
+      summaryStrikes: strikes.filter((s) => s.id === 'O').map((s) => ({ reason: s.reason, by: s.by, detail: s.detail, dateClaim: DATE_WORD.test(s.detail) })),
+      allStrikes: strikes.map((s) => ({ id: s.id, reason: s.reason, by: s.by, detail: s.detail, dateClaim: DATE_WORD.test(s.detail) })),
       strikesByReason: Object.fromEntries(mine),
       freshPublished,
       freshInDraft: draftTexts.filter((t) => FRESH.test(t)).length,
@@ -294,6 +314,7 @@ async function main() {
         `"fresh" PUBLISHED ${record.freshPublished.length} (draft texts ${record.freshInDraft}); count word published ${record.countWordPublished ?? 'none'} (draft ${record.countWordDraft ?? 'none'}); ` +
         `strikes ${fmt(mine)}; production (${production?.createdAt ?? '-'}) ${fmt(theirs)}; reasons production lacks [${record.newReasons.join(' ')}]; $${record.costUsd.toFixed(4)}`,
     );
+    for (const s of record.allStrikes) summary.push(`  strike ${s.id} ${s.reason}/${s.by}${s.dateClaim ? ' [date word]' : ''}: ${s.detail}`);
     for (const f of record.freshPublished) summary.push(`  fresh, ${f.where}${f.ticker ? ` ${f.ticker}` : ''}: ${f.text}`);
     if (!dry && records.length === 1 && record.error) stopped = 'the first report had an error (fail fast)';
     console.log(`${kind}: spend $${spend.toFixed(4)}`);
