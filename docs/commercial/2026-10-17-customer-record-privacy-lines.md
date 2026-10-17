@@ -1,5 +1,7 @@
 # The Stripe customer record: privacy lines and one question for him
 
+**ANSWERED 2026-10-17: he chose option A (kept for the life of the account), "3, a", Integration chat bf3b407e, uuid d600c7d1, 2026-10-17T10:57:12.305Z. The final lines are in `2026-10-17-privacy-changes-final.md`; this file is the reasoning and the code facts.**
+
 **Commercial-tmi (8th tenure), 2026-10-17 (UTC). A draft. Nothing here is adopted, built or live.** It amends `2026-10-17-free-trial-strings.md` (`83b91561`, section 3) and `2026-10-17-purchase-strings.md` (section 3). Public copy: the exact strings go to him, never a summary.
 
 ## What the code does (opened)
