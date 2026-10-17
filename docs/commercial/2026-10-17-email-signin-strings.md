@@ -17,7 +17,7 @@ Nothing is his to decide here except the exact words, once the brackets are fill
 - For each link the desk keeps a record: the address, the times, whether it was used or superseded, and a hashed IP. These records are deleted 30 days after the link is created.
 - The IP is never stored raw in these records: it is a salted hash, used only for the per-IP request limit.
 - The address stays on the account (the email identity row) for the account's life, as the Google email does today.
-- The mail is sent by Amazon SES from signin@tmitrader.com (MAIL FROM mail.tmitrader.com). Replies go to info@andromedagenius.com. No tracking pixels and no link rewriting.
+- The mail is sent by Amazon SES from signin@tmitrader.com (MAIL FROM mail.tmitrader.com). Replies go to desk@tmitrader.com. No tracking pixels and no link rewriting.
 - SES in us-east-1 is out of the sandbox, so no production-access form goes to Amazon.
 - From Marketing's relay of Ops's build facts (`docs/marketing/email-link-signin-words-2026-10-17.md` at `ed752ff9`; I did not open the scope): only the newest link works; limits are 3 per 15 minutes and 10 per 24 hours per address and 10 per hour per IP; the request page gives the same answer for every address ("If that address can sign in, we've sent a link"), so it never reveals whether an address has an account; the link opens a one-button page; one account per verified address (so Google and link sign-in on one address are one account).
 
@@ -29,7 +29,7 @@ Nothing is his to decide here except the exact words, once the brackets are fill
 - Amazon's account-level suppression list is on for bounces and complaints, so Amazon will not send again to an address that hard-bounced or complained. The desk does not read or act on bounces in v1.
 - The request page, and the "We couldn't send the email" line (shown only when Amazon's call itself fails), do not reveal whether an address has an account; only the rate-limit wait reveals a recent request.
 
-Nothing remains in brackets except the pending reply address (`info@andromedagenius.com`, pending whether `signin@` is a real mailbox), which the strings do not depend on.
+Nothing remains in brackets except the pending reply address (`desk@tmitrader.com`, pending whether `signin@` is a real mailbox), which the strings do not depend on.
 
 ## 2. Privacy policy: the changes
 

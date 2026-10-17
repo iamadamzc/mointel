@@ -101,7 +101,7 @@ Second message: "take whoever pays, say it's for people trading the US market. t
 - **The plans renew on their own, and cancelling must be easy.** The daily plan also charges automatically each paid day (ruled 2026-09-28).
 - **No refunds.**
 - **The licence will be in place.** I read that as before the first paying customer. He did not say whether before the public pages go live; I do not need that to proceed.
-- **Taxes and an attorney are his.** **Support is read by him**, `info@andromedagenius.com`.
+- **Taxes and an attorney are his.** **Support is read by him**, `desk@tmitrader.com`.
 
 ### What those answers set going, for the owners
 
@@ -117,7 +117,7 @@ Second message: "take whoever pays, say it's for people trading the US market. t
 - Corporate-office D-014 (2026-09-15): no seat sets up Stripe products, prices, webhooks or checkout; it goes to the project thread, by Stripe's MCP or CLI, once the shape is settled. For mointel that means Ops and Web build it. The account and the keys are his; seats never create accounts or enter keys.
 - Stripe may question the business. It lists "Investment and brokerage services" as restricted: "additional due diligence... proof of relevant licenses or more details about your business model" (*read today*). TMI is an information service, not an investment or brokerage service, but Stripe decides the classification, and I do not know until the account applies. Stripe also prohibits "get rich quick" schemes, one more reason the copy stays inside `docs/marketing/what-it-is-not.md`.
 
-**One small yes or no.** The drafted terms of sale say, after the no-refund line: "If a charge was made in error, or the service was unavailable for a paid day through our own fault, contact info@andromedagenius.com and we will make it right." With "no refunds" as his rule, does that sentence stay? It is a promise to look at a mistake, not a promise to refund. My lean: keep it, because a charge made in error is the case a dispute is won or lost on. His call.
+**One small yes or no.** The drafted terms of sale say, after the no-refund line: "If a charge was made in error, or the service was unavailable for a paid day through our own fault, contact desk@tmitrader.com and we will make it right." With "no refunds" as his rule, does that sentence stay? It is a promise to look at a mistake, not a promise to refund. My lean: keep it, because a charge made in error is the case a dispute is won or lost on. His call.
 
 ### Defaults I applied, for him to overrule
 

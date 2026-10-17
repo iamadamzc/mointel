@@ -26,7 +26,7 @@ drafted: 2026-10-17
     - "a month is as it is according to the market"
     - the sentence "If a charge was made in error, or the service was
       unavailable for a paid day through our own fault, contact
-      info@andromedagenius.com and we will make it right." stays (his "yes to
+      desk@tmitrader.com and we will make it right." stays (his "yes to
       all", 2026-10-17T00:01:01.558Z, through Integration)
 
   BRACKETED ITEMS ARE NOT DECIDED. Each says who decides. Nothing in brackets
@@ -116,7 +116,7 @@ email us or call.
 - **Daily:** removing your card stops the daily charge. It takes effect for the
   next paid day. It does not interrupt a day you have already been charged for.
 
-If you cannot reach the billing page, email info@andromedagenius.com and we
+If you cannot reach the billing page, email desk@tmitrader.com and we
 will do it for you.
 
 ## 5. No refunds
@@ -125,14 +125,14 @@ All charges are final. We do not refund a paid day, a plan, or the unused part
 of a plan, including after you cancel.
 
 If a charge was made in error, or the service was unavailable for a paid day
-through our own fault, contact info@andromedagenius.com and we will make it
+through our own fault, contact desk@tmitrader.com and we will make it
 right.
 
 ## 6. Disputes
 
 If you dispute a charge with your card provider instead of contacting us
 first, we are not able to reverse that automatically; please reach out to
-info@andromedagenius.com so we can resolve it directly.
+desk@tmitrader.com so we can resolve it directly.
 
 ## 7. Changes to these terms
 
@@ -143,4 +143,4 @@ your next paid day if you pay daily.
 ## 8. Who you are buying from
 
 Andromeda Genius LLC, of 5460 Babcock Rd, Suite 120 PMB 95234, San Antonio, TX
-78240, United States. You can reach a person at info@andromedagenius.com.
+78240, United States. You can reach a person at desk@tmitrader.com.
