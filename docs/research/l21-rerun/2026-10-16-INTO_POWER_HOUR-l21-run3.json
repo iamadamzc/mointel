@@ -1,0 +1,644 @@
+{
+  "record": {
+    "tag": "2026-10-16-INTO_POWER_HOUR-l21-run3",
+    "kind": "INTO_POWER_HOUR",
+    "family": "v7",
+    "status": "PUBLISHED",
+    "error": null,
+    "summaryStruck": false,
+    "summaryStrikes": [],
+    "allStrikes": [],
+    "strikesByReason": {},
+    "freshPublished": [],
+    "freshInDraft": 0,
+    "countWordPublished": "recent",
+    "countWordDraft": "recent",
+    "narrative": "HUIZ ranked first in this range, up 22 percent from the prior close, and our research reached no conclusion. XLAB was up 89 percent from the prior close, with recent news in our sources: an 8-K reported entry into a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB was up 11.7% since the previous checkpoint. Of the 12 names the desk covers, 4 had recent news in our sources.",
+    "draftSummary": "HUIZ ranked first in this range, up 22 percent from the prior close, and our research reached no conclusion. XLAB was up 89 percent from the prior close, with recent news in our sources: an 8-K reported entry into a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB was up 11.7% since the previous checkpoint. POAS was up 19 percent from the prior close, with only older or secondary news in our sources. Of the 12 names the desk covers, 4 had recent news in our sources.",
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "production": {
+      "status": "PUBLISHED",
+      "createdAt": "2026-10-16T18:30:45.715Z",
+      "versions": {
+        "writerPrompt": 13,
+        "checkerPrompt": 18,
+        "writerModel": "gpt-5.6-luna",
+        "checkerModel": "claude-opus-5-5",
+        "writerPromptFamily": "v7"
+      },
+      "narrative": "HUIZ ranked first in this range, up 22 percent from the prior close, with our research reaching no conclusion. XLAB was up 89 percent from the prior close, with fresh news in our sources: an 8-K reported a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB was up 11.7% since the previous checkpoint. Of the 12 names the desk covers, 4 had fresh news in our sources.",
+      "summaryStruck": false,
+      "strikes": [
+        {
+          "id": "S1L8",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The research does not say which 6-K disclosed which item, so assigning the purchase agreement to September 30 and the reverse split to October 2 cannot be traced.",
+          "text": "On September 30, 2026, the company disclosed a securities purchase agreement with High West Partners giving it the right, but not the obligation, to sell ordinary shares up to the greater of $10 million or the exchange cap. On October 2, 2026, it announced a one-for-fifteen reverse stock split effective October 12, 2026."
+        }
+      ],
+      "freshHits": 2,
+      "countWord": "fresh"
+    },
+    "newReasons": [],
+    "costUsd": 0.1538826,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4917,
+        "outputTokens": 1176,
+        "cachedInputTokens": 4914,
+        "reasoningTokens": 505,
+        "durationMs": 8241,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 22742,
+        "outputTokens": 3026,
+        "cachedInputTokens": 3951,
+        "cacheWriteInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 25333,
+        "role": "checker"
+      }
+    ]
+  },
+  "sentPrompts": [
+    {
+      "system": "You write a short session report: a Summary of the session and one line per name.\n\nTHE SUMMARY (\"narrative\") must include, in whatever order reads best, in a few sentences, only what the narrative facts give:\n- On the evening recaps: how many counted names ran at least 50 percent above the prior close and how many of them kept at least half of the peak gain (or, if none ran, that none did); the named movers, each called a covered 50 percent mover (never the highest peaks among all movers), each with its own news; the after-hours name and its move, about that move only; and how many of the names the desk covers had recent news in our sources.\n- Intraday: the name ranked first in this range (it may be down) and the next named gainers, each with its move and its own news; and how many of the names the desk covers had recent news in our sources.\n- Never use a report label from the facts, such as \"Intraday\", in the Summary, and do not say when the report was written: the report's header says it.\n- A change note is restated once, in the facts' own words, and nothing is added to it: no time, and no 'when' clause.\n- A change note is restated only for a name the Summary names; never add a name or a price level the narrative facts do not carry.\n- Join a move to its news with \"with\" (\"up 20 percent from the prior close, with recent news in our sources\"), never with a word that says one caused the other.\n- For a name the Summary mentions, you may restate its own news (what happened, with the dates and figures in its own research in the NAMES section). Never put one name's facts on another, and never mention a name the narrative facts do not name.\n- Name only the tickers the narrative facts name. Use the given numbers exactly; every percent carries its frame in the same clause (\"from the prior close\", \"above the prior close\", \"after the close\"). A count goes with \"ran at least 50 percent\" and \"gave the entire move back\" whenever you use those phrases.\n\nUSING THE FACTS:\n- Use only the facts given. Copy every number and date exactly; never compute one. Say a catalyst amount as you would on air, shortened to one decimal at most (\"$46.8 million\"). Restate stored text in your own words; never quote it.\n- The voice below keeps the move out of a name line because the card prints it above the line. Where a name's sheet says no card path is printed, no card sits above that line, so its price and change may be stated, in the past tense.\n- A deal or plan is what was agreed or announced, never \"will\". A deal is a fact: say what the company or a named party agreed, sold, bought or entered into, as the source states it. Keep the status the source gives (proposed, non-binding, agreed, rejected, completed); say a deal closed or was signed only if the source says so. Never a recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words.\n- A named analyst firm's rating change is a fact that our sources report, and you may state it as that firm's view, with the firm named and the rating capitalised ('Wells Fargo raised its rating to Buy'); never as advice, and never from an unnamed source.\n- Restate what the source reports and its terms, never the desk's reading of what it may mean or what traders, investors or the market may think, do or care about.\n- Never call news \"positive\", \"negative\" or any other judgement its source does not state.\n- Never say what kind of catalyst a name's news is (for example \"an operating catalyst\") unless its research says so.\n- The joining words in the voice below are forbidden only where they connect a move to news, and a date's \"on\" is fine (\"On October 5, the company disclosed\"); never join a move and news with \"due to\", \"because of\", \"in response to\", \"in the wake of\" either. Never open a line with \"It's\", \"That name\" either.\n- A name's line may name another covered ticker only as the other party in this name's own story (a buyer, a seller, a partner), and only when this name's own research states that ticker; if the research names only the company, say the company. Say nothing else about it: no price, no move, no rank, no news of its own. This is the one exception to \"never refers to another name\" and \"name no other ticker\".\n- Never \"still\", \"remains\" or \"continues\"; never \"top\"; never a count of names in a name line, \"every name\", \"all the movers\" or \"the real catalyst\".\n- No float number, no share count called float, no halt unless the sheet has one, no engine constant in capitals, no em dash and no spaced hyphen as a dash.\n- Say \"our sources\", never the desk's own words for its material: not \"the bundle\", \"supplied\", \"collected\", \"the evidence\", \"excerpts\" or \"SEC-only coverage\". Where the research says its coverage was filings only, say \"company filings only\"; keep what the desk lacks, in plain words.\n\nREPLY\n- JSON only: {\"narrative\": string | null, \"lines\": [{\"ticker\": string | null, \"text\": string}]}, one line per name. With no names, one line: {\"ticker\": null, \"text\": \"Nothing in our sources for this section.\"}. \"narrative\" is null only when the narrative facts give nothing to say.\n\nYou are a financial news desk reporter on air at a small-cap trading desk. Report what moved and what the news was, the way a person says it to camera: natural, varied, connected, and never robotic. Do not fill in a template name after name; let each story find its own shape and let each name's line and the Summary read as coherent, human speech, not a stack of separate sentences; coherence lives within a line, and a name's line never refers to another name. Do not repeat a stock phrase from name to name, except the ruled state phrases below.\n\nWhat each name's line must include: the name, and the news the desk found, with its date, as the sources state it. A supply fact belongs only when it is itself the news (a placement, an ATM program, a reverse split). Say nothing about the move in a name line: no price, no percent, no up or down, no word about the high (the card prints all of it above the line). The one exception: you may say that nothing in our sources tied the move to the news, and nothing else about the move. The Summary may use the percents it is given. For a name with no news to report, say the ruled state phrase exactly and nothing more: \"Not researched at this checkpoint\", \"no catalyst found in our sources\", \"our research reached no conclusion\"; never invent or pad news for it.\n\nWhat must stay true, whatever the style: attribute what you report (\"the company said\", \"our sources show\", \"secondary coverage reported\") and say \"in our sources\" only where a claim would otherwise read as about the market. Never say what a headline caused, what the stock will do, or what anyone should do. Never address the reader or a viewer (\"you\", \"stay with us\", \"back to you\"), and never say what traders, investors or the market are doing, thinking or feeling. Use no word the facts do not define (\"surging\", \"hot\", \"busy\", \"quiet\"). Say a rank as a rank (\"ranked first in this range\"), never \"led\" or \"biggest\". Speak of the checkpoint in the past tense (\"was up\", \"had recent news\"), so a report read later does not state a market condition as now; anchor every time to a date, and never write a clock time such as \"2:30 PM\". Make each name's line stand on its own: open it with the company or the news, never with \"It\", \"Its\", \"Also\", \"The same\", \"This name\", \"They\", \"Both\" or \"Either\", and name no other ticker. Never join a move and a news item with after, following, on, as, amid, thanks to, driven by, sparked, triggered or fueled. These are rules for you to follow yourself; write with care, because figures, dates and tickers are checked against the data.\n\nONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (an intraday report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given. A recap's Summary instead follows the counts and the named movers it is given, and names only the tickers its facts list):\n\nSummary. MI ranked first in this range, up 806 percent from the prior close, and the only news in our sources was older or secondary. QTEX was up 44 percent from the prior close with the same kind of news. ALEC, up 20 percent from the prior close, had recent news in our sources: a license agreement with Genentech for certain GCase candidates. Of the 12 names the desk covers, 2 had recent news in our sources.\n\nALEC. On October 5, Alector disclosed a September 30 license agreement with Genentech for certain GCase candidates: Genentech leads development and commercialization, Alector keeps its Brain Carrier platform and wholly owned pipeline, and the company said the deal extends its cash runway into 2029. No upfront, milestone or deal-value terms were given.\n\nMI. The news in our sources was older. On September 30, NFT Limited agreed to a private placement of 80,000,000 Class A shares at $0.45, about $36 million, and nothing in our evidence showed it closed. Our evidence had no company event dated October 5.\n\nQTEX. The latest news we found was from October 1: QTREX said an unnamed quantum-computing company had tested its interconnect at 20 mK and measured more than 100 dB channel isolation, and that it was finalizing a binding agreement with that company. None was reported as signed.",
+      "user": "Into power hour: the session so far, going into the last hour.\n\nNARRATIVE FACTS:\n  ranked first in this range (it may be down): HUIZ, up 22 percent from the prior close; news state: no conclusion: use the ruled phrase for no conclusion\n  next covered gainer by move: XLAB, up 89 percent from the prior close; news state: recent: our sources found recent news; the recent news (restate briefly, never quote): An 8-K reports entry into a material definitive agreement with Sunon, while contemporaneous secondary coverage reports a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million.\n  since the previous checkpoint, XLAB: up 11.7% since the previous checkpoint\n  next covered gainer by move: POAS, up 19 percent from the prior close; news state: older or secondary: our sources found only older or secondary news\n  names the desk covers that had recent news in our sources: 4 of 12\n\nNAMES:\nHUIZ: ranked #1 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: no conclusion: use the ruled phrase for no conclusion\n  the news (restate in your own words, never quote): Coverage is incomplete, including no collected registration or prospectus evidence. The latest located company-specific item is Huize's August 20, 2026 report of unaudited first-half 2026 financial results, which predates the observed market session; the supplied excerpt does not establish a fresh event or its directional operating details.\n  cited source: \"EX-99.1 to 6-K\", August 20, 2026\n  cited source: \"6-K\", August 20, 2026\n  what the desk does not have (repeat none of its numbers): The bundle does not provide adequate complete catalyst coverage to establish that no fresh company-specific event exists.; The supplied financial-results excerpt does not provide enough operating or financial detail to classify the results as favorable or adverse.; No fresh catalyst timestamp tied to the observed market session is established.\n\nXLAB: ranked #2 in this range\n  the card above your line prints the prices and the move: do not restate them\n  since the previous checkpoint: up 11.7% since the previous checkpoint\n  news state: recent: our sources found recent news\n  the news (restate in your own words, never quote): An 8-K reports entry into a material definitive agreement with Sunon, while contemporaneous secondary coverage reports a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million.\n  event date: October 15, 2026\n  cited source: \"EX-10.1 to 8-K\", October 14, 2026\n  cited source: \"Exascale Labs Sells 12 Nvidia HGX B300 GPU Servers And 36 Months Of It Operation Services To Sunon For $8.2M\", October 15, 2026\n  what the desk does not have (repeat none of its numbers): The provided primary-source excerpt does not state the contract value or the full commercial terms.; The bundle does not establish delivery timing, payment timing, or whether revenue is recognized at delivery or over the services term.\n\nGUTS: ranked #3 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: recent: our sources found recent news\n  the news (restate in your own words, never quote): Fractyl announced positive six-month topline results from the pivotal cohort of its ongoing REMAIN-1 study, reporting 80% retention of GLP-1-induced weight loss versus 67% for sham and achievement of a co-primary endpoint with high statistical significance. A secondary news item reported that the stock declined despite the results, citing class-action lawsuit concerns.\n  event date: October 16, 2026\n  cited source: \"EX-99.1 to 8-K\", October 16, 2026\n  cited source: \"8-K\", October 16, 2026\n  cited source: \"Why Fractyl Health Stock Is Sinking Friday\", October 16, 2026\n  what the desk does not have (repeat none of its numbers): The bundle does not provide the full trial dataset, safety results, or the study's 12-month results.; The secondary news item references class-action lawsuit concerns but the bundle does not provide the underlying lawsuit materials.\n\nCHEC: ranked #4 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: no conclusion: use the ruled phrase for no conclusion\n  the news (restate in your own words, never quote): Catalyst coverage is incomplete because the bundle contains SEC sources only and no company newsroom, investor-relations, newswire, or other catalyst source.\n  what the desk does not have (repeat none of its numbers): The bundle contains no catalyst source.; An announcement published outside an SEC filing would not have been captured.; The available 8-K reports a May 2026 board resignation, but the bundle does not establish a current company-specific catalyst.\n\nSMX: ranked #5 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news\n  the news (restate in your own words, never quote): SMX published three company releases on October 2 concerning its Digital Material Passport and certified recycled plastic positioning. Secondary coverage reported a 38.47% after-hours rise tied to fresh company updates, but the supplied evidence does not identify a contract, customer commitment, approval, revenue contribution, or other quantified commercial result.\n  event date: October 2, 2026\n  cited source: \"The Age of Parity Has a Passport; SMX Has the Stamp\", October 2, 2026\n  cited source: \"The Age of Parity Makes Affordability Real\", October 2, 2026\n  cited source: \"SMX: The Age of Parity is Permanent - and Certified Recycled Plastic Has Emerged as Its Economic Outcome\", October 2, 2026\n  cited source: \"SMX Stock Climbs Over 38% After-Hours: What's Going On?\", October 2, 2026\n  what the desk does not have (repeat none of its numbers): The supplied October 2 release records contain titles but no excerpts establishing a contract, customer, approval, revenue amount, or financial impact.; The secondary report associates the move with fresh updates but does not prove those updates were the sole cause.\n\nRBNE: ranked #6 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: recent: our sources found recent news\n  the news (restate in your own words, never quote): Robin Energy filed a preliminary F-1 for a proposed offering of 3,092,783 units, with sales to begin after the registration statement becomes effective.\n  event date: October 16, 2026\n  cited source: \"F-1\", October 16, 2026\n  cited source: \"Reported shares outstanding (us-gaap:CommonStockSharesOutstanding)\", September 23, 2026\n  what the desk does not have (repeat none of its numbers): The final offering price and complete unit composition are not shown in the available F-1 excerpt.; No effectiveness notice or completed sale for the F-1 offering appears in the bundle.\n\nFIGX: ranked #7 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: no conclusion: use the ruled phrase for no conclusion\n  the news (restate in your own words, never quote): Catalyst coverage is incomplete: the collected evidence contains SEC materials only and no company newsroom, IR, newswire, or other catalyst sources. The available filings identify FIGX as a blank-check company, but do not establish a fresh company event explaining current trading.\n  cited source: \"PROSPECTUS\", June 27, 2025\n  what the desk does not have (repeat none of its numbers): No catalyst-specific source was collected.; No company IR, newsroom, or newswire coverage was collected.; The evidence does not establish whether any recent business-combination, financing, or other company event occurred outside SEC filings.; The available market-state data does not have a cited source identifier in this bundle.\n\nPOAS: ranked #8 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news\n  the news (restate in your own words, never quote): The company disclosed a securities purchase agreement with High West Partners under which it has the right, but not the obligation, to sell ordinary shares up to the greater of $10 million or the exchange cap, and separately announced a one-for-fifteen reverse stock split effective October 12, 2026.\n  event date: October 2, 2026\n  cited source: \"6-K\", September 30, 2026\n  cited source: \"6-K\", October 2, 2026\n  what the desk does not have (repeat none of its numbers): The bundle does not establish whether a registration statement for sales under the High West Partners agreement is effective.; The bundle does not establish whether any shares have been sold under the agreement.\n\nXXII: ranked #9 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: recent: our sources found recent news\n  the news (restate in your own words, never quote): The company announced that combined same-store retail unit sales for Pinnacle VLN and Pinnacle Pure increased 161% in the third quarter versus the second quarter. Secondary coverage reported a 64.22% after-hours share-price increase following the sales update.\n  event date: October 15, 2026\n  cited source: \"22nd Century Same Store Unit Sales for Pinnacle VLN® and Pinnacle Pure Surge 161%\", undated\n  cited source: \"22nd Century Group Reports 161% Increase In Sales In Q3 From Q2 For Combined Same-Store Retail Units Of Pinnacle VLN, Pinnacle Pure\", October 15, 2026\n  cited source: \"22nd Century Group (XXII) Stock Surges Over 64% After Hours on Sales Growth\", October 16, 2026\n  what the desk does not have (repeat none of its numbers): The bundle does not provide the company release's publication timestamp or financial revenue, margin, or profitability figures associated with the sales update.\n\nYXT: ranked #10 in this range\n  the card above your line prints the prices and the move: do not restate them\n  since the previous checkpoint: down 20.8% since the previous checkpoint\n  news state: no conclusion: use the ruled phrase for no conclusion\n  the news (restate in your own words, never quote): SEC evidence includes YXT.com's August 13, 2026 release of unaudited first-half 2026 results and an August 17 registered-direct-offering filing, but neither is contemporaneous to the supplied September market state. Catalyst coverage is SEC-only and explicitly incomplete, so the evidence cannot establish either a fresh catalyst or its absence.\n  cited source: \"EX-99.1–6-K 2026-08-13T11:00:23.000Z\", August 13, 2026\n  cited source: \"FORM 6-K\", August 17, 2026\n  what the desk does not have (repeat none of its numbers): No company IR, newsroom, or non-SEC newswire coverage was located.; No fresh catalyst can be confirmed from the SEC-only evidence set.; No objective live-demand evidence sufficient to classify the move as flow-dominant was supplied.\n\nRNGT: ranked #11 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: not researched: use the ruled phrase for not researched\n\nJACS: ranked #12 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: not researched: use the ruled phrase for not researched"
+    }
+  ],
+  "rawWriterTexts": [
+    "{\"narrative\":\"HUIZ ranked first in this range, up 22 percent from the prior close, and our research reached no conclusion. XLAB was up 89 percent from the prior close, with recent news in our sources: an 8-K reported entry into a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB was up 11.7% since the previous checkpoint. POAS was up 19 percent from the prior close, with only older or secondary news in our sources. Of the 12 names the desk covers, 4 had recent news in our sources.\",\"lines\":[{\"ticker\":\"HUIZ\",\"text\":\"HUIZ. our research reached no conclusion\"},{\"ticker\":\"XLAB\",\"text\":\"XLAB. On October 15, 2026, secondary coverage reported that Exascale Labs sold 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services to Sunon for $8.2 million; an 8-K reported entry into a material definitive agreement with Sunon.\"},{\"ticker\":\"GUTS\",\"text\":\"GUTS. On October 16, 2026, Fractyl announced six-month topline results from the pivotal cohort of its ongoing REMAIN-1 study, reporting 80% retention of GLP-1-induced weight loss versus 67% for sham and achievement of a co-primary endpoint with high statistical significance. Secondary coverage also reported class-action lawsuit concerns.\"},{\"ticker\":\"CHEC\",\"text\":\"CHEC. our research reached no conclusion\"},{\"ticker\":\"SMX\",\"text\":\"SMX. On October 2, 2026, SMX published three company releases concerning its Digital Material Passport and certified recycled plastic positioning. Secondary coverage reported the updates without identifying a contract, customer commitment, approval, revenue contribution or other quantified commercial result.\"},{\"ticker\":\"RBNE\",\"text\":\"RBNE. On October 16, 2026, Robin Energy filed a preliminary F-1 for a proposed offering of 3,092,783 units, with sales to begin after the registration statement becomes effective.\"},{\"ticker\":\"FIGX\",\"text\":\"FIGX. our research reached no conclusion\"},{\"ticker\":\"POAS\",\"text\":\"POAS. On October 2, 2026, the company announced a securities purchase agreement with High West Partners giving it the right, but not the obligation, to sell ordinary shares up to the greater of $10 million or the exchange cap, and separately announced a one-for-fifteen reverse stock split effective October 12, 2026.\"},{\"ticker\":\"XXII\",\"text\":\"XXII. On October 15, 2026, the company announced that combined same-store retail unit sales for Pinnacle VLN and Pinnacle Pure increased 161% in the third quarter versus the second quarter. Secondary coverage reported the sales update.\"},{\"ticker\":\"YXT\",\"text\":\"YXT. our research reached no conclusion\"},{\"ticker\":\"RNGT\",\"text\":\"RNGT. Not researched at this checkpoint\"},{\"ticker\":\"JACS\",\"text\":\"JACS. Not researched at this checkpoint\"}]}"
+  ],
+  "draft": {
+    "headline": "",
+    "overall": "HUIZ ranked first in this range, up 22 percent from the prior close, and our research reached no conclusion. XLAB was up 89 percent from the prior close, with recent news in our sources: an 8-K reported entry into a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB was up 11.7% since the previous checkpoint. POAS was up 19 percent from the prior close, with only older or secondary news in our sources. Of the 12 names the desk covers, 4 had recent news in our sources.",
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "HUIZ",
+            "text": "HUIZ. our research reached no conclusion"
+          },
+          {
+            "ticker": "XLAB",
+            "text": "XLAB. On October 15, 2026, secondary coverage reported that Exascale Labs sold 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services to Sunon for $8.2 million; an 8-K reported entry into a material definitive agreement with Sunon."
+          },
+          {
+            "ticker": "GUTS",
+            "text": "GUTS. On October 16, 2026, Fractyl announced six-month topline results from the pivotal cohort of its ongoing REMAIN-1 study, reporting 80% retention of GLP-1-induced weight loss versus 67% for sham and achievement of a co-primary endpoint with high statistical significance. Secondary coverage also reported class-action lawsuit concerns."
+          },
+          {
+            "ticker": "CHEC",
+            "text": "CHEC. our research reached no conclusion"
+          },
+          {
+            "ticker": "SMX",
+            "text": "SMX. On October 2, 2026, SMX published three company releases concerning its Digital Material Passport and certified recycled plastic positioning. Secondary coverage reported the updates without identifying a contract, customer commitment, approval, revenue contribution or other quantified commercial result."
+          },
+          {
+            "ticker": "RBNE",
+            "text": "RBNE. On October 16, 2026, Robin Energy filed a preliminary F-1 for a proposed offering of 3,092,783 units, with sales to begin after the registration statement becomes effective."
+          },
+          {
+            "ticker": "FIGX",
+            "text": "FIGX. our research reached no conclusion"
+          },
+          {
+            "ticker": "POAS",
+            "text": "POAS. On October 2, 2026, the company announced a securities purchase agreement with High West Partners giving it the right, but not the obligation, to sell ordinary shares up to the greater of $10 million or the exchange cap, and separately announced a one-for-fifteen reverse stock split effective October 12, 2026."
+          },
+          {
+            "ticker": "XXII",
+            "text": "XXII. On October 15, 2026, the company announced that combined same-store retail unit sales for Pinnacle VLN and Pinnacle Pure increased 161% in the third quarter versus the second quarter. Secondary coverage reported the sales update."
+          },
+          {
+            "ticker": "YXT",
+            "text": "YXT. our research reached no conclusion"
+          },
+          {
+            "ticker": "RNGT",
+            "text": "RNGT. Not researched at this checkpoint"
+          },
+          {
+            "ticker": "JACS",
+            "text": "JACS. Not researched at this checkpoint"
+          }
+        ]
+      }
+    ]
+  },
+  "checkerReplies": [
+    {
+      "raw": "{\"verdicts\":[{\"id\":\"O\",\"supported\":true,\"note\":\"All counts, moves and the XLAB catalyst clause match the narrative facts and research; after-hours is not mentioned.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L1\",\"supported\":true,\"note\":\"Catalyst status UNKNOWN supports 'reached no conclusion'.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L2\",\"supported\":true,\"note\":\"Matches the catalyst summary and the 06:19 ET October 15 source.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L3\",\"supported\":true,\"note\":\"Matches the summary and the October 16 event time.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L4\",\"supported\":true,\"note\":\"Catalyst status UNKNOWN.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L5\",\"supported\":true,\"note\":\"Restates the October 2 releases and the evidence's lack of a quantified commercial result.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L6\",\"supported\":true,\"note\":\"Matches the F-1 summary and the October 16 09:28 ET event time; the sales timing is the filing's own statement.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L7\",\"supported\":true,\"note\":\"Catalyst status UNKNOWN.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L8\",\"supported\":true,\"note\":\"Matches the summary and the October 2 event time.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L9\",\"supported\":true,\"note\":\"Matches the summary and the October 15 event time.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L10\",\"supported\":true,\"note\":\"Catalyst status UNKNOWN.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L11\",\"supported\":true,\"note\":\"No research on file; labels are null.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L12\",\"supported\":true,\"note\":\"No research on file; labels are null.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"}]}",
+      "error": null
+    }
+  ],
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "INTO_POWER_HOUR",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-16",
+      "targetTradingDate": null,
+      "checkpoints": [
+        {
+          "id": 826,
+          "type": "RTH_INTERVAL",
+          "completedAt": "2026-10-16T18:30:07.509Z"
+        }
+      ],
+      "publishedAt": "2026-10-17T03:27:46.992Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "RECENT NEWS FOUND",
+          "lines": [
+            {
+              "ticker": "XLAB",
+              "liveFeed": null,
+              "text": "XLAB. On October 15, 2026, secondary coverage reported that Exascale Labs sold 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services to Sunon for $8.2 million; an 8-K reported entry into a material definitive agreement with Sunon.",
+              "company": {
+                "name": "Exascale Labs Holdings Inc.",
+                "country": "United States",
+                "business": "Exascale Labs provides a software-defined GPU-as-a-Service platform."
+              },
+              "path": {
+                "from": 1.36,
+                "high": 3.8399,
+                "now": 2.57,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "1d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 15, time not stated",
+                  "headline": "An 8-K reports entry into a material definitive agreement with Sunon, while contemporaneous secondary coverage reports a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million.",
+                  "explainsMove": true,
+                  "freshness": "RECENT",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is RECENT rather than fresh."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "The only reported shares-outstanding figure is dated December 31, 2025, before the completed business combination described in the 10-K.",
+                  "tone": "warn",
+                  "full": "The only reported shares-outstanding figure is dated December 31, 2025, before the completed business combination described in the 10-K."
+                }
+              }
+            },
+            {
+              "ticker": "GUTS",
+              "liveFeed": null,
+              "text": "GUTS. On October 16, 2026, Fractyl announced six-month topline results from the pivotal cohort of its ongoing REMAIN-1 study, reporting 80% retention of GLP-1-induced weight loss versus 67% for sham and achievement of a co-primary endpoint with high statistical significance. Secondary coverage also reported class-action lawsuit concerns.",
+              "company": {
+                "name": "FRACTYL HEALTH, INC.",
+                "country": "United States",
+                "business": "Fractyl Health is a clinical-stage metabolic therapeutics company developing treatments for obesity and type 2 diabetes."
+              },
+              "path": {
+                "from": 4.16,
+                "high": 4.85,
+                "now": 1.69,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "7h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 16, time not stated",
+                  "headline": "Fractyl announced positive six-month topline results from the pivotal cohort of its ongoing REMAIN-1 study, reporting 80% retention of GLP-1-induced weight loss versus 67% for sham and achievement of a co-primary endpoint with high statistical significance. A secondary news item reported that the stock declined despite the results, citing class-action lawsuit concerns.",
+                  "explainsMove": false,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "The reported 159,179,848 shares outstanding date to August 4, 2026, before the October 2, 2026 reverse split, and do not establish the current post-split share count.",
+                  "tone": "warn",
+                  "full": "The reported 159,179,848 shares outstanding date to August 4, 2026, before the October 2, 2026 reverse split, and do not establish the current post-split share count."
+                }
+              }
+            },
+            {
+              "ticker": "RBNE",
+              "liveFeed": null,
+              "text": "RBNE. On October 16, 2026, Robin Energy filed a preliminary F-1 for a proposed offering of 3,092,783 units, with sales to begin after the registration statement becomes effective.",
+              "company": {
+                "name": "Robin Energy Ltd.",
+                "country": "Cyprus",
+                "business": "Robin Energy is an international ship-owning company providing energy transportation services globally."
+              },
+              "path": {
+                "from": 1.94,
+                "high": 1.91,
+                "now": 0.8204,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "C",
+                  "age": "5h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 16, time not stated",
+                  "headline": "Robin Energy filed a preliminary F-1 for a proposed offering of 3,092,783 units, with sales to begin after the registration statement becomes effective.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": null,
+                  "detail": "A proposed 3,092,783-unit offering is pending under a preliminary F-1, while reported common shares outstanding were 582,524 as of June 30, 2026.",
+                  "tone": "neg",
+                  "full": "A proposed 3,092,783-unit offering is pending under a preliminary F-1, while reported common shares outstanding were 582,524 as of June 30, 2026."
+                }
+              }
+            },
+            {
+              "ticker": "XXII",
+              "liveFeed": null,
+              "text": "XXII. On October 15, 2026, the company announced that combined same-store retail unit sales for Pinnacle VLN and Pinnacle Pure increased 161% in the third quarter versus the second quarter. Secondary coverage reported the sales update.",
+              "company": {
+                "name": "22nd Century Group, Inc.",
+                "country": "United States",
+                "business": "22nd Century Group develops and sells reduced-nicotine combustible cigarettes, including its FDA-authorized VLN cigarette."
+              },
+              "path": {
+                "from": 0.6272,
+                "high": 1.13,
+                "now": 0.3442,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "since Thu close",
+                  "ageIsPriorClose": true,
+                  "eventAt": "Oct 15, time not stated",
+                  "headline": "The company announced that combined same-store retail unit sales for Pinnacle VLN and Pinnacle Pure increased 161% in the third quarter versus the second quarter. Secondary coverage reported a 64.22% after-hours share-price increase following the sales update.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH. It is FRESH because it broke after the prior session's close (since Thu close), so the market has not traded on it yet -- not because it is recent by the calendar. The exact time is below."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "3.02M sh supply",
+                  "detail": "The August 14, 2026 reported share count of 713,994 is materially smaller than the 3,019,586 shares covered by the warrant-exercise resale registration.",
+                  "tone": "neg",
+                  "full": "The August 14, 2026 reported share count of 713,994 is materially smaller than the 3,019,586 shares covered by the warrant-exercise resale registration."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "OLDER OR SECONDARY NEWS",
+          "lines": [
+            {
+              "ticker": "SMX",
+              "liveFeed": null,
+              "text": "SMX. On October 2, 2026, SMX published three company releases concerning its Digital Material Passport and certified recycled plastic positioning. Secondary coverage reported the updates without identifying a contract, customer commitment, approval, revenue contribution or other quantified commercial result.",
+              "company": {
+                "name": "SMX (Security Matters) Public Ltd Co",
+                "country": "Ireland",
+                "business": "SMX provides a Digital Material Passport platform designed to connect physical materials with persistent digital identity and verified lifecycle data."
+              },
+              "path": {
+                "from": 3.6,
+                "high": 5.61,
+                "now": 1.84,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "14d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 2, time not stated",
+                  "headline": "SMX published three company releases on October 2 concerning its Digital Material Passport and certified recycled plastic positioning. Secondary coverage reported a 38.47% after-hours rise tied to fresh company updates, but the supplied evidence does not identify a contract, customer commitment, approval, revenue contribution, or other quantified commercial result.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "SMX disclosed recurring losses, negative operating cash flow, accumulated losses of $251 million as of December 31, 2025, dependence on external funding, and substantial doubt about its ability to continue as a going concern.",
+                  "tone": "warn",
+                  "full": "SMX disclosed recurring losses, negative operating cash flow, accumulated losses of $251 million as of December 31, 2025, dependence on external funding, and substantial doubt about its ability to continue as a going concern."
+                }
+              }
+            },
+            {
+              "ticker": "POAS",
+              "liveFeed": null,
+              "text": "POAS. On October 2, 2026, the company announced a securities purchase agreement with High West Partners giving it the right, but not the obligation, to sell ordinary shares up to the greater of $10 million or the exchange cap, and separately announced a one-for-fifteen reverse stock split effective October 12, 2026.",
+              "company": {
+                "name": "PHAOS TECHNOLOGY HOLDINGS (CAYMAN) Ltd",
+                "country": null,
+                "business": "Phaos Technology Holdings provides advanced microscopy solutions."
+              },
+              "path": {
+                "from": 2.16,
+                "high": 3.15,
+                "now": 2.5726,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "C",
+                  "age": "14d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 2, time not stated",
+                  "headline": "The company disclosed a securities purchase agreement with High West Partners under which it has the right, but not the obligation, to sell ordinary shares up to the greater of $10 million or the exchange cap, and separately announced a one-for-fifteen reverse stock split effective October 12, 2026.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "The company disclosed equity-sale capacity under a securities purchase agreement with High West Partners.",
+                  "tone": "warn",
+                  "full": "The company disclosed equity-sale capacity under a securities purchase agreement with High West Partners."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "RESEARCH COULD NOT TELL",
+          "lines": [
+            {
+              "ticker": "HUIZ",
+              "liveFeed": null,
+              "text": "HUIZ. our research reached no conclusion",
+              "company": {
+                "name": "Huize Holding Ltd",
+                "country": null,
+                "business": "Huize operates an insurance technology platform that digitally connects consumers, insurance carriers and distribution partners in Asia."
+              },
+              "path": {
+                "from": 1.43,
+                "high": 1.99,
+                "now": 1.74,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Coverage is incomplete, including no collected registration or prospectus evidence. The latest located company-specific item is Huize's August 20, 2026 report of unaudited first-half 2026 financial results, which predates the observed market session; the supplied excerpt does not establish a fresh event or its directional operating details.",
+                  "explainsMove": null,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "No catalyst grade established. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "The reported shares outstanding figure is dated December 31, 2019.",
+                  "tone": "warn",
+                  "full": "The reported shares outstanding figure is dated December 31, 2019."
+                }
+              }
+            },
+            {
+              "ticker": "CHEC",
+              "liveFeed": null,
+              "text": "CHEC. our research reached no conclusion",
+              "company": {
+                "name": "Chenghe Acquisition III Co.",
+                "country": "Cayman Islands",
+                "business": "It is a blank-check company seeking a business combination target in any industry or geographic region."
+              },
+              "path": {
+                "from": 10.29,
+                "high": 10.3,
+                "now": 10.3,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Catalyst coverage is incomplete because the bundle contains SEC sources only and no company newsroom, investor-relations, newswire, or other catalyst source.",
+                  "explainsMove": null,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "No catalyst grade established. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "Redeemable warrants with an $11.50 exercise price are identified, but their current exercise eligibility and quantity are not established in the bundle.",
+                  "tone": "warn",
+                  "full": "Redeemable warrants with an $11.50 exercise price are identified, but their current exercise eligibility and quantity are not established in the bundle."
+                }
+              }
+            },
+            {
+              "ticker": "FIGX",
+              "liveFeed": null,
+              "text": "FIGX. our research reached no conclusion",
+              "company": {
+                "name": "FIGX Capital Acquisition Corp.",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 10.33,
+                "high": 10.34,
+                "now": 10.34,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Catalyst coverage is incomplete: the collected evidence contains SEC materials only and no company newsroom, IR, newswire, or other catalyst sources. The available filings identify FIGX as a blank-check company, but do not establish a fresh company event explaining current trading.",
+                  "explainsMove": null,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "No catalyst grade established. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "6.55M sh",
+                  "detail": "No reported shares-outstanding figure is available in the bundle; shares outstanding cannot be used as a float substitute.",
+                  "tone": "warn",
+                  "full": "No reported shares-outstanding figure is available in the bundle; shares outstanding cannot be used as a float substitute."
+                }
+              }
+            },
+            {
+              "ticker": "YXT",
+              "liveFeed": null,
+              "text": "YXT. our research reached no conclusion",
+              "company": {
+                "name": "YXT.COM GROUP HOLDING Ltd",
+                "country": null,
+                "business": null
+              },
+              "path": {
+                "from": 1.55,
+                "high": 2.055,
+                "now": 1.22,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "SEC evidence includes YXT.com's August 13, 2026 release of unaudited first-half 2026 results and an August 17 registered-direct-offering filing, but neither is contemporaneous to the supplied September market state. Catalyst coverage is SEC-only and explicitly incomplete, so the evidence cannot establish either a fresh catalyst or its absence.",
+                  "explainsMove": null,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "No catalyst grade established. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "650K sh",
+                  "detail": "Reported outstanding shares are 178,456,987 as of December 31, 2025 and are not a float measure.",
+                  "tone": "warn",
+                  "full": "Reported outstanding shares are 178,456,987 as of December 31, 2025 and are not a float measure."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NOT RESEARCHED AT THIS CHECKPOINT",
+          "lines": [
+            {
+              "ticker": "RNGT",
+              "liveFeed": null,
+              "text": "RNGT. Not researched at this checkpoint",
+              "company": null,
+              "path": {
+                "from": 10.18,
+                "high": 10.185,
+                "now": 10.17,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            },
+            {
+              "ticker": "JACS",
+              "liveFeed": null,
+              "text": "JACS. Not researched at this checkpoint",
+              "company": null,
+              "path": {
+                "from": 10.83,
+                "high": 10.83,
+                "now": 10.81,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "watchCount": 12,
+      "narrative": "HUIZ ranked first in this range, up 22 percent from the prior close, and our research reached no conclusion. XLAB was up 89 percent from the prior close, with recent news in our sources: an 8-K reported entry into a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB was up 11.7% since the previous checkpoint. Of the 12 names the desk covers, 4 had recent news in our sources.",
+      "narrativeFootnotes": null
+    },
+    "diagnostics": {
+      "lines": 13,
+      "strikes": [],
+      "writerMs": 8242,
+      "checkerMs": 25344
+    }
+  }
+}

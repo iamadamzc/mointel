@@ -1,0 +1,210 @@
+[
+  {
+    "tag": "2026-10-16-INTO_POWER_HOUR-l21-run1",
+    "kind": "INTO_POWER_HOUR",
+    "family": "v7",
+    "status": "PUBLISHED",
+    "error": null,
+    "summaryStruck": false,
+    "summaryStrikes": [],
+    "allStrikes": [
+      {
+        "id": "S1L8",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Assigning the purchase-agreement disclosure to September 30 and the reverse-split announcement to October 2 cannot be traced: the research does not say which 6-K disclosed which item, and the event timestamp is October 2.",
+        "dateClaim": true
+      }
+    ],
+    "strikesByReason": {
+      "UNSUPPORTED/model": 1
+    },
+    "freshPublished": [],
+    "freshInDraft": 0,
+    "countWordPublished": "recent",
+    "countWordDraft": "recent",
+    "narrative": "HUIZ ranked first in this range, up 22 percent from the prior close, with our research reaching no conclusion. XLAB was up 89 percent from the prior close, with recent news in our sources: an 8-K reported entry into a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB was up 11.7% since the previous checkpoint. Of the 12 names the desk covers, 4 had recent news in our sources.",
+    "draftSummary": "HUIZ ranked first in this range, up 22 percent from the prior close, with our research reaching no conclusion. XLAB was up 89 percent from the prior close, with recent news in our sources: an 8-K reported entry into a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB was up 11.7% since the previous checkpoint. POAS was up 19 percent from the prior close, with only older or secondary news about a securities purchase agreement with High West Partners and a one-for-fifteen reverse stock split effective October 12, 2026. Of the 12 names the desk covers, 4 had recent news in our sources.",
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "production": {
+      "status": "PUBLISHED",
+      "createdAt": "2026-10-16T18:30:45.715Z",
+      "versions": {
+        "writerPrompt": 13,
+        "checkerPrompt": 18,
+        "writerModel": "gpt-5.6-luna",
+        "checkerModel": "claude-opus-5-5",
+        "writerPromptFamily": "v7"
+      },
+      "narrative": "HUIZ ranked first in this range, up 22 percent from the prior close, with our research reaching no conclusion. XLAB was up 89 percent from the prior close, with fresh news in our sources: an 8-K reported a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB was up 11.7% since the previous checkpoint. Of the 12 names the desk covers, 4 had fresh news in our sources.",
+      "summaryStruck": false,
+      "strikes": [
+        {
+          "id": "S1L8",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The research does not say which 6-K disclosed which item, so assigning the purchase agreement to September 30 and the reverse split to October 2 cannot be traced.",
+          "text": "On September 30, 2026, the company disclosed a securities purchase agreement with High West Partners giving it the right, but not the obligation, to sell ordinary shares up to the greater of $10 million or the exchange cap. On October 2, 2026, it announced a one-for-fifteen reverse stock split effective October 12, 2026."
+        }
+      ],
+      "freshHits": 2,
+      "countWord": "fresh"
+    },
+    "newReasons": [],
+    "costUsd": 0.1455422,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4917,
+        "outputTokens": 2099,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 1455,
+        "durationMs": 15430,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 22685,
+        "outputTokens": 2565,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 3951,
+        "reasoningTokens": null,
+        "durationMs": 22242,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-16-INTO_POWER_HOUR-l21-run2",
+    "kind": "INTO_POWER_HOUR",
+    "family": "v7",
+    "status": "PUBLISHED",
+    "error": null,
+    "summaryStruck": false,
+    "summaryStrikes": [],
+    "allStrikes": [],
+    "strikesByReason": {},
+    "freshPublished": [],
+    "freshInDraft": 0,
+    "countWordPublished": "recent",
+    "countWordDraft": "recent",
+    "narrative": "HUIZ ranked first in this range, up 22 percent from the prior close, and our research reached no conclusion. XLAB was up 89 percent from the prior close, with recent news in our sources: an 8-K reported entry into a material definitive agreement with Sunon, while secondary coverage on October 15, 2026 reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB was up 11.7% since the previous checkpoint. Of the 12 names the desk covers, 4 had recent news in our sources.",
+    "draftSummary": "HUIZ ranked first in this range, up 22 percent from the prior close, and our research reached no conclusion. XLAB was up 89 percent from the prior close, with recent news in our sources: an 8-K reported entry into a material definitive agreement with Sunon, while secondary coverage on October 15, 2026 reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB was up 11.7% since the previous checkpoint. POAS was up 19 percent from the prior close, with only older or secondary news about a securities purchase agreement with High West Partners and a one-for-fifteen reverse stock split effective October 12, 2026. Of the 12 names the desk covers, 4 had recent news in our sources.",
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "production": {
+      "status": "PUBLISHED",
+      "createdAt": "2026-10-16T18:30:45.715Z",
+      "versions": {
+        "writerPrompt": 13,
+        "checkerPrompt": 18,
+        "writerModel": "gpt-5.6-luna",
+        "checkerModel": "claude-opus-5-5",
+        "writerPromptFamily": "v7"
+      },
+      "narrative": "HUIZ ranked first in this range, up 22 percent from the prior close, with our research reaching no conclusion. XLAB was up 89 percent from the prior close, with fresh news in our sources: an 8-K reported a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB was up 11.7% since the previous checkpoint. Of the 12 names the desk covers, 4 had fresh news in our sources.",
+      "summaryStruck": false,
+      "strikes": [
+        {
+          "id": "S1L8",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The research does not say which 6-K disclosed which item, so assigning the purchase agreement to September 30 and the reverse split to October 2 cannot be traced.",
+          "text": "On September 30, 2026, the company disclosed a securities purchase agreement with High West Partners giving it the right, but not the obligation, to sell ordinary shares up to the greater of $10 million or the exchange cap. On October 2, 2026, it announced a one-for-fifteen reverse stock split effective October 12, 2026."
+        }
+      ],
+      "freshHits": 2,
+      "countWord": "fresh"
+    },
+    "newReasons": [],
+    "costUsd": 0.1342266,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4917,
+        "outputTokens": 2226,
+        "cachedInputTokens": 4914,
+        "reasoningTokens": 1552,
+        "durationMs": 17039,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 22738,
+        "outputTokens": 1981,
+        "cachedInputTokens": 3951,
+        "cacheWriteInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 16889,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-16-INTO_POWER_HOUR-l21-run3",
+    "kind": "INTO_POWER_HOUR",
+    "family": "v7",
+    "status": "PUBLISHED",
+    "error": null,
+    "summaryStruck": false,
+    "summaryStrikes": [],
+    "allStrikes": [],
+    "strikesByReason": {},
+    "freshPublished": [],
+    "freshInDraft": 0,
+    "countWordPublished": "recent",
+    "countWordDraft": "recent",
+    "narrative": "HUIZ ranked first in this range, up 22 percent from the prior close, and our research reached no conclusion. XLAB was up 89 percent from the prior close, with recent news in our sources: an 8-K reported entry into a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB was up 11.7% since the previous checkpoint. Of the 12 names the desk covers, 4 had recent news in our sources.",
+    "draftSummary": "HUIZ ranked first in this range, up 22 percent from the prior close, and our research reached no conclusion. XLAB was up 89 percent from the prior close, with recent news in our sources: an 8-K reported entry into a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB was up 11.7% since the previous checkpoint. POAS was up 19 percent from the prior close, with only older or secondary news in our sources. Of the 12 names the desk covers, 4 had recent news in our sources.",
+    "publishedLines": 12,
+    "checkerErrors": 0,
+    "production": {
+      "status": "PUBLISHED",
+      "createdAt": "2026-10-16T18:30:45.715Z",
+      "versions": {
+        "writerPrompt": 13,
+        "checkerPrompt": 18,
+        "writerModel": "gpt-5.6-luna",
+        "checkerModel": "claude-opus-5-5",
+        "writerPromptFamily": "v7"
+      },
+      "narrative": "HUIZ ranked first in this range, up 22 percent from the prior close, with our research reaching no conclusion. XLAB was up 89 percent from the prior close, with fresh news in our sources: an 8-K reported a material definitive agreement with Sunon, while secondary coverage reported a sale of 12 Nvidia HGX B300 GPU servers and 36 months of IT operating services for $8.2 million. XLAB was up 11.7% since the previous checkpoint. Of the 12 names the desk covers, 4 had fresh news in our sources.",
+      "summaryStruck": false,
+      "strikes": [
+        {
+          "id": "S1L8",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The research does not say which 6-K disclosed which item, so assigning the purchase agreement to September 30 and the reverse split to October 2 cannot be traced.",
+          "text": "On September 30, 2026, the company disclosed a securities purchase agreement with High West Partners giving it the right, but not the obligation, to sell ordinary shares up to the greater of $10 million or the exchange cap. On October 2, 2026, it announced a one-for-fifteen reverse stock split effective October 12, 2026."
+        }
+      ],
+      "freshHits": 2,
+      "countWord": "fresh"
+    },
+    "newReasons": [],
+    "costUsd": 0.1538826,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4917,
+        "outputTokens": 1176,
+        "cachedInputTokens": 4914,
+        "reasoningTokens": 505,
+        "durationMs": 8241,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 22742,
+        "outputTokens": 3026,
+        "cachedInputTokens": 3951,
+        "cacheWriteInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 25333,
+        "role": "checker"
+      }
+    ]
+  }
+]
