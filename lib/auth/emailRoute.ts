@@ -8,6 +8,23 @@ import crypto from 'node:crypto';
 import type { FlowResponse } from '@/lib/auth/emailFlow';
 import { hashIp } from '@/lib/auth/emailLink';
 
+/**
+ * THE SAME SWITCH AS WEB'S PURCHASE PAGES (lib/public/purchaseOpen.ts on
+ * web/purchase-pages): the email-link routes exist only when PURCHASE_PAGES is
+ * exactly "open". Web shows the sign-in page's email form only then, and a route
+ * reachable by a direct POST while the form is hidden would let anyone have
+ * sign-in emails sent before he opens the purchase surface. Closed, all three
+ * routes answer 404, as an unknown path does. Read per request, never at import.
+ * At the combine this can import Web's helper instead; the rule is identical.
+ */
+export function emailSignInOpen(env: Readonly<Record<string, string | undefined>> = process.env): boolean {
+  return env.PURCHASE_PAGES === 'open';
+}
+
+export function notFound(): Response {
+  return new Response('Not Found', { status: 404, headers: { 'Cache-Control': 'no-store' } });
+}
+
 export function respondFlow(result: FlowResponse): Response {
   const headers = new Headers();
   for (const cookie of result.setCookies) headers.append('Set-Cookie', cookie);

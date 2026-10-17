@@ -5,13 +5,14 @@
 
 import { getIdentityDb } from '@/lib/auth/db';
 import { sendFailedResponse, startEmailSignIn } from '@/lib/auth/emailFlow';
-import { formField, linkOrigin, requestIpHash, respondFlow } from '@/lib/auth/emailRoute';
+import { emailSignInOpen, formField, linkOrigin, notFound, requestIpHash, respondFlow } from '@/lib/auth/emailRoute';
 import { sendEmail } from '@/lib/email/ses';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export async function POST(request: Request): Promise<Response> {
+  if (!emailSignInOpen()) return notFound();
   const origin = linkOrigin();
   if (!origin) {
     console.error('[/auth/start/email] not configured: OAUTH_REDIRECT_URI is unset or invalid');

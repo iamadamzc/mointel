@@ -6,7 +6,7 @@
 
 import { getIdentityDb } from '@/lib/auth/db';
 import { completeEmailSignIn, showConfirm } from '@/lib/auth/emailFlow';
-import { formField, respondFlow } from '@/lib/auth/emailRoute';
+import { emailSignInOpen, formField, notFound, respondFlow } from '@/lib/auth/emailRoute';
 import { authErrorPage } from '@/lib/auth/authErrorPage';
 
 export const dynamic = 'force-dynamic';
@@ -21,6 +21,7 @@ function ourFault(where: string, error: unknown): Response {
 }
 
 export async function GET(request: Request): Promise<Response> {
+  if (!emailSignInOpen()) return notFound();
   try {
     const token = new URL(request.url).searchParams.get('t');
     return respondFlow(showConfirm({ db: getIdentityDb(), token }));
@@ -30,6 +31,7 @@ export async function GET(request: Request): Promise<Response> {
 }
 
 export async function POST(request: Request): Promise<Response> {
+  if (!emailSignInOpen()) return notFound();
   try {
     return respondFlow(completeEmailSignIn({ db: getIdentityDb(), token: await formField(request, 't') }));
   } catch (error) {
