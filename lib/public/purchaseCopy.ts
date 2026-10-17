@@ -252,5 +252,12 @@ export const REFUSAL = {
     reload: 'Reload',
     signOut: 'Sign out',
     ask: 'Ask about your payment',
+    /**
+     * The same screen after a free trial starts: his "yes to all five" (Integration chat
+     * bf3b407e, uuid c7584eb1, 2026-10-17T13:00:25.931Z) to
+     * docs/integration/2026-10-17-next-words-for-him.md @488c74b5 section 3; Marketing 05bbc477.
+     */
+    trialHeadline: 'Your free trial has not been confirmed yet.',
+    trialAsk: 'Ask about your trial',
   },
 } as const;
