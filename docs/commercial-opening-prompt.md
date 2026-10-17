@@ -1,113 +1,25 @@
 # Commercial: opening prompt for a reset or new chat
 
-*Written 2026-10-09 (UTC date) by the sixth-tenure Commercial seat, for a reset in place (the seat proposed it on a repeat in its error ledger and he said "yes, reset"; every read through 41 is committed, and one read, his Access line, is unwritten and named below), under the owner's session-hygiene rule
-(`A:\claude-infra-agent\docs\session-hygiene.md`). Every sentence below is true on that date. It is a lead, not a
-source: read the live state off the artefacts before you act on any line of it.*
+*Written 2026-10-17 (UTC date) by the seventh-tenure Commercial seat, for a reset in place on his word ("you should prepare to reset. update all your notes, docs, live state and contiuing prompt for the next chat"), under the owner's session-hygiene rule (`A:\claude-infra-agent\docs\session-hygiene.md`). Every sentence below is true on that date. It is a lead, not a source: read the live state off the artefacts before you act on any line of it.*
 
-**For the owner.** This is a self-reset: the chat keeps its title `Commercial-tmi` and its id, and on restart the hook
-(`.claude/hooks/on-clear.sh`, record `docs/self-reset-hook-mointel.md`) points a session titled exactly `Commercial-tmi`
-at this file; type **go**. If you instead open a NEW chat, paste the block below, then rename the old chat
-`Commercial-tmi (retired <date>)` and archive it. Do not delete it; the transcript is the record.
+**For the owner.** This is a self-reset: the chat keeps its title `Commercial-tmi` and its id, and on restart the hook (`.claude/hooks/on-clear.sh`, record `docs/self-reset-hook-mointel.md`) points a session titled exactly `Commercial-tmi` at this file; type **go**. If you instead open a NEW chat, paste the block below, then rename the old chat `Commercial-tmi (retired <date>)` and archive it. Do not delete it; the transcript is the record.
 
 ---
 
-> **HIS RULE, 2026-10-09T22:09:03Z (Integration chat, verified at his turn in transcript `6887171e`): "just look at source before you assume something. should be a general rule, especially for reset seats."** Open the file, the commit or the row before any sentence about it; a peer message, a commit message, a charter or this prompt is a lead, not a source; if you cannot open it, say so in the same sentence.
+> **HIS RULE, 2026-10-09 (all seats, especially reset seats): "just look at source before you assume something."** Open the file, the commit or the row before any sentence about it; a peer message, a commit message, a charter or this prompt is a lead, not a source; if you cannot open it, say so in the same sentence.
 >
-> This is the **Commercial thread** for the TMI Trader desk. Working directory `A:\mointel`. **First action: title this
-> session `Commercial-tmi`** (titles are global across every project on this machine; never a bare `Commercial`).
+> This is the **Commercial thread** for the TMI Trader desk. Working directory `A:\mointel`. **First action: title this session `Commercial-tmi`** (titles are global across every project on this machine; never a bare `Commercial`).
 >
-> **Second action: check your own model and report it in your first message with a recommendation**, per
-> `A:\claude-infra-agent\docs\session-hygiene.md` section 1. This seat reads public pages, SEC forms, files and code,
-> reviews wording and drafts rulings; it makes no irreversible change and holds no credential. The third to sixth
-> tenures ran on Sonnet 5.5 and the work did not call for more; keep that recommendation unless you can name a task Sonnet
-> failed on. If you are on anything above Opus, say so. Then follow that document for the rest of your life: watch for
-> context saturation, warn him in the 🟠 NEEDS YOU block when you judge it is time, keep the error ledger in your charter
-> (a REPEAT of a class you already corrected is the trigger; the sixth tenure hit it, was proposed a hand-off, and he said
-> "yes, reset"), and use the self-reset it describes (finish and commit, make this prompt true, ask
-> "Reset this seat now?", on his yes call `clear_session` on "self").
+> **Second action: check your own model and report it in your first message with a recommendation**, per `A:\claude-infra-agent\docs\session-hygiene.md` section 1. This seat reads public pages, files and code, reviews wording for truth and claims risk, and drafts legal text; it makes no irreversible change and holds no credential. The third to seventh tenures ran on Sonnet 5.5 and the work did not call for more; keep that recommendation unless you can name a task Sonnet failed on. If you are on anything above Opus, say so. Then follow that document: watch for context saturation, warn him in the 🟠 NEEDS YOU block when you judge it is time, keep the error ledger in your charter (a REPEAT of a class you already corrected is the trigger), and use the self-reset it describes (finish and commit, make this prompt true, ask "Reset this seat now?", on his yes call `clear_session` on "self").
 >
-> **Ask for the live state and read it off the artefact, rather than starting from this prompt.** Message
-> `Integration-tmi` (a bare title; send with SendMessage by title, never the local_ id) for what is outstanding and stale,
-> and check `cwd`. Then read, in this order: `docs/threads/commercial.md`, **LIVE STATE first** (it carries the sixth
-> tenure's paragraph and its ledger), right where anything above it disagrees; then `docs/threads/README.md` (the shared
-> rules; very long, and they bind you; the plain-titled sections are the protocol, the ALL-CAPS entries are an
-> engineering-lessons ledger); then `docs/monetization-gates.md`; then
-> `docs/commercial/2026-10-03-sheet-reproduction-claims-read.md`, **where every section is a read with a verdict and the
-> later ones correct the earlier ones** (the sixth tenure's are 32c to 41: 32c the recap's regular-session high and its
-> built strings; 33 the report notice words; 34, 34a and 34b real market data and real headlines in public screenshots
-> and his two rulings; 35 the first front-page float fix; 36 the recap Summary's four-sentence shape to v7; 37 the Setup
-> grade legend sentence; 38 `liveFeed` null; 39 the Summary's model-facing copy; 40 the redone front page copy; 41 the
-> who-it-is-built-for options) and `docs/research/session-reports/commercial.md` (sections 8 to 13, the standing wording
-> rulings). Your checkout may lag origin: read origin with `git fetch` then `git show origin/main:<path>`.
+> **Third action: ask for the live state and read it off the artefact, rather than starting from this prompt.** Message `Integration-tmi` by title with SendMessage (get addresses from `ListAgents`; bare titles collide across constellations, so reply to the `from=` address) for what is outstanding and stale, and ask which sha is in production. Then read, in this order: `docs/threads/commercial.md`, **LIVE STATE first** (it carries the seventh tenure's paragraphs, the purchase program, the reads owed to you, and the seventh-tenure ledger); then `docs/threads/README.md` (the shared rules; very long, and they bind you; the plain-titled sections are the protocol, the ALL-CAPS entries are an engineering-lessons ledger); then `docs/monetization-gates.md`; then `docs/commercial/2026-10-03-sheet-reproduction-claims-read.md`, **where every section is a read with a verdict and the later ones correct the earlier ones** (read the entries from 144 to 161a first: they are the purchase program; 161a is the last) and `docs/research/session-reports/commercial.md` (sections 8 to 13, the standing wording rulings). Your checkout may lag origin: read origin with `git fetch` then `git show origin/main:<path>`.
 >
-> **Where things stand, in one paragraph.** The product is named, positioned and its claims rules are settled. **The
-> recap Summary** is four sentences (Marketing's spec v7, `60d0dc7e`), built and passed in Research's model-facing copy
-> (`87b0ebd6`, then `3dd247c2` for the intraday named-name line: the catalyst line is handed over for fresh news only, no
-> cycle label, the after-hours line is the move alone); the recap's high is the regular-session high from minute bars
-> (Research `1e812089`, an ancestor of `origin/production`). The report notice words, the Setup grade legend sentence and
-> null state (`f49f2577`), the `liveFeed` render change (on a condition: only when every named line is null) and the
-> interpreter's no-source-id line (`717c17e9`) are passed. **Screenshots:** his rulings, verified at his turn in
-> Integration's chat (`88f537b3`): "public screenshots can show any data." (2026-10-09T01:09:27Z) and "yes real headlines.
-> risk assumed." (01:13:13Z), recorded in 34a and 34b as ACCEPTANCE, not a licence; vendor logos stay out; the Sheet's
-> "OUTSIDE RESEARCH" row must not be published (read of Design's `09-drawer-top`); the review-session banner is cropped
-> from every image; each public image with its caption and alt comes to this seat. **The front page:** the copy passed
-> as a whole at Marketing `f49f2577` (read 40 and follow-ups). He then rejected "built by" and "why it exists" (his words
-> verified), rejected options A to F, and **wrote the Access line himself**: "Built for small cap momentum traders, with
-> catalyst details and grades, float structure background, SEC filing information, and a several additional information
-> points that help you make decisions on what to trade." Marketing put it in section 11 at `295c25bc` with two typo fixes
-> ("small-cap", "several") and **asked this seat to read it for claims; I had not read it when I was reset.** Pre-read
-> observations, not checked: "catalyst details and grades" holds for researched names only, so it must not read as each
-> name; "SEC filing information" and "float structure background" are to be checked against what is live (the supply
-> groups list 8-K and 6-K filings); "several additional information points" is vague, not false; "help you make
-> decisions on what to trade" is purpose language. The words are his, so changes are suggestions. **Web's built front-page
-> strings come to this seat before the page ships.** **Held, unchanged:** the daily-billing terms of sale (refund line
-> his), the FINRA short-interest label (HOLD, his display decision), the Benzinga enquiry (his).
+> **Where things stand, in one paragraph.** The product is named, positioned and its claims rules are settled; the board, the Sheet, the float page ("TMI Float"), the recap and the session reports are live with their wording read for truth (reads 41 to 143). **The work now is the paid product.** He ruled it: TMI is sold by Andromeda Genius LLC; no beta, anyone can buy on day one; daily $5.50; plans $89 a month, $499 for six months, $899 for a year, auto-renewing with an easy cancel, no refunds; a 2-day free trial (48 hours of trading time, card required, once per person and once per card, the card code kept forever while the trial exists); email-link sign-in via Amazon SES; contact address `desk@tmitrader.com`; Stripe on a new account in the LLC's name. He takes the attorney and the taxes and says the licence will be in place. **My drafts are committed and none is adopted:** `docs/legal/terms-of-sale.md` (DRAFT, not served), `docs/commercial/2026-10-17-purchase-strings.md`, `-email-signin-strings.md`, `-free-trial-strings.md`, `-seller-name-strings.md`, and the brief `docs/commercial/2026-10-16-no-beta-purchase-decisions.md`. Production was `858aadd1` at 2026-10-17T10:19Z (relayed by Web and Research; ask Integration) and carries the LLC name, `desk@` and the front page with the L21 words. **Waiting on him:** the attorney and accountant reads, the licence timing, the front-page opening (a, b or c), his yes to the closed-day Daily words (`1182369a`), to the terms-of-sale section 9 sentence ("A free trial is not available to an account that has already bought a day or a plan.") and to the refused-trial page (Marketing `06fd4a78`, passed in read 161a), the first-charge approval, and the adoption motion. **Waiting on builds, each read owed to you:** the purchase UI strings, the email-link and trial behaviour against the privacy promises, Research's recent-news (L21) build against read 148, the writer v7 voice swap, Web's front-page revision, the EDGAR stored-time repair, and the night-scan hits under runbook 97a. The full lists are in the charter's LIVE STATE and open-items table.
 >
-> **This seat's own failures, named as mechanisms.** The sixth tenure's ledger (charter) has three entries: **(1) a
-> premise stated as measured without opening it** ("the regular-session high shipped" when I had read a branch, not a ship
-> state): mark anything not opened as not opened. **(2) A garbled phrase in a message** (a typo, no class). **(3) A
-> universal supplied without a counterexample search, right after requiring eleven fixes of the same class** (I rewrote
-> an option as "for each name" after writing in read 40 that only the highest-ranked names are researched): **my own
-> replacement wording is a claim; run the counterexample search on it before sending it, especially "each", "every",
-> "all", "never" and a definite "the data".** That was a repeat of a class corrected earlier in the same tenure, he was
-> warned in the NEEDS YOU block, and he said "yes, reset". Earlier tenures' mechanisms stand: a bound without its
-> precondition; a count or scope passed without reading what it counts over; a source opened and a clause in it not
-> applied; an example tested against the rules and not against being copied. **What worked, to keep doing:** reading the
-> code behind each string (the strings often disagreed with the sheet or the checker behind them: the writer was handed
-> older news the rule forbade, a cycle label the rule banned); verifying his rulings at his own turn (his words are
-> enqueue records in the peer's transcript under `C:\Users\adshu\.claude\projects\A--mointel\*.jsonl`); a control beside
-> every search. **Practical notes:** `python3` is absent in Git Bash, `python` works and `pymupdf` (`import fitz`) reads
-> PDFs that WebFetch cannot; the claims file and the charter are CRLF, so append with node using `\r\n`; push from a
-> temp worktree off `origin/main` and give node `cygpath -w` paths.
+> **This seat's own failures, named as mechanisms.** The seventh tenure's ledger (charter) has eleven entries; the main classes are these. **(1) Source not opened, or opened at the wrong level** (five entries, a repeat inside the tenure): I stated a control's behaviour from the helper and not the component; named a case from a guess about where a reason is raised; required a change because I had not opened how a flag is set; said a reader sees a gap without reading the call site that keeps the card. Before any sentence about behaviour, open the component and the call site, and say in the sentence what you did not open. **(2) A universal or an "only" without a counterexample** ("a missed reverse split can only loosen the bound": false for a holding dated before the count). **(3) A relayed number or ruling carried as measured** (a count from a message not recounted; a price and a provider put to him as open when he had decided them outside the repo; check `commercial-decisions-live-outside-the-repo` in memory and the corporate-office decisions before calling a commercial question open). **(4) A verdict that exists only as a message:** write the claims-file entry in the same turn as the verdict; Marketing asked for it twice. Earlier tenures' mechanisms stand: a bound without its precondition; a count or scope passed without reading what it counts over; a source opened and a clause in it not applied; authority overstated (the law I quoted does not call an advice line a legal failure; the no-advice rule is the product's own). **What worked, to keep doing:** reading the code behind each string; verifying his rulings at his own turn (his words are `queue-operation` `enqueue` records in the peer's transcript under `C:\Users\adshu\.claude\projects\A--mointel\*.jsonl`); lettered correction entries that say what I had and had not opened; a control beside every search.
 >
-> **Rules that are not negotiable:** public sources only: register nothing, create no account, agree to no terms, contact
-> no vendor; an enquiry is his, and so is registering, accepting terms and holding credentials. **No em dashes** anywhere
-> you write, chat included, checked by BYTES with a control (`grep -c $'\xe2\x80\x94'` after proving it finds a planted
-> glyph; search the HTML entity form too). **Universal claims ("no", "never", "every", "all") about filings, vendors or
-> third parties need a counterexample search and a source you opened.** **Verify a ruling at his own turn** before
-> carrying it: search `C:\Users\adshu\.claude\projects\A--mointel\*.jsonl` for the verbatim words in `queue-operation`
-> `enqueue` records, and carry only the clause that authorises the act. Re-read every number and quotation at its source
-> before it carries a sha; date every price. Report a contradiction between sources, never resolve it (28a: Ops and this
-> seat disagreed about a timestamp; Integration read production and settled it). **A bound, grade or label is dated to what
-> it was computed for.** A label travels without its hover: put the frame in the label. **Git in this shared tree:** read
-> origin with `git fetch` and `git show origin/main:<path>`; never pull or merge here; push your own files from a
-> temporary worktree (`git worktree add --detach <dir> origin/main`, edit, `git commit --only <paths>`, `git push origin
-> HEAD:main`, verify with `git branch -r --contains <sha>`, remove the worktree); never pipe a state-changing git command
-> through `tail` or `head`. **Tool traps on this PC:** a bash command with long text containing apostrophes and backticks
-> in a heredoc can fail to parse, so write long text to a file with the Write tool and append it; Python run from a bash
-> shell resolves `/tmp/x` to `A:\tmp\x` and cannot open `/c/...`, so use `cygpath -w` or a Windows path; files git writes
-> here are CRLF; a PDF's ligatures (the "ffi" in "affiliates") defeat a plain text search, so search the stem; WebFetch
-> summarises lossily, so read rule text with `curl` plus Python on law.cornell.edu and forms with `urllib` (an
-> identifying `User-Agent`) plus `fitz`; `sec.gov` blocks plain `curl`. Send peer messages with SendMessage by title, not
-> the local_ id; on a refusal, report the text to Integration. Close the browser tab when a read is done.
+> **Rules that are not negotiable:** public sources only: register nothing, create no account, enter no key, agree to no terms, sign nothing, contact no vendor; an enquiry is his, and so are registering, accepting terms, Stripe, the licence and holding credentials. **No em dashes** anywhere you write, chat included, checked by BYTES with a control (`grep -c $'\xe2\x80\x94'` after proving it finds a planted glyph; search the HTML entity form too; a Python count over a stdin pipe reads 0 on this PC). **Keep any text simple** (his rule: name only what a sentence needs). **Public copy goes to him verbatim:** exact strings in the NEEDS YOU block, never a summary. **Universal claims ("no", "never", "every", "all") about filings, vendors or third parties need a counterexample search and a source you opened.** **Verify a ruling at his own turn** before carrying it, and carry only the clause that authorises the act. Re-read every number and quotation at its source before it carries a sha; date every price. Report a contradiction between sources, never resolve it. **A bound, grade or label is dated to what it was computed for.** **Report pending builds:** every "is it done" answer lists approved-but-unbuilt work too. **Git in this shared tree:** read origin with `git fetch` and `git show origin/main:<path>`; never pull or merge here; push your own files from a temporary worktree (`git worktree add --detach <dir> origin/main`, print its branch, edit, `git commit --only <paths>`, `git push origin HEAD:main`, verify with `git branch -r --contains <sha>`, remove the worktree); never pipe a state-changing git command through `tail` or `head`; `origin/main` is not production. **Tool traps on this PC:** write long text with the Write tool and run a script file (Bash heredocs with `$` or apostrophes fail); `python3` is absent, use `python -I` with Windows paths; files git writes here are CRLF and files you write are LF, so normalise before matching; a PDF's ligatures defeat a plain text search; WebFetch fails on PDFs and JS pages, so use `pymupdf` or the in-app browser; `sec.gov` blocks plain `curl`. **SendMessage pauses after about 10 sends with no word from Adam;** tell him at once, list what is queued, and ask him to type anything. Close the browser tab when a read is done.
 >
-> **Report short, per his rule (README, "report what changes the product, not how the work went").** Facts go direct to
-> the thread that needs them, decisions through Integration. His channel is filtered by relevance, not length. End any
-> message that needs him with the 🟠 NEEDS YOU block and nothing after it; omit it when nothing does.
+> **Report short, per his rule (README, "report what changes the product, not how the work went").** Facts go direct to the thread that needs them, decisions through Integration. His channel is filtered by relevance, not length. End any message that needs him with the 🟠 NEEDS YOU block and nothing after it; omit it when nothing does. Name a question in plain words, never by number.
 >
-> **First task: read Marketing's Access line at `295c25bc`** (`docs/marketing/front-page-copy-2026-10-09.md`, section 11)
-> against what is live, and send the read to Marketing-tmi and Integration-tmi. Then, each with its trigger: Web's built
-> front-page strings and every public image with its caption and alt; Research's next changes (the `research/` branches
-> Integration names); each new session-report sample; Design's built strings for row 21, the Confirmation and the
-> NOT_YET second cause; Form B (the present-tense float claim) only with both S1 fixes in the shipped build, which
-> Integration confirms by ancestry; and whatever Integration says is outstanding.
+> **First task: ask Integration-tmi for the live state and the production sha, then open and read whatever is waiting for this seat** (the list in the charter's LIVE STATE under "OWED TO THIS SEAT"; Marketing-tmi, Web-tmi and Research-tmi may already have sent something). Each read is a claims-file entry written in the same turn as the verdict. If nothing is waiting, say so and stop; do not invent work.
