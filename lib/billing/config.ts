@@ -25,6 +25,38 @@ export const RULED_AMOUNT_CENTS: Record<Purchase, number> = {
   annual: 89900,
 };
 
+/**
+ * THE OWNER NEVER PAYS (Integration's ruling, 2026-10-17): the desk owner always
+ * gets the board, whatever is decided about other hand-invited accounts.
+ *
+ * The same variable and the same rule as the retry-research owner check
+ * (lib/auth/requestGate.ts OWNER_EMAIL_ENV, isOwnerAdmission): a VERIFIED
+ * identity at that address, and unset or blank means nobody. Not imported from
+ * there, because requestGate pulls in next/server and this module runs in the
+ * billing worker too; tests/billing/account.test.ts pins that the two names match.
+ */
+export const OWNER_EMAIL_ENV = 'DESK_OWNER_EMAIL';
+
+/**
+ * WHAT A CARD STATEMENT SAYS AFTER THE ACCOUNT'S PREFIX ("ANDROMEDA"). OFF BY
+ * DEFAULT: the proposed "ANDROMEDA* TMI TRADER" waits on his yes (Integration,
+ * 2026-10-17), so until BILLING_STATEMENT_SUFFIX is set nothing of ours is sent
+ * and the card shows the account's own descriptor.
+ *
+ * Stripe's rules for a suffix, checked here so a bad value never breaks a
+ * charge: letters, digits and spaces with at least one letter, none of < > \ ' " *,
+ * and the prefix plus "* " plus the suffix within 22 characters. An invalid value
+ * reads as unset.
+ */
+export const STATEMENT_PREFIX = 'ANDROMEDA';
+
+export function statementSuffix(env: Readonly<Record<string, string | undefined>> = process.env): string | null {
+  const raw = env.BILLING_STATEMENT_SUFFIX?.trim().toUpperCase();
+  if (!raw) return null;
+  if (!/^[A-Z0-9 ]+$/.test(raw) || !/[A-Z]/.test(raw)) return null;
+  if (STATEMENT_PREFIX.length + 2 + raw.length > 22) return null;
+  return raw;
+}
 
 /** "1 hour. regardless of time." His ruling, 2026-09-28. */
 export const GRACE_MS = 60 * 60 * 1000;

@@ -8,8 +8,8 @@
  */
 
 import { sessionExpiry } from '@/lib/auth/expiry';
-import type { IdentityDatabase } from '@/lib/auth/store';
-import { GRACE_MS, RULED_AMOUNT_CENTS, type PlanKey } from '@/lib/billing/config';
+import { userHasVerifiedEmail, type IdentityDatabase } from '@/lib/auth/store';
+import { GRACE_MS, OWNER_EMAIL_ENV, RULED_AMOUNT_CENTS, type PlanKey } from '@/lib/billing/config';
 import { sessionEndUtc } from '@/lib/market/session';
 
 export type ChargeState = 'PENDING' | 'SUCCEEDED' | 'FAILED' | 'NOT_CHARGED' | 'REFUNDED';
@@ -86,6 +86,17 @@ export function cardFailingSince(db: IdentityDatabase, userId: number): string |
     .prepare('SELECT card_failing_since AS since FROM billing_customers WHERE user_id = ?')
     .get(userId) as { since: string | null } | undefined;
   return row?.since ?? null;
+}
+
+/** Is this user the desk owner? See OWNER_EMAIL_ENV in lib/billing/config.ts. */
+export function isDeskOwner(
+  db: IdentityDatabase,
+  userId: number,
+  env: Readonly<Record<string, string | undefined>> = process.env,
+): boolean {
+  const owner = env[OWNER_EMAIL_ENV]?.trim();
+  if (!owner) return false;
+  return userHasVerifiedEmail(db, userId, owner);
 }
 
 export function isCardRemoved(db: IdentityDatabase, userId: number): boolean {
@@ -616,6 +627,27 @@ export function canStartTrial(db: IdentityDatabase, userId: number): boolean {
 }
 
 export type TrialStart = 'started' | 'account_used' | 'card_used' | 'already_bought';
+
+export type TrialRefusal = Exclude<TrialStart, 'started'> | 'not_a_card';
+
+export function recordTrialRefusal(
+  db: IdentityDatabase,
+  setupIntentId: string,
+  userId: number,
+  reason: TrialRefusal,
+  now: Date = new Date(),
+): void {
+  db.prepare(
+    `INSERT OR IGNORE INTO billing_trial_refusals (setup_intent_id, user_id, reason, refused_at) VALUES (?, ?, ?, ?)`,
+  ).run(setupIntentId, userId, reason, now.toISOString());
+}
+
+export function trialRefusalFor(db: IdentityDatabase, setupIntentId: string): TrialRefusal | null {
+  const row = db
+    .prepare('SELECT reason FROM billing_trial_refusals WHERE setup_intent_id = ?')
+    .get(setupIntentId) as { reason: TrialRefusal } | undefined;
+  return row?.reason ?? null;
+}
 
 /**
  * Record a trial start, or say why not. One transaction, and the two UNIQUE

@@ -21,9 +21,11 @@ import {
   billingStatus,
   chargeFor,
   customerIdFor,
+  hasBought,
   hasCardOnFile,
   hasTrial,
   isCardRemoved,
+  isDeskOwner,
   lastLapsedGraceBefore,
   latestCharge,
   markCardRemoved,
@@ -57,10 +59,9 @@ export type DeskDoor = 'ok' | 'trial' | 'buy_first' | 'charge_first';
  * - trial_ended: the free trial ran out and nothing was bought.
  * - plan_ended: they cancelled their plan and it ran to its end.
  * - card_removed: a daily buyer removed their card.
- * - no_access: never bought and never trialled. NOT produced by billingStateFor
- *   today: such a person either is not invited (the gate refuses them before the
- *   desk) or was invited by hand, which is a policy question for him. Kept in the
- *   type so the page can be built for it.
+ * - no_access: never bought and no running trial. His ruling, 2026-10-17: "im
+ *   the only one that gets in free". Every account but the owner's, invited by
+ *   hand or not, gets this when it has neither a trial nor a purchase.
  */
 export type BuyCase = 'trial_ended' | 'plan_ended' | 'card_removed' | 'no_access';
 
@@ -149,11 +150,18 @@ export function billingStateFor(
 
   let door: DeskDoor = 'ok';
   let buyCase: BuyCase | null = null;
-  if (customer && !planCovers(db, userId, today)) {
+  // The owner always gets the board: no buy screen, no update-card screen. He is
+  // the only free account (his ruling, 2026-10-17).
+  if (isDeskOwner(db, userId, env)) {
+    door = 'ok';
+  } else if (!customer) {
+    [door, buyCase] = ['buy_first', 'no_access'];
+  } else if (!planCovers(db, userId, today)) {
     if (trial.state === 'active') door = 'trial';
     else if (trial.state === 'over') [door, buyCase] = ['buy_first', 'trial_ended'];
     else if (isCardRemoved(db, userId)) [door, buyCase] = ['buy_first', 'card_removed'];
     else if (planEndedByCancel(db, userId, today)) [door, buyCase] = ['buy_first', 'plan_ended'];
+    else if (!hasBought(db, userId) && !hasCardOnFile(db, userId)) [door, buyCase] = ['buy_first', 'no_access'];
     else {
       // The same rule openPaidDay uses: from the paid day AFTER the first failure.
       const paidToday = chargeFor(db, userId, today)?.state === 'SUCCEEDED';

@@ -141,6 +141,18 @@ CREATE TABLE IF NOT EXISTS billing_trials (
 );
 
 /*
+ * A trial Checkout that was refused, keyed by its SetupIntent, so the page the
+ * buyer returns to can say why ("that card has already had a trial"). The card
+ * was detached either way. Kept forever with billing_trials.
+ */
+CREATE TABLE IF NOT EXISTS billing_trial_refusals (
+  setup_intent_id TEXT    PRIMARY KEY,
+  user_id         INTEGER NOT NULL REFERENCES users(id),
+  reason          TEXT    NOT NULL,
+  refused_at      TEXT    NOT NULL
+);
+
+/*
  * Every Stripe event id we have acted on. Stripe redelivers; an event already
  * here is acknowledged and not acted on twice.
  */

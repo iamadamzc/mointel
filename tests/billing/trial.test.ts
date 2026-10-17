@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { isUserInvited } from '@/lib/auth/store';
 import { fillTrialEnds, openPaidDay, runChargePass, type ChargeDeps } from '@/lib/billing/charge';
 import { createTrialCheckoutSession, TrialNotAvailableError, type CheckoutDeps } from '@/lib/billing/checkout';
-import { canStartTrial, linkCustomer, recordTrial, trialState } from '@/lib/billing/store';
+import { canStartTrial, linkCustomer, recordTrial, trialRefusalFor, trialState } from '@/lib/billing/store';
 import { handleStripeEvent, type WebhookDeps } from '@/lib/billing/webhook';
 
 import { MON_10_ET, cleanupStores, sessionExpiries, signIn, temporaryStore, verifiedUser } from './helpers';
@@ -94,6 +94,7 @@ describe('starting the trial', () => {
     );
 
     expect(handled).toMatchObject({ result: 'trial refused: card_used; card detached' });
+    expect(trialRefusalFor(db, 'seti_1')).toBe('card_used');
     expect(stripe.paymentMethods.detach).toHaveBeenCalledWith('pm_trial');
     expect(isUserInvited(db, second)).toBe(false);
   });

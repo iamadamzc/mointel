@@ -15,6 +15,7 @@ import { openIdentityStore } from '../lib/auth/store';
 import { loadTradingDays, tradingDayChecker } from '../lib/billing/calendar';
 import { fillTrialEnds, runChargePass } from '../lib/billing/charge';
 import { lapseExpiredPlans } from '../lib/billing/lapse';
+import { reconcileClean, reconcileDailyCharges } from '../lib/billing/reconcile';
 import { stripeFromEnv } from '../lib/billing/stripeClient';
 import { findAlpacaCredentials } from '../lib/market/credentials';
 import { AlpacaRestClient } from '../lib/market/alpaca/rest';
@@ -38,6 +39,9 @@ async function main() {
   const loadCalendar = (months: string[]) => loadTradingDays(fetchMonth, months);
 
   log(`[billing] started, pass every ${PASS_MS} ms`);
+  // The reconcile read runs once per UTC day over the last three days, and logs
+  // only counts and Stripe/desk ids (lib/billing/reconcile.ts).
+  let reconciledOn = '';
   let stopping = false;
   process.on('SIGTERM', () => {
     stopping = true;
@@ -53,6 +57,16 @@ async function main() {
       if (trialEnds) log(`[billing] trial ends computed: ${trialEnds}`);
       const lapsed = await lapseExpiredPlans({ db, stripe });
       if (lapsed.length) log(`[billing] lapsed to daily: ${lapsed.join(', ')}`);
+      const todayUtc = new Date().toISOString().slice(0, 10);
+      if (reconciledOn !== todayUtc) {
+        const report = await reconcileDailyCharges({ db, stripe }, new Date(Date.now() - 3 * 24 * 3600 * 1000));
+        reconciledOn = todayUtc;
+        log(
+          reconcileClean(report)
+            ? `[billing] reconcile clean: ${report.checkedIntents} intents, ${report.checkedRows} rows`
+            : `[billing] RECONCILE MISMATCH ${JSON.stringify(report)}`,
+        );
+      }
     } catch (error) {
       log(`[billing] pass failed: ${(error as Error).name}: ${(error as Error).message}`);
     }

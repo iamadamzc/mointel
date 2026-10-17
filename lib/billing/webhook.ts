@@ -32,6 +32,7 @@ import {
   recordCheckoutDay,
   recordDispute,
   recordTrial,
+  recordTrialRefusal,
   recordWebhookEvent,
   requeueFailedCharge,
   upsertPlan,
@@ -189,10 +190,16 @@ async function onTrialCheckout(
   // Detach first. A redelivered event finds it already detached (customer null).
   if (pm.customer) await deps.stripe.paymentMethods.detach(paymentMethodId);
   const fingerprint = pm.type === 'card' ? (pm.card?.fingerprint ?? null) : null;
-  if (!fingerprint) return 'trial refused: not a card with a fingerprint; card detached';
+  if (!fingerprint) {
+    recordTrialRefusal(deps.db, setupId, userId, 'not_a_card', now);
+    return 'trial refused: not a card with a fingerprint; card detached';
+  }
 
   const outcome = recordTrial(deps.db, userId, fingerprint, setupId, now);
-  if (outcome !== 'started') return `trial refused: ${outcome}; card detached`;
+  if (outcome !== 'started') {
+    recordTrialRefusal(deps.db, setupId, userId, outcome, now);
+    return `trial refused: ${outcome}; card detached`;
+  }
 
   if (verifiedEmailFor(deps.db, userId) !== email.toLowerCase().trim()) {
     deps.log?.(`billing: trial ${session.id} started but ${userId}'s verified address changed; not invited`);
