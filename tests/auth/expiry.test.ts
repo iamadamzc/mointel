@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   CALENDAR_DAYS,
   calendarDayOf,
+  capLog,
   marketDayBefore,
   marketMonthsFor,
   sessionExpiry,
@@ -289,6 +290,43 @@ describe('the calendar at sign-in', () => {
     expect(() => cal('2026-10-26')).toThrow(/does not cover/);
     expect(() => cal('2026-10-27')).toThrow(/does not cover/);
     expect(() => sessionDatesCalendar([])('2026-10-20')).toThrow(/empty/);
+  });
+
+  /*
+   * Ops, 2026-10-17: the fallback line must not repeat once per desk poll.
+   */
+  it('capLog writes each distinct line at most once per window', () => {
+    let now = 0;
+    const lines: string[] = [];
+    const log = capLog((l) => lines.push(l), 3_600_000, () => now);
+    log('a');
+    log('a');
+    now = 3_599_999;
+    log('a');
+    log('b');
+    now = 3_600_000;
+    log('a');
+    expect(lines).toEqual(['a', 'b', 'a']);
+  });
+
+  it('the default paid-day log is capped: the same fallback twice writes one line', async () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    try {
+      const sources = { load: async (): Promise<MarketDays> => { throw new Error('cap probe'); } };
+      await marketDaysOrFallback(NOW, sources);
+      await marketDaysOrFallback(NOW, sources);
+      expect(spy.mock.calls.filter((c) => String(c[0]).includes('cap probe'))).toHaveLength(1);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it('capLog remembers a bounded number of lines and never holds back a new one', () => {
+    const lines: string[] = [];
+    const log = capLog((l) => lines.push(l), 3_600_000, () => 0, 2);
+    for (const l of ['a', 'b', 'c', 'c', 'a']) log(l);
+    // 'c' pushed 'a' out of the memory of two, so 'a' is written again; the repeat of 'c' is not.
+    expect(lines).toEqual(['a', 'b', 'c', 'a']);
   });
 
   it('withDeadline rejects at the deadline and passes an early answer through', async () => {

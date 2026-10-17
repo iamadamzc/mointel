@@ -85,3 +85,66 @@ describe('the reconcile read', () => {
     expect(report.stripeOnly).toEqual([{ userId, etDate: '2026-10-19', paymentIntentId: 'pi_c' }]);
   });
 });
+
+/*
+ * A REFUNDED DUPLICATE IS VISIBLE, NOT A MISMATCH (Integration's ruling, 43rd,
+ * 2026-10-17). Walkthrough part 2 charged one paid day twice and refunded one;
+ * reconcile kept reporting it as a double charge every day.
+ */
+describe('refunds', () => {
+  const charged = (id: string, userId: number, etDate: string, charge: unknown) =>
+    ({ ...intent(id, userId, etDate), latest_charge: charge }) as unknown as Stripe.PaymentIntent;
+
+  it('a duplicate refunded in full is listed as refunded and the read is clean', async () => {
+    const db = temporaryStore();
+    const userId = verifiedUser(db);
+    paidRow(db, userId, '2026-10-19', 'pi_kept');
+    let listed: unknown = null;
+    const stripe = {
+      paymentIntents: {
+        list: (params: unknown) => {
+          listed = params;
+          return stripeWith([
+            charged('pi_kept', userId, '2026-10-19', { id: 'ch_k', refunded: false }),
+            charged('pi_back', userId, '2026-10-19', { id: 'ch_b', refunded: true }),
+          ]).paymentIntents.list();
+        },
+      },
+    };
+    const report = await reconcileDailyCharges({ db, stripe }, SINCE);
+    expect(listed).toMatchObject({ expand: ['data.latest_charge'] });
+    expect(report.doubleCharged).toEqual([]);
+    expect(report.stripeOnly).toEqual([]);
+    expect(report.refunded).toEqual([{ userId, etDate: '2026-10-19', paymentIntentId: 'pi_back' }]);
+    expect(reconcileClean(report)).toBe(true);
+  });
+
+  it('a partial refund still counts as a charge taken', async () => {
+    const db = temporaryStore();
+    const userId = verifiedUser(db);
+    paidRow(db, userId, '2026-10-19', 'pi_kept');
+    const report = await reconcileDailyCharges(
+      {
+        db,
+        stripe: stripeWith([
+          charged('pi_kept', userId, '2026-10-19', { id: 'ch_k', refunded: false }),
+          charged('pi_part', userId, '2026-10-19', { id: 'ch_p', refunded: false, amount_refunded: 100 }),
+        ]),
+      },
+      SINCE,
+    );
+    expect(report.doubleCharged).toEqual([{ userId, etDate: '2026-10-19', paymentIntentIds: ['pi_kept', 'pi_part'] }]);
+    expect(report.refunded).toEqual([]);
+  });
+
+  it('an unexpanded charge is not taken as refunded', async () => {
+    const db = temporaryStore();
+    const userId = verifiedUser(db);
+    paidRow(db, userId, '2026-10-19', 'pi_kept');
+    const report = await reconcileDailyCharges(
+      { db, stripe: stripeWith([intent('pi_kept', userId, '2026-10-19'), charged('pi_two', userId, '2026-10-19', 'ch_id_only')]) },
+      SINCE,
+    );
+    expect(report.doubleCharged).toHaveLength(1);
+  });
+});

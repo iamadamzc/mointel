@@ -82,3 +82,14 @@ export type LapsedDoor = 'charge_first' | 'one_hour';
 export function lapsedDoor(env: Readonly<Record<string, string | undefined>> = process.env): LapsedDoor {
   return env.BILLING_LAPSED_DOOR === 'one_hour' ? 'one_hour' : 'charge_first';
 }
+
+/**
+ * THE TRIAL OFFERS CARDS ONLY (Integration's ruling, 43rd, 2026-10-17: "the trial
+ * needs a card"). Stripe cannot switch Link off on a Checkout Session that lists
+ * payment_method_types; the documented way is a payment method configuration with
+ * Link off, passed to the session (docs.stripe.com/payments/link/checkout-link,
+ * "Disable"). Its id differs between the sandbox and the live account, so it is
+ * named here by environment: the id of a configuration with Card on and every
+ * other method off. Checked at every trial start (lib/billing/checkout.ts).
+ */
+export const TRIAL_PAYMENT_METHODS_ENV = 'BILLING_TRIAL_PAYMENT_METHODS';

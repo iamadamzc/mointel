@@ -18,7 +18,13 @@ import type Stripe from 'stripe';
 
 import type { MarketDays } from '@/lib/auth/expiry';
 import type { IdentityDatabase } from '@/lib/auth/store';
-import { PRICE_LOOKUP_KEYS, RULED_AMOUNT_CENTS, statementSuffix, type Purchase } from '@/lib/billing/config';
+import {
+  PRICE_LOOKUP_KEYS,
+  RULED_AMOUNT_CENTS,
+  statementSuffix,
+  TRIAL_PAYMENT_METHODS_ENV,
+  type Purchase,
+} from '@/lib/billing/config';
 import { canStartTrial, customerIdFor, linkCustomer, paidDayOf, verifiedEmailFor } from '@/lib/billing/store';
 
 /**
@@ -37,7 +43,7 @@ export interface CheckoutDeps {
   db: IdentityDatabase;
   /** For the statement suffix; process.env when omitted. */
   env?: Readonly<Record<string, string | undefined>>;
-  stripe: Pick<Stripe, 'customers' | 'prices' | 'checkout' | 'billingPortal'>;
+  stripe: Pick<Stripe, 'customers' | 'prices' | 'checkout' | 'billingPortal' | 'paymentMethodConfigurations'>;
   /**
    * The market calendar, for the paid day that day one is (always a market day:
    * on a weekend it is Monday's). The caller loads it; one that cannot be read
@@ -48,7 +54,7 @@ export interface CheckoutDeps {
 }
 
 /** What creating a customer or a trial Checkout needs: no calendar. */
-export type TrialCheckoutDeps = Pick<CheckoutDeps, 'db' | 'stripe' | 'now'>;
+export type TrialCheckoutDeps = Pick<CheckoutDeps, 'db' | 'stripe' | 'now' | 'env'>;
 
 /**
  * The price for a purchase, found by lookup_key and CHECKED against the ruled
@@ -161,6 +167,38 @@ export class TrialNotAvailableError extends Error {
   }
 }
 
+/** The trial's cards-only configuration is unset, missing, or offers more than cards. */
+export class TrialPaymentMethodsError extends Error {
+  override name = 'TrialPaymentMethodsError';
+}
+
+/**
+ * The cards-only payment method configuration for the trial, checked before every
+ * use: it must exist, be active, and have exactly one method on, card. Anything
+ * else REFUSES the trial (the route shows "unavailable" and logs this error's
+ * name): a trial page that offers Link or a bank would take a payment method the
+ * trial then refuses (not_a_card), which is the thing this closes.
+ */
+async function trialPaymentMethods(deps: TrialCheckoutDeps): Promise<string> {
+  const env = deps.env ?? process.env;
+  const id = env[TRIAL_PAYMENT_METHODS_ENV]?.trim();
+  if (!id) throw new TrialPaymentMethodsError(`${TRIAL_PAYMENT_METHODS_ENV} is not set`);
+  const configuration = await deps.stripe.paymentMethodConfigurations.retrieve(id);
+  const on = Object.entries(configuration)
+    .filter(([, value]) => {
+      const preference = (value as { display_preference?: { value?: string } } | null)?.display_preference;
+      return preference?.value === 'on';
+    })
+    .map(([method]) => method)
+    .sort();
+  if (!configuration.active || on.length !== 1 || on[0] !== 'card') {
+    throw new TrialPaymentMethodsError(
+      `${id} is ${configuration.active ? 'active' : 'inactive'} with [${on.join(', ')}] on; the trial needs card only`,
+    );
+  }
+  return id;
+}
+
 /**
  * Start the free trial: a hosted Checkout in setup mode that checks a card and
  * charges nothing. Cards only (no Link), because a card has the fingerprint that
@@ -176,6 +214,7 @@ export async function createTrialCheckoutSession(
   const email = verifiedEmailFor(deps.db, userId);
   if (!email) throw new NoVerifiedEmailError();
   if (!canStartTrial(deps.db, userId)) throw new TrialNotAvailableError();
+  const paymentMethods = await trialPaymentMethods(deps);
   const customer = await ensureCustomer(deps, userId, email);
   const metadata = { app: 'mointel', user_id: String(userId), email, purchase: 'trial' };
   const session = await deps.stripe.checkout.sessions.create({
@@ -185,7 +224,8 @@ export async function createTrialCheckoutSession(
     cancel_url: urls.cancelUrl,
     mode: 'setup',
     currency: 'usd',
-    payment_method_types: ['card'],
+    // Cards only, Link off: a configuration, because payment_method_types cannot turn Link off.
+    payment_method_configuration: paymentMethods,
     ...WE_ARE_THE_SELLER,
     setup_intent_data: { metadata },
     metadata,

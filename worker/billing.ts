@@ -71,7 +71,7 @@ async function main() {
         if (pruned) log(`[billing] refused-trial records deleted (30 days): ${pruned}`);
         log(
           reconcileClean(report)
-            ? `[billing] reconcile clean: ${report.checkedIntents} intents, ${report.checkedRows} rows`
+            ? `[billing] reconcile clean: ${report.checkedIntents} intents, ${report.checkedRows} rows, ${report.refunded.length} refunded`
             : `[billing] RECONCILE MISMATCH ${JSON.stringify(report)}`,
         );
       }
