@@ -38,10 +38,11 @@ export const RULED_AMOUNT_CENTS: Record<Purchase, number> = {
 export const OWNER_EMAIL_ENV = 'DESK_OWNER_EMAIL';
 
 /**
- * WHAT A CARD STATEMENT SAYS AFTER THE ACCOUNT'S PREFIX ("ANDROMEDA"). OFF BY
- * DEFAULT: the proposed "ANDROMEDA* TMI TRADER" waits on his yes (Integration,
- * 2026-10-17), so until BILLING_STATEMENT_SUFFIX is set nothing of ours is sent
- * and the card shows the account's own descriptor.
+ * WHAT A CARD STATEMENT SAYS AFTER THE ACCOUNT'S PREFIX ("ANDROMEDA"). He said
+ * yes to "ANDROMEDA* TMI TRADER" (Integration chat, 2026-10-17T10:33:29Z): the
+ * go-live value is BILLING_STATEMENT_SUFFIX=TMI TRADER. Still OFF BY DEFAULT in
+ * code: until that env value is set at go-live, nothing of ours is sent and the
+ * card shows the account's own descriptor.
  *
  * Stripe's rules for a suffix, checked here so a bad value never breaks a
  * charge: letters, digits and spaces with at least one letter, none of < > \ ' " *,

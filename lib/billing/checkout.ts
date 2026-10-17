@@ -20,6 +20,18 @@ import type { IdentityDatabase } from '@/lib/auth/store';
 import { PRICE_LOOKUP_KEYS, RULED_AMOUNT_CENTS, statementSuffix, type Purchase } from '@/lib/billing/config';
 import { canStartTrial, customerIdFor, linkCustomer, paidDayOf, verifiedEmailFor } from '@/lib/billing/store';
 
+/**
+ * ANDROMEDA GENIUS LLC IS THE SELLER, NOT STRIPE. The LLC's Stripe account has
+ * Managed Payments (Stripe as merchant of record) ON BY DEFAULT, and with it on
+ * Stripe refuses our card-only Checkout ("Unsupported parameter:
+ * payment_method_types. Managed Payments, which is enabled by default on your
+ * account, handles this parameter for you", sandbox, 2026-10-17). The terms of
+ * sale he approved verbatim name the LLC as the seller, so every Checkout Session
+ * we create turns it off for that request (Integration's ruling, 2026-10-17).
+ * Adopting Managed Payments is his decision; it would be removing this line.
+ */
+const WE_ARE_THE_SELLER = { managed_payments: { enabled: false } } as const;
+
 export interface CheckoutDeps {
   db: IdentityDatabase;
   /** For the statement suffix; process.env when omitted. */
@@ -104,6 +116,7 @@ export async function createCheckoutSession(
     success_url: urls.successUrl,
     cancel_url: urls.cancelUrl,
     payment_method_types: ['card'],
+    ...WE_ARE_THE_SELLER,
     metadata,
   };
 
@@ -170,6 +183,7 @@ export async function createTrialCheckoutSession(
     mode: 'setup',
     currency: 'usd',
     payment_method_types: ['card'],
+    ...WE_ARE_THE_SELLER,
     setup_intent_data: { metadata },
     metadata,
   });
