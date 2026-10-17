@@ -41,7 +41,7 @@ import path from 'node:path';
 
 import { marked } from 'marked';
 
-export type LegalDocumentName = 'privacy-policy' | 'terms';
+export type LegalDocumentName = 'privacy-policy' | 'terms' | 'terms-of-sale';
 
 export interface LegalFrontmatter {
   title: string;
@@ -77,6 +77,10 @@ export interface LegalDocument {
 const FILES: Record<LegalDocumentName, string> = {
   'privacy-policy': 'privacy-policy.md',
   terms: 'terms.md',
+  // /terms-of-sale (2026-10-17, the purchase pages). Served only while the purchase switch
+  // is open (lib/public/purchaseOpen.ts); the file is Commercial's and stays a DRAFT until
+  // he adopts it, as one motion with the rest of the purchase text.
+  'terms-of-sale': 'terms-of-sale.md',
 };
 
 /** Repo-relative, for display on the page. */

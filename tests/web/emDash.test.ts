@@ -62,6 +62,14 @@ const SURFACES = [
   'components/ExplainerPage.tsx',
   'app/are-float-quotes-real/page.tsx',
   'docs/public/are-float-quotes-real.md',
+  // The purchase pages (2026-10-17).
+  'lib/public/purchaseCopy.ts',
+  'app/pricing/page.tsx',
+  'app/checkout/page.tsx',
+  'app/trial/page.tsx',
+  'app/welcome/page.tsx',
+  'app/terms-of-sale/page.tsx',
+  'app/forbidden.tsx',
 ];
 
 const EM = '—';

@@ -1,0 +1,67 @@
+/**
+ * POST /checkout/start: the checkout form's target. Creates the hosted Checkout Session
+ * (Billing's createCheckoutSession) and answers 303 to Stripe's page.
+ *
+ * - Purchase switch closed -> 404.
+ * - Not signed in -> 303 /signin. The buyer is the signed-in user, never what is typed
+ *   at Stripe (Billing).
+ * - No known plan -> 303 /pricing. Box not ticked -> 303 back to the checkout: nothing is
+ *   charged before the box is ticked, and the page's `required` is not a control.
+ * - Daily on a non-trading day -> 303 /pricing (see app/checkout/page.tsx).
+ * - Stripe or the calendar unreachable -> 303 back with e=unavailable, which shows the
+ *   contact line. Nothing is logged that names the person or the key.
+ *
+ * CSRF: the session cookie is SameSite=Lax, so another site's POST arrives anonymous and
+ * is sent to /signin; no other site can start a purchase in a signed-in browser.
+ * Redirects to our own pages are relative Location headers, as /auth/accept's are.
+ */
+
+import { getIdentityDb } from '@/lib/auth/db';
+import { admissionForSession, sessionIdFromCookieHeader } from '@/lib/auth/requestGate';
+import { createCheckoutSession } from '@/lib/billing/checkout';
+import { paidDayOf } from '@/lib/billing/store';
+import { PLAN_SLUGS, purchaseFromSlug } from '@/lib/public/purchaseFormat';
+import { purchaseOpen } from '@/lib/public/purchaseOpen';
+import { purchaseIsTradingDay, purchaseOrigin, purchaseStripe } from '@/lib/public/purchaseServer';
+
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
+function seeOther(location: string): Response {
+  return new Response(null, { status: 303, headers: { Location: location, 'Cache-Control': 'no-store' } });
+}
+
+export async function POST(request: Request): Promise<Response> {
+  if (!purchaseOpen()) return new Response(null, { status: 404 });
+
+  const db = getIdentityDb();
+  const admission = admissionForSession(sessionIdFromCookieHeader(request.headers.get('cookie')), db);
+  if (admission.state === 'anonymous') return seeOther('/signin');
+
+  let form: FormData | null = null;
+  try {
+    form = await request.formData();
+  } catch {
+    form = null;
+  }
+  const slug = form?.get('plan');
+  const purchase = purchaseFromSlug(typeof slug === 'string' ? slug : null);
+  if (!purchase) return seeOther('/pricing');
+  const back = `/checkout?plan=${PLAN_SLUGS[purchase]}`;
+  if (form?.get('agree') !== 'yes') return seeOther(back);
+
+  try {
+    const isTradingDay = purchaseIsTradingDay();
+    if (purchase === 'daily' && !(await isTradingDay(paidDayOf(new Date())))) return seeOther('/pricing');
+
+    const origin = purchaseOrigin();
+    const session = await createCheckoutSession({ db, stripe: purchaseStripe(), isTradingDay }, admission.userId, purchase, {
+      successUrl: `${origin}/welcome?session_id={CHECKOUT_SESSION_ID}`,
+      cancelUrl: `${origin}/pricing`,
+    });
+    return seeOther(session.url);
+  } catch (error) {
+    console.error(`[checkout] could not start a ${purchase} checkout: ${(error as Error).name}`);
+    return seeOther(`${back}&e=unavailable`);
+  }
+}

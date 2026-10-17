@@ -1,0 +1,384 @@
+import type { ReactElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+/*
+ * Web's purchase pages (2026-10-17): the switch closes every one of them, the pages say
+ * the approved words with the buyer's own values, the two form routes check sign-in and
+ * the box before calling Billing, and the refusal screen splits by what Billing knows.
+ * Billing's library and Stripe are mocked; their own tests are Billing's.
+ */
+
+const state = vi.hoisted(() => ({
+  admission: { state: 'anonymous' } as
+    | { state: 'anonymous' }
+    | { state: 'refused' | 'unaccepted' | 'admitted'; userId: number },
+  cookie: 'sid' as string | undefined,
+  trading: true,
+  canTrial: true,
+  email: 'buyer@example.com' as string | null,
+  status: { state: 'complete', purchase: 'monthly' } as Record<string, unknown>,
+  billing: {} as Record<string, unknown>,
+  trial: { state: 'none' } as Record<string, unknown>,
+  trialsWithoutEnd: [] as { userId: number; startedAt: string }[],
+}));
+
+vi.mock('next/headers', () => ({
+  cookies: async () => ({ get: (name: string) => (name === 'mointel_session' && state.cookie ? { value: state.cookie } : undefined) }),
+}));
+vi.mock('next/navigation', () => ({
+  redirect: (to: string) => {
+    throw new Error(`REDIRECT ${to}`);
+  },
+  notFound: () => {
+    throw new Error('NOT_FOUND');
+  },
+}));
+vi.mock('@/lib/auth/db', () => ({ getIdentityDb: () => ({}) }));
+vi.mock('@/lib/auth/requestGate', () => ({
+  admissionForSession: () => state.admission,
+  sessionIdFromCookieHeader: (header: string | null) => (header ? 'sid' : null),
+}));
+vi.mock('@/lib/billing/store', async (original) => ({
+  ...(await original<typeof import('@/lib/billing/store')>()),
+  canStartTrial: () => state.canTrial,
+  verifiedEmailFor: () => state.email,
+  trialState: () => state.trial,
+  trialsWithoutEnd: () => state.trialsWithoutEnd,
+}));
+vi.mock('@/lib/billing/account', () => ({
+  billingStateFor: () => {
+    billingReads.calls += 1;
+    return state.billing;
+  },
+}));
+vi.mock('@/lib/billing/checkoutStatus', () => ({
+  checkoutStatus: async () => {
+    billingReads.calls += 1;
+    return state.status;
+  },
+}));
+
+const { TrialNotAvailableError, createCheckoutSession, createTrialCheckoutSession } = vi.hoisted(() => ({
+  TrialNotAvailableError: class TrialNotAvailableError extends Error {},
+  createCheckoutSession: vi.fn(),
+  createTrialCheckoutSession: vi.fn(),
+}));
+vi.mock('@/lib/billing/checkout', () => ({
+  createCheckoutSession: (...args: unknown[]) => createCheckoutSession(...args),
+  createTrialCheckoutSession: (...args: unknown[]) => createTrialCheckoutSession(...args),
+  TrialNotAvailableError,
+}));
+/** Every reach for Stripe or the calendar, so "dark" can be pinned as "no call at all". */
+const outside = vi.hoisted(() => ({ calls: [] as string[] }));
+vi.mock('@/lib/public/purchaseServer', () => ({
+  purchaseStripe: () => {
+    outside.calls.push('stripe');
+    return {};
+  },
+  purchaseOrigin: () => 'https://tmitrader.com',
+  purchaseIsTradingDay: () => {
+    outside.calls.push('calendar');
+    return async () => state.trading;
+  },
+  // Every weekday trades; the trial clock's own tests cover holidays.
+  purchaseCalendar: async () => {
+    outside.calls.push('calendar');
+    return (etDate: string) => {
+      const day = new Date(`${etDate}T12:00:00Z`).getUTCDay();
+      return day !== 0 && day !== 6;
+    };
+  },
+}));
+const billingReads = vi.hoisted(() => ({ calls: 0 }));
+
+import CheckoutPage from '@/app/checkout/page';
+import { POST as checkoutStart } from '@/app/checkout/start/route';
+import Forbidden from '@/app/forbidden';
+import PricingPage from '@/app/pricing/page';
+import SignInPage, { generateMetadata as generateSignInMetadata } from '@/app/signin/page';
+import TermsOfSalePage from '@/app/terms-of-sale/page';
+import TrialPage from '@/app/trial/page';
+import { POST as trialStart } from '@/app/trial/start/route';
+import WelcomePage from '@/app/welcome/page';
+import { etEndTime, longEtDate, renewalEtDate } from '@/lib/public/purchaseFormat';
+import { purchaseOpen } from '@/lib/public/purchaseOpen';
+
+const params = (p: Record<string, string>) => ({ searchParams: Promise.resolve(p) });
+const html = (node: unknown) =>
+  renderToStaticMarkup(node as ReactElement)
+    .replace(/&#x27;/g, "'")
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"');
+const form = (fields: Record<string, string>, cookie = true) => {
+  const body = new URLSearchParams(fields);
+  return new Request('http://127.0.0.1:3000/x', {
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded', ...(cookie ? { cookie: 'mointel_session=sid' } : {}) },
+    body,
+  });
+};
+
+beforeEach(() => {
+  process.env.PURCHASE_PAGES = 'open';
+  state.admission = { state: 'refused', userId: 7 };
+  state.cookie = 'sid';
+  state.trading = true;
+  state.canTrial = true;
+  state.email = 'buyer@example.com';
+  createCheckoutSession.mockReset();
+  createTrialCheckoutSession.mockReset();
+  outside.calls.length = 0;
+  billingReads.calls = 0;
+  // Saturday 2026-10-17 11:00 ET is not used: a fixed Friday, 11:00 ET.
+  vi.useFakeTimers({ toFake: ['Date'] });
+  vi.setSystemTime(new Date('2026-10-16T15:00:00Z'));
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+  delete process.env.PURCHASE_PAGES;
+});
+
+describe('the purchase switch', () => {
+  it('is open only for the exact value "open"', () => {
+    expect(purchaseOpen({ PURCHASE_PAGES: 'open' })).toBe(true);
+    for (const value of [undefined, '', 'yes', 'OPEN', 'open ', '1']) {
+      expect(purchaseOpen({ PURCHASE_PAGES: value }), String(value)).toBe(false);
+    }
+  });
+
+  it('closed: every purchase page is a 404 and both form routes answer 404 without calling Billing', async () => {
+    delete process.env.PURCHASE_PAGES;
+    await expect(Promise.resolve().then(() => PricingPage())).rejects.toThrow('NOT_FOUND');
+    await expect(Promise.resolve().then(() => TermsOfSalePage())).rejects.toThrow('NOT_FOUND');
+    await expect(CheckoutPage(params({ plan: 'monthly' }))).rejects.toThrow('NOT_FOUND');
+    await expect(TrialPage(params({}))).rejects.toThrow('NOT_FOUND');
+    await expect(WelcomePage(params({ session_id: 'cs_1' }))).rejects.toThrow('NOT_FOUND');
+    expect((await checkoutStart(form({ plan: 'monthly', agree: 'yes' }))).status).toBe(404);
+    expect((await trialStart(form({ agree: 'yes' }))).status).toBe(404);
+    await expect(Promise.resolve().then(() => Forbidden())).resolves.toBeTruthy();
+    expect(createCheckoutSession).not.toHaveBeenCalled();
+    expect(createTrialCheckoutSession).not.toHaveBeenCalled();
+    // Dark means dark: no Stripe client made, no calendar fetched, no billing read.
+    expect(outside.calls).toEqual([]);
+    expect(billingReads.calls).toBe(0);
+  });
+
+  it('control: open, the same requests DO reach Stripe and the calendar', async () => {
+    createCheckoutSession.mockResolvedValue({ id: 'cs_1', url: 'https://checkout.stripe.com/c/pay/cs_1', mode: 'payment' });
+    await checkoutStart(form({ plan: 'monthly', agree: 'yes' }));
+    expect(outside.calls).toContain('stripe');
+    expect(outside.calls).toContain('calendar');
+  });
+
+  it('closed: the refusal screen keeps today\'s invite words', async () => {
+    delete process.env.PURCHASE_PAGES;
+    const page = html(await Forbidden());
+    expect(page).toContain('Access to the desk is by invite');
+    expect(page).not.toContain('Access is by purchase');
+  });
+});
+
+describe('/pricing', () => {
+  it('shows the four plans, the basis under them, the trial and "No refunds."', () => {
+    const page = html(PricingPage());
+    for (const line of ['$5.50 a day', '$89 a month', '$499 for six months', '$899 a year']) expect(page).toContain(line);
+    expect(page).toContain('About 23% less than paying daily. About $4.26 a day.*');
+    expect(page).toContain('*Against $5.50 for every trading day in the period');
+    expect(page).toContain('Try it free for 48 hours.');
+    expect(page).toContain('No refunds.');
+    expect(page).toContain('href="/checkout?plan=six-months"');
+    expect(page).toContain('href="/trial"');
+  });
+});
+
+describe('/checkout', () => {
+  it('sends a visitor with no session to /signin and an unknown plan to /pricing', async () => {
+    state.admission = { state: 'anonymous' };
+    await expect(CheckoutPage(params({ plan: 'monthly' }))).rejects.toThrow('REDIRECT /signin');
+    state.admission = { state: 'refused', userId: 7 };
+    await expect(CheckoutPage(params({ plan: 'weekly' }))).rejects.toThrow('REDIRECT /pricing');
+  });
+
+  it('a plan: the summary, the renewal date a month on, Commercial\'s sentence and an unticked required box', async () => {
+    const page = html(await CheckoutPage(params({ plan: 'monthly' })));
+    expect(page).toContain('$89 for one month');
+    expect(page).toContain('November 16, 2026, at the price then in force');
+    expect(page).toContain(
+      'You will be charged $89 now for one month, and again every month from November 16, 2026, at the price then in force, on this card, until you cancel.',
+    );
+    expect(page).toContain('Pay $89 a month');
+    const box = /<input type="checkbox"[^>]*>/.exec(page)?.[0] ?? '';
+    for (const attr of ['name="agree"', 'value="yes"', 'required=""']) expect(box).toContain(attr);
+    expect(page).not.toMatch(/checked/);
+    expect(page).toContain('action="/checkout/start"');
+    expect(page).toContain('href="/terms-of-sale"');
+  });
+
+  it('daily on a trading day: the daily sentence; on a non-trading day it is not offered', async () => {
+    const page = html(await CheckoutPage(params({ plan: 'daily' })));
+    expect(page).toContain('Each new paid day you sign in on');
+    expect(page).toContain('You will be charged $5.50 now, and automatically on each new paid day you sign in on');
+    state.trading = false;
+    await expect(CheckoutPage(params({ plan: 'daily' }))).rejects.toThrow('REDIRECT /pricing');
+  });
+});
+
+describe('POST /checkout/start', () => {
+  it('no session -> /signin; box not ticked -> back to the checkout, Billing never called', async () => {
+    state.admission = { state: 'anonymous' };
+    let res = await checkoutStart(form({ plan: 'annual', agree: 'yes' }, false));
+    expect([res.status, res.headers.get('location')]).toEqual([303, '/signin']);
+    state.admission = { state: 'refused', userId: 7 };
+    res = await checkoutStart(form({ plan: 'annual' }));
+    expect([res.status, res.headers.get('location')]).toEqual([303, '/checkout?plan=annual']);
+    expect(createCheckoutSession).not.toHaveBeenCalled();
+  });
+
+  it('ticked: 303 to Stripe, for the signed-in user, with our own return URLs', async () => {
+    createCheckoutSession.mockResolvedValue({ id: 'cs_1', url: 'https://checkout.stripe.com/c/pay/cs_1', mode: 'subscription' });
+    const res = await checkoutStart(form({ plan: 'six-months', agree: 'yes' }));
+    expect([res.status, res.headers.get('location')]).toEqual([303, 'https://checkout.stripe.com/c/pay/cs_1']);
+    const [, userId, purchase, urls] = createCheckoutSession.mock.calls[0];
+    expect([userId, purchase]).toEqual([7, 'six_month']);
+    expect(urls).toEqual({
+      successUrl: 'https://tmitrader.com/welcome?session_id={CHECKOUT_SESSION_ID}',
+      cancelUrl: 'https://tmitrader.com/pricing',
+    });
+  });
+
+  it('Stripe unreachable -> back with e=unavailable; daily on a non-trading day -> /pricing', async () => {
+    createCheckoutSession.mockRejectedValue(new Error('down'));
+    let res = await checkoutStart(form({ plan: 'monthly', agree: 'yes' }));
+    expect(res.headers.get('location')).toBe('/checkout?plan=monthly&e=unavailable');
+    state.trading = false;
+    res = await checkoutStart(form({ plan: 'daily', agree: 'yes' }));
+    expect(res.headers.get('location')).toBe('/pricing');
+  });
+});
+
+describe('/trial and POST /trial/start', () => {
+  it('shows the end time at the start, from the trading-hours clock', async () => {
+    vi.setSystemTime(new Date('2026-10-15T14:00:00Z')); // Thursday 10:00 ET, his example
+    const page = html(await TrialPage(params({})));
+    expect(page).toContain('Free for 48 hours. Your trial ends at 10:00am ET on Monday, October 19.');
+    expect(page).toContain('Your bank may show a small pending amount while the card is checked.');
+    expect(page).toContain('action="/trial/start"');
+  });
+
+  it('an account that cannot start a trial goes to /pricing', async () => {
+    state.canTrial = false;
+    await expect(TrialPage(params({}))).rejects.toThrow('REDIRECT /pricing');
+  });
+
+  it('box not ticked -> /trial; ticked -> Stripe with the trial return URL; already used -> /pricing', async () => {
+    let res = await trialStart(form({}));
+    expect(res.headers.get('location')).toBe('/trial');
+    createTrialCheckoutSession.mockResolvedValue({ id: 'cs_t', url: 'https://checkout.stripe.com/c/pay/cs_t' });
+    res = await trialStart(form({ agree: 'yes' }));
+    expect(res.headers.get('location')).toBe('https://checkout.stripe.com/c/pay/cs_t');
+    expect(createTrialCheckoutSession.mock.calls[0][2].successUrl).toBe(
+      'https://tmitrader.com/welcome?trial=1&session_id={CHECKOUT_SESSION_ID}',
+    );
+    createTrialCheckoutSession.mockRejectedValue(new TrialNotAvailableError('used'));
+    res = await trialStart(form({ agree: 'yes' }));
+    expect(res.headers.get('location')).toBe('/pricing');
+  });
+});
+
+describe('/welcome', () => {
+  it('paid, admitted: you are in, with the amount and the plan\'s end', async () => {
+    state.status = { state: 'complete', purchase: 'monthly' };
+    state.billing = { plan: { paidThroughEtDate: '2026-11-16' }, paidThroughAt: null };
+    const page = html(await WelcomePage(params({ session_id: 'cs_1' })));
+    expect(page).toContain("You're in.");
+    expect(page).toContain(
+      'You were charged $89 for one month. Your plan runs to 8:00pm ET on Monday, November 16, and renews then unless you cancel.',
+    );
+    expect(page).toContain('href="/desk"');
+    expect(page).toContain('No refunds.');
+  });
+
+  it('paid, not admitted yet: the "not confirmed" screen, whose Reload asks again', async () => {
+    state.status = { state: 'recording', purchase: 'daily' };
+    const page = html(await WelcomePage(params({ session_id: 'cs_9' })));
+    expect(page).toContain('Your payment has not been confirmed yet.');
+    expect(page).toContain('You are signed in as buyer@example.com. Reload this page to check again.');
+    expect(page).toContain('href="/welcome?session_id=cs_9"');
+  });
+
+  it('a trial: its end, no charge line, no "No refunds."', async () => {
+    state.status = { state: 'complete', purchase: 'trial' };
+    state.trial = { state: 'active', endsAt: '2026-10-19T14:00:00.000Z' };
+    const page = html(await WelcomePage(params({ trial: '1', session_id: 'cs_t' })));
+    expect(page).toContain('Your free trial ends at 10:00am ET on Monday, October 19. You will not be charged.');
+    expect(page).not.toContain('No refunds.');
+  });
+
+  it('a session id that is not this user\'s goes to /pricing', async () => {
+    state.status = { state: 'not_yours' };
+    await expect(WelcomePage(params({ session_id: 'cs_x' }))).rejects.toThrow('REDIRECT /pricing');
+  });
+});
+
+describe('the refusal screen, open', () => {
+  it('a stranger who may trial: their address, Start free trial first, See pricing, Sign out', async () => {
+    const page = html(await Forbidden());
+    expect(page).toContain('This account has no access yet.');
+    expect(page).toContain(
+      'You are signed in as buyer@example.com. Access is by purchase, and is tied to the email address you sign in with.',
+    );
+    expect(page.indexOf('href="/trial"')).toBeGreaterThan(-1);
+    expect(page.indexOf('href="/trial"')).toBeLessThan(page.indexOf('href="/pricing"'));
+    expect(page).not.toContain('by invite');
+  });
+
+  it('an account that has had a trial is not offered one', async () => {
+    state.canTrial = false;
+    const page = html(await Forbidden());
+    expect(page).toContain('href="/pricing"');
+    expect(page).not.toContain('href="/trial"');
+  });
+});
+
+describe('/signin, the email option', () => {
+  it('closed: today\'s page, Google only, no form', async () => {
+    delete process.env.PURCHASE_PAGES;
+    const page = html(await SignInPage(params({})));
+    expect(page).toContain('One account, one identity provider.');
+    expect(page).not.toContain('/auth/start/email');
+    expect((await generateSignInMetadata()).description).toContain('Sign in to the desk with Google.');
+  });
+
+  it('open: the approved lead and a plain form posting the address to Ops\'s route, under the Google block', async () => {
+    const page = html(await SignInPage(params({})));
+    expect(page).toContain('Sign in with Google, or with a link we email you.');
+    const emailForm = /<form[^>]*action="\/auth\/start\/email"[^>]*>/.exec(page)?.[0] ?? '';
+    expect(emailForm).toContain('method="post"');
+    const field = /<input id="signin-email"[^>]*>/.exec(page)?.[0] ?? '';
+    for (const attr of ['name="email"', 'type="email"', 'required=""']) expect(field).toContain(attr);
+    expect(page).toContain('Email me a sign-in link');
+    expect(page).toContain('We use your email address to send this link and to sign you in.');
+    expect(page.indexOf('Nothing else: no mail')).toBeLessThan(page.indexOf('/auth/start/email'));
+    expect((await generateSignInMetadata()).description).toBe(
+      'Sign in to the desk with Google or with a link sent to your email. There is no password to set and none for us to store.',
+    );
+  });
+});
+
+describe('the filled values', () => {
+  it('end times in ET, with the day', () => {
+    expect(etEndTime(new Date('2026-10-17T00:00:00Z'))).toBe('8:00pm ET on Friday, October 16');
+    expect(etEndTime(new Date('2026-12-15T01:00:00Z'))).toBe('8:00pm ET on Monday, December 14');
+    expect(longEtDate('2026-11-17')).toBe('November 17, 2026');
+  });
+
+  it('renewal dates one period on, the same day of the month or the month\'s last', () => {
+    expect(renewalEtDate('2026-10-17', 'monthly')).toBe('2026-11-17');
+    expect(renewalEtDate('2026-10-31', 'monthly')).toBe('2026-11-30');
+    expect(renewalEtDate('2026-08-31', 'six_month')).toBe('2027-02-28');
+    expect(renewalEtDate('2026-12-17', 'monthly')).toBe('2027-01-17');
+    expect(renewalEtDate('2026-10-17', 'annual')).toBe('2027-10-17');
+  });
+});
