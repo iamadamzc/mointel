@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
  * called with the admitted user's id. The gate itself is enforced for every route by tests/auth/requestGate.test.ts.
  */
 
-const gate = vi.hoisted(() => ({ refuse: false, userId: 7 as number | null }));
+const gate = vi.hoisted(() => ({ refuse: false, userId: 7 as number | null, owner: false }));
 const calls = vi.hoisted(() => ({ state: [] as number[], cancel: [] as number[], remove: [] as number[] }));
 
 vi.mock('@/lib/auth/requestGate', () => ({
@@ -15,6 +15,7 @@ vi.mock('@/lib/auth/requestGate', () => ({
 }));
 vi.mock('@/lib/auth/db', () => ({ getIdentityDb: () => ({}) }));
 vi.mock('@/lib/billing/stripeClient', () => ({ stripeFromEnv: () => ({}) }));
+vi.mock('@/lib/billing/store', () => ({ isDeskOwner: () => gate.owner }));
 vi.mock('@/lib/billing/account', () => ({
   billingStateFor: (_db: unknown, userId: number) => {
     calls.state.push(userId);
@@ -41,6 +42,7 @@ const req = (method: string, headers: Record<string, string> = {}) =>
 beforeEach(() => {
   gate.refuse = false;
   gate.userId = 7;
+  gate.owner = false;
   calls.state = [];
   calls.cancel = [];
   calls.remove = [];
@@ -62,6 +64,14 @@ describe('the routes', () => {
     expect(await response.json()).toEqual({ door: 'ok', userId: 7 });
     expect(response.headers.get('Cache-Control')).toContain('no-store');
     expect(calls.state).toEqual([7]);
+  });
+
+  it('the owner gets no billing state (null): the desk shows nothing billing-related, the Billing button included', async () => {
+    gate.owner = true;
+    const response = await state(req('GET'));
+    expect(response.status).toBe(200);
+    expect(await response.json()).toBeNull();
+    expect(calls.state).toEqual([]);
   });
 
   it('a request the gate refuses never reaches the library', async () => {

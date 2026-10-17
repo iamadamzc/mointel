@@ -91,6 +91,10 @@ describe('the shell wiring', () => {
     expect(shell).toContain("row={billing.view.screen === 'board' ? selectedRow : null}");
   });
 
+  it('the header Billing button shows only with a billing state (none for the owner or before launch)', () => {
+    expect(shell).toContain('onOpenBilling={billing.state ? () => setBillingOpen(true) : undefined}');
+  });
+
   it('the hook is called above the early return, so the hook count never changes', () => {
     const hook = shell.indexOf('const billing = useDeskBilling();');
     const earlyReturn = shell.indexOf('if (!data');
