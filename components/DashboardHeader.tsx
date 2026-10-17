@@ -6,6 +6,9 @@ import { DataFreshness } from '@/components/DataFreshness';
 import { DeskAssessmentStatus } from '@/components/DeskAssessmentStatus';
 import { MarketStatus } from '@/components/MarketStatus';
 import { ResearchEngineStatus } from '@/components/ResearchEngineStatus';
+import { TrialChip } from '@/components/BillingScreens';
+import { BILLING_PAGE_WORDS } from '@/lib/dashboard/billingPageView';
+import type { BillingDeskView } from '@/lib/dashboard/billingView';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import type { AssessmentPanel } from '@/lib/desk/view';
 import type { DataSourceMeta } from '@/lib/data/types';
@@ -30,6 +33,10 @@ interface DashboardHeaderProps {
   refreshing: boolean;
   failure: FeedFailure | null;
   onRefresh: () => void;
+  /** The free trial's end (desk billing); null outside a trial. */
+  trialChip?: BillingDeskView['trialChip'];
+  /** Opens the desk's billing page; absent where billing does not apply (review mode, no billing state). */
+  onOpenBilling?: () => void;
 }
 
 export function DashboardHeader({
@@ -44,6 +51,8 @@ export function DashboardHeader({
   refreshing,
   failure,
   onRefresh,
+  trialChip = null,
+  onOpenBilling,
 }: DashboardHeaderProps) {
   const clock = mounted ? formatEtClock(new Date(now)) : '--:--:--';
   const date = mounted ? formatEtDate(new Date(now)) : '';
@@ -96,6 +105,7 @@ export function DashboardHeader({
             discovery={discovery}
             mounted={mounted}
           />
+          <TrialChip chip={trialChip} onOpen={onOpenBilling} />
           <ResearchEngineStatus health={researchHealth} mounted={mounted} />
           <DataFreshness meta={meta} now={now} mounted={mounted} failure={failure} />
           <button
@@ -106,6 +116,15 @@ export function DashboardHeader({
           >
             {refreshing ? 'Syncing…' : 'Refresh'}
           </button>
+          {onOpenBilling ? (
+            <button
+              type="button"
+              onClick={onOpenBilling}
+              className="min-h-[24px] rounded-sm border border-line-2 bg-panel-2 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-ink-2 uppercase transition-colors hover:border-accent/50 hover:text-ink"
+            >
+              {BILLING_PAGE_WORDS.headline}
+            </button>
+          ) : null}
           <ThemeToggle />
         </div>
       </div>
