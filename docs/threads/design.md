@@ -64,7 +64,9 @@ for design documents.
 1. **L19 post-deploy click check** on the live desk: click a recap snapshot ticker (an off-board name too) and see its dossier. Needs a review link, which is HIS word each time. About 15 min.
 2. **After the purchase cut deploys:** a live look at the desk with the switch closed (no billing anything) and, after his go opens it, one real account's billing page. Each needs a review link (his word).
 
-**Nothing approved and unbuilt. Nothing waiting on him from Design.**
+**Nothing approved and unbuilt.**
+
+**ADDED 2026-10-17 by the sixteenth seat (same id): BUILT, APPROVED AS A LITERAL, HELD FOR HIS YES.** Billing page, Daily with no card: the Next charge row reads "None. There is no card on file." (Marketing f4cb40a6, Commercial read 164a PASS). Literal `e00ea7abdf95222400b0bc2abe68b242f92fb30b` on `design/billing-daily-no-card`, parent 0340be93 (the dark purchase cut). Whole gate green (371 files, 5005 passed, 1 skipped), mutants 1/1 and 3/3. Integration replayed it and says it merges clean onto the go-live cut f23e4422. It rides no release until his verbatim yes on the string; Integration puts it to him. Do not pre-empt his paid-day proposal (weekends and holidays fold into the next market day), which may change other Next charge lines.
 
 **The render methods that work (10-17):**
 - *Board and dossier, real rows:* copy Ops's newest slim-design store (`A:/mointel/data/slim-design*.db`, ask Ops; never write the original) to the scratchpad; if today's session has no rows yet, set the COPY's `meta.trading_date` to the last full day and `DESIGN_FAKE_NOW` inside it; mint a local review token IN THE COPY (`worker/review.ts create` with MARKET_DB_PATH); temporary `design-local` entry in `.claude/launch.json`; `rm -rf .next` first (a stale `.next` served 404 on the review API routes); render from `A:\mointel-design` checked out detached (Turbopack refuses a node_modules junction). Scripts in this seat's scratchpad: `cdp.mjs` (save support), `mkplan-live.mjs` (cells and dossiers, `RANGE=lo-hi` to bring a name on the board), `mkplan-panel.mjs`, `mkplan-recap.mjs`, `mkplan-why.mjs`, `mkplan-public.mjs`.
