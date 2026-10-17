@@ -33,6 +33,14 @@ const PUBLIC_SOURCES = [
   'components/SiteChrome.tsx',
   'app/are-float-quotes-real/page.tsx',
   'components/ExplainerPage.tsx',
+  // The purchase pages (2026-10-17). Stripe is reached by a 303 from a POST route, never
+  // by a link, so these pages hold the same rule as the rest.
+  'app/pricing/page.tsx',
+  'app/checkout/page.tsx',
+  'app/trial/page.tsx',
+  'app/welcome/page.tsx',
+  'app/terms-of-sale/page.tsx',
+  'components/NotAdmitted.tsx',
 ];
 
 describe('the board moved to /desk', () => {

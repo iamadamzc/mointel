@@ -2,6 +2,9 @@ import { BrandMark } from '@/components/BrandMark';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
+import { SIGNIN_EMAIL } from '@/lib/public/purchaseCopy';
+import { purchaseOpen } from '@/lib/public/purchaseOpen';
+
 /**
  * The sign-in screen, from the `SignIn` artboard in docs/web/canvas — Web's
  * words, translated into the app's tokens and self-hosted fonts (never the
@@ -22,12 +25,22 @@ import Link from 'next/link';
  * search — the landing page is the front door.
  */
 
-export const metadata: Metadata = {
-  title: 'Sign in | The Momentum Intelligence Trading Desk',
-  description:
-    'Sign in to the desk with Google. One identity provider, no password to set and none for us to store.',
-  robots: { index: false, follow: false },
-};
+/*
+ * THE EMAIL OPTION (2026-10-17) ships with the purchase launch (his ruling, Integration
+ * chat uuid f9e7ab7b), so it is behind the same switch as the purchase pages
+ * (lib/public/purchaseOpen.ts): closed, this page is exactly what it was. The form posts
+ * to Ops's POST /auth/start/email, whose pages and email carry the rest of the approved
+ * words (lib/auth/emailLinkWords.ts). Read per request, so the metadata is generated.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: 'Sign in | The Momentum Intelligence Trading Desk',
+    description: purchaseOpen()
+      ? SIGNIN_EMAIL.description
+      : 'Sign in to the desk with Google. One identity provider, no password to set and none for us to store.',
+    robots: { index: false, follow: false },
+  };
+}
 
 function GoogleMark() {
   return (
@@ -66,6 +79,7 @@ export default async function SignInPage({
 }) {
   const { e } = await searchParams;
   const cancelled = e === 'cancelled';
+  const emailOption = purchaseOpen();
 
   return (
     <div className="flex min-h-full flex-col bg-desk text-ink">
@@ -91,7 +105,9 @@ export default async function SignInPage({
               Sign in to the desk
             </h1>
             <p className="text-base leading-relaxed text-ink-2">
-              One account, one identity provider. There is no password to set, and none for us to store.
+              {emailOption
+                ? SIGNIN_EMAIL.lead
+                : 'One account, one identity provider. There is no password to set, and none for us to store.'}
             </p>
           </div>
 
@@ -143,6 +159,41 @@ export default async function SignInPage({
               <span className="text-[15px] text-ink-3">Nothing else: no mail, no files, no brokerage</span>
             </div>
           </div>
+
+          {/* The second option, under the Google group and its "what Google hands the
+              desk" block, which is true of Google only and must not read as covering
+              this form. A plain form POST: no script. */}
+          {emailOption && (
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-4" aria-hidden>
+                <span className="h-px flex-grow bg-line" />
+                <span className="text-sm text-ink-3">{SIGNIN_EMAIL.separator}</span>
+                <span className="h-px flex-grow bg-line" />
+              </div>
+              <form method="post" action="/auth/start/email" className="flex flex-col gap-3">
+                <label htmlFor="signin-email" className="text-sm text-ink-1">
+                  {SIGNIN_EMAIL.label}
+                </label>
+                <input
+                  id="signin-email"
+                  name="email"
+                  type="email"
+                  required
+                  autoComplete="email"
+                  inputMode="email"
+                  className="h-12 rounded border border-line-2 bg-panel px-4 text-base text-ink"
+                />
+                <button
+                  type="submit"
+                  className="flex h-12 items-center justify-center rounded border border-line-2 text-[16px] font-medium text-ink"
+                >
+                  {SIGNIN_EMAIL.button}
+                </button>
+                <p className="text-sm leading-relaxed text-ink-2">{SIGNIN_EMAIL.under}</p>
+                <p className="text-sm leading-relaxed text-ink-2">{SIGNIN_EMAIL.address}</p>
+              </form>
+            </div>
+          )}
 
           <p className="text-[13px] leading-relaxed text-ink-3">
             By signing in you agree to the{' '}

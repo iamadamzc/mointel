@@ -26,6 +26,8 @@ const REACHED = [
   'components/NotAdmitted.tsx',
   'components/SiteChrome.tsx',
   'lib/public/landingCopy.ts',
+  'lib/public/purchaseCopy.ts',
+  'app/checkout/page.tsx',
   'docs/legal/privacy-policy.md',
   'docs/legal/terms.md',
   'docs/public/are-float-quotes-real.md',
