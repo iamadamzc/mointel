@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { loadTradingDays } from '@/lib/billing/calendar';
-import { paidDayOf } from '@/lib/billing/store';
+import { calendarDayOf } from '@/lib/auth/expiry';
 import { TRIAL_MS, trialCalendarMonths, trialEndsAt } from '@/lib/billing/trialClock';
 
 // NYSE sessions, Oct-Nov 2026 (Thanksgiving Thu Nov 26 closed; Fri Nov 27 open).
@@ -45,11 +45,11 @@ describe('the trial clock: 48 hours, counted only inside paid days that end on a
       const end = trialEndsAt(new Date(t), isTradingDay).getTime();
       let counted = 0;
       for (let m = t; m < end; m += STEP) {
-        if (isTradingDay(paidDayOf(new Date(m)))) counted += STEP;
+        if (isTradingDay(calendarDayOf(new Date(m)))) counted += STEP;
       }
       expect(counted).toBe(TRIAL_MS);
       // The trial never ends inside a closed day: its last step is a market-day step.
-      expect(isTradingDay(paidDayOf(new Date(end - STEP)))).toBe(true);
+      expect(isTradingDay(calendarDayOf(new Date(end - STEP)))).toBe(true);
     }
   });
 

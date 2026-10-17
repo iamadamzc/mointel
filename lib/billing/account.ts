@@ -15,7 +15,8 @@
 import type Stripe from 'stripe';
 
 import type { IdentityDatabase } from '@/lib/auth/store';
-import { cardFailedBeforeToday } from '@/lib/billing/charge';
+import type { MarketDays } from '@/lib/auth/expiry';
+import { cardFailedBeforeToday, hourSpent, paidFor } from '@/lib/billing/charge';
 import { lapsedDoor, RULED_AMOUNT_CENTS, type PlanKey } from '@/lib/billing/config';
 import {
   billingStatus,
@@ -36,6 +37,7 @@ import {
   renewingPlanFor,
   setPlanCancelAtPeriodEnd,
   trialState,
+  spentRenewalHour,
   verifiedEmailFor,
   type ChargeSource,
   type ChargeState,
@@ -112,6 +114,18 @@ export interface DeskBillingState {
   latestCharge: { etDate: string; state: ChargeState; source: ChargeSource; amountCents: number } | null;
 }
 
+/**
+ * When a plan's ACCESS ends: 20:00 ET on the paid day it covers through. Not the
+ * Stripe period end, which is the renewal moment: a period ending Saturday 10:00
+ * ET is covered to Monday 20:00 ET (the fold), and even on a weekday the access
+ * runs past the period end to that day's 20:00. Commercial's catch, 2026-10-17:
+ * "Ends {time}" and "You keep access to {time}" must name when access ends. A
+ * plan with no paid invoice yet has no covered day; its period end stands in.
+ */
+function accessEndOf(row: { paidThroughEtDate: string; currentPeriodEnd: string }): string {
+  return row.paidThroughEtDate ? sessionEndUtc(row.paidThroughEtDate).toISOString() : row.currentPeriodEnd;
+}
+
 /** The plan to show: the newest that is still running or still covers today. */
 function displayPlan(db: IdentityDatabase, userId: number, today: string): DeskPlan | null {
   const row = plansFor(db, userId).find((p) => p.status !== 'canceled' || p.paidThroughEtDate >= today);
@@ -125,7 +139,7 @@ function displayPlan(db: IdentityDatabase, userId: number, today: string): DeskP
     currentPeriodEnd: row.currentPeriodEnd,
     cancelAtPeriodEnd: row.cancelAtPeriodEnd,
     renewsOn: renews ? row.currentPeriodEnd : null,
-    endsOn: renews ? null : row.currentPeriodEnd,
+    endsOn: renews ? null : accessEndOf(row),
   };
 }
 
@@ -136,11 +150,12 @@ function displayPlan(db: IdentityDatabase, userId: number, today: string): DeskP
 export function billingStateFor(
   db: IdentityDatabase,
   userId: number,
+  isMarketDay: MarketDays,
   now: Date = new Date(),
   env: Readonly<Record<string, string | undefined>> = process.env,
 ): DeskBillingState {
-  const today = paidDayOf(now);
-  const status = billingStatus(db, userId, now);
+  const today = paidDayOf(now, isMarketDay);
+  const status = billingStatus(db, userId, isMarketDay, now);
   const grace =
     status.state === 'grace'
       ? { kind: status.kind, endsAt: status.endsAt, amountCents: status.amountCents, declinedAgain: status.declinedAgain }
@@ -159,13 +174,18 @@ export function billingStateFor(
   } else if (!planCovers(db, userId, today)) {
     if (trial.state === 'active') door = 'trial';
     else if (trial.state === 'over') [door, buyCase] = ['buy_first', 'trial_ended'];
-    else if (isCardRemoved(db, userId)) [door, buyCase] = ['buy_first', 'card_removed'];
+    // Removed after paying for today: the board to the paid day's end (commit e).
+    else if (isCardRemoved(db, userId) && !paidFor(db, userId, today)) [door, buyCase] = ['buy_first', 'card_removed'];
     else if (planEndedByCancel(db, userId, today)) [door, buyCase] = ['buy_first', 'plan_ended'];
     else if (!hasBought(db, userId) && !hasCardOnFile(db, userId)) [door, buyCase] = ['buy_first', 'no_access'];
     else {
-      // The same rule openPaidDay uses: from the paid day AFTER the first failure.
-      const paidToday = chargeFor(db, userId, today)?.state === 'SUCCEEDED';
-      if (cardFailedBeforeToday(db, userId, now) && !paidToday && lapsedDoor(env) === 'charge_first') {
+      // The same rules openPaidDay uses: today's hour already spent, or a
+      // failure on an earlier paid day under his door rule.
+      const todayRow = chargeFor(db, userId, today);
+      const paidToday = todayRow?.state === 'SUCCEEDED';
+      if (hourSpent(todayRow, now) || (!todayRow && spentRenewalHour(db, userId, today, isMarketDay, now))) {
+        door = 'charge_first';
+      } else if (cardFailedBeforeToday(db, userId, isMarketDay, now) && !paidToday && lapsedDoor(env) === 'charge_first') {
         door = 'charge_first';
       }
     }
@@ -205,7 +225,7 @@ export async function cancelAtPeriodEnd(
   const renewing = renewingPlanFor(deps.db, userId);
   if (!renewing) {
     const ending = plansFor(deps.db, userId).find((p) => p.status !== 'canceled' && p.cancelAtPeriodEnd);
-    return ending ? { kind: 'already', endsOn: ending.currentPeriodEnd } : { kind: 'no_plan' };
+    return ending ? { kind: 'already', endsOn: accessEndOf(ending) } : { kind: 'no_plan' };
   }
   await deps.stripe.subscriptions.update(
     renewing.subscriptionId,
@@ -213,7 +233,7 @@ export async function cancelAtPeriodEnd(
     { idempotencyKey: `tmi-cancel-${renewing.subscriptionId}` },
   );
   setPlanCancelAtPeriodEnd(deps.db, renewing.subscriptionId, now);
-  return { kind: 'cancelled', endsOn: renewing.currentPeriodEnd };
+  return { kind: 'cancelled', endsOn: accessEndOf(renewing) };
 }
 
 export type RemoveCardResult = { kind: 'removed' } | { kind: 'no_card' } | { kind: 'refused_live_plan' };

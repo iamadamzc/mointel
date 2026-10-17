@@ -17,6 +17,8 @@ import { authErrorPage } from '@/lib/auth/authErrorPage';
 import { completeCallback, type CallbackResult } from '@/lib/auth/callback';
 import { clearedFlowCookie, cookieSecureDefault } from '@/lib/auth/cookie';
 import { getIdentityDb } from '@/lib/auth/db';
+import { marketDaysOrFallback } from '@/lib/auth/expiry';
+import { paidDayCalendarSources } from '@/lib/public/purchaseServer';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -59,6 +61,7 @@ export async function GET(request: Request): Promise<Response> {
       cookieHeader: request.headers.get('cookie'),
       config,
       db: getIdentityDb(),
+      marketDays: (now) => marketDaysOrFallback(now, paidDayCalendarSources()),
       secure,
     });
     return respond(result);

@@ -3,6 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 import { sessionExpiry } from '@/lib/auth/expiry';
+import { MARKET_DAYS } from '@/tests/auth/marketDays';
 import { createSession, linkIdentity, openIdentityStore, type IdentityDatabase } from '@/lib/auth/store';
 
 const temporaryDirs: string[] = [];
@@ -31,7 +32,7 @@ export function verifiedUser(db: IdentityDatabase, email = 'buyer@example.com', 
 
 /** A session issued at `now`, returning its id and the stored row's expiry. */
 export function signIn(db: IdentityDatabase, userId: number, now: Date) {
-  const issued = createSession(db, userId, sessionExpiry(now), now);
+  const issued = createSession(db, userId, sessionExpiry(now, MARKET_DAYS), now);
   return issued.id;
 }
 

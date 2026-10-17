@@ -12,7 +12,7 @@
  */
 
 import { openIdentityStore } from '../lib/auth/store';
-import { loadTradingDays, tradingDayChecker } from '../lib/billing/calendar';
+import { cachedTradingDays, tradingDayChecker } from '../lib/billing/calendar';
 import { fillTrialEnds, runChargePass } from '../lib/billing/charge';
 import { lapseExpiredPlans } from '../lib/billing/lapse';
 import { reconcileClean, reconcileDailyCharges } from '../lib/billing/reconcile';
@@ -21,6 +21,7 @@ import { stripeFromEnv } from '../lib/billing/stripeClient';
 import { findAlpacaCredentials } from '../lib/market/credentials';
 import { AlpacaRestClient } from '../lib/market/alpaca/rest';
 import { loadWorkerEnv } from './env';
+import { CALENDAR_DEADLINE_MS, withDeadline } from '../lib/auth/expiry';
 
 const PASS_MS = Number(process.env.BILLING_PASS_MS ?? 15_000);
 
@@ -35,9 +36,13 @@ async function main() {
   const credentials = findAlpacaCredentials().credentials;
   if (!credentials) throw new Error('no Alpaca credentials: the trading calendar is required to charge');
   const alpaca = new AlpacaRestClient(credentials, { concurrency: 1, maxRetries: 2 });
-  const fetchMonth = (start: string, end: string) => alpaca.getCalendar(start, end);
+  // A deadline on every calendar read: the client has none, and a hung read would
+  // stall the charge pass that a signed-in buyer is waiting on. A timeout leaves
+  // the row PENDING for the next pass, as any calendar failure does.
+  const fetchMonth = (start: string, end: string) =>
+    withDeadline(alpaca.getCalendar(start, end), CALENDAR_DEADLINE_MS, `calendar ${start}`);
   const isTradingDay = tradingDayChecker(fetchMonth);
-  const loadCalendar = (months: string[]) => loadTradingDays(fetchMonth, months);
+  const loadCalendar = cachedTradingDays(fetchMonth);
 
   log(`[billing] started, pass every ${PASS_MS} ms`);
   // The reconcile read runs once per UTC day over the last three days, and logs
@@ -56,7 +61,7 @@ async function main() {
       }
       const trialEnds = await fillTrialEnds({ db, loadCalendar });
       if (trialEnds) log(`[billing] trial ends computed: ${trialEnds}`);
-      const lapsed = await lapseExpiredPlans({ db, stripe });
+      const lapsed = await lapseExpiredPlans({ db, stripe, loadCalendar });
       if (lapsed.length) log(`[billing] lapsed to daily: ${lapsed.join(', ')}`);
       const todayUtc = new Date().toISOString().slice(0, 10);
       if (reconciledOn !== todayUtc) {

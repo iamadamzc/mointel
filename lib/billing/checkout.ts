@@ -16,6 +16,7 @@
 
 import type Stripe from 'stripe';
 
+import type { MarketDays } from '@/lib/auth/expiry';
 import type { IdentityDatabase } from '@/lib/auth/store';
 import { PRICE_LOOKUP_KEYS, RULED_AMOUNT_CENTS, statementSuffix, type Purchase } from '@/lib/billing/config';
 import { canStartTrial, customerIdFor, linkCustomer, paidDayOf, verifiedEmailFor } from '@/lib/billing/store';
@@ -37,10 +38,17 @@ export interface CheckoutDeps {
   /** For the statement suffix; process.env when omitted. */
   env?: Readonly<Record<string, string | undefined>>;
   stripe: Pick<Stripe, 'customers' | 'prices' | 'checkout' | 'billingPortal'>;
-  /** The market calendar; day one is charged in Checkout only on a trading day. */
-  isTradingDay: (etDate: string) => boolean | Promise<boolean>;
+  /**
+   * The market calendar, for the paid day that day one is (always a market day:
+   * on a weekend it is Monday's). The caller loads it; one that cannot be read
+   * means no Checkout, never a guessed day.
+   */
+  marketDays: MarketDays;
   now?: () => Date;
 }
+
+/** What creating a customer or a trial Checkout needs: no calendar. */
+export type TrialCheckoutDeps = Pick<CheckoutDeps, 'db' | 'stripe' | 'now'>;
 
 /**
  * The price for a purchase, found by lookup_key and CHECKED against the ruled
@@ -63,7 +71,7 @@ export async function priceFor(stripe: CheckoutDeps['stripe'], purchase: Purchas
 }
 
 /** The user's Stripe customer, created on first purchase and linked at once. */
-export async function ensureCustomer(deps: CheckoutDeps, userId: number, email: string): Promise<string> {
+export async function ensureCustomer(deps: TrialCheckoutDeps, userId: number, email: string): Promise<string> {
   const existing = customerIdFor(deps.db, userId);
   if (existing) return existing;
   const customer = await deps.stripe.customers.create(
@@ -89,12 +97,11 @@ export class NoVerifiedEmailError extends Error {
 /**
  * A hosted Checkout Session for one purchase.
  *
- * daily, on a trading day: mode=payment for $5.50 with setup_future_usage, so
- * day one is paid and the card saved in one step (his default: no free first
- * day; Integration ruling D).
- * daily, on a weekend or holiday: mode=setup. Nothing is charged, because that
- * day is not a charged day (ruled 2026-09-28); the card is saved and the next
- * trading-day sign-in is charged the ordinary way.
+ * daily: mode=payment for $5.50 with setup_future_usage, so day one is paid and
+ * the card saved in one step (his default: no free first day; Integration ruling
+ * D). Day one is the paid day now falls in, which is always a market day: bought
+ * on a Saturday, it is Monday's (his ruling, 2026-10-17). Before that ruling a
+ * weekend purchase only saved the card.
  * plans: mode=subscription, flexible billing mode, which saves the card too.
  */
 export async function createCheckoutSession(
@@ -107,7 +114,7 @@ export async function createCheckoutSession(
   if (!email) throw new NoVerifiedEmailError();
   const customer = await ensureCustomer(deps, userId, email);
   const now = (deps.now ?? (() => new Date()))();
-  const etDate = paidDayOf(now);
+  const etDate = paidDayOf(now, deps.marketDays);
   const metadata = { app: 'mointel', user_id: String(userId), email, purchase, et_date: etDate };
 
   const base: Stripe.Checkout.SessionCreateParams = {
@@ -122,21 +129,17 @@ export async function createCheckoutSession(
 
   let params: Stripe.Checkout.SessionCreateParams;
   if (purchase === 'daily') {
-    if (await deps.isTradingDay(etDate)) {
-      const price = await priceFor(deps.stripe, 'daily');
-      params = {
-        ...base,
-        mode: 'payment',
-        line_items: [{ price: price.id, quantity: 1 }],
-        payment_intent_data: {
-          setup_future_usage: 'off_session',
-          metadata,
-          ...(statementSuffix(deps.env) ? { statement_descriptor_suffix: statementSuffix(deps.env)! } : {}),
-        },
-      };
-    } else {
-      params = { ...base, mode: 'setup', setup_intent_data: { metadata }, currency: 'usd' };
-    }
+    const price = await priceFor(deps.stripe, 'daily');
+    params = {
+      ...base,
+      mode: 'payment',
+      line_items: [{ price: price.id, quantity: 1 }],
+      payment_intent_data: {
+        setup_future_usage: 'off_session',
+        metadata,
+        ...(statementSuffix(deps.env) ? { statement_descriptor_suffix: statementSuffix(deps.env)! } : {}),
+      },
+    };
   } else {
     const price = await priceFor(deps.stripe, purchase);
     params = {
@@ -166,7 +169,7 @@ export class TrialNotAvailableError extends Error {
  * never charged.
  */
 export async function createTrialCheckoutSession(
-  deps: CheckoutDeps,
+  deps: TrialCheckoutDeps,
   userId: number,
   urls: CheckoutUrls,
 ): Promise<{ id: string; url: string }> {

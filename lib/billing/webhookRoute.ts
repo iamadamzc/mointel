@@ -20,6 +20,7 @@
 import { getIdentityDb } from '@/lib/auth/db';
 import { stripeFromEnv } from '@/lib/billing/stripeClient';
 import { handleStripeEvent, verifyStripeEvent } from '@/lib/billing/webhook';
+import { purchaseMarketDays } from '@/lib/public/purchaseServer';
 
 const NO_STORE = { 'Cache-Control': 'no-store, max-age=0' };
 
@@ -35,7 +36,10 @@ export async function billingWebhookResponse(request: Request): Promise<Response
   }
 
   try {
-    await handleStripeEvent({ db: getIdentityDb(), stripe, log: (line) => console.log(line) }, event);
+    await handleStripeEvent(
+      { db: getIdentityDb(), stripe, loadCalendar: purchaseMarketDays(), log: (line) => console.log(line) },
+      event,
+    );
     return new Response('ok', { status: 200, headers: NO_STORE });
   } catch (error) {
     console.log(`billing: event ${event.id} (${event.type}) failed: ${(error as Error).message}`);

@@ -29,6 +29,7 @@ import {
   type AssessmentRecord,
   type AssessmentTickerRecord,
 } from './store/assessmentRepo';
+import { calendarDays } from '../desk/checkpointDates';
 import { buildSchedule, nextAssessment } from '../desk/schedule';
 import {
   describeSession,
@@ -111,6 +112,32 @@ function connection(dbPath: string): MarketDatabase | null {
     globalStore.__momentumMarketDb = { db, path: dbPath };
     return db;
   } catch {
+    return null;
+  }
+}
+
+/**
+ * The session dates of the exchange calendar the market worker caches in
+ * market.db (meta 'calendar', lib/desk/checkpointDates.ts calendarDays), for
+ * the paid day on the web tier: a local read on the same read-only handle the
+ * board's routes use (connection, above). Null when there is no store. The
+ * list can be stale; lib/auth/expiry.ts sessionDatesCalendar answers only
+ * inside its range.
+ */
+export function cachedSessionDates(): string[] | null {
+  const config = loadMarketConfig();
+  let db: MarketDatabase | null;
+  try {
+    db = connection(config.dbPath);
+  } catch {
+    resetConnection();
+    return null;
+  }
+  if (!db) return null;
+  try {
+    return calendarDays(db).map((day) => day.date);
+  } catch {
+    resetConnection();
     return null;
   }
 }

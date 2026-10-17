@@ -14,7 +14,7 @@ import { getIdentityDb } from '@/lib/auth/db';
 import { admissionForSession, sessionIdFromCookieHeader } from '@/lib/auth/requestGate';
 import { createTrialCheckoutSession, TrialNotAvailableError } from '@/lib/billing/checkout';
 import { purchaseOpen } from '@/lib/public/purchaseOpen';
-import { purchaseIsTradingDay, purchaseOrigin, purchaseStripe } from '@/lib/public/purchaseServer';
+import { purchaseOrigin, purchaseStripe } from '@/lib/public/purchaseServer';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -41,7 +41,7 @@ export async function POST(request: Request): Promise<Response> {
   try {
     const origin = purchaseOrigin();
     const session = await createTrialCheckoutSession(
-      { db, stripe: purchaseStripe(), isTradingDay: purchaseIsTradingDay() },
+      { db, stripe: purchaseStripe() },
       admission.userId,
       {
         successUrl: `${origin}/welcome?trial=1&session_id={CHECKOUT_SESSION_ID}`,

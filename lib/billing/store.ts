@@ -7,7 +7,7 @@
  * gate goes on asking only "is this session valid and is this person invited".
  */
 
-import { sessionExpiry } from '@/lib/auth/expiry';
+import { marketDayBefore, sessionExpiry, type MarketDays } from '@/lib/auth/expiry';
 import { userHasVerifiedEmail, type IdentityDatabase } from '@/lib/auth/store';
 import { GRACE_MS, OWNER_EMAIL_ENV, RULED_AMOUNT_CENTS, type PlanKey } from '@/lib/billing/config';
 import { sessionEndUtc } from '@/lib/market/session';
@@ -33,9 +33,14 @@ const CHARGE_COLUMNS = `id, user_id AS userId, et_date AS etDate, state, source,
   amount_cents AS amountCents, payment_intent_id AS paymentIntentId,
   decline_code AS declineCode, attempts, failed_at AS failedAt, grace_until AS graceUntil`;
 
-/** The paid day an instant falls in: the same rule a session uses. */
-export function paidDayOf(instant: Date): string {
-  return sessionExpiry(instant).etDate;
+/**
+ * The paid day an instant falls in: the same rule a session uses
+ * (lib/auth/expiry.ts). Always a market day: Friday after 20:00 ET through
+ * Monday's 20:00 is Monday's paid day (his ruling, 2026-10-17). CALENDAR_DAYS
+ * gives the calendar day, the sign-in fallback.
+ */
+export function paidDayOf(instant: Date, isMarketDay: MarketDays): string {
+  return sessionExpiry(instant, isMarketDay).etDate;
 }
 
 /** The ET calendar date before `etDate`, stepped on the date string, not by 24 h. */
@@ -371,15 +376,19 @@ export function upsertPlan(db: IdentityDatabase, update: PlanUpdate, now: Date =
 
 /**
  * A paid plan invoice. The plan now covers every paid day up to and including
- * the paid day its period ends in. The paid day containing the end, not the ET
- * calendar date of the end: a period ending at 22:00 ET belongs to the next
- * paid day (20:00 to 20:00), and covering only the calendar date would charge a
- * daily $5.50 in the two hours before the renewal that covers the same day.
+ * `paidThrough`, the paid day its period ends in (the caller computes it:
+ * lib/billing/webhook.ts planPaidThrough). The paid day containing the end, not
+ * the ET calendar date of the end: a period ending at 22:00 ET belongs to the
+ * next paid day, and a period ending on a Saturday belongs to Monday's. Covering
+ * only the calendar date would charge a daily $5.50 between the end and the
+ * renewal that covers the same paid day.
  */
 export function markPlanPaid(
   db: IdentityDatabase,
   subscriptionId: string,
   periodEnd: Date,
+  paidThrough: string,
+  isMarketDay: MarketDays,
   now: Date = new Date(),
 ): void {
   const apply = db.transaction(() => {
@@ -392,9 +401,9 @@ export function markPlanPaid(
          current_period_end = ?, renewal_failed_at = NULL, renewal_grace_until = NULL, renewal_failures = 0,
          updated_at = ?
        WHERE stripe_subscription_id = ?`,
-    ).run(paidDayOf(periodEnd), periodEnd.toISOString(), now.toISOString(), subscriptionId);
+    ).run(paidThrough, periodEnd.toISOString(), now.toISOString(), subscriptionId);
     db.prepare('UPDATE billing_customers SET card_failing_since = NULL WHERE user_id = ?').run(plan.userId);
-    restoreSessions(db, plan.userId, paidDayOf(now), now);
+    restoreSessions(db, plan.userId, paidDayOf(now, isMarketDay), now);
   });
   apply();
 }
@@ -428,6 +437,7 @@ export function planCovers(db: IdentityDatabase, userId: number, etDate: string)
 export function markRenewalFailed(
   db: IdentityDatabase,
   subscriptionId: string,
+  isMarketDay: MarketDays,
   now: Date = new Date(),
 ): string | null {
   const apply = db.transaction(() => {
@@ -449,7 +459,7 @@ export function markRenewalFailed(
     db.prepare(
       'UPDATE billing_customers SET card_failing_since = COALESCE(card_failing_since, ?) WHERE user_id = ?',
     ).run(at, row.userId);
-    clampSessions(db, row.userId, paidDayOf(now), row.graceUntil);
+    clampSessions(db, row.userId, paidDayOf(now, isMarketDay), row.graceUntil);
     return row.graceUntil;
   });
   return apply();
@@ -468,14 +478,79 @@ export function plansToLapse(db: IdentityDatabase, now: Date = new Date()): stri
 }
 
 /**
- * The plan has lapsed to daily. Coverage is cut to the paid day before the one
- * the failure happened in, so the next sign-in is an ordinary daily charge.
+ * A declined plan renewal whose one hour ran out inside the paid day `etDate`,
+ * with the card still failing: that hour WAS this paid day's hour (Integration's
+ * ruling, 2026-10-17, commit d). Null otherwise. Instants are compared before any
+ * calendar question, so an old failure never asks about a month not loaded.
  */
-export function lapsePlan(db: IdentityDatabase, subscriptionId: string, now: Date = new Date()): void {
+export function spentRenewalHour(
+  db: IdentityDatabase,
+  userId: number,
+  etDate: string,
+  isMarketDay: MarketDays,
+  now: Date,
+): { failedAt: string; graceUntil: string } | null {
+  const failing = db
+    .prepare('SELECT card_failing_since AS since FROM billing_customers WHERE user_id = ?')
+    .get(userId) as { since: string | null } | undefined;
+  if (!failing?.since) return null;
+  const row = db
+    .prepare(
+      `SELECT renewal_failed_at AS failedAt, renewal_grace_until AS graceUntil FROM billing_plans
+        WHERE user_id = ? AND renewal_failed_at IS NOT NULL AND renewal_grace_until IS NOT NULL
+          AND renewal_grace_until <= ?
+        ORDER BY renewal_failed_at DESC LIMIT 1`,
+    )
+    .get(userId, now.toISOString()) as { failedAt: string; graceUntil: string } | undefined;
+  if (!row) return null;
+  const dayStart = sessionEndUtc(marketDayBefore(etDate, isMarketDay)).getTime();
+  return Date.parse(row.failedAt) >= dayStart ? row : null;
+}
+
+/**
+ * Today's daily row for a plan whose renewal hour is spent: FAILED with no
+ * attempt (attempts 0, decline_code 'plan_renewal_declined'), carrying the
+ * renewal's own failure time and hour. So the charge pass never tries the
+ * failing card for it, the desk shows the update-card screen (hourSpent), and a
+ * card update requeues it like any declined day (requeueFailedCharge). Writes
+ * nothing when the day already has a row.
+ */
+export function recordSpentRenewalDay(
+  db: IdentityDatabase,
+  userId: number,
+  etDate: string,
+  renewal: { failedAt: string; graceUntil: string },
+  now: Date,
+): void {
+  db.prepare(
+    `INSERT OR IGNORE INTO billing_charges
+       (user_id, et_date, state, source, amount_cents, created_at, attempts, decline_code, failed_at, grace_until)
+     VALUES (?, ?, 'FAILED', 'daily', ?, ?, 0, 'plan_renewal_declined', ?, ?)`,
+  ).run(userId, etDate, RULED_AMOUNT_CENTS.daily, now.toISOString(), renewal.failedAt, renewal.graceUntil);
+}
+
+/** When this plan's renewal first failed, for the calendar a lapse needs. */
+export function renewalFailedAt(db: IdentityDatabase, subscriptionId: string): string | null {
   const row = db
     .prepare('SELECT renewal_failed_at AS failedAt FROM billing_plans WHERE stripe_subscription_id = ?')
     .get(subscriptionId) as { failedAt: string | null } | undefined;
-  const failedDay = paidDayOf(row?.failedAt ? new Date(row.failedAt) : now);
+  return row?.failedAt ?? null;
+}
+
+/**
+ * The plan has lapsed to daily. Coverage is cut to the calendar day before the
+ * paid day the failure happened in, so the next sign-in is an ordinary daily
+ * charge. Only market days are ever asked about, so the calendar day before a
+ * Monday covers Friday exactly as Friday itself would.
+ */
+export function lapsePlan(
+  db: IdentityDatabase,
+  subscriptionId: string,
+  isMarketDay: MarketDays,
+  now: Date = new Date(),
+): void {
+  const failedAt = renewalFailedAt(db, subscriptionId);
+  const failedDay = paidDayOf(failedAt ? new Date(failedAt) : now, isMarketDay);
   db.prepare(
     `UPDATE billing_plans SET status = 'canceled',
        paid_through_et_date = MIN(paid_through_et_date, ?), updated_at = ?
@@ -495,14 +570,19 @@ export type BillingStatus =
  * amount are for the words, which differ for a daily payment and a plan renewal
  * (Design, ruled by Integration 2026-10-17).
  */
-export function billingStatus(db: IdentityDatabase, userId: number, now: Date = new Date()): BillingStatus {
+export function billingStatus(
+  db: IdentityDatabase,
+  userId: number,
+  isMarketDay: MarketDays,
+  now: Date = new Date(),
+): BillingStatus {
   const at = now.toISOString();
   const charge = db
     .prepare(
       `SELECT grace_until AS endsAt, amount_cents AS amountCents, attempts FROM billing_charges
         WHERE user_id = ? AND et_date = ? AND state IN ('FAILED', 'PENDING') AND grace_until > ?`,
     )
-    .get(userId, paidDayOf(now), at) as { endsAt: string; amountCents: number; attempts: number } | undefined;
+    .get(userId, paidDayOf(now, isMarketDay), at) as { endsAt: string; amountCents: number; attempts: number } | undefined;
   if (charge) {
     // PENDING too: a retry after a card update puts the row back to PENDING
     // while the original deadline stands, and the band must stay up ("checking")
@@ -775,6 +855,8 @@ export function billingHistory(db: IdentityDatabase, userId: number, limit = 400
                 COALESCE(succeeded_at, attempted_at, created_at) AS chargedAt, receipt_url AS receiptUrl
            FROM billing_charges
           WHERE user_id = ? AND state IN ('SUCCEEDED', 'FAILED', 'PENDING', 'REFUNDED')
+            -- a day that was never tried (a spent plan-renewal hour) is not a declined charge
+            AND NOT (state = 'FAILED' AND attempts = 0)
           ORDER BY et_date DESC LIMIT ?`,
       )
       .all(userId, limit) as (Omit<BilledDay, 'state'> & { raw: string })[]

@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
 
 import { getIdentityDb } from '@/lib/auth/db';
+import { marketDaysOrFallback } from '@/lib/auth/expiry';
 import { gateApiRequest } from '@/lib/auth/requestGate';
 import { billingStateFor } from '@/lib/billing/account';
 import { isDeskOwner } from '@/lib/billing/store';
 import { NO_STORE, sessionUserId } from '@/lib/desk/billingRoutes';
 import { purchaseOpen } from '@/lib/public/purchaseOpen';
+import { paidDayCalendarSources } from '@/lib/public/purchaseServer';
 
 /**
  * GET /api/billing/state: the signed-in user's billing state for the desk's screens (Billing's billingStateFor, a
@@ -28,5 +30,7 @@ export async function GET(request: Request) {
   if (userId === null) return NextResponse.json({ error: 'not admitted' }, { status: 401, headers: NO_STORE });
   const db = getIdentityDb();
   if (!purchaseOpen() || isDeskOwner(db, userId)) return NextResponse.json(null, { headers: NO_STORE });
-  return NextResponse.json(billingStateFor(db, userId), { headers: NO_STORE });
+  const now = new Date();
+  const marketDays = await marketDaysOrFallback(now, paidDayCalendarSources());
+  return NextResponse.json(billingStateFor(db, userId, marketDays, now), { headers: NO_STORE });
 }

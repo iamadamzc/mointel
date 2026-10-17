@@ -17,7 +17,9 @@
 
 import type Stripe from 'stripe';
 
+import { calendarDayOf, type MarketDays } from '@/lib/auth/expiry';
 import { inviteEmail, type IdentityDatabase } from '@/lib/auth/store';
+import { marketMonthsForAll } from '@/lib/billing/calendar';
 import type { PlanKey } from '@/lib/billing/config';
 import {
   billingPlanFor,
@@ -46,8 +48,39 @@ export interface WebhookDeps {
     Stripe,
     'customers' | 'paymentIntents' | 'paymentMethods' | 'setupIntents' | 'subscriptions' | 'invoices'
   >;
+  /**
+   * The market calendar for these months, for the paid day (lib/auth/expiry.ts).
+   * A calendar that cannot be read THROWS, so the event is not recorded and
+   * Stripe delivers it again: a plan dated on a guessed day would charge a
+   * daily $5.50 to someone who has paid for the plan.
+   */
+  loadCalendar: (months: string[]) => Promise<MarketDays>;
   now?: () => Date;
   log?: (line: string) => void;
+}
+
+function calendarAt(deps: WebhookDeps, ...instants: Date[]): Promise<MarketDays> {
+  return deps.loadCalendar(marketMonthsForAll(...instants));
+}
+
+/**
+ * The paid day a plan period ends in: the market day on or after it, so a
+ * period ending on a Saturday covers through Monday. A calendar month that
+ * loads EMPTY (a date further ahead than the exchange has published) cannot
+ * place it; the calendar day of the end is used then and logged. That only ever
+ * shortens coverage, by the weekend before the renewal, and the renewal invoice
+ * extends it again.
+ */
+export function planPaidThrough(periodEnd: Date, isMarketDay: MarketDays, log?: (line: string) => void): string {
+  try {
+    return paidDayOf(periodEnd, isMarketDay);
+  } catch (error) {
+    log?.(
+      `billing: no market day near the period end ${periodEnd.toISOString()} ` +
+        `(${error instanceof Error ? error.message : String(error)}); covering through its calendar day`,
+    );
+    return calendarDayOf(periodEnd);
+  }
 }
 
 /**
@@ -136,7 +169,8 @@ async function onCheckoutCompleted(deps: WebhookDeps, session: Stripe.Checkout.S
     await setDefaultCard(deps, customerId, idOf(intent?.payment_method), now);
     const latest = intent?.latest_charge;
     const receiptUrl = latest && typeof latest !== 'string' ? (latest.receipt_url ?? null) : null;
-    recordCheckoutDay(deps.db, userId, session.metadata?.et_date ?? paidDayOf(now), intentId, now, receiptUrl);
+    const etDate = session.metadata?.et_date ?? paidDayOf(now, await calendarAt(deps, now));
+    recordCheckoutDay(deps.db, userId, etDate, intentId, now, receiptUrl);
   } else if (session.mode === 'setup') {
     const setupId = idOf(session.setup_intent);
     const setup = setupId ? await deps.stripe.setupIntents.retrieve(setupId) : null;
@@ -233,7 +267,9 @@ async function onInvoicePaid(deps: WebhookDeps, invoice: Stripe.Invoice, now: Da
   if (!(await ensurePlanRow(deps, subscriptionId, now))) return 'ignored: not a mointel subscription';
   const ends = invoice.lines.data.map((line) => line.period.end);
   if (ends.length === 0) throw new Error(`invoice ${invoice.id} has no lines`);
-  markPlanPaid(deps.db, subscriptionId, new Date(Math.max(...ends) * 1000), now);
+  const periodEnd = new Date(Math.max(...ends) * 1000);
+  const isMarketDay = await calendarAt(deps, now, periodEnd);
+  markPlanPaid(deps.db, subscriptionId, periodEnd, planPaidThrough(periodEnd, isMarketDay, deps.log), isMarketDay, now);
   return 'plan paid through';
 }
 
@@ -243,7 +279,7 @@ async function onInvoiceFailed(deps: WebhookDeps, invoice: Stripe.Invoice, now: 
   // The first invoice is paid inside Checkout, which shows its own decline.
   if (invoice.billing_reason !== 'subscription_cycle') return `ignored: ${invoice.billing_reason}`;
   if (!(await ensurePlanRow(deps, subscriptionId, now))) return 'ignored: not a mointel subscription';
-  const until = markRenewalFailed(deps.db, subscriptionId, now);
+  const until = markRenewalFailed(deps.db, subscriptionId, await calendarAt(deps, now), now);
   return `renewal declined; session ends ${until}`;
 }
 
@@ -270,7 +306,7 @@ async function onCardUpdated(deps: WebhookDeps, customerId: string, paymentMetho
   if (!hasBought(deps.db, userId)) return 'ignored: never bought, nothing to retry';
   const results: string[] = [];
 
-  const today = paidDayOf(now);
+  const today = paidDayOf(now, await calendarAt(deps, now));
   const charge = chargeFor(deps.db, userId, today);
   if (charge?.state === 'FAILED') {
     if (paymentMethodId) await setDefaultCard(deps, customerId, paymentMethodId, now);

@@ -5,6 +5,7 @@ import { idempotencyKey, openPaidDay, runChargePass, type ChargeDeps } from '@/l
 import { GRACE_MS } from '@/lib/billing/config';
 import {
   billingHistory,
+  paidDayOf,
   billingStatus,
   chargeFor,
   ensurePendingCharge,
@@ -23,6 +24,7 @@ import {
 } from '@/lib/billing/store';
 
 import { MON_10_ET, MON_CLOSE, cleanupStores, sessionExpiries, signIn, temporaryStore, verifiedUser } from './helpers';
+import { MARKET_DAYS } from '@/tests/auth/marketDays';
 
 afterEach(cleanupStores);
 
@@ -86,7 +88,7 @@ describe('the charge row', () => {
     markFailed(db, row.id, 'insufficient_funds', null, MON_10_ET);
 
     expect(resolveSession(db, sessionId, later(GRACE_MS + 1))).toBeNull();
-    expect(billingStatus(db, userId, later(5 * 60_000))).toEqual({
+    expect(billingStatus(db, userId, MARKET_DAYS, later(5 * 60_000))).toEqual({
       state: 'grace',
       kind: 'daily',
       amountCents: 550,
@@ -97,7 +99,7 @@ describe('the charge row', () => {
     markSucceeded(db, row.id, 'pi_ok', later(20 * 60_000));
     expect(sessionExpiries(db, userId)).toEqual([MON_CLOSE]);
     expect(resolveSession(db, sessionId, later(GRACE_MS + 1))).not.toBeNull();
-    expect(billingStatus(db, userId, later(21 * 60_000))).toEqual({ state: 'ok' });
+    expect(billingStatus(db, userId, MARKET_DAYS, later(21 * 60_000))).toEqual({ state: 'ok' });
     expect(isCardFailing(db, userId)).toBe(false);
   });
 
@@ -224,7 +226,7 @@ describe('opening a paid day at sign-in', () => {
   it('someone who has never bought gets the buy screen, and nothing is written', () => {
     const db = temporaryStore();
     const userId = verifiedUser(db);
-    expect(openPaidDay(db, userId, MON_10_ET, {})).toEqual({ kind: 'buy_first' });
+    expect(openPaidDay(db, userId, MARKET_DAYS, MON_10_ET, {})).toEqual({ kind: 'buy_first' });
     expect(chargeFor(db, userId, '2026-10-19')).toBeNull();
   });
 
@@ -239,26 +241,26 @@ describe('opening a paid day at sign-in', () => {
       currentPeriodEnd: new Date('2026-11-19T14:00:00Z'),
       cancelAtPeriodEnd: false,
     });
-    markPlanPaid(db, 'sub_1', new Date('2026-11-19T14:00:00Z'), MON_10_ET);
-    expect(openPaidDay(db, userId, MON_10_ET)).toEqual({ kind: 'plan' });
+    markPlanPaid(db, 'sub_1', new Date('2026-11-19T14:00:00Z'), paidDayOf(new Date('2026-11-19T14:00:00Z'), MARKET_DAYS), MARKET_DAYS, MON_10_ET);
+    expect(openPaidDay(db, userId, MARKET_DAYS, MON_10_ET)).toEqual({ kind: 'plan' });
   });
 
   it('opens the door normally, and applies his door rule once the card is failing', () => {
     const db = temporaryStore();
     const userId = customer(db);
-    const opened = openPaidDay(db, userId, MON_10_ET);
+    const opened = openPaidDay(db, userId, MARKET_DAYS, MON_10_ET);
     expect(opened).toMatchObject({ kind: 'pending', door: 'open' });
 
     if (opened.kind !== 'pending') throw new Error('unreachable');
     markFailed(db, opened.charge.id, 'card_declined', null, MON_10_ET);
 
     const tuesday = new Date('2026-10-20T14:00:00Z');
-    expect(openPaidDay(db, userId, tuesday, {})).toMatchObject({ kind: 'pending', door: 'charge_first' });
-    expect(openPaidDay(db, userId, tuesday, { BILLING_LAPSED_DOOR: 'one_hour' })).toMatchObject({
+    expect(openPaidDay(db, userId, MARKET_DAYS, tuesday, {})).toMatchObject({ kind: 'pending', door: 'charge_first' });
+    expect(openPaidDay(db, userId, MARKET_DAYS, tuesday, { BILLING_LAPSED_DOOR: 'one_hour' })).toMatchObject({
       door: 'one_hour',
     });
     // A typo reads as the stricter door.
-    expect(openPaidDay(db, userId, tuesday, { BILLING_LAPSED_DOOR: 'one-hour' })).toMatchObject({
+    expect(openPaidDay(db, userId, MARKET_DAYS, tuesday, { BILLING_LAPSED_DOOR: 'one-hour' })).toMatchObject({
       door: 'charge_first',
     });
   });
@@ -287,27 +289,27 @@ describe('plans', () => {
   it('covers through the paid day the period ends in, not its calendar date', () => {
     const { db, userId } = planUser();
     // 2026-11-20T02:00Z is 21:00 ET on Nov 19: inside Nov 20's paid day.
-    markPlanPaid(db, 'sub_1', new Date('2026-11-20T02:00:00Z'), MON_10_ET);
+    markPlanPaid(db, 'sub_1', new Date('2026-11-20T02:00:00Z'), paidDayOf(new Date('2026-11-20T02:00:00Z'), MARKET_DAYS), MARKET_DAYS, MON_10_ET);
     expect(planCovers(db, userId, '2026-11-20')).toBe(true);
     expect(planCovers(db, userId, '2026-11-21')).toBe(false);
   });
 
   it('a declined renewal gets the once-only hour, then lapses to daily', () => {
     const { db, userId } = planUser();
-    markPlanPaid(db, 'sub_1', new Date('2026-10-20T02:00:00Z'), new Date('2026-09-19T14:00:00Z'));
+    markPlanPaid(db, 'sub_1', new Date('2026-10-20T02:00:00Z'), paidDayOf(new Date('2026-10-20T02:00:00Z'), MARKET_DAYS), MARKET_DAYS, new Date('2026-09-19T14:00:00Z'));
     expect(planCovers(db, userId, '2026-10-20')).toBe(true);
 
     // The renewal is declined at 22:00 ET Monday, inside Tuesday's paid day.
     const at = new Date('2026-10-20T02:00:00Z');
     signIn(db, userId, at);
-    const until = markRenewalFailed(db, 'sub_1', at);
+    const until = markRenewalFailed(db, 'sub_1', MARKET_DAYS, at);
     expect(until).toBe(new Date(at.getTime() + GRACE_MS).toISOString());
-    expect(markRenewalFailed(db, 'sub_1', new Date(at.getTime() + 600_000))).toBe(until);
+    expect(markRenewalFailed(db, 'sub_1', MARKET_DAYS, new Date(at.getTime() + 600_000))).toBe(until);
     expect(sessionExpiries(db, userId)).toEqual([until]);
 
-    lapsePlan(db, 'sub_1', new Date(at.getTime() + GRACE_MS));
+    lapsePlan(db, 'sub_1', MARKET_DAYS, new Date(at.getTime() + GRACE_MS));
     expect(planCovers(db, userId, '2026-10-20')).toBe(false);
-    expect(openPaidDay(db, userId, new Date(at.getTime() + GRACE_MS + 60_000))).toMatchObject({
+    expect(openPaidDay(db, userId, MARKET_DAYS, new Date(at.getTime() + GRACE_MS + 60_000))).toMatchObject({
       kind: 'pending',
     });
   });

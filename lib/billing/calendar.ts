@@ -8,8 +8,15 @@
  * neither charges a holiday nor writes off a trading day.
  */
 
+import { marketMonthsFor } from '@/lib/auth/expiry';
+
 export interface CalendarDay {
   date: string;
+}
+
+/** Every month a paid-day question about these instants can touch, sorted. */
+export function marketMonthsForAll(...instants: Date[]): string[] {
+  return [...new Set(instants.flatMap((instant) => marketMonthsFor(instant)))].sort();
 }
 
 /**
@@ -49,4 +56,28 @@ export function tradingDayChecker(fetchMonth: (start: string, end: string) => Pr
     }
     return days.has(etDate);
   };
+}
+
+/**
+ * loadTradingDays with a per-month cache, for the web tier, where every sign-in
+ * and every billing read needs a few months of the calendar. A month is fetched
+ * again after `ttlMs`, so a closure the exchange announces late (as it did for
+ * 2025-01-09) is picked up within the day. A failed fetch throws and caches
+ * nothing.
+ */
+export function cachedTradingDays(
+  fetchMonth: (start: string, end: string) => Promise<CalendarDay[]>,
+  ttlMs = 6 * 60 * 60 * 1000,
+  clock: () => number = Date.now,
+): (months: string[]) => Promise<(etDate: string) => boolean> {
+  const cache = new Map<string, { days: CalendarDay[]; at: number }>();
+  const cachedFetch = async (start: string, end: string): Promise<CalendarDay[]> => {
+    const month = start.slice(0, 7);
+    const hit = cache.get(month);
+    if (hit && clock() - hit.at < ttlMs) return hit.days;
+    const days = await fetchMonth(start, end);
+    cache.set(month, { days, at: clock() });
+    return days;
+  };
+  return (months) => loadTradingDays(cachedFetch, months);
 }

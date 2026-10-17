@@ -8,6 +8,7 @@ import { canStartTrial, linkCustomer, recordTrial, trialRefusalFor, trialState }
 import { handleStripeEvent, type WebhookDeps } from '@/lib/billing/webhook';
 
 import { MON_10_ET, cleanupStores, sessionExpiries, signIn, temporaryStore, verifiedUser } from './helpers';
+import { MARKET_DAYS } from '@/tests/auth/marketDays';
 
 afterEach(cleanupStores);
 
@@ -61,7 +62,7 @@ function chargeStripe() {
 async function startTrial(db: ReturnType<typeof temporaryStore>, userId: number, fingerprint = 'fp_card_A') {
   const stripe = webhookStripe(fingerprint);
   const handled = await handleStripeEvent(
-    { db, stripe, now: () => MON_10_ET },
+    { db, stripe, loadCalendar: async () => MARKET_DAYS, now: () => MON_10_ET },
     event(`evt_trial_${userId}`, 'checkout.session.completed', trialCheckout(userId)),
   );
   return { stripe, handled };
@@ -89,7 +90,7 @@ describe('starting the trial', () => {
     const second = verifiedUser(db, 'second@example.com', 'sub-2');
     const stripe = webhookStripe('fp_card_A');
     const handled = await handleStripeEvent(
-      { db, stripe, now: () => MON_10_ET },
+      { db, stripe, loadCalendar: async () => MARKET_DAYS, now: () => MON_10_ET },
       event('evt_trial_second', 'checkout.session.completed', trialCheckout(second, 'second@example.com', 'cus_2')),
     );
 
@@ -113,7 +114,7 @@ describe('starting the trial', () => {
       billingPortal: { sessions: { create: vi.fn() } },
     } as unknown as CheckoutDeps['stripe'];
     await expect(
-      createTrialCheckoutSession({ db, stripe, isTradingDay: () => true }, userId, {
+      createTrialCheckoutSession({ db, stripe }, userId, {
         successUrl: 'https://tmitrader.com/x?s={CHECKOUT_SESSION_ID}',
         cancelUrl: 'https://tmitrader.com/pricing',
       }),
@@ -127,7 +128,7 @@ describe('starting the trial', () => {
     await startTrial(db, userId);
     const stripe = webhookStripe('fp_card_A', { attached: false });
     const again = await handleStripeEvent(
-      { db, stripe, now: () => MON_10_ET },
+      { db, stripe, loadCalendar: async () => MARKET_DAYS, now: () => MON_10_ET },
       event('evt_trial_other_id', 'checkout.session.completed', trialCheckout(userId)),
     );
     expect(stripe.paymentMethods.detach).not.toHaveBeenCalled();
@@ -144,7 +145,7 @@ describe('starting the trial', () => {
       checkout: { sessions: { create } },
       billingPortal: { sessions: { create: vi.fn() } },
     } as unknown as CheckoutDeps['stripe'];
-    await createTrialCheckoutSession({ db, stripe, isTradingDay: () => true }, userId, {
+    await createTrialCheckoutSession({ db, stripe }, userId, {
       successUrl: 'https://tmitrader.com/x?s={CHECKOUT_SESSION_ID}',
       cancelUrl: 'https://tmitrader.com/pricing',
     });
@@ -170,7 +171,7 @@ describe('the trial card is never charged', () => {
     const stripe = chargeStripe();
 
     signIn(db, userId, MON_10_ET);
-    expect(openPaidDay(db, userId, MON_10_ET)).toEqual({ kind: 'trial', endsAt: null });
+    expect(openPaidDay(db, userId, MARKET_DAYS, MON_10_ET)).toEqual({ kind: 'trial', endsAt: null });
 
     // The billing unit computes the end: Mon 10 h + Tue 24 h + 14 h of Wed = Wed 10:00 ET.
     expect(await fillTrialEnds({ db, loadCalendar: calendar })).toBe(1);
@@ -180,12 +181,12 @@ describe('the trial card is never charged', () => {
     // A sign-in on Wednesday morning is held to the trial's end, not to 20:00.
     const wed0900 = new Date('2026-10-21T13:00:00Z');
     signIn(db, userId, wed0900);
-    expect(openPaidDay(db, userId, wed0900)).toEqual({ kind: 'trial', endsAt: ends });
+    expect(openPaidDay(db, userId, MARKET_DAYS, wed0900)).toEqual({ kind: 'trial', endsAt: ends });
     expect(sessionExpiries(db, userId).at(-1)).toBe(ends);
 
     // At the end: the buy screen, and still no charge row anywhere.
-    expect(openPaidDay(db, userId, new Date(ends))).toEqual({ kind: 'buy_first' });
-    expect(openPaidDay(db, userId, at('2026-10-22'))).toEqual({ kind: 'buy_first' });
+    expect(openPaidDay(db, userId, MARKET_DAYS, new Date(ends))).toEqual({ kind: 'buy_first' });
+    expect(openPaidDay(db, userId, MARKET_DAYS, at('2026-10-22'))).toEqual({ kind: 'buy_first' });
     await runChargePass({ db, stripe, isTradingDay: (d: string) => TRADING.has(d), now: () => at('2026-10-22') });
     expect((db.prepare('SELECT COUNT(*) AS n FROM billing_charges').get() as { n: number }).n).toBe(0);
     expect(stripe.paymentIntents.create).not.toHaveBeenCalled();
@@ -219,7 +220,7 @@ describe('the trial card is never charged', () => {
     linkCustomer(db, userId, 'cus_1', MON_10_ET);
     const stripe = webhookStripe('fp_card_A');
     const handled = await handleStripeEvent(
-      { db, stripe, now: () => MON_10_ET },
+      { db, stripe, loadCalendar: async () => MARKET_DAYS, now: () => MON_10_ET },
       event('evt_attach', 'payment_method.attached', { id: 'pm_trial', customer: 'cus_1', card: { fingerprint: 'fp_card_A' } }),
     );
     expect(handled).toMatchObject({ result: 'ignored: never bought, nothing to retry' });
@@ -232,7 +233,7 @@ describe('the trial card is never charged', () => {
     const userId = verifiedUser(db);
     await startTrial(db, userId);
     await fillTrialEnds({ db, loadCalendar: calendar });
-    expect(openPaidDay(db, userId, at('2026-10-22'))).toEqual({ kind: 'buy_first' });
+    expect(openPaidDay(db, userId, MARKET_DAYS, at('2026-10-22'))).toEqual({ kind: 'buy_first' });
 
     // Day one bought in Checkout (a NEW card), as the webhook records it.
     db.prepare(
@@ -241,6 +242,6 @@ describe('the trial card is never charged', () => {
     ).run(userId, at('2026-10-22').toISOString(), at('2026-10-22').toISOString());
 
     expect(trialState(db, userId, at('2026-10-23'))).toEqual({ state: 'none' });
-    expect(openPaidDay(db, userId, at('2026-10-23'))).toMatchObject({ kind: 'pending', door: 'open' });
+    expect(openPaidDay(db, userId, MARKET_DAYS, at('2026-10-23'))).toMatchObject({ kind: 'pending', door: 'open' });
   });
 });

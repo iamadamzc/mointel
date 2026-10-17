@@ -4,9 +4,11 @@ import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { completeCallback, type CallbackDeps } from '@/lib/auth/callback';
+import { marketDaysOrFallback, type MarketDays } from '@/lib/auth/expiry';
 import { OAUTH_FLOW_COOKIE } from '@/lib/auth/config';
 import { SESSION_COOKIE } from '@/lib/auth/cookie';
 import { linkIdentity, openIdentityStore, resolveSession, type IdentityDatabase } from '@/lib/auth/store';
+import { MARKET_DAYS } from '@/tests/auth/marketDays';
 
 const CLIENT_ID = 'client-123';
 const STATE = 'state-xyz';
@@ -63,6 +65,7 @@ function deps(overrides: Partial<CallbackDeps> = {}): CallbackDeps {
     cookieHeader: `${OAUTH_FLOW_COOKIE}=${STATE}.${NONCE}`,
     config: CONFIG,
     db,
+    marketDays: async () => MARKET_DAYS,
     fetchImpl: fetchReturning({ id_token: idToken(validPayload()) }),
     ...overrides,
   };
@@ -270,5 +273,43 @@ describe('completeCallback: the paid day opens at sign-in (lib/auth/signInHook.t
     expect(result.status).toBe(303);
     const rows = db.prepare('SELECT COUNT(*) AS n FROM billing_charges WHERE user_id = ?').get(user.userId) as { n: number };
     expect(rows.n).toBe(1);
+  });
+  /*
+   * THE FOLD (his ruling, 2026-10-17): a Saturday sign-in belongs to Monday, so the
+   * session cookie and the stored session run to Monday 20:00 ET. With no calendar
+   * it falls back to the calendar day.
+   */
+  it('a Saturday sign-in runs to Monday 20:00 ET, and to Saturday 20:00 without a calendar', async () => {
+    const saturday = new Date('2026-10-24T18:00:00Z'); // 14:00 ET
+    const exp = Math.floor(saturday.getTime() / 1000) + 3600;
+    const signInAt = async (marketDays: CallbackDeps['marketDays']) => {
+      const result = await completeCallback(
+        deps({ now: saturday, marketDays, fetchImpl: fetchReturning({ id_token: idToken(validPayload({ exp })) }) }),
+      );
+      const cookie = result.setCookies.find((c) => c.startsWith(`${SESSION_COOKIE}=`))!;
+      return Number(/Max-Age=(\d+)/i.exec(cookie)![1]);
+    };
+    // Mon 2026-10-26 20:00 EDT is 2026-10-27T00:00Z: 54 hours after Sat 14:00 ET.
+    expect(await signInAt(async () => MARKET_DAYS)).toBe(54 * 3600);
+    // Sat 20:00 EDT: 6 hours.
+    expect(await signInAt(async () => () => true)).toBe(6 * 3600);
+    const stored = db.prepare('SELECT et_date AS d FROM sessions ORDER BY created_at, rowid').all() as { d: string }[];
+    expect(stored.map((r) => r.d)).toEqual(['2026-10-26', '2026-10-24']);
+  });
+
+  it('a stalled calendar does not hold the sign-in: it completes at the deadline on the calendar day', async () => {
+    const saturday = new Date('2026-10-24T18:00:00Z');
+    const exp = Math.floor(saturday.getTime() / 1000) + 3600;
+    const started = Date.now();
+    const result = await completeCallback(
+      deps({
+        now: saturday,
+        marketDays: (now) => marketDaysOrFallback(now, { load: () => new Promise<MarketDays>(() => {}) }, () => {}, 50),
+        fetchImpl: fetchReturning({ id_token: idToken(validPayload({ exp })) }),
+      }),
+    );
+    expect(Date.now() - started).toBeLessThan(1000);
+    expect(result.status).toBe(303);
+    expect(result.location).toBe('/desk');
   });
 });

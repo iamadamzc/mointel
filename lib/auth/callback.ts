@@ -27,7 +27,7 @@ import {
   cookieSecureDefault,
   sessionCookie,
 } from '@/lib/auth/cookie';
-import { sessionExpiry } from '@/lib/auth/expiry';
+import { sessionExpiry, type MarketDays } from '@/lib/auth/expiry';
 import {
   checkClaims,
   decodeFlow,
@@ -43,6 +43,13 @@ export interface CallbackDeps {
   cookieHeader: string | null;
   config: AuthConfig;
   db: IdentityDatabase;
+  /**
+   * The market calendar for this sign-in, asked for only once the reply has
+   * checked out (lib/auth/expiry.ts marketDaysOrFallback, which never throws): the
+   * session runs to 20:00 ET on the next market day. CALENDAR_DAYS when the
+   * calendar could not be read.
+   */
+  marketDays: (now: Date) => Promise<MarketDays>;
   fetchImpl?: typeof fetch;
   now?: Date;
   secure?: boolean;
@@ -151,10 +158,11 @@ export async function completeCallback(deps: CallbackDeps): Promise<CallbackResu
     return result(409);
   }
 
-  const expiry = sessionExpiry(now);
+  const marketDays = await deps.marketDays(now);
+  const expiry = sessionExpiry(now, marketDays);
   const issued = createSession(deps.db, linked.userId, expiry, now);
   // Open the paid day (lib/auth/signInHook.ts); never blocks the sign-in.
-  afterSignIn(deps.db, linked.userId, now);
+  afterSignIn(deps.db, linked.userId, marketDays, now);
   const maxAge = Math.max(1, Math.floor((expiry.expiresAt.getTime() - now.getTime()) / 1000));
 
   return result(303, {

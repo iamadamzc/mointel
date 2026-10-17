@@ -15,18 +15,24 @@
  * day that may owe one.
  */
 
+import type { MarketDays } from '@/lib/auth/expiry';
 import type { IdentityDatabase } from '@/lib/auth/store';
 import { openPaidDay } from '@/lib/billing/charge';
 
+/**
+ * `marketDays` is the calendar the session was issued with, so the charge row
+ * and the session name the same paid day (both CALENDAR_DAYS on a fallback).
+ */
 export function afterSignIn(
   db: IdentityDatabase,
   userId: number,
+  marketDays: MarketDays,
   now: Date,
   log: (line: string) => void = (line) => console.error(line),
   open: typeof openPaidDay = openPaidDay,
 ): void {
   try {
-    open(db, userId, now);
+    open(db, userId, marketDays, now);
   } catch (error) {
     log(`[auth] openPaidDay failed for user ${userId}: ${error instanceof Error ? error.message : String(error)}`);
   }

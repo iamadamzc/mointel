@@ -9,6 +9,7 @@ import { afterSignIn } from '@/lib/auth/signInHook';
 import { linkIdentity, openIdentityStore } from '@/lib/auth/store';
 import { linkCustomer, markCardSaved } from '@/lib/billing/store';
 import type { OutgoingEmail } from '@/lib/email/ses';
+import { MARKET_DAYS } from '@/tests/auth/marketDays';
 
 const dirs: string[] = [];
 function temporaryStore() {
@@ -44,14 +45,14 @@ describe('afterSignIn: the paid day opens at sign-in', () => {
   it('writes the day\'s PENDING charge row for a customer with a card', () => {
     const db = temporaryStore();
     const userId = payingUser(db, 'buyer@example.com');
-    afterSignIn(db, userId, MON_10_ET, () => {});
+    afterSignIn(db, userId, MARKET_DAYS, MON_10_ET, () => {});
     expect(charges(db, userId)).toHaveLength(1);
   });
 
   it('writes nothing for someone who never bought', () => {
     const db = temporaryStore();
     const user = linkIdentity(db, { provider: 'email', subject: 'new@example.com', email: 'new@example.com', emailVerified: true });
-    afterSignIn(db, user.userId, MON_10_ET, () => {});
+    afterSignIn(db, user.userId, MARKET_DAYS, MON_10_ET, () => {});
     expect(charges(db, user.userId)).toHaveLength(0);
   });
 
@@ -59,7 +60,7 @@ describe('afterSignIn: the paid day opens at sign-in', () => {
     const db = temporaryStore();
     const lines: string[] = [];
     expect(() =>
-      afterSignIn(db, 1, MON_10_ET, (l) => lines.push(l), () => {
+      afterSignIn(db, 1, MARKET_DAYS, MON_10_ET, (l) => lines.push(l), () => {
         throw new Error('boom');
       }),
     ).not.toThrow();
@@ -80,7 +81,7 @@ describe('afterSignIn: the paid day opens at sign-in', () => {
       log: () => {},
     });
     const token = decodeURIComponent(/\?t=([A-Za-z0-9_-]+)/.exec(sent[0].text)![1]);
-    const done = completeEmailSignIn({ db, token, now: MON_10_ET, secure: true });
+    const done = completeEmailSignIn({ db, token, marketDays: MARKET_DAYS, now: MON_10_ET, secure: true });
     expect(done.status).toBe(303);
     expect(charges(db, userId)).toHaveLength(1);
   });

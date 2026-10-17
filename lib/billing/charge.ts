@@ -19,6 +19,7 @@ import {
   customerIdFor,
   ensurePendingCharge,
   cardFailingSince,
+  chargeFor,
   hasBought,
   hasCardOnFile,
   isCardRemoved,
@@ -32,12 +33,14 @@ import {
   pendingCharges,
   planCovers,
   planEndedByCancel,
-  previousEtDate,
+  recordSpentRenewalDay,
   setTrialEnd,
+  spentRenewalHour,
   trialState,
   trialsWithoutEnd,
   type ChargeRow,
 } from '@/lib/billing/store';
+import { marketDayBefore, type MarketDays } from '@/lib/auth/expiry';
 import { trialCalendarMonths, trialEndsAt } from '@/lib/billing/trialClock';
 import { sessionEndUtc } from '@/lib/market/session';
 
@@ -60,6 +63,7 @@ export type PaidDayOpening =
 export function openPaidDay(
   db: IdentityDatabase,
   userId: number,
+  isMarketDay: MarketDays,
   now: Date = new Date(),
   env: Readonly<Record<string, string | undefined>> = process.env,
 ): PaidDayOpening {
@@ -71,7 +75,7 @@ export function openPaidDay(
    * invited by hand or not. No Stripe customer means nothing was ever bought.
    */
   if (!customerIdFor(db, userId)) return { kind: 'buy_first' };
-  const etDate = paidDayOf(now);
+  const etDate = paidDayOf(now, isMarketDay);
   if (planCovers(db, userId, etDate)) return { kind: 'plan' };
   /*
    * THE TRIAL NEVER BECOMES A CHARGE. A trial writes no charge row at all. While
@@ -88,7 +92,10 @@ export function openPaidDay(
   if (trial.state === 'over') return { kind: 'buy_first' };
   // The person removed their card: stopping, not a decline. The buy screen, and
   // no charge attempt, so no one-hour band either.
-  if (isCardRemoved(db, userId)) return { kind: 'buy_first' };
+  // A paid day already paid for stays paid: access runs to its end, as the removal
+  // confirmation promises ("If this paid day is already paid for, access ends at
+  // {endTime}"). Commercial's catch, 2026-10-17, commit e.
+  if (isCardRemoved(db, userId) && !paidFor(db, userId, etDate)) return { kind: 'buy_first' };
   // They cancelled their plan and it has run to its end: the buy screen, never an
   // automatic daily charge.
   if (planEndedByCancel(db, userId, etDate)) return { kind: 'buy_first' };
@@ -96,20 +103,59 @@ export function openPaidDay(
   // abandoned, a refused trial): the buy screen, never a charge attempt. A daily
   // buyer who saved a card on a weekend has a card on file and goes on.
   if (!hasBought(db, userId) && !hasCardOnFile(db, userId)) return { kind: 'buy_first' };
+  // A plan renewal declined today whose hour ran out: that was today's hour too.
+  // Recorded as a declined day so the failing card is not tried again.
+  const renewal = spentRenewalHour(db, userId, etDate, isMarketDay, now);
+  if (renewal) recordSpentRenewalDay(db, userId, etDate, renewal, now);
   const charge = ensurePendingCharge(db, userId, etDate, now);
-  const door = cardFailedBeforeToday(db, userId, now) ? lapsedDoor(env) : 'open';
+  // The hour is once per paid day: spent today, a new sign-in gets the
+  // update-card screen, whatever the lapsed-door switch says.
+  if (hourSpent(charge, now)) return { kind: 'pending', charge, door: 'charge_first' };
+  const door = cardFailedBeforeToday(db, userId, isMarketDay, now) ? lapsedDoor(env) : 'open';
   return { kind: 'pending', charge, door };
+}
+
+/** Is this paid day's daily charge already taken? */
+export function paidFor(db: IdentityDatabase, userId: number, etDate: string): boolean {
+  return chargeFor(db, userId, etDate)?.state === 'SUCCEEDED';
+}
+
+/**
+ * HAS TODAY'S ONE HOUR RUN OUT? Today's row was declined (FAILED) and its hour
+ * is over, or it was declined, the hour ran out, and a card update put it back
+ * to PENDING for the retry. His rulings: one hour, once; retry only on a card
+ * update; a failing card sees the update-card screen. Without this a sign-in
+ * after the hour got a fresh session and the board for the rest of the paid
+ * day (found 2026-10-17, Integration 43rd).
+ *
+ * The session is NOT ended: the update-card screen and the card update itself
+ * need one, exactly as on his next-day door.
+ */
+export function hourSpent(row: ChargeRow | null, now: Date): boolean {
+  return (
+    row !== null &&
+    (row.state === 'FAILED' || row.state === 'PENDING') &&
+    row.graceUntil !== null &&
+    Date.parse(row.graceUntil) <= now.getTime()
+  );
 }
 
 /**
  * Did the card first fail on an EARLIER paid day? The lapsed-hour door applies
  * only then: on the day of the failure itself the person has the hour, and the
  * band shows it. billingStateFor (lib/billing/account.ts) reads the same rule.
+ * Today's paid day starts at 20:00 ET on the market day before it: a Saturday
+ * decline is inside Monday's paid day, so a Sunday sign-in is the same day.
  */
-export function cardFailedBeforeToday(db: IdentityDatabase, userId: number, now: Date = new Date()): boolean {
+export function cardFailedBeforeToday(
+  db: IdentityDatabase,
+  userId: number,
+  isMarketDay: MarketDays,
+  now: Date = new Date(),
+): boolean {
   const since = cardFailingSince(db, userId);
   if (since === null) return false;
-  const todayStart = sessionEndUtc(previousEtDate(paidDayOf(now))).getTime();
+  const todayStart = sessionEndUtc(marketDayBefore(paidDayOf(now, isMarketDay), isMarketDay)).getTime();
   return Date.parse(since) < todayStart;
 }
 
