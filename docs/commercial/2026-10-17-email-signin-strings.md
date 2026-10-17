@@ -10,17 +10,21 @@
 
 Nothing is his to decide here except the exact words, once the brackets are filled. The facts below come from Ops and Web.
 
-## 1. Facts I need before the words are final
+## 1. The facts
 
-For Ops (SES) and Web (the sign-in route):
-1. **The link's life.** How many minutes it works, and that it works once. (I use `[TOKEN LIFE]`.)
-2. **What is stored about a link.** The link itself, or only a fingerprint of it. When it is deleted. (`[TOKEN STORAGE]`)
-3. **What is stored about a send.** Address, time sent, time used, anything from SES such as a delivery or bounce note, an IP address. For how long. (`[SEND LOG]`, `[SEND LOG RETENTION]`)
-4. **Who gets a link.** Does an address with no access get an email? (If it does, the policy must say so; if it does not, the sign-in page cannot say whether an address exists.) (`[WHO GETS A LINK]`)
-5. **One account or two.** A person who signs in with Google and by link on the same address: the same account? The terms say access is tied to an address; the policy today says an email is not an identifier because "email addresses change hands". (`[ONE ACCOUNT]`)
-6. **Cookies.** Does the link flow set a cookie other than `mointel_session`? The policy says two cookies today, one of them only for Google. (`[COOKIES]`)
-7. **Bounces and complaints.** What the desk does with them, and whether Amazon keeps a list of addresses it will not send to. (`[SUPPRESSION]`)
-8. **The sender.** The address mail comes from, and the reply address. (`[SENDER]`)
+**Received** (Ops's approved scope, relayed by Integration, 2026-10-17; I did not open the scope):
+- A link lasts 15 minutes and works once. Asking for another link supersedes the earlier one.
+- For each link the desk keeps a record: the address, the times, whether it was used or superseded, and a hashed IP. These records are deleted 30 days after the link is created.
+- The IP is never stored raw in these records: it is a salted hash, used only for the per-IP request limit.
+- The address stays on the account (the email identity row) for the account's life, as the Google email does today.
+- The mail is sent by Amazon SES from signin@tmitrader.com (MAIL FROM mail.tmitrader.com). Replies go to info@andromedagenius.com. No tracking pixels and no link rewriting.
+- SES in us-east-1 is out of the sandbox, so no production-access form goes to Amazon.
+- From Marketing's relay of Ops's build facts (`docs/marketing/email-link-signin-words-2026-10-17.md` at `ed752ff9`; I did not open the scope): only the newest link works; limits are 3 per 15 minutes and 10 per 24 hours per address and 10 per hour per IP; the request page gives the same answer for every address ("If that address can sign in, we've sent a link"), so it never reveals whether an address has an account; the link opens a one-button page; one account per verified address (so Google and link sign-in on one address are one account).
+
+**Still needed** (Ops or Web), each shown in brackets below:
+1. `[WHO GETS A LINK]` Whether an address with no account gets an email, and whether a request for it is recorded.
+2. `[COOKIES]` Does the link flow set a cookie other than `mointel_session`?
+3. `[SUPPRESSION]` Does Amazon keep a list of addresses that bounced or were reported as spam, and does the desk read it?
 
 ## 2. Privacy policy: the changes
 
@@ -31,7 +35,7 @@ Each block gives where it goes, what it replaces, and the new words.
 - Replace with: "It does not cover what Google does with your Google account, or what your own email provider does with the emails we send you. Each is governed by its own policy."
 
 **Section 2, after the Google sign-in list ("...we request nothing beyond them."), add a paragraph:**
-"**When you sign in by email link.** You type your email address and we send a link to it. The link works once, and only for [TOKEN LIFE] minutes. We keep your email address, [TOKEN STORAGE], and the times the link was sent and used. We ask for no name and no picture. [WHO GETS A LINK]"
+"**When you sign in by email link.** You type your email address and we send a link to it. The link works once, and only for 15 minutes; asking for another link ends the earlier one. For each link we keep a record: your email address, the times it was sent and used, whether it was used or replaced, and a scrambled, one-way form of your IP address (we never store the address itself in these records), which we use only to limit how many links can be asked for at once. We delete these records 30 days after the link was made. Your email address stays on your account for as long as you have one. We ask for no name and no picture. Whatever address you type, the page gives the same answer, so it never tells anyone whether an address has an account. Our emails carry no tracking pixels and no rewritten links. [WHO GETS A LINK: if a request for an address with no account is recorded, say so here in one sentence.]"
 
 **Section 2, "Cookies".** [COOKIES: if the link flow sets no new cookie, no change. If it sets one, it is described here in the same plain terms as the other two.]
 
@@ -44,13 +48,14 @@ Each block gives where it goes, what it replaces, and the new words.
 - Replace the end with: "We do not send marketing email. The emails we send are sign-in links and notices about your access or your account."
 
 **Section 5 table, add a row:**
-"Amazon Web Services, Inc. (Amazon SES) | Your email address and the sign-in link we send you | It sends the email for us, from tmitrader.com"
+"Amazon Web Services, Inc. (Amazon SES) | Your email address and the sign-in link we send you | It sends the email for us, from signin@tmitrader.com"
 
 **Section 5, under the table, add a sentence:** "[SUPPRESSION: if Amazon keeps addresses that bounced or were reported as spam, say so here in one sentence.]"
 
-**Section 6, add two bullets:**
-- "**Sign-in links**: a link stops working after [TOKEN LIFE] minutes or when it is used, whichever comes first. [TOKEN STORAGE: what remains, and for how long]."
-- "**Who we sent an email to, and when**: [SEND LOG RETENTION]."
+**Section 6, add one bullet:**
+- "**Sign-in link records**: deleted 30 days after the link was made. They hold your email address, the times, whether the link was used or replaced, and a scrambled form of your IP address."
+
+(Your email address itself stays with your account, which section 6 already covers: "for as long as you have one".)
 
 **Section 7, "Correct it".**
 - Now: "Your name and email come from Google; change them there and they change here at your next sign-in."
@@ -68,7 +73,7 @@ Each block gives where it goes, what it replaces, and the new words.
 
 **Section 3, second paragraph (this replaces the wording already approved in the strings file, which said "Google account").**
 - Approved version was: "Your access is tied to the Google account you sign in with. It does not transfer to another person, another company, or another desk."
-- Replace with: "Your access is tied to the email address you sign in with, whether by Google or by link. It does not transfer to another person, another company, or another desk. [ONE ACCOUNT: if Google and link on the same address are one account, this sentence is true as written. If they are two accounts, this section says so.]"
+- Replace with: "Your access is tied to the email address you sign in with, whether by Google or by link. It does not transfer to another person, another company, or another desk."
 
 **Section 3, first paragraph, add one sentence at the end:** "A sign-in link works for whoever opens it. Do not forward it."
 
