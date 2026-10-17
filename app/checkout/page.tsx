@@ -6,10 +6,14 @@ import { notFound, redirect } from 'next/navigation';
 import { SiteFooter, SiteHeader } from '@/components/SiteChrome';
 import { SubmitOnceButton, SubmitOnceForm } from '@/components/SubmitOnce';
 import { SESSION_COOKIE } from '@/lib/auth/cookie';
+import { getIdentityDb } from '@/lib/auth/db';
+import { marketMonthsFor } from '@/lib/auth/expiry';
 import { admissionForSession } from '@/lib/auth/requestGate';
+import { dailyAlreadyPaid } from '@/lib/billing/checkout';
 import { AGREE, CHECKOUT, PLANS, UNAVAILABLE } from '@/lib/public/purchaseCopy';
 import { etDateOf, longEtDate, PLAN_SLUGS, purchaseFromSlug, renewalEtDate } from '@/lib/public/purchaseFormat';
 import { purchaseOpen } from '@/lib/public/purchaseOpen';
+import { purchaseMarketDays } from '@/lib/public/purchaseServer';
 
 /**
  * /checkout?plan=<slug>: the summary and the consent, on our page, before the card is
@@ -27,9 +31,12 @@ import { purchaseOpen } from '@/lib/public/purchaseOpen';
  *
  * DAILY IS OFFERED ON EVERY DAY: a weekend or market holiday belongs to the next trading
  * day's paid day (Billing's fold, his ruling 2026-10-17), and Checkout charges $5.50 at
- * purchase for that day, so "charged now" is true on a Saturday too. The calendar is read
- * once, on submit (/checkout/start); if it cannot be read there, the visitor comes back
- * here with e=unavailable.
+ * purchase for that day, so "charged now" is true on a Saturday too.
+ *
+ * A DAILY FOR A PAID DAY ALREADY PAID goes to /desk, no new words (Integration 43rd,
+ * 2026-10-17; Billing's dailyAlreadyPaid). That needs the calendar here too, because on a
+ * weekend the paid day is Monday's. If the calendar cannot be read, the page shows as
+ * before and /checkout/start decides (it refuses the same purchase with the same 303).
  */
 
 export const dynamic = 'force-dynamic';
@@ -47,10 +54,21 @@ export default async function CheckoutPage({
   const purchase = purchaseFromSlug(typeof params.plan === 'string' ? params.plan : null);
   if (!purchase) redirect('/pricing');
 
-  const admission = admissionForSession((await cookies()).get(SESSION_COOKIE)?.value);
+  const db = getIdentityDb();
+  const admission = admissionForSession((await cookies()).get(SESSION_COOKIE)?.value, db);
   if (admission.state === 'anonymous') redirect('/signin');
 
   const now = new Date();
+  if (purchase === 'daily') {
+    // The read is in the try; the redirect is outside it, since redirect() works by throwing.
+    let paid = false;
+    try {
+      paid = dailyAlreadyPaid(db, admission.userId, now, await purchaseMarketDays()(marketMonthsFor(now)));
+    } catch {
+      paid = false;
+    }
+    if (paid) redirect('/desk');
+  }
   const plan = PLANS[purchase];
   const renewal = purchase === 'daily' ? null : longEtDate(renewalEtDate(etDateOf(now), purchase));
   const legal =

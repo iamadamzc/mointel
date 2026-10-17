@@ -59,14 +59,20 @@ vi.mock('@/lib/billing/checkoutStatus', () => ({
   },
 }));
 
-const { TrialNotAvailableError, createCheckoutSession, createTrialCheckoutSession } = vi.hoisted(() => ({
+const { AlreadyPaidError, TrialNotAvailableError, createCheckoutSession, createTrialCheckoutSession, dailyAlreadyPaid } = vi.hoisted(() => ({
+  AlreadyPaidError: class AlreadyPaidError extends Error {
+    override name = 'AlreadyPaidError';
+  },
   TrialNotAvailableError: class TrialNotAvailableError extends Error {},
   createCheckoutSession: vi.fn(),
   createTrialCheckoutSession: vi.fn(),
+  dailyAlreadyPaid: vi.fn<(...args: unknown[]) => boolean>(() => false),
 }));
 vi.mock('@/lib/billing/checkout', () => ({
   createCheckoutSession: (...args: unknown[]) => createCheckoutSession(...args),
   createTrialCheckoutSession: (...args: unknown[]) => createTrialCheckoutSession(...args),
+  dailyAlreadyPaid: (...args: unknown[]) => dailyAlreadyPaid(...args),
+  AlreadyPaidError,
   TrialNotAvailableError,
 }));
 /** Every reach for Stripe or the calendar, so "dark" can be pinned as "no call at all". */
@@ -139,6 +145,8 @@ beforeEach(() => {
   state.email = 'buyer@example.com';
   createCheckoutSession.mockReset();
   createTrialCheckoutSession.mockReset();
+  dailyAlreadyPaid.mockReset();
+  dailyAlreadyPaid.mockReturnValue(false);
   outside.calls.length = 0;
   billingReads.calls = 0;
   billingReads.args = [];
@@ -301,8 +309,35 @@ describe('/checkout', () => {
     vi.setSystemTime(new Date('2026-10-17T15:00:00Z')); // Sat 11:00 ET
     page = html(await CheckoutPage(params({ plan: 'daily' })));
     expect(page).toContain('You will be charged $5.50 now');
-    expect(page).not.toContain('If you cannot use this page'); // no calendar read on the page itself
-    expect(outside.calls).not.toContain('calendar');
+    expect(page).not.toContain('If you cannot use this page');
+  });
+
+  /*
+   * A Daily for a paid day already paid goes to /desk (Integration 43rd, 2026-10-17; Billing
+   * c4ff5b19). Until then the page never read the calendar; now a Daily load does, because
+   * on a weekend the paid day is Monday's. Plans never ask.
+   */
+  it('daily, paid day already paid: /desk; asked with this user, now and the calendar', async () => {
+    dailyAlreadyPaid.mockReturnValue(true);
+    await expect(CheckoutPage(params({ plan: 'daily' }))).rejects.toThrow('REDIRECT /desk');
+    expect(dailyAlreadyPaid).toHaveBeenCalledTimes(1);
+    const [db, userId, now, marketDays] = dailyAlreadyPaid.mock.calls[0];
+    expect(db).toEqual({});
+    expect(userId).toBe(7);
+    expect((now as Date).toISOString()).toBe('2026-10-16T15:00:00.000Z');
+    expect(typeof marketDays).toBe('function');
+    expect(outside.calls).toContain('calendar');
+  });
+
+  it('daily, not paid: the page; a plan never asks; the calendar unreadable: the page, no guess', async () => {
+    expect(html(await CheckoutPage(params({ plan: 'daily' })))).toContain('You will be charged $5.50 now');
+    dailyAlreadyPaid.mockClear();
+    html(await CheckoutPage(params({ plan: 'monthly' })));
+    expect(dailyAlreadyPaid).not.toHaveBeenCalled();
+    dailyAlreadyPaid.mockImplementation(() => {
+      throw new Error('calendar down');
+    });
+    expect(html(await CheckoutPage(params({ plan: 'daily' })))).toContain('You will be charged $5.50 now');
   });
 });
 
@@ -327,6 +362,16 @@ describe('POST /checkout/start', () => {
       successUrl: 'https://tmitrader.com/welcome?session_id={CHECKOUT_SESSION_ID}',
       cancelUrl: 'https://tmitrader.com/pricing',
     });
+  });
+
+  it('a Daily for a paid day already paid -> 303 /desk, not "unavailable"', async () => {
+    createCheckoutSession.mockRejectedValue(new AlreadyPaidError('2026-10-16'));
+    const res = await checkoutStart(form({ plan: 'daily', agree: 'yes' }));
+    expect([res.status, res.headers.get('location')]).toEqual([303, '/desk']);
+    // Control: any other failure still says unavailable.
+    createCheckoutSession.mockRejectedValue(new Error('down'));
+    const other = await checkoutStart(form({ plan: 'daily', agree: 'yes' }));
+    expect(other.headers.get('location')).toBe('/checkout?plan=daily&e=unavailable');
   });
 
   it('Stripe unreachable -> back with e=unavailable; daily on a Saturday -> Stripe (the fold)', async () => {

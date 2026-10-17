@@ -9,6 +9,8 @@
  *   charged before the box is ticked, and the page's `required` is not a control.
  * - Daily on any day goes to Stripe: a weekend or market holiday belongs to the next
  *   trading day's paid day (Billing's fold), so there is no closed paid day to refuse.
+ * - Daily for a paid day already paid (Billing's AlreadyPaidError) -> 303 /desk, no new
+ *   words (Integration 43rd, 2026-10-17): the buyer already has the day.
  * - Stripe or the calendar unreachable -> 303 back with e=unavailable, which shows the
  *   contact line. Nothing is logged that names the person or the key.
  *
@@ -20,7 +22,7 @@
 import { getIdentityDb } from '@/lib/auth/db';
 import { marketMonthsFor } from '@/lib/auth/expiry';
 import { admissionForSession, sessionIdFromCookieHeader } from '@/lib/auth/requestGate';
-import { createCheckoutSession } from '@/lib/billing/checkout';
+import { AlreadyPaidError, createCheckoutSession } from '@/lib/billing/checkout';
 import { PLAN_SLUGS, purchaseFromSlug } from '@/lib/public/purchaseFormat';
 import { purchaseOpen } from '@/lib/public/purchaseOpen';
 import { purchaseMarketDays, purchaseOrigin, purchaseStripe } from '@/lib/public/purchaseServer';
@@ -62,6 +64,7 @@ export async function POST(request: Request): Promise<Response> {
     });
     return seeOther(session.url);
   } catch (error) {
+    if (error instanceof AlreadyPaidError) return seeOther('/desk');
     console.error(`[checkout] could not start a ${purchase} checkout: ${(error as Error).name}`);
     return seeOther(`${back}&e=unavailable`);
   }
