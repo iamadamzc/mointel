@@ -149,7 +149,12 @@ describe('starting the trial', () => {
       cancelUrl: 'https://tmitrader.com/pricing',
     });
     const params = (create.mock.calls[0] as unknown as [Record<string, unknown>])[0];
-    expect(params).toMatchObject({ mode: 'setup', payment_method_types: ['card'], metadata: { purchase: 'trial' } });
+    expect(params).toMatchObject({
+      mode: 'setup',
+      payment_method_types: ['card'],
+      managed_payments: { enabled: false },
+      metadata: { purchase: 'trial' },
+    });
     expect(params.line_items).toBeUndefined();
     expect(params.payment_intent_data).toBeUndefined();
   });

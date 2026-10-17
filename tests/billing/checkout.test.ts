@@ -47,6 +47,7 @@ describe('starting a purchase', () => {
     const params = paramsOf(stripe);
     expect(params).toMatchObject({
       mode: 'payment',
+      managed_payments: { enabled: false },
       customer: 'cus_new',
       client_reference_id: String(userId),
       line_items: [{ price: 'price_tmi_daily', quantity: 1 }],
@@ -63,6 +64,7 @@ describe('starting a purchase', () => {
     await createCheckoutSession({ db, stripe, isTradingDay: () => false, now: () => MON_10_ET }, userId, 'daily', URLS);
     const params = paramsOf(stripe);
     expect(params.mode).toBe('setup');
+    expect(params.managed_payments).toEqual({ enabled: false });
     expect(params.line_items).toBeUndefined();
   });
 
@@ -73,6 +75,7 @@ describe('starting a purchase', () => {
     await createCheckoutSession({ db, stripe, isTradingDay: () => true, now: () => MON_10_ET }, userId, 'annual', URLS);
     expect(paramsOf(stripe)).toMatchObject({
       mode: 'subscription',
+      managed_payments: { enabled: false },
       line_items: [{ price: 'price_tmi_annual', quantity: 1 }],
       subscription_data: { billing_mode: { type: 'flexible' }, metadata: { purchase: 'annual' } },
     });
