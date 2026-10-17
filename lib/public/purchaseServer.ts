@@ -12,7 +12,7 @@
 import 'server-only';
 
 import { CALENDAR_DEADLINE_MS, sessionDatesCalendar, withDeadline, type CalendarSources } from '@/lib/auth/expiry';
-import { cachedTradingDays, loadTradingDays, tradingDayChecker } from '@/lib/billing/calendar';
+import { cachedTradingDays, loadTradingDays } from '@/lib/billing/calendar';
 import { stripeFromEnv, type StripeClient } from '@/lib/billing/stripeClient';
 import { AlpacaRestClient } from '@/lib/market/alpaca/rest';
 import { findAlpacaCredentials } from '@/lib/market/credentials';
@@ -21,7 +21,6 @@ import { cachedSessionDates } from '@/lib/market/readModel';
 const store = globalThis as typeof globalThis & {
   __mointelPurchase?: {
     stripe?: StripeClient;
-    isTradingDay?: (etDate: string) => Promise<boolean>;
     fetchMonth?: (start: string, end: string) => Promise<{ date: string }[]>;
     marketDays?: (months: string[]) => Promise<(etDate: string) => boolean>;
   };
@@ -49,13 +48,6 @@ function fetchMonth(): (start: string, end: string) => Promise<{ date: string }[
     c.fetchMonth = (start, end) => withDeadline(alpaca.getCalendar(start, end), CALENDAR_DEADLINE_MS, `calendar ${start}`);
   }
   return c.fetchMonth;
-}
-
-/** Is this paid day a trading day? Async, cached per month. */
-export function purchaseIsTradingDay(): (etDate: string) => Promise<boolean> {
-  const c = cache();
-  c.isTradingDay ??= tradingDayChecker(fetchMonth());
-  return c.isTradingDay;
 }
 
 /**
