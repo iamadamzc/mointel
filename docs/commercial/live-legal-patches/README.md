@@ -6,3 +6,7 @@ Patches, not edits: `docs/legal/privacy-policy.md` and `terms.md` are served liv
 2. `2026-10-17-llc-name.patch`: the operator's name becomes "Andromeda Genius LLC" (privacy section 1 and section 11; terms section 13), replacing "Andromeda Genius, Inc". The correction is of fact (the Texas filing and the IRS notice say LLC; read 151). **The exact words go to him as strings first**; the patch is not ordered. The form of the name (LLC, or the filing's long form) and the address are his attorney's.
 
 Whether either change is "material" under the terms file's rule (a material redraft sends `adopted` back to null and puts a DRAFT banner on the live page) is his attorney's; neither changes what a reader is promised.
+
+## Update 2026-10-17 (after his "developed by" word)
+
+3. `2026-10-17-release-combined.patch`: the address swap and the LLC name with the "developed and operated by" wording, as one patch against `296b6102`. **Use this one for the release.** The two single patches overlap on the privacy policy's section 1 (the name patch now rewraps the three lines that also hold the old address), so they do not both apply cleanly; `2026-10-17-llc-name.patch` is kept as regenerated with the new wording, `2026-10-17-address-swap.patch` unchanged.

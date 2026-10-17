@@ -1,0 +1,67 @@
+diff --git a/docs/legal/privacy-policy.md b/docs/legal/privacy-policy.md
+index 62cd8e48..a9c58992 100644
+--- a/docs/legal/privacy-policy.md
++++ b/docs/legal/privacy-policy.md
+@@ -75,9 +75,9 @@ written to be read, not to be survived.
+ 
+ ## 1. Who runs this service
+ 
+-**The Momentum Intelligence Trading Desk** is operated by **Andromeda Genius,
+-Inc**, of 5460 Babcock Rd, Suite 120 PMB 95234, San Antonio, TX 78240, United
+-States. You can reach a person at info@andromedagenius.com. In this policy,
++**The Momentum Intelligence Trading Desk** (TMI) is developed and operated by
++**Andromeda Genius LLC**, of 5460 Babcock Rd, Suite 120 PMB 95234, San Antonio,
++TX 78240, United States. You can reach a person at desk@tmitrader.com. In this policy,
+ "we" means that operator; "you" means the person signing in; and "the desk"
+ means the signed-in service at tmitrader.com.
+ 
+@@ -203,7 +203,7 @@ Whoever and wherever you are, you can:
+ - **Take it with you.** Ask, and we will send it in a machine-readable file.
+ - **Object, or ask us to restrict what we do.** Ask, and we will answer.
+ 
+-Write to info@andromedagenius.com. We answer promptly, and within 30 days at
++Write to desk@tmitrader.com. We answer promptly, and within 30 days at
+ the latest, and we do not charge for it.
+ 
+ **We do not sell your personal information, and we do not share it for
+@@ -244,9 +244,9 @@ history of this file is kept.
+ 
+ ## 11. Contact
+ 
+-info@andromedagenius.com reaches a person, not a queue.
++desk@tmitrader.com reaches a person, not a queue.
+ 
+-Andromeda Genius, Inc
++Andromeda Genius LLC
+ 5460 Babcock Rd, Suite 120 PMB 95234
+ San Antonio, TX 78240
+ United States
+diff --git a/docs/legal/terms.md b/docs/legal/terms.md
+index feaf4aeb..2b87942a 100644
+--- a/docs/legal/terms.md
++++ b/docs/legal/terms.md
+@@ -103,9 +103,9 @@ us before you rely on it rather than after.
+ 
+ ## 1. Who we are, and what this is
+ 
+-**The Momentum Intelligence Trading Desk** (TMI) is operated by **Andromeda
+-Genius, Inc**, of 5460 Babcock Rd, Suite 120 PMB 95234, San Antonio, TX 78240,
+-United States. "We" is that company. "You" is the person signed in. "The desk"
++**The Momentum Intelligence Trading Desk** (TMI) is developed and operated by
++**Andromeda Genius LLC**, of 5460 Babcock Rd, Suite 120 PMB 95234, San Antonio,
++TX 78240, United States. "We" is that company. "You" is the person signed in. "The desk"
+ is the service.
+ 
+ The service was called TMI Trader until 18 September 2026; the name
+@@ -241,9 +241,9 @@ can take it to a court.
+ 
+ ## 13. Contact
+ 
+-info@andromedagenius.com reaches a person, not a queue.
++desk@tmitrader.com reaches a person, not a queue.
+ 
+-Andromeda Genius, Inc
++Andromeda Genius LLC
+ 5460 Babcock Rd, Suite 120 PMB 95234
+ San Antonio, TX 78240
+ United States
