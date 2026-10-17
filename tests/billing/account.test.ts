@@ -1,9 +1,11 @@
 import type Stripe from 'stripe';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { inviteEmail, linkIdentity } from '@/lib/auth/store';
+import { OWNER_EMAIL_ENV as GATE_OWNER_EMAIL_ENV } from '@/lib/auth/requestGate';
 import { billingStateFor, cancelAtPeriodEnd, removeDefaultCard } from '@/lib/billing/account';
 import { openPaidDay } from '@/lib/billing/charge';
-import { GRACE_MS } from '@/lib/billing/config';
+import { GRACE_MS, OWNER_EMAIL_ENV } from '@/lib/billing/config';
 import {
   billingHistory,
   chargeFor,
@@ -52,12 +54,12 @@ function rowCounts(db: ReturnType<typeof temporaryStore>) {
 }
 
 describe('billingStateFor', () => {
-  it('someone who never bought: the board, nothing on file', () => {
+  it('someone who never bought: the buy screen (his ruling: only the owner is free)', () => {
     const db = temporaryStore();
     const userId = verifiedUser(db);
-    expect(billingStateFor(db, userId, MON_10_ET)).toEqual({
-      door: 'ok',
-      buyCase: null,
+    expect(billingStateFor(db, userId, MON_10_ET, {})).toEqual({
+      door: 'buy_first',
+      buyCase: 'no_access',
       trialTaken: false,
       email: 'buyer@example.com',
       grace: null,
@@ -212,6 +214,69 @@ describe('billingStateFor', () => {
       renewsOn: '2026-11-19T14:00:00.000Z',
       endsOn: null,
     });
+  });
+});
+
+describe('the desk owner', () => {
+  const OWNER = { DESK_OWNER_EMAIL: 'buyer@example.com' };
+
+  it('with no Stripe customer at all: still the board, and no charge row', () => {
+    const db = temporaryStore();
+    const userId = verifiedUser(db); // buyer@example.com, never bought
+    expect(openPaidDay(db, userId, TUE_10_ET, OWNER)).toEqual({ kind: 'owner' });
+    expect(billingStateFor(db, userId, TUE_10_ET, OWNER)).toMatchObject({ door: 'ok', buyCase: null });
+    expect((db.prepare('SELECT COUNT(*) AS n FROM billing_charges').get() as { n: number }).n).toBe(0);
+  });
+
+  it('a hand-invited account that never bought gets the buy screen, case no_access', () => {
+    const db = temporaryStore();
+    const userId = verifiedUser(db, 'invited@example.com', 'sub-inv');
+    inviteEmail(db, 'invited@example.com', 'adam', MON_10_ET);
+    expect(openPaidDay(db, userId, TUE_10_ET, OWNER)).toEqual({ kind: 'buy_first' });
+    expect(billingStateFor(db, userId, TUE_10_ET, OWNER)).toMatchObject({ door: 'buy_first', buyCase: 'no_access' });
+  });
+
+  it('a customer who never bought and has no card (an abandoned Checkout) gets the buy screen, no charge', () => {
+    const db = temporaryStore();
+    const userId = verifiedUser(db, 'abandoned@example.com', 'sub-ab');
+    linkCustomer(db, userId, 'cus_ab', MON_10_ET);
+    expect(openPaidDay(db, userId, TUE_10_ET, {})).toEqual({ kind: 'buy_first' });
+    expect(billingStateFor(db, userId, TUE_10_ET, {})).toMatchObject({ door: 'buy_first', buyCase: 'no_access' });
+    expect(chargeFor(db, userId, '2026-10-20')).toBeNull();
+  });
+
+  it('a daily buyer who saved a card on a weekend (nothing charged yet) is charged as normal', () => {
+    const db = temporaryStore();
+    const userId = buyer(db); // card saved, no charge rows
+    expect(openPaidDay(db, userId, TUE_10_ET, {})).toMatchObject({ kind: 'pending', door: 'open' });
+  });
+
+  it('is never charged and never shown a buy or update-card screen', () => {
+    const db = temporaryStore();
+    const userId = buyer(db); // buyer@example.com, verified
+    const monday = ensurePendingCharge(db, userId, '2026-10-19', MON_10_ET);
+    markFailed(db, monday.id, 'card_declined', null, MON_10_ET);
+    recordTrial(db, userId, 'fp_owner', null, MON_10_ET);
+    setTrialEnd(db, userId, MON_10_ET);
+
+    expect(openPaidDay(db, userId, TUE_10_ET, OWNER)).toEqual({ kind: 'owner' });
+    expect(chargeFor(db, userId, '2026-10-20')).toBeNull();
+    expect(billingStateFor(db, userId, TUE_10_ET, OWNER)).toMatchObject({ door: 'ok', buyCase: null });
+  });
+
+  it('fails closed like the retry-research rule: unset, blank or an unverified address is nobody', () => {
+    const db = temporaryStore();
+    const userId = buyer(db);
+    expect(openPaidDay(db, userId, TUE_10_ET, {})).toMatchObject({ kind: 'pending' });
+    expect(openPaidDay(db, userId, TUE_10_ET, { DESK_OWNER_EMAIL: '  ' })).toMatchObject({ kind: 'pending' });
+    const other = linkIdentity(db, { provider: 'google', subject: 'sub-u', email: 'owner@example.com', emailVerified: false }).userId;
+    linkCustomer(db, other, 'cus_2', MON_10_ET);
+    markCardSaved(db, 'cus_2', MON_10_ET); // a paying customer, so only the owner match is under test
+    expect(openPaidDay(db, other, TUE_10_ET, { DESK_OWNER_EMAIL: 'owner@example.com' })).toMatchObject({ kind: 'pending' });
+  });
+
+  it('reads the same variable as the retry-research owner rule', () => {
+    expect(OWNER_EMAIL_ENV).toBe(GATE_OWNER_EMAIL_ENV);
   });
 });
 

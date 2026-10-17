@@ -17,11 +17,13 @@
 import type Stripe from 'stripe';
 
 import type { IdentityDatabase } from '@/lib/auth/store';
-import { PRICE_LOOKUP_KEYS, RULED_AMOUNT_CENTS, type Purchase } from '@/lib/billing/config';
+import { PRICE_LOOKUP_KEYS, RULED_AMOUNT_CENTS, statementSuffix, type Purchase } from '@/lib/billing/config';
 import { canStartTrial, customerIdFor, linkCustomer, paidDayOf, verifiedEmailFor } from '@/lib/billing/store';
 
 export interface CheckoutDeps {
   db: IdentityDatabase;
+  /** For the statement suffix; process.env when omitted. */
+  env?: Readonly<Record<string, string | undefined>>;
   stripe: Pick<Stripe, 'customers' | 'prices' | 'checkout' | 'billingPortal'>;
   /** The market calendar; day one is charged in Checkout only on a trading day. */
   isTradingDay: (etDate: string) => boolean | Promise<boolean>;
@@ -113,7 +115,11 @@ export async function createCheckoutSession(
         ...base,
         mode: 'payment',
         line_items: [{ price: price.id, quantity: 1 }],
-        payment_intent_data: { setup_future_usage: 'off_session', metadata },
+        payment_intent_data: {
+          setup_future_usage: 'off_session',
+          metadata,
+          ...(statementSuffix(deps.env) ? { statement_descriptor_suffix: statementSuffix(deps.env)! } : {}),
+        },
       };
     } else {
       params = { ...base, mode: 'setup', setup_intent_data: { metadata }, currency: 'usd' };

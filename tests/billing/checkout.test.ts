@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { linkIdentity } from '@/lib/auth/store';
 import { createCheckoutSession, NoVerifiedEmailError, type CheckoutDeps } from '@/lib/billing/checkout';
 import { customerIdFor } from '@/lib/billing/store';
+import { statementSuffix } from '@/lib/billing/config';
 import { stripeFromEnv, stripeKeyMode } from '@/lib/billing/stripeClient';
 
 import { MON_10_ET, cleanupStores, temporaryStore, verifiedUser } from './helpers';
@@ -95,6 +96,56 @@ describe('starting a purchase', () => {
       createCheckoutSession({ db, stripe, isTradingDay: () => true, now: () => MON_10_ET }, userId, 'daily', URLS),
     ).rejects.toBeInstanceOf(NoVerifiedEmailError);
     expect(stripe.customers.create).not.toHaveBeenCalled();
+  });
+});
+
+describe('which paid day a daily purchase is for (20:00 to 20:00 ET, labelled by the day it ends)', () => {
+  // Mon 19 to Fri 23 Oct trade; Thanksgiving, Thu 26 Nov, does not.
+  const TRADING = new Set(['2026-10-19', '2026-10-20', '2026-10-21', '2026-10-22', '2026-10-23', '2026-11-25', '2026-11-27']);
+
+  async function modeAt(iso: string) {
+    const db = temporaryStore();
+    const userId = verifiedUser(db);
+    const stripe = fakeStripe();
+    await createCheckoutSession({ db, stripe, env: {}, isTradingDay: (d) => TRADING.has(d), now: () => new Date(iso) }, userId, 'daily', URLS);
+    const params = paramsOf(stripe);
+    return [params.mode, params.metadata.et_date];
+  }
+
+  it('charges or only saves the card by the paid day, never the calendar date', async () => {
+    // Sun 21:00 EDT is in Monday's paid day: charged.
+    expect(await modeAt('2026-10-19T01:00:00Z')).toEqual(['payment', '2026-10-19']);
+    // Fri 19:59 EDT is still Friday's paid day: charged.
+    expect(await modeAt('2026-10-23T23:59:00Z')).toEqual(['payment', '2026-10-23']);
+    // Fri 21:00 EDT is in Saturday's paid day: card saved, nothing charged.
+    expect(await modeAt('2026-10-24T01:00:00Z')).toEqual(['setup', '2026-10-24']);
+    // Sat 10:00 EDT: card saved, nothing charged.
+    expect(await modeAt('2026-10-24T14:00:00Z')).toEqual(['setup', '2026-10-24']);
+    // The eve of Thanksgiving after 20:00 EST is in the holiday's paid day: card saved.
+    expect(await modeAt('2026-11-26T02:00:00Z')).toEqual(['setup', '2026-11-26']);
+  });
+});
+
+describe('the card-statement suffix (his yes pending: off by default)', () => {
+  it('sends no suffix unless BILLING_STATEMENT_SUFFIX is set', async () => {
+    const db = temporaryStore();
+    const userId = verifiedUser(db);
+    const stripe = fakeStripe();
+    await createCheckoutSession({ db, stripe, env: {}, isTradingDay: () => true, now: () => MON_10_ET }, userId, 'daily', URLS);
+    expect(paramsOf(stripe).payment_intent_data).not.toHaveProperty('statement_descriptor_suffix');
+  });
+
+  it('sends the suffix when set, and ignores a value Stripe would reject', async () => {
+    const db = temporaryStore();
+    const userId = verifiedUser(db);
+    const stripe = fakeStripe();
+    const env = { BILLING_STATEMENT_SUFFIX: 'tmi trader' };
+    await createCheckoutSession({ db, stripe, env, isTradingDay: () => true, now: () => MON_10_ET }, userId, 'daily', URLS);
+    expect(paramsOf(stripe).payment_intent_data).toMatchObject({ statement_descriptor_suffix: 'TMI TRADER' });
+    expect(statementSuffix({ BILLING_STATEMENT_SUFFIX: 'TMI*TRADER' })).toBeNull();
+    expect(statementSuffix({ BILLING_STATEMENT_SUFFIX: 'A VERY LONG SUFFIX' })).toBeNull();
+    expect(statementSuffix({ BILLING_STATEMENT_SUFFIX: '12345' })).toBeNull();
+    expect(statementSuffix({})).toBeNull();
   });
 });
 

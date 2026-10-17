@@ -14,12 +14,15 @@
 import type Stripe from 'stripe';
 
 import type { IdentityDatabase } from '@/lib/auth/store';
-import { lapsedDoor, type LapsedDoor } from '@/lib/billing/config';
+import { lapsedDoor, statementSuffix, type LapsedDoor } from '@/lib/billing/config';
 import {
   customerIdFor,
   ensurePendingCharge,
   cardFailingSince,
+  hasBought,
+  hasCardOnFile,
   isCardRemoved,
+  isDeskOwner,
   markFailed,
   markIndeterminate,
   markNotCharged,
@@ -48,7 +51,7 @@ import { sessionEndUtc } from '@/lib/market/session';
  * board waits for the charge; the page, never the gate, acts on it.
  */
 export type PaidDayOpening =
-  | { kind: 'no_customer' }
+  | { kind: 'owner' }
   | { kind: 'plan' }
   | { kind: 'trial'; endsAt: string | null }
   | { kind: 'buy_first' }
@@ -60,7 +63,14 @@ export function openPaidDay(
   now: Date = new Date(),
   env: Readonly<Record<string, string | undefined>> = process.env,
 ): PaidDayOpening {
-  if (!customerIdFor(db, userId)) return { kind: 'no_customer' };
+  // The owner is never charged and never shown a buy screen (Integration's ruling).
+  if (isDeskOwner(db, userId, env)) return { kind: 'owner' };
+  /*
+   * HIS RULING, 2026-10-17: "im the only one that gets in free." Every other
+   * account with neither a running trial nor a purchase gets the buy screen,
+   * invited by hand or not. No Stripe customer means nothing was ever bought.
+   */
+  if (!customerIdFor(db, userId)) return { kind: 'buy_first' };
   const etDate = paidDayOf(now);
   if (planCovers(db, userId, etDate)) return { kind: 'plan' };
   /*
@@ -82,6 +92,10 @@ export function openPaidDay(
   // They cancelled their plan and it has run to its end: the buy screen, never an
   // automatic daily charge.
   if (planEndedByCancel(db, userId, etDate)) return { kind: 'buy_first' };
+  // A customer who never bought and has no card on file (a Checkout started and
+  // abandoned, a refused trial): the buy screen, never a charge attempt. A daily
+  // buyer who saved a card on a weekend has a card on file and goes on.
+  if (!hasBought(db, userId) && !hasCardOnFile(db, userId)) return { kind: 'buy_first' };
   const charge = ensurePendingCharge(db, userId, etDate, now);
   const door = cardFailedBeforeToday(db, userId, now) ? lapsedDoor(env) : 'open';
   return { kind: 'pending', charge, door };
@@ -143,6 +157,8 @@ export function classifyStripeError(error: unknown): ChargeOutcome {
 
 export interface ChargeDeps {
   db: IdentityDatabase;
+  /** For the statement suffix; process.env when omitted. */
+  env?: Readonly<Record<string, string | undefined>>;
   stripe: Pick<Stripe, 'paymentIntents' | 'customers'>;
   /** The market calendar (Alpaca /v2/calendar), never a weekday test. */
   isTradingDay: (etDate: string) => boolean | Promise<boolean>;
@@ -158,6 +174,11 @@ async function defaultPaymentMethod(
   const pm = customer.invoice_settings?.default_payment_method;
   if (pm) return typeof pm === 'string' ? pm : pm.id;
   return null;
+}
+
+function suffixParam(env?: Readonly<Record<string, string | undefined>>): { statement_descriptor_suffix?: string } {
+  const suffix = statementSuffix(env);
+  return suffix ? { statement_descriptor_suffix: suffix } : {};
 }
 
 /** One off-session charge for one PENDING row. */
@@ -183,6 +204,7 @@ export async function chargeOne(deps: ChargeDeps, charge: ChargeRow): Promise<Ch
         metadata: { app: 'mointel', kind: 'daily', user_id: String(charge.userId), et_date: charge.etDate },
         // The charge carries the receipt link the billing-history page shows.
         expand: ['latest_charge'],
+        ...suffixParam(deps.env),
       },
       { idempotencyKey: idempotencyKey(charge) },
     );

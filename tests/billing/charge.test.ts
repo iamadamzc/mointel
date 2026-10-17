@@ -11,6 +11,7 @@ import {
   isCardFailing,
   lapsePlan,
   linkCustomer,
+  markCardSaved,
   markFailed,
   markIndeterminate,
   markPlanPaid,
@@ -30,6 +31,7 @@ const later = (ms: number) => new Date(MON_10_ET.getTime() + ms);
 function customer(db: ReturnType<typeof temporaryStore>) {
   const userId = verifiedUser(db);
   linkCustomer(db, userId, 'cus_test_1', MON_10_ET);
+  markCardSaved(db, 'cus_test_1', MON_10_ET);
   return userId;
 }
 
@@ -125,7 +127,7 @@ describe('the charge pass', () => {
       latest_charge: { id: 'ch_1', receipt_url: 'https://pay.stripe.com/receipts/r1' },
     }));
 
-    const summary = await runChargePass({ db, stripe, isTradingDay: () => true, now: () => MON_10_ET });
+    const summary = await runChargePass({ db, stripe, env: {}, isTradingDay: () => true, now: () => MON_10_ET });
 
     expect(summary.succeeded).toBe(1);
     expect(chargeFor(db, userId, '2026-10-19')!.state).toBe('SUCCEEDED');
@@ -140,6 +142,7 @@ describe('the charge pass', () => {
       },
     ]);
     const [params, options] = (stripe.paymentIntents.create as ReturnType<typeof vi.fn>).mock.calls[0];
+    expect(params).not.toHaveProperty('statement_descriptor_suffix');
     expect(params).toMatchObject({
       expand: ['latest_charge'],
       amount: 550,
@@ -218,10 +221,10 @@ describe('the charge pass', () => {
 });
 
 describe('opening a paid day at sign-in', () => {
-  it('writes nothing for someone who has never bought', () => {
+  it('someone who has never bought gets the buy screen, and nothing is written', () => {
     const db = temporaryStore();
     const userId = verifiedUser(db);
-    expect(openPaidDay(db, userId, MON_10_ET)).toEqual({ kind: 'no_customer' });
+    expect(openPaidDay(db, userId, MON_10_ET, {})).toEqual({ kind: 'buy_first' });
     expect(chargeFor(db, userId, '2026-10-19')).toBeNull();
   });
 
