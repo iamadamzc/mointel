@@ -125,13 +125,14 @@ CREATE TABLE IF NOT EXISTS sessions (
   created_at TEXT    NOT NULL,
 
   /*
-   * The ET CALENDAR date this session belongs to, assigned at write time and
-   * never derived afterwards.
+   * The ET date of the paid day this session belongs to, assigned at write
+   * time and never derived afterwards. It expires at 20:00 ET on that date.
    *
-   * Deliberately not called trading_date: a session can be created on a
-   * Saturday, and a column named for a trading date that holds one would be
-   * lying. This is the ET date the session was created on and expires at the
-   * end of.
+   * Since the fold (his ruling, 2026-10-17) that is a market day: a Saturday
+   * sign-in writes Monday's date (lib/auth/expiry.ts). Still not called
+   * trading_date, because rows written before the fold, and any written when
+   * the calendar could not be read, hold the calendar date, a Saturday among
+   * them.
    *
    * Assigned rather than computed later for the reason the recovery script
    * assigns trading_date rather than deriving it from ts: every re-

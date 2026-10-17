@@ -28,7 +28,7 @@ import {
   resolveEmailSignIn,
 } from '@/lib/auth/emailLink';
 import { EMAIL_LINK_REPLY_TO, EMAIL_LINK_SENDER, EMAIL_LINK_WORDS as W, rateLimitedMessage } from '@/lib/auth/emailLinkWords';
-import { sessionExpiry } from '@/lib/auth/expiry';
+import { sessionExpiry, type MarketDays } from '@/lib/auth/expiry';
 import { afterSignIn } from '@/lib/auth/signInHook';
 import { createSession, type IdentityDatabase } from '@/lib/auth/store';
 import type { OutgoingEmail, SendResult } from '@/lib/email/ses';
@@ -190,6 +190,8 @@ export function showConfirm(deps: { db: IdentityDatabase; token: string | null; 
 export function completeEmailSignIn(deps: {
   db: IdentityDatabase;
   token: string | null;
+  /** The market calendar for this sign-in (lib/auth/expiry.ts marketDaysOrFallback). */
+  marketDays: MarketDays;
   now?: Date;
   secure?: boolean;
   log?: (line: string) => void;
@@ -206,7 +208,7 @@ export function completeEmailSignIn(deps: {
     return page(409, messagePage(W.ambiguousHeading, W.ambiguousBody));
   }
 
-  const expiry = sessionExpiry(now);
+  const expiry = sessionExpiry(now, deps.marketDays);
   const issued = createSession(deps.db, resolved.userId, expiry, now);
   // Open the paid day (lib/auth/signInHook.ts); never blocks the sign-in.
   afterSignIn(deps.db, resolved.userId, now);

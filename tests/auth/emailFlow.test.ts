@@ -9,6 +9,7 @@ import { hashIp } from '@/lib/auth/emailLink';
 import { EMAIL_LINK_WORDS } from '@/lib/auth/emailLinkWords';
 import { inviteEmail, linkIdentity, openIdentityStore, resolveSession } from '@/lib/auth/store';
 import type { OutgoingEmail, SendResult } from '@/lib/email/ses';
+import { MARKET_DAYS } from '@/tests/auth/marketDays';
 
 const temporaryDirs: string[] = [];
 function temporaryStore() {
@@ -114,14 +115,14 @@ describe('email flow: the confirm page and the button', () => {
     expect(first.html).toContain('<a href="/terms">terms</a>');
     expect(first.html).toContain('<a href="/privacy">privacy policy</a>');
     expect(second.status).toBe(200);
-    expect(completeEmailSignIn({ db, token, now: NOW, secure: true }).status).toBe(303);
+    expect(completeEmailSignIn({ db, token, marketDays: MARKET_DAYS, now: NOW, secure: true }).status).toBe(303);
   });
 
   it('POST signs in once: a session cookie and /desk, then the link is spent', async () => {
     const db = temporaryStore();
     const { box } = await start(db, 'a@example.com');
     const token = tokenFrom(box.sent[0]);
-    const done = completeEmailSignIn({ db, token, now: NOW, secure: true });
+    const done = completeEmailSignIn({ db, token, marketDays: MARKET_DAYS, now: NOW, secure: true });
     expect(done.status).toBe(303);
     expect(done.location).toBe('/desk');
     expect(done.setCookies).toHaveLength(1);
@@ -130,7 +131,7 @@ describe('email flow: the confirm page and the button', () => {
     const sessionId = cookie.slice(SESSION_COOKIE.length + 1).split(';')[0];
     expect(resolveSession(db, sessionId, NOW)).not.toBeNull();
 
-    const again = completeEmailSignIn({ db, token, now: NOW, secure: true });
+    const again = completeEmailSignIn({ db, token, marketDays: MARKET_DAYS, now: NOW, secure: true });
     expect(again.status).toBe(400);
     expect(again.setCookies).toHaveLength(0);
   });

@@ -6,6 +6,8 @@
 
 import { getIdentityDb } from '@/lib/auth/db';
 import { completeEmailSignIn, showConfirm } from '@/lib/auth/emailFlow';
+import { marketDaysOrFallback } from '@/lib/auth/expiry';
+import { paidDayCalendarSources } from '@/lib/public/purchaseServer';
 import { emailSignInOpen, formField, notFound, respondFlow } from '@/lib/auth/emailRoute';
 import { authErrorPage } from '@/lib/auth/authErrorPage';
 
@@ -33,7 +35,11 @@ export async function GET(request: Request): Promise<Response> {
 export async function POST(request: Request): Promise<Response> {
   if (!emailSignInOpen()) return notFound();
   try {
-    return respondFlow(completeEmailSignIn({ db: getIdentityDb(), token: await formField(request, 't') }));
+    const token = await formField(request, 't');
+    const now = new Date();
+    // Loaded before the link is used, because completeEmailSignIn is synchronous; never throws.
+    const marketDays = await marketDaysOrFallback(now, paidDayCalendarSources());
+    return respondFlow(completeEmailSignIn({ db: getIdentityDb(), token, marketDays, now }));
   } catch (error) {
     return ourFault('POST', error);
   }

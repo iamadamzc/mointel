@@ -11,16 +11,19 @@
 
 import 'server-only';
 
-import { loadTradingDays, tradingDayChecker } from '@/lib/billing/calendar';
+import { CALENDAR_DEADLINE_MS, sessionDatesCalendar, withDeadline, type CalendarSources } from '@/lib/auth/expiry';
+import { cachedTradingDays, loadTradingDays, tradingDayChecker } from '@/lib/billing/calendar';
 import { stripeFromEnv, type StripeClient } from '@/lib/billing/stripeClient';
 import { AlpacaRestClient } from '@/lib/market/alpaca/rest';
 import { findAlpacaCredentials } from '@/lib/market/credentials';
+import { cachedSessionDates } from '@/lib/market/readModel';
 
 const store = globalThis as typeof globalThis & {
   __mointelPurchase?: {
     stripe?: StripeClient;
     isTradingDay?: (etDate: string) => Promise<boolean>;
     fetchMonth?: (start: string, end: string) => Promise<{ date: string }[]>;
+    marketDays?: (months: string[]) => Promise<(etDate: string) => boolean>;
   };
 };
 
@@ -41,7 +44,9 @@ function fetchMonth(): (start: string, end: string) => Promise<{ date: string }[
     const credentials = findAlpacaCredentials().credentials;
     if (!credentials) throw new Error('no Alpaca credentials: the trading calendar is required to sell');
     const alpaca = new AlpacaRestClient(credentials, { concurrency: 1, maxRetries: 2 });
-    c.fetchMonth = (start, end) => alpaca.getCalendar(start, end);
+    // The client has no timeout of its own and retries with backoff (Ops, 2026-10-17):
+    // a buyer's request fails at the deadline rather than hanging. The late answer is dropped.
+    c.fetchMonth = (start, end) => withDeadline(alpaca.getCalendar(start, end), CALENDAR_DEADLINE_MS, `calendar ${start}`);
   }
   return c.fetchMonth;
 }
@@ -67,5 +72,37 @@ export function purchaseOrigin(env: Readonly<Record<string, string | undefined>>
 
 /** A synchronous calendar over the given months, for the pure trial clock. */
 export function purchaseCalendar(months: string[]): Promise<(etDate: string) => boolean> {
-  return loadTradingDays(fetchMonth(), months);
+  return withDeadline(loadTradingDays(fetchMonth(), months), CALENDAR_DEADLINE_MS, 'trial calendar');
+}
+
+/**
+ * The market calendar for the paid day (lib/auth/expiry.ts): the months asked
+ * for, as a synchronous checker, cached per month. Used by both sign-in paths and
+ * by every billing read on the web tier. Missing Alpaca credentials surface as a
+ * rejected promise, never a synchronous throw, so a caller's fallback sees them.
+ */
+export function purchaseMarketDays(): (months: string[]) => Promise<(etDate: string) => boolean> {
+  const c = cache();
+  if (!c.marketDays) {
+    const load = cachedTradingDays((start, end) => fetchMonth()(start, end));
+    // Several months fetched one at a time: the whole load has the deadline too.
+    c.marketDays = (months) => withDeadline(load(months), CALENDAR_DEADLINE_MS, 'market calendar');
+  }
+  return c.marketDays;
+}
+
+/**
+ * Where a sign-in and the desk's billing reads get the paid day's calendar
+ * (lib/auth/expiry.ts marketDaysOrFallback): first the market worker's cached
+ * calendar in market.db, a local read (lib/market/readModel.ts
+ * cachedSessionDates); then Alpaca, within the deadline.
+ */
+export function paidDayCalendarSources(): CalendarSources {
+  return {
+    cached: () => {
+      const dates = cachedSessionDates();
+      return dates && dates.length ? sessionDatesCalendar(dates) : null;
+    },
+    load: purchaseMarketDays(),
+  };
 }

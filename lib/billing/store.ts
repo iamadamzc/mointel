@@ -7,7 +7,7 @@
  * gate goes on asking only "is this session valid and is this person invited".
  */
 
-import { sessionExpiry } from '@/lib/auth/expiry';
+import { CALENDAR_DAYS, sessionExpiry } from '@/lib/auth/expiry';
 import { userHasVerifiedEmail, type IdentityDatabase } from '@/lib/auth/store';
 import { GRACE_MS, OWNER_EMAIL_ENV, RULED_AMOUNT_CENTS, type PlanKey } from '@/lib/billing/config';
 import { sessionEndUtc } from '@/lib/market/session';
@@ -35,7 +35,7 @@ const CHARGE_COLUMNS = `id, user_id AS userId, et_date AS etDate, state, source,
 
 /** The paid day an instant falls in: the same rule a session uses. */
 export function paidDayOf(instant: Date): string {
-  return sessionExpiry(instant).etDate;
+  return sessionExpiry(instant, CALENDAR_DAYS).etDate;
 }
 
 /** The ET calendar date before `etDate`, stepped on the date string, not by 24 h. */

@@ -9,6 +9,7 @@ import { afterSignIn } from '@/lib/auth/signInHook';
 import { linkIdentity, openIdentityStore } from '@/lib/auth/store';
 import { linkCustomer, markCardSaved } from '@/lib/billing/store';
 import type { OutgoingEmail } from '@/lib/email/ses';
+import { MARKET_DAYS } from '@/tests/auth/marketDays';
 
 const dirs: string[] = [];
 function temporaryStore() {
@@ -80,7 +81,7 @@ describe('afterSignIn: the paid day opens at sign-in', () => {
       log: () => {},
     });
     const token = decodeURIComponent(/\?t=([A-Za-z0-9_-]+)/.exec(sent[0].text)![1]);
-    const done = completeEmailSignIn({ db, token, now: MON_10_ET, secure: true });
+    const done = completeEmailSignIn({ db, token, marketDays: MARKET_DAYS, now: MON_10_ET, secure: true });
     expect(done.status).toBe(303);
     expect(charges(db, userId)).toHaveLength(1);
   });

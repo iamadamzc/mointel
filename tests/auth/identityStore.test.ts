@@ -4,7 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { sessionExpiry } from '@/lib/auth/expiry';
+import { CALENDAR_DAYS, sessionExpiry } from '@/lib/auth/expiry';
 import {
   IDENTITY_FILE_MODE,
   IDENTITY_SCHEMA_VERSION,
@@ -120,7 +120,7 @@ describe('sessions', () => {
     const db = temporaryStore();
     const user = linkIdentity(db, { provider: 'google', subject: 'sub-1' });
 
-    const session = createSession(db, user.userId, sessionExpiry());
+    const session = createSession(db, user.userId, sessionExpiry(new Date(), CALENDAR_DAYS));
     const resolved = resolveSession(db, session.id);
 
     expect(resolved?.userId).toBe(user.userId);
@@ -137,7 +137,7 @@ describe('sessions', () => {
     const db = temporaryStore();
     const user = linkIdentity(db, { provider: 'google', subject: 'sub-1' });
 
-    const session = createSession(db, user.userId, sessionExpiry());
+    const session = createSession(db, user.userId, sessionExpiry(new Date(), CALENDAR_DAYS));
     const stored = db.prepare('SELECT id_hash AS hash FROM sessions').get() as { hash: string };
 
     expect(stored.hash).not.toBe(session.id);
@@ -168,7 +168,7 @@ describe('sessions', () => {
     const db = temporaryStore();
     const user = linkIdentity(db, { provider: 'google', subject: 'sub-1' });
 
-    const session = createSession(db, user.userId, sessionExpiry());
+    const session = createSession(db, user.userId, sessionExpiry(new Date(), CALENDAR_DAYS));
     expect(resolveSession(db, session.id)).not.toBeNull();
 
     revokeSession(db, session.id);
@@ -216,7 +216,7 @@ describe('what a session records about entitlement', () => {
     const user = linkIdentity(db, { provider: 'google', subject: 'sub-1' });
     expect(user.status).toBe('pending');
 
-    const session = createSession(db, user.userId, sessionExpiry());
+    const session = createSession(db, user.userId, sessionExpiry(new Date(), CALENDAR_DAYS));
 
     db.prepare("UPDATE users SET status = 'active' WHERE id = ?").run(user.userId);
 
@@ -232,7 +232,7 @@ describe('what a session records about entitlement', () => {
 
   it('refuses to issue a session for a user that does not exist', () => {
     const db = temporaryStore();
-    expect(() => createSession(db, 9999, sessionExpiry())).toThrow(/unknown user/);
+    expect(() => createSession(db, 9999, sessionExpiry(new Date(), CALENDAR_DAYS))).toThrow(/unknown user/);
     db.close();
   });
 });
@@ -345,7 +345,7 @@ describe('the invited-email allowlist', () => {
       subject: 'sub-revoke',
       email: 'adam@example.com',
     });
-    const issued = createSession(db, user.userId, sessionExpiry(new Date()));
+    const issued = createSession(db, user.userId, sessionExpiry(new Date(), CALENDAR_DAYS));
     expect(resolveSession(db, issued.id)).not.toBeNull();
 
     const result = revokeEmail(db, 'adam@example.com');
