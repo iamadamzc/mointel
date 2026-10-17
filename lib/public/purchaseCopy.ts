@@ -34,8 +34,9 @@ export const PRICING = {
   underHeadline: 'TMI is for people trading the US market. All prices are in US dollars.',
   basis:
     '*Against $5.50 for every trading day in the period: 20.9 trading days in an average month, 125.5 in six months, 251 in a year. A month with fewer or more trading days changes the figure.',
+  /** His "1, yes" (Integration chat bf3b407e, uuid ebe864a6, 2026-10-17T12:15:21.014Z) to docs/integration/2026-10-17-paid-day-for-him.md @579acaee. */
   paidDay:
-    'A paid day runs from 8:00pm ET to 8:00pm ET the next day. Its first report is the one going into the next premarket. There is no charge for a paid day that ends on a day the US market is closed.',
+    'A paid day runs from 8:00pm ET after one trading day to 8:00pm ET after the next. Weekends and market holidays belong to the paid day that follows, so Monday\'s paid day runs from 8:00pm ET Friday to 8:00pm ET Monday. Its first report is the one going into the next premarket. You are charged once for a paid day, on your first sign-in in it.',
   renew: 'Plans renew on their own at the end of each period, at the price then in force, until you cancel.',
   noRefunds: 'No refunds.',
 } as const;
@@ -124,9 +125,9 @@ export const CHECKOUT = {
   renewsPlan: (renewalDate: string) => `${renewalDate}, at the price then in force`,
   renewsDaily: 'Each new paid day you sign in on',
   noRefunds: 'No refunds.',
-  /** Commercial's sentence beside the pay button, Daily (read 149, e9ac6b2d). */
+  /** Commercial's sentence beside the pay button, Daily; the paid-day words @579acaee (uuid ebe864a6). */
   legalDaily: (amount: string) =>
-    `You will be charged ${amount} now, and automatically on each new paid day you sign in on, on this card, until you stop. A paid day runs 8:00pm ET to 8:00pm ET. No refunds. You can stop in the desk at any time.`,
+    `You will be charged ${amount} now, and automatically on each new paid day you sign in on, on this card, until you stop. A paid day runs from 8:00pm ET after one trading day to 8:00pm ET after the next, so a purchase on a weekend or market holiday is for the next trading day. No refunds. You can stop in the desk at any time.`,
   /** Commercial's sentence beside the pay button, a plan. */
   legalPlan: (amount: string, forPeriod: string, every: string, renewalDate: string) =>
     `You will be charged ${amount} now for ${forPeriod}, and again every ${every} from ${renewalDate}, at the price then in force, on this card, until you cancel. You can cancel in the desk at any time and keep access to the end of the period you paid for. No refunds.`,
@@ -161,7 +162,7 @@ export const TRIAL_START = {
 export const YOU_ARE_IN = {
   headline: "You're in.",
   plan: (amount: string, forPeriod: string, endTime: string) =>
-    `You were charged ${amount} for ${forPeriod}. Your plan runs to ${endTime}, and renews then unless you cancel.`,
+    `You were charged ${amount} for ${forPeriod}. Your plan runs to ${endTime}, and renews unless you cancel.`,
   daily: (amount: string, endTime: string) => `You were charged ${amount} for one paid day. It ends at ${endTime}.`,
   trial: (trialEnd: string) => `Your free trial ends at ${trialEnd}. You will not be charged.`,
   button: 'Open the desk',

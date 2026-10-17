@@ -14,7 +14,6 @@ const state = vi.hoisted(() => ({
     | { state: 'anonymous' }
     | { state: 'refused' | 'unaccepted' | 'admitted'; userId: number },
   cookie: 'sid' as string | undefined,
-  trading: true,
   canTrial: true,
   email: 'buyer@example.com' as string | null,
   status: { state: 'complete', purchase: 'monthly' } as Record<string, unknown>,
@@ -47,8 +46,9 @@ vi.mock('@/lib/billing/store', async (original) => ({
   trialsWithoutEnd: () => state.trialsWithoutEnd,
 }));
 vi.mock('@/lib/billing/account', () => ({
-  billingStateFor: () => {
+  billingStateFor: (...args: unknown[]) => {
     billingReads.calls += 1;
+    billingReads.args = args;
     return state.billing;
   },
 }));
@@ -77,10 +77,6 @@ vi.mock('@/lib/public/purchaseServer', () => ({
     return {};
   },
   purchaseOrigin: () => 'https://tmitrader.com',
-  purchaseIsTradingDay: () => {
-    outside.calls.push('calendar');
-    return async () => state.trading;
-  },
   // The paid day's calendar (Billing's fold, 2026-10-17): every weekday trades.
   purchaseMarketDays: () => {
     outside.calls.push('calendar');
@@ -104,7 +100,7 @@ vi.mock('@/lib/public/purchaseServer', () => ({
     };
   },
 }));
-const billingReads = vi.hoisted(() => ({ calls: 0 }));
+const billingReads = vi.hoisted(() => ({ calls: 0, args: [] as unknown[] }));
 
 import CheckoutPage from '@/app/checkout/page';
 import { POST as checkoutStart } from '@/app/checkout/start/route';
@@ -137,13 +133,13 @@ beforeEach(() => {
   process.env.PURCHASE_PAGES = 'open';
   state.admission = { state: 'refused', userId: 7 };
   state.cookie = 'sid';
-  state.trading = true;
   state.canTrial = true;
   state.email = 'buyer@example.com';
   createCheckoutSession.mockReset();
   createTrialCheckoutSession.mockReset();
   outside.calls.length = 0;
   billingReads.calls = 0;
+  billingReads.args = [];
   // Saturday 2026-10-17 11:00 ET is not used: a fixed Friday, 11:00 ET.
   vi.useFakeTimers({ toFake: ['Date'] });
   vi.setSystemTime(new Date('2026-10-16T15:00:00Z'));
@@ -205,6 +201,15 @@ describe('/pricing', () => {
     expect(page).toContain('href="/checkout?plan=six-months"');
     expect(page).toContain('href="/trial"');
   });
+
+  it('the paid day, as he approved it (579acaee): weekends belong to the paid day that follows', () => {
+    const page = html(PricingPage());
+    expect(page).toContain(
+      "Weekends and market holidays belong to the paid day that follows, so Monday's paid day runs from 8:00pm ET Friday to 8:00pm ET Monday.",
+    );
+    expect(page).toContain('You are charged once for a paid day, on your first sign-in in it.');
+    expect(page).not.toContain('There is no charge for a paid day that ends on a day the US market is closed.');
+  });
 });
 
 describe('/checkout', () => {
@@ -239,9 +244,15 @@ describe('/checkout', () => {
     let page = html(await CheckoutPage(params({ plan: 'daily' })));
     expect(page).toContain('Each new paid day you sign in on');
     expect(page).toContain('You will be charged $5.50 now, and automatically on each new paid day you sign in on');
+    expect(page).toContain(
+      'A paid day runs from 8:00pm ET after one trading day to 8:00pm ET after the next, so a purchase on a weekend or market holiday is for the next trading day.',
+    );
+    expect(page).not.toContain('A paid day runs 8:00pm ET to 8:00pm ET.');
     vi.setSystemTime(new Date('2026-10-17T15:00:00Z')); // Sat 11:00 ET
     page = html(await CheckoutPage(params({ plan: 'daily' })));
     expect(page).toContain('You will be charged $5.50 now');
+    expect(page).not.toContain('If you cannot use this page'); // no calendar read on the page itself
+    expect(outside.calls).not.toContain('calendar');
   });
 });
 
@@ -315,8 +326,9 @@ describe('/welcome', () => {
     const page = html(await WelcomePage(params({ session_id: 'cs_1' })));
     expect(page).toContain("You're in.");
     expect(page).toContain(
-      'You were charged $89 for one month. Your plan runs to 8:00pm ET on Monday, November 16, and renews then unless you cancel.',
+      'You were charged $89 for one month. Your plan runs to 8:00pm ET on Monday, November 16, and renews unless you cancel.',
     );
+    expect(page).not.toContain('renews then');
     expect(page).toContain('href="/desk"');
     expect(page).toContain('No refunds.');
   });
@@ -327,6 +339,20 @@ describe('/welcome', () => {
     expect(page).toContain('Your payment has not been confirmed yet.');
     expect(page).toContain('You are signed in as buyer@example.com. Reload this page to check again.');
     expect(page).toContain('href="/welcome?session_id=cs_9"');
+  });
+
+  it('a Daily bought on a Saturday: the end is Billing\'s folded paid day (Monday 8:00pm ET), read with the market calendar', async () => {
+    const now = new Date('2026-10-17T15:00:00Z'); // Sat 11:00 ET
+    vi.setSystemTime(now);
+    state.status = { state: 'complete', purchase: 'daily' };
+    state.billing = { plan: null, paidThroughAt: '2026-10-20T00:00:00.000Z' }; // Mon Oct 19, 20:00 EDT
+    const page = html(await WelcomePage(params({ session_id: 'cs_d' })));
+    expect(page).toContain('You were charged $5.50 for one paid day. It ends at 8:00pm ET on Monday, October 19.');
+    // the page hands Billing the market calendar and the moment, so the fold can apply
+    const [, , isMarketDay, at] = billingReads.args as [unknown, unknown, (d: string) => boolean, Date];
+    expect(typeof isMarketDay).toBe('function');
+    expect([isMarketDay('2026-10-17'), isMarketDay('2026-10-19')]).toEqual([false, true]);
+    expect(at.getTime()).toBe(now.getTime());
   });
 
   it('a trial: its end, no charge line, no "No refunds."', async () => {

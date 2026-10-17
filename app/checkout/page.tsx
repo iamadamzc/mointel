@@ -5,13 +5,10 @@ import { notFound, redirect } from 'next/navigation';
 
 import { SiteFooter, SiteHeader } from '@/components/SiteChrome';
 import { SESSION_COOKIE } from '@/lib/auth/cookie';
-import { marketMonthsFor } from '@/lib/auth/expiry';
 import { admissionForSession } from '@/lib/auth/requestGate';
-import { paidDayOf } from '@/lib/billing/store';
 import { AGREE, CHECKOUT, PLANS, UNAVAILABLE } from '@/lib/public/purchaseCopy';
 import { etDateOf, longEtDate, PLAN_SLUGS, purchaseFromSlug, renewalEtDate } from '@/lib/public/purchaseFormat';
 import { purchaseOpen } from '@/lib/public/purchaseOpen';
-import { purchaseMarketDays } from '@/lib/public/purchaseServer';
 
 /**
  * /checkout?plan=<slug>: the summary and the consent, on our page, before the card is
@@ -27,10 +24,11 @@ import { purchaseMarketDays } from '@/lib/public/purchaseServer';
  * written). The box is unticked and required; nothing is charged before it is ticked
  * (the route checks it too, since a form attribute is not a control).
  *
- * DAILY ON A NON-TRADING DAY is not offered yet: Billing's Checkout charges nothing that
- * day (setup only), and every approved Daily line says a charge is made now. Until words
- * for that case are approved, the page sends the visitor back to /pricing rather than
- * show a false line. Raised with Integration 2026-10-17.
+ * DAILY IS OFFERED ON EVERY DAY: a weekend or market holiday belongs to the next trading
+ * day's paid day (Billing's fold, his ruling 2026-10-17), and Checkout charges $5.50 at
+ * purchase for that day, so "charged now" is true on a Saturday too. The calendar is read
+ * once, on submit (/checkout/start); if it cannot be read there, the visitor comes back
+ * here with e=unavailable.
  */
 
 export const dynamic = 'force-dynamic';
@@ -52,25 +50,13 @@ export default async function CheckoutPage({
   if (admission.state === 'anonymous') redirect('/signin');
 
   const now = new Date();
-  let calendarFailed = false;
-  if (purchase === 'daily') {
-    let trading = true;
-    try {
-      const isMarketDay = await purchaseMarketDays()(marketMonthsFor(now));
-      trading = isMarketDay(paidDayOf(now, isMarketDay));
-    } catch {
-      calendarFailed = true;
-    }
-    if (!trading) redirect('/pricing');
-  }
-
   const plan = PLANS[purchase];
   const renewal = purchase === 'daily' ? null : longEtDate(renewalEtDate(etDateOf(now), purchase));
   const legal =
     purchase === 'daily' || renewal === null || plan.every === null
       ? CHECKOUT.legalDaily(plan.amount)
       : CHECKOUT.legalPlan(plan.amount, plan.for, plan.every, renewal);
-  const failed = calendarFailed || params.e === 'unavailable';
+  const failed = params.e === 'unavailable';
 
   return (
     <div className="min-h-full bg-desk text-ink">
